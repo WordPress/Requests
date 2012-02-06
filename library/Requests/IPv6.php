@@ -99,10 +99,10 @@ class Requests_IPv6
         // Prepare the IP to be compressed
         $ip = self::uncompress($ip);
         $ip_parts = self::split_v6_v4($ip);
-        
+
         // Replace all leading zeros
         $ip_parts[0] = preg_replace('/(^|:)0+([0-9])/', '\1\2', $ip_parts[0]);
-        
+
         // Find bunches of zeros
         if (preg_match_all('/(?:^|:)(?:0(?::|$))+/', $ip_parts[0], $matches, PREG_OFFSET_CAPTURE))
         {
@@ -116,10 +116,10 @@ class Requests_IPv6
                     $pos = $match[1];
                 }
             }
-            
+
             $ip_parts[0] = substr_replace($ip_parts[0], '::', $pos, $max);
         }
-        
+
         if ($ip_parts[1] !== '')
         {
             return implode(':', $ip_parts);
@@ -178,16 +178,16 @@ class Requests_IPv6
                 // The section can't be empty
                 if ($ipv6_part === '')
                     return false;
-                
+
                 // Nor can it be over four characters
                 if (strlen($ipv6_part) > 4)
                     return false;
-                
+
                 // Remove leading zeros (this is safe because of the above)
                 $ipv6_part = ltrim($ipv6_part, '0');
                 if ($ipv6_part === '')
                     $ipv6_part = '0';
-                
+
                 // Check the value is valid
                 $value = hexdec($ipv6_part);
                 if (dechex($value) !== strtolower($ipv6_part) || $value < 0 || $value > 0xFFFF)

@@ -25,7 +25,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->fp, CURLOPT_ENCODING, '');
 		}
 		curl_setopt ($this->fp, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt ($this->fp, CURLOPT_SSL_VERIFYPEER, 0); 
+		curl_setopt ($this->fp, CURLOPT_SSL_VERIFYPEER, 0);
 	}
 
 	public function request($url, $headers = array(), $data = array(), $options = array()) {

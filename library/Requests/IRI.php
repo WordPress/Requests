@@ -91,7 +91,7 @@ class Requests_IRI
      * @var string
      */
     private $ifragment = null;
-    
+
     /**
      * Normalization database
      *
@@ -180,7 +180,7 @@ class Requests_IRI
             trigger_error('Undefined property: ' . get_class($this) . '::' . $name, E_USER_NOTICE);
             $return = null;
         }
-        
+
         if ($return === null && isset($this->normalization[$this->scheme][$name]))
         {
             return $this->normalization[$this->scheme][$name];
@@ -455,27 +455,27 @@ class Requests_IRI
     {
         // Normalize as many pct-encoded sections as possible
         $string = preg_replace_callback('/(?:%[A-Fa-f0-9]{2})+/', array(&$this, 'remove_iunreserved_percent_encoded'), $string);
-        
+
         // Replace invalid percent characters
         $string = preg_replace('/%(?![A-Fa-f0-9]{2})/', '%25', $string);
-        
+
         // Add unreserved and % to $extra_chars (the latter is safe because all
         // pct-encoded sections are now valid).
         $extra_chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~%';
-        
+
         // Now replace any bytes that aren't allowed with their pct-encoded versions
         $position = 0;
         $strlen = strlen($string);
         while (($position += strspn($string, $extra_chars, $position)) < $strlen)
         {
             $value = ord($string[$position]);
-            
+
             // Start position
             $start = $position;
-        
+
             // By default we are valid
             $valid = true;
-            
+
             // No one byte sequences are valid due to the while.
             // Two byte sequence:
             if (($value & 0xE0) === 0xC0)
@@ -505,7 +505,7 @@ class Requests_IRI
                 $length = 1;
                 $remaining = 0;
             }
-            
+
             if ($remaining)
             {
                 if ($position + $length <= $strlen)
@@ -513,7 +513,7 @@ class Requests_IRI
                     for ($position++; $remaining; $position++)
                     {
                         $value = ord($string[$position]);
-                        
+
                         // Check that the byte is valid, then add it to the character:
                         if (($value & 0xC0) === 0x80)
                         {
@@ -534,7 +534,7 @@ class Requests_IRI
                     $valid = false;
                 }
             }
-                
+
             // Percent encode anything invalid or not in ucschar
             if (
                 // Invalid sequences
@@ -564,7 +564,7 @@ class Requests_IRI
                 // If we were a character, pretend we weren't, but rather an error.
                 if ($valid)
                     $position--;
-                    
+
                 for ($j = $start; $j <= $position; $j++)
                 {
                     $string = substr_replace($string, sprintf('%%%02X', ord($string[$j])), $j, 1);
@@ -574,7 +574,7 @@ class Requests_IRI
                 }
             }
         }
-        
+
         return $string;
     }
 
@@ -592,27 +592,27 @@ class Requests_IRI
         // As we just have valid percent encoded sequences we can just explode
         // and ignore the first member of the returned array (an empty string).
         $bytes = explode('%', $match[0]);
-        
+
         // Initialize the new string (this is what will be returned) and that
         // there are no bytes remaining in the current sequence (unsurprising
         // at the first byte!).
         $string = '';
         $remaining = 0;
-        
+
         // Loop over each and every byte, and set $value to its value
         for ($i = 1, $len = count($bytes); $i < $len; $i++)
         {
             $value = hexdec($bytes[$i]);
-            
+
             // If we're the first byte of sequence:
             if (!$remaining)
             {
                 // Start position
                 $start = $i;
-                
+
                 // By default we are valid
                 $valid = true;
-                
+
                 // One byte sequence:
                 if ($value <= 0x7F)
                 {
@@ -664,7 +664,7 @@ class Requests_IRI
                     $i--;
                 }
             }
-            
+
             // If we've reached the end of the current byte sequence, append it to Unicode::$data
             if (!$remaining)
             {
@@ -705,7 +705,7 @@ class Requests_IRI
                 }
             }
         }
-        
+
         // If we have any bytes left over they are invalid (i.e., we are
         // mid-way through a multi-byte sequence)
         if ($remaining)
@@ -715,10 +715,10 @@ class Requests_IRI
                 $string .= '%' . strtoupper($bytes[$j]);
             }
         }
-        
+
         return $string;
     }
-    
+
     private function scheme_normalization()
     {
         if (isset($this->normalization[$this->scheme]['iuserinfo']) && $this->iuserinfo === $this->normalization[$this->scheme]['iuserinfo'])
@@ -773,7 +773,7 @@ class Requests_IRI
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -791,7 +791,7 @@ class Requests_IRI
         {
             $cache = array();
         }
-        
+
         if ($iri === null)
         {
             return true;
@@ -811,13 +811,13 @@ class Requests_IRI
         else
         {
             $parsed = $this->parse_iri((string) $iri);
-            
+
             $return = $this->set_scheme($parsed['scheme'])
                 && $this->set_authority($parsed['authority'])
                 && $this->set_path($parsed['path'])
                 && $this->set_query($parsed['query'])
                 && $this->set_fragment($parsed['fragment']);
-            
+
             $cache[$iri] = array($this->scheme,
                                  $this->iuserinfo,
                                  $this->ihost,
@@ -867,7 +867,7 @@ class Requests_IRI
         static $cache;
         if (!$cache)
             $cache = array();
-        
+
         if ($authority === null)
         {
             $this->iuserinfo = null;
@@ -881,7 +881,7 @@ class Requests_IRI
                  $this->ihost,
                  $this->port,
                  $return) = $cache[$authority];
-            
+
             return $return;
         }
         else
@@ -908,16 +908,16 @@ class Requests_IRI
             {
                 $port = null;
             }
-    
+
             $return = $this->set_userinfo($iuserinfo) &&
                       $this->set_host($remaining) &&
                       $this->set_port($port);
-            
+
             $cache[$authority] = array($this->iuserinfo,
                                        $this->ihost,
                                        $this->port,
                                        $return);
-            
+
             return $return;
         }
     }
@@ -939,7 +939,7 @@ class Requests_IRI
             $this->iuserinfo = $this->replace_invalid_with_pct_encoding($iuserinfo, '!$&\'()*+,;=:');
             $this->scheme_normalization();
         }
-        
+
         return true;
     }
 
@@ -972,7 +972,7 @@ class Requests_IRI
         else
         {
             $ihost = $this->replace_invalid_with_pct_encoding($ihost, '!$&\'()*+,;=');
-            
+
             // Lowercase, but ignore pct-encoded sections (as they should
             // remain uppercase). This must be done after the previous step
             // as that can add unescaped characters.
@@ -990,12 +990,12 @@ class Requests_IRI
                     $position++;
                 }
             }
-            
+
             $this->ihost = $ihost;
         }
-        
+
         $this->scheme_normalization();
-        
+
         return true;
     }
 
@@ -1039,9 +1039,9 @@ class Requests_IRI
         {
             $cache = array();
         }
-        
+
         $ipath = (string) $ipath;
-        
+
         if (isset($cache[$ipath]))
         {
             $this->ipath = $cache[$ipath][(int) ($this->scheme !== null)];
@@ -1050,11 +1050,11 @@ class Requests_IRI
         {
             $valid = $this->replace_invalid_with_pct_encoding($ipath, '!$&\'()*+,;=@:/');
             $removed = $this->remove_dot_segments($valid);
-            
+
             $cache[$ipath] = array($valid, $removed);
             $this->ipath =  ($this->scheme !== null) ? $removed : $valid;
         }
-        
+
         $this->scheme_normalization();
         return true;
     }
@@ -1111,7 +1111,7 @@ class Requests_IRI
         {
             $non_ascii = implode('', range("\x80", "\xFF"));
         }
-        
+
         $position = 0;
         $strlen = strlen($string);
         while (($position += strcspn($string, $non_ascii, $position)) < $strlen)
@@ -1120,7 +1120,7 @@ class Requests_IRI
             $position += 3;
             $strlen += 2;
         }
-        
+
         return $string;
     }
 
@@ -1135,7 +1135,7 @@ class Requests_IRI
         {
             return false;
         }
-        
+
         $iri = '';
         if ($this->scheme !== null)
         {

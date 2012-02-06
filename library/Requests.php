@@ -314,7 +314,7 @@ class Requests {
 		elseif (function_exists('gzuncompress') && ($decoded = @gzuncompress($data)) !== false) {
 			return $decoded;
 		}
-		
+
 		return $data;
 	}
 
