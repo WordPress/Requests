@@ -36,4 +36,20 @@ class RequestsTest_Response_Headers extends PHPUnit_Framework_TestCase {
 			}
 		}
 	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testInvalidKey() {
+		$headers = new Requests_Response_Headers();
+		$headers[] = 'text/plain';
+	}
+
+	public function testMultipleHeaders() {
+		$headers = new Requests_Response_Headers();
+		$headers['Accept'] = 'text/html;q=1.0';
+		$headers['Accept'] = '*/*;q=0.1';
+
+		$this->assertEquals('text/html;q=1.0,*/*;q=0.1', $headers['Accept']);
+	}
 }
