@@ -158,4 +158,36 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$result = json_decode($request->body);
 		$this->assertEquals(true, $result->gzipped);
 	}
+
+	public function testStreamToFile() {
+		$options = array(
+			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+		);
+		$request = Requests::get('http://httpbin.org/get', array(), $options);
+		$this->assertEquals(200, $request->status_code);
+		$this->assertEmpty($request->body);
+
+		$contents = file_get_contents($options['filename']);
+		$result = json_decode($contents, true);
+		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEmpty($result['args']);
+
+		unlink($options['filename']);
+	}
+
+	public function testNonblocking() {
+		$options = array(
+			'blocking' => false
+		);
+		$request = Requests::get('http://httpbin.org/get', array(), $options);
+		$empty = new Requests_Response();
+		$this->assertEquals($empty, $request);
+	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testBadIP() {
+		$request = Requests::get('http://256.256.256.0/');
+	}
 }
