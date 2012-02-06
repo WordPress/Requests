@@ -15,9 +15,8 @@ yourself.
 We all have better things to do. That's why Requests was born.
 
 	$headers = array('Accept' => 'application/json');
-	$data = null;
 	$options = array('auth' => array('user', 'pass'));
-    $request = Requests::get('https://api.github.com/gists', $headers, $data, $options);
+    $request = Requests::get('https://api.github.com/gists', $headers, $options);
 
     var_dump($request->status_code);
     // int(200)
