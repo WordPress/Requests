@@ -115,8 +115,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				else {
 					$response .= $block;
 					if (strpos($response, "\r\n\r\n")) {
-						list($this->headers, ) = explode("\r\n\r\n", $response, 2);
+						list($this->headers, $block) = explode("\r\n\r\n", $response, 2);
 						$doingbody = true;
+						fwrite($download, $block);
 					}
 				}
 			}
