@@ -201,7 +201,7 @@ class Requests {
 		if ($options['idn'] !== false) {
 			$iri = new Requests_IRI($url);
 			$iri->ihost = Requests_IDNAEncoder::encode($iri->ihost);
-			$url = (string) $iri;
+			$url = $iri->uri;
 		}
 
 		$transport = self::get_transport();
