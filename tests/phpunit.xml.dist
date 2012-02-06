@@ -10,6 +10,7 @@
 		<testsuite name="General">
 			<file>IDNAEncoder.php</file>
 			<file>IRI.php</file>
+			<file>Requests.php</file>
 			<file>Response/Headers.php</file>
 		</testsuite>
 	</testsuites>
