@@ -19,6 +19,31 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
+	public function testGETWithData() {
+		$data = array(
+			'test' => 'true',
+			'test2' => 'test',
+		);
+		$request = Requests::request('http://httpbin.org/get', array(), $data, Requests::GET);
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('http://httpbin.org/get?test=true&test2=test', $result['url']);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+	}
+
+	public function testGETWithDataAndQuery() {
+		$data = array(
+			'test2' => 'test',
+		);
+		$request = Requests::request('http://httpbin.org/get?test=true', array(), $data, Requests::GET);
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('http://httpbin.org/get?test=true&test2=test', $result['url']);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+	}
+
 	public function testHEAD() {
 		$request = Requests::head('http://httpbin.org/get');
 		$this->assertEquals(200, $request->status_code);
