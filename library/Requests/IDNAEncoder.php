@@ -222,9 +222,13 @@ class Requests_IDNAEncoder {
 				$output .= chr($char);
 				$h++;
 			}
+			// Check if the character is non-ASCII, but below initial n
+			// This never occurs for Punycode, so ignore in coverage
+			// @codeCoverageIgnoreStart
 			elseif ($char < $n) {
 				throw new Requests_Exception('Invalid character', 'idna.character_outside_domain', $char);
 			}
+			// @codeCoverageIgnoreEnd
 			else {
 				$extended[$char] = true;
 			}
