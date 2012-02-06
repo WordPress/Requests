@@ -167,8 +167,7 @@ class Requests {
 
 		if ($options['idn'] !== false) {
 			$iri = new Requests_IRI($url);
-			$idn = new Requests_IDNA();
-			$iri->ihost = $idn->encode($iri->ihost);
+			$iri->ihost = Requests_IDNAEncoder::encode($iri->ihost);
 			$url = (string) $iri;
 		}
 
