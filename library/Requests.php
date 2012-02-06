@@ -16,7 +16,6 @@
  *
  * Based on concepts from SimplePie_File, RequestCore and WP_Http.
  *
- * @todo Add non-blocking request support
  * @package Requests
  */
 class Requests {
@@ -133,10 +132,35 @@ class Requests {
 	/**
 	 * Main interface for HTTP requests
 	 *
+	 * This method initiates a request and sends it via a transport before
+	 * parsing.
+	 *
+	 * The $options parameter takes an associative array with the following
+	 * options:
+	 *
+	 * - `timeout`: How long should we wait for a response?
+	 *    (integer, seconds, default: 10)
+	 * - `useragent`: Useragent to send to the server
+	 *    (string, default: php-requests/$version)
+	 * - `follow_redirects`: Should we follow 3xx redirects?
+	 *    (boolean, default: true)
+	 * - `redirects`: How many times should we redirect before erroring?
+	 *    (integer, default: 10)
+	 * - `blocking`: Should we block processing on this request?
+	 *    (boolean, default: true)
+	 * - `filename`: File to stream the body to instead.
+	 *    (string|boolean, default: false)
+	 * - `auth`: Authentication handler or array of user/password details to use
+	 *    for Basic authentication
+	 *    (Requests_Auth|array|boolean, default: false)
+	 * - `idn`: Enable IDN parsing
+	 *    (boolean, default: true)
+	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
 	 * @param array $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use Requests constants)
+	 * @param array $options Options for the request (see description for more information)
 	 * @return Requests_Response
 	 */
 	public static function request($url, $headers = array(), $data = array(), $type = self::GET, $options = array()) {
@@ -259,6 +283,13 @@ class Requests {
 		return $return;
 	}
 
+	/**
+	 * Decoded a chunked body as per RFC 2616
+	 *
+	 * @see http://tools.ietf.org/html/rfc2616#section-3.6.1
+	 * @param string $data Chunked body
+	 * @return string Decoded body
+	 */
 	protected static function decode_chunked($data) {
 		if (!preg_match('/^[0-9a-f]+(\s|\r|\n)+/mi', trim($data))) {
 			return $data;
@@ -287,6 +318,12 @@ class Requests {
 		}
 	}
 
+	/**
+	 * Convert a key => value array to a 'key: value' array for headers
+	 *
+	 * @param array $array Dictionary of header values
+	 * @return array List of headers
+	 */
 	public static function flattern($array) {
 		$return = array();
 		foreach ($array as $key => $value) {
@@ -295,6 +332,16 @@ class Requests {
 		return $return;
 	}
 
+	/**
+	 * Decompress an encoded body
+	 *
+	 * Implements gzip, compress and deflate. Guesses which it is by attempting
+	 * to decode.
+	 *
+	 * @todo Make this smarter by defaulting to whatever the headers say first
+	 * @param string $data Compressed data in one of the above formats
+	 * @return string Decompressed string
+	 */
 	protected static function decompress($data) {
 		if (substr($data, 0, 2) !== "\x1f\x8b") {
 			// Not actually compressed. Probably cURL ruining this for us.
