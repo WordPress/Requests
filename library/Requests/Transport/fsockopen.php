@@ -15,6 +15,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	public $info;
 
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
+		$options['hooks']->dispatch('fsockopen.before_request');
+
 		$url_parts = parse_url($url);
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
 			$url_parts['host'] = "ssl://$url_parts[host]";
@@ -75,10 +77,20 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$headers = Requests::flattern($headers);
 		$out .= implode($headers, "\r\n");
+
+		$options['hooks']->dispatch('fsockopen.after_headers', array(&$out));
+
 		$out .= "\r\nConnection: Close\r\n\r\n" . $request_body;
+
+		$options['hooks']->dispatch('fsockopen.before_send', array(&$out));
+
 		fwrite($fp, $out);
+		$options['hooks']->dispatch('fsockopen.after_send', array(&$fake_headers));
+
 		if (!$options['blocking']) {
 			fclose($fp);
+			$fake_headers = '';
+			$options['hooks']->dispatch('fsockopen.after_request', array(&$fake_headers));
 			return '';
 		}
 
@@ -115,6 +127,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 		fclose($fp);
 
+		$options['hooks']->dispatch('fsockopen.after_request', array(&$this->headers));
 		return $this->headers;
 	}
 

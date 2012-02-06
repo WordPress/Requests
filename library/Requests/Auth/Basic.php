@@ -11,17 +11,18 @@ class Requests_Auth_Basic implements Requests_Auth {
 		}
 	}
 
-	public function before_request(&$url, &$headers, &$data, &$type, &$options) {
-		// We don't need to touch anything here.
+	public function register(Requests_Hooks &$hooks) {
+		$hooks->register('curl.before_send', array(&$this, 'curl_before_send'));
+		$hooks->register('fsockopen.after_headers', array(&$this, 'fsockopen_header'));
 	}
 
-	public function before_send($type, &$transport_data, $url, $headers, $data, $options) {
-		switch ($type) {
-			case 'curl':
-				curl_setopt($transport_data, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-				curl_setopt($transport_data, CURLOPT_USERPWD, $this->getAuthString());
-				break;
-		}
+	public function curl_before_send(&$handle, $url, $headers, $data, $options) {
+		curl_setopt($handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_setopt($handle, CURLOPT_USERPWD, $this->getAuthString());
+	}
+
+	public function fsockopen_header(&$out) {
+		$out .= "Authorization: Basic " . base64_encode($this->getAuthString()) . "\r\n";
 	}
 
 	public function getAuthString() {

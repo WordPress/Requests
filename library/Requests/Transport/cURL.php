@@ -29,6 +29,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 	}
 
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
+		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
+
 		$headers = Requests::flattern($headers);
 		if (($options['type'] === Requests::HEAD || $options['type'] === Requests::GET) & !empty($data)) {
 			$url = self::format_get($url, $data);
@@ -55,9 +57,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->fp, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
 		}
 
-		if (!empty($options['auth'])) {
-			$options['auth']->before_send('curl', $this->fp, $url, $headers, $data, $options);
-		}
+		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
 
 		if ($options['filename'] !== false) {
 			$stream_handle = fopen($options['filename'], 'wb');
@@ -65,8 +65,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		$response = curl_exec($this->fp);
+
+		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
+
 		if ($options['blocking'] === false) {
 			curl_close($this->fp);
+			$fake_headers = '';
+			$options['hooks']->dispatch('curl.after_request', array(&$fake_headers));
 			return false;
 		}
 		if ($options['filename'] !== false) {
@@ -88,6 +93,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$this->info = curl_getinfo($this->fp);
 		curl_close($this->fp);
 
+		$options['hooks']->dispatch('curl.after_request', array(&$this->headers));
 		return $this->headers;
 	}
 

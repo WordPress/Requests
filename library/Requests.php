@@ -178,16 +178,23 @@ class Requests {
 			'filename' => false,
 			'auth' => false,
 			'idn' => true,
+			'hooks' => null,
 		);
 		$options = array_merge($defaults, $options);
+
+		if (empty($options['hooks'])) {
+			$options['hooks'] = new Requests_Hooks();
+		}
 
 		// Special case for simple basic auth
 		if (is_array($options['auth'])) {
 			$options['auth'] = new Requests_Auth_Basic($options['auth']);
 		}
 		if ($options['auth'] !== false) {
-			$options['auth']->before_request($url, $headers, $data, $type, $options);
+			$options['auth']->register($options['hooks']);
 		}
+
+		$options['hooks']->dispatch('requests.before_request', array(&$url, &$headers, &$data, &$type, &$options));
 
 		if ($options['idn'] !== false) {
 			$iri = new Requests_IRI($url);
@@ -197,6 +204,9 @@ class Requests {
 
 		$transport = self::get_transport();
 		$response = $transport->request($url, $headers, $data, $options);
+
+		$options['hooks']->dispatch('requests.before_parse', array(&$response, $url, $headers, $data, $type, $options));
+
 		return self::parse_response($response, $url, $headers, $data, $options);
 	}
 
@@ -280,6 +290,8 @@ class Requests {
 		}
 
 		$return->redirects = $options['redirected'];
+
+		$options['hooks']->dispatch('requests.after_request', array(&$return, $req_headers, $req_data, $options));
 		return $return;
 	}
 
