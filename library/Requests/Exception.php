@@ -23,6 +23,8 @@ class Requests_Exception extends Exception {
 
 	/**
 	 * Like {@see getCode()}, but a string code.
+	 *
+	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function getType() {
@@ -31,6 +33,8 @@ class Requests_Exception extends Exception {
 
 	/**
 	 * Gives any relevant data
+	 *
+	 * @codeCoverageIgnore
 	 * @return mixed
 	 */
 	public function getData() {

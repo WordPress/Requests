@@ -10,6 +10,11 @@ function autoload_requests($class) {
 }
 
 function autoload_tests($class) {
+	if (strpos($class, 'RequestsTest_') !== 0) {
+		return;
+	}
+
+	$class = substr($class, 13);
 	$file = str_replace('_', '/', $class);
 	if (file_exists(dirname(__FILE__) . '/' . $file . '.php')) {
 		require_once(dirname(__FILE__) . '/' . $file . '.php');

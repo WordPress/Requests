@@ -1,6 +1,6 @@
 <?php
 
-abstract class TransportTest extends PHPUnit_Framework_TestCase {
+abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testSimpleGET() {
 		$request = Requests::get('http://httpbin.org/get');
 		$this->assertEquals(200, $request->status_code);
@@ -17,6 +17,12 @@ abstract class TransportTest extends PHPUnit_Framework_TestCase {
 		$result = json_decode($request->body, true);
 		$this->assertEquals('http://httpbin.org/get?test=true&test2=test', $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+	}
+
+	public function testHEAD() {
+		$request = Requests::head('http://httpbin.org/get');
+		$this->assertEquals(200, $request->status_code);
+		$this->assertEquals('', $request->body);
 	}
 
 	public function testRawPOST() {

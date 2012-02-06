@@ -2,7 +2,7 @@
 
 Requests::$transport = 'Requests_Transport_fsockopen';
 
-class BasicAuthTest extends PHPUnit_Framework_TestCase {
+class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	public function testUsingArray() {
 		$options = array(
 			'auth' => array('user', 'passwd')

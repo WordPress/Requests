@@ -1,6 +1,6 @@
 <?php
 
-class IDNAEncoderTest extends PHPUnit_Framework_TestCase {
+class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	public static function specExamples() {
 		return array(
 			array(

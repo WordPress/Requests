@@ -56,6 +56,8 @@ class Requests {
 
 	/**
 	 * This is a static class, do not instantiate it
+	 *
+	 * @codeCoverageIgnore
 	 */
 	private function __construct() {}
 
