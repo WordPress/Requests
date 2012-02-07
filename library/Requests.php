@@ -82,9 +82,13 @@ class Requests {
 	 * @return Requests_Transport
 	 */
 	protected static function get_transport() {
+		// Caching code, don't bother testing coverage
+		// @codeCoverageIgnoreStart
 		if (!is_null(self::$transport)) {
 			return new self::$transport();
 		}
+		// @codeCoverageIgnoreEnd
+
 		if (empty(self::$transports)) {
 			self::$transports = array(
 				'Requests_Transport_cURL',
@@ -345,7 +349,11 @@ class Requests {
 				return $decoded;
 			}
 		}
+
+		// We'll never actually get down here
+		// @codeCoverageIgnoreStart
 	}
+	// @codeCoverageIgnoreEnd
 
 	/**
 	 * Convert a key => value array to a 'key: value' array for headers
