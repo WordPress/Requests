@@ -204,7 +204,16 @@ class Requests {
 			$url = $iri->uri;
 		}
 
-		$transport = self::get_transport();
+		if (!empty($options['transport'])) {
+			$transport = $options['transport'];
+
+			if (is_string($options['transport'])) {
+				$transport = new $transport();
+			}
+		}
+		else {
+			$transport = self::get_transport();
+		}
 		$response = $transport->request($url, $headers, $data, $options);
 
 		$options['hooks']->dispatch('requests.before_parse', array(&$response, $url, $headers, $data, $type, $options));
