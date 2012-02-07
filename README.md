@@ -72,6 +72,21 @@ If you find any problems with it, [create a new
 issue](https://github.com/rmccue/Requests/issues/new)!
 
 
+Testing
+-------
+Requests strives to have 100% code-coverage of the library with an extensive
+set of tests. We're not quite there yet, but [we're getting
+close](http://requests.ryanmccue.info/coverage/).
+
+To run the test suite, simply:
+
+    $ cd tests
+    $ phpunit
+
+If you'd like to run a single set of tests, specify just the name:
+
+    $ phpunit Transport/cURL
+
 Contribute
 ----------
 
