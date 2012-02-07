@@ -54,3 +54,21 @@ pre code {
 	margin-bottom: 0;
 	color: #555;
 }
+
+@media (max-width: 480px) {
+	.github {
+		display: none;
+	}
+
+	body {
+		padding-top: 15px;
+	}
+
+	#masthead {
+		padding: 10px 0;
+	}
+
+	#masthead h1 {
+		font-size: 24px;
+	}
+}
