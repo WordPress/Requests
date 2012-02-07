@@ -14,6 +14,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 	public $headers = '';
 	public $info;
 
+	protected $done_headers = false;
+
 	public function __construct() {
 		$curl = curl_version();
 		$this->version = $curl['version'];
@@ -98,7 +100,18 @@ class Requests_Transport_cURL implements Requests_Transport {
 	}
 
 	protected function stream_headers($handle, $headers) {
+		// Why do we do this? cURL will send both the final response and any
+		// interim responses, such as a 100 Continue. We don't need that.
+		// (We may want to keep this somewhere just in case)
+		if ($this->done_headers) {
+			$this->headers = '';
+			$this->done_headers = false;
+		}
 		$this->headers .= $headers;
+
+		if ($headers === "\r\n") {
+			$this->done_headers = true;
+		}
 		return strlen($headers);
 	}
 
