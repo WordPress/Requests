@@ -8,6 +8,7 @@
 			<directory suffix=".php">Transport</directory>
 		</testsuite>
 		<testsuite name="General">
+			<file>ChunkedEncoding.php</file>
 			<file>IDNAEncoder.php</file>
 			<file>IRI.php</file>
 			<file>Requests.php</file>
