@@ -314,28 +314,31 @@ class Requests {
 	 * @return string Decoded body
 	 */
 	protected static function decode_chunked($data) {
-		if (!preg_match('/^[0-9a-f]+(\s|\r|\n)+/mi', trim($data))) {
+		if (!preg_match('/^([0-9a-f]+)[^\r\n]*\r\n/i', trim($data))) {
 			return $data;
 		}
 
 		$decoded = '';
-		$body = ltrim($data, "\r\n");
+		$encoded = $data;
 
 		while (true) {
-			$is_chunked = (bool) preg_match( '/^([0-9a-f]+)(\s|\r|\n)+/i', $body, $matches );
+			$is_chunked = (bool) preg_match( '/^([0-9a-f]+)[^\r\n]*\r\n/i', $encoded, $matches );
 			if (!$is_chunked) {
 				// Looks like it's not chunked after all
-				//throw new Exception('Not chunked after all: ' . $body);\
-				return $body;
+				return $data;
 			}
 
-			$length = hexdec($matches[1]);
-			$chunk_length = strlen($matches[0]);
-			$decoded .= $part = substr($body, $chunk_length, $length);
-			$body = ltrim(substr($body, $chunk_length), "\r\n");
+			$length = hexdec(trim($matches[1]));
+			if ($length === 0) {
+				// Ignore trailer headers
+				return $decoded;
+			}
 
-			if (trim($body) === '0') {
-				// We'll just ignore the footer headers
+			$chunk_length = strlen($matches[0]);
+			$decoded .= $part = substr($encoded, $chunk_length, $length);
+			$encoded = substr($encoded, $chunk_length + $length + 2);
+
+			if (trim($encoded) === '0' || empty($encoded)) {
 				return $decoded;
 			}
 		}
