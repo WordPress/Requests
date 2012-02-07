@@ -265,14 +265,7 @@ class Requests {
 			list($key, $value) = explode(':', $header, 2);
 			$value = trim($value);
 			preg_replace('#(\s+)#i', ' ', $value);
-			if (isset($return->headers[$key])) {
-				// RFC2616 notes that multiple headers must be able to
-				// be combined like this. We should use a smarter way though.
-				$return->headers[$key] .= ',' . $value;
-			}
-			else {
-				$return->headers[$key] = $value;
-			}
+			$return->headers[$key] = $value;
 		}
 		if (isset($return->headers['transfer-encoding'])) {
 			$return->body = self::decode_chunked($return->body);
