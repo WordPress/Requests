@@ -40,4 +40,11 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(true, $result->authenticated);
 		$this->assertEquals('user', $result->user);
 	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testMissingPassword() {
+		$auth = new Requests_Auth_Basic(array('user'));
+	}
 }
