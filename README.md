@@ -75,6 +75,8 @@ issue](https://github.com/rmccue/Requests/issues/new)!
 
 Testing
 -------
+[![Build Status](https://secure.travis-ci.org/rmccue/Requests.png)](http://travis-ci.org/rmccue/Requests)
+
 Requests strives to have 100% code-coverage of the library with an extensive
 set of tests. We're not quite there yet, but [we're getting
 close](http://requests.ryanmccue.info/coverage/).
