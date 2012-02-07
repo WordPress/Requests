@@ -52,6 +52,17 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
+	public function testGETWithHeaders() {
+		$headers = array(
+			'Requested-At' => time(),
+		);
+		$request = Requests::get('http://httpbin.org/get', $headers, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals($headers['Requested-At'], $result['headers']['Requested-At']);
+	}
+
 	public function testChunked() {
 		$request = Requests::get('http://httpbin.org/stream/1', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);

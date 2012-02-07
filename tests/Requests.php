@@ -54,4 +54,50 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('value', $response->headers['test']);
 		$this->assertEquals('value', $response->headers['another-test']);
 	}
+
+	/**
+	 * Check that invalid protocols are not accepted
+	 *
+	 * We do not support HTTP/0.9. If this is really an issue for you, file a
+	 * new issue, and update your server/proxy to support a proper protocol.
+	 *
+	 * @expectedException Requests_Exception
+	 */
+	public function testInvalidProtocolVersion() {
+		$transport = new RawTransport();
+		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
+
+		$options = array(
+			'transport' => $transport
+		);
+		$response = Requests::get('http://example.com/', array(), $options);
+	}
+
+	/**
+	 * HTTP/0.9 also appears to use a single CRLF instead of two
+	 *
+	 * @expectedException Requests_Exception
+	 */
+	public function testSingleCRLFSeparator() {
+		$transport = new RawTransport();
+		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
+
+		$options = array(
+			'transport' => $transport
+		);
+		$response = Requests::get('http://example.com/', array(), $options);
+	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testInvalidStatus() {
+		$transport = new RawTransport();
+		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
+
+		$options = array(
+			'transport' => $transport
+		);
+		$response = Requests::get('http://example.com/', array(), $options);
+	}
 }
