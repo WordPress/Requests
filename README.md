@@ -56,7 +56,7 @@ If you're using [Composer](https://github.com/composer/composer) to manage depen
 
 	{
 		"require": {
-			"rmccue/Requests": ">=1.0"
+			"rmccue/requests": ">=1.0"
 		}
 	}
 
@@ -69,6 +69,7 @@ And include it in your scripts:
 
 	require_once '/path/to/Requests/library/Requests.php';
 
+### Install source from zip/tarball
 Alternatively, you can fetch a [tarball](https://github.com/rmccue/Requests/tarball/master) or [zipball](https://github.com/rmccue/Requests/zipball/master):
 
     $ curl https://github.com/rmccue/Requests/tarball/master | tar xzv
@@ -76,7 +77,7 @@ Alternatively, you can fetch a [tarball](https://github.com/rmccue/Requests/tarb
     $ wget https://github.com/rmccue/Requests/tarball/master -O - | tar xzv
 
 ### Using a Class Loader
-If you're using a class loader (e.g., [Symfony Class Loader](https://github.com/symfony/ClassLoader)) for [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) class loading:
+If you're using a class loader (e.g., [Symfony Class Loader](https://github.com/symfony/ClassLoader)) for [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)-style class loading:
 
 	$loader->registerNamespace('Requests', 'path/to/vendor/Requests/library');
 
