@@ -346,7 +346,7 @@ class Requests_IDNAEncoder {
 			throw new Requests_Exception(sprintf('Invalid digit %d', $digit), 'idna.invalid_digit', $digit);
 		}
 		$digits = 'abcdefghijklmnopqrstuvwxyz0123456789';
-		return $digits[$digit];
+		return substr($digits, $digit, 1);
 	}
 
 	/**
