@@ -332,17 +332,6 @@ class Requests_IRI
     }
 
     /**
-     * Create a new IRI object by creating a relative IRI from two IRIs
-     *
-     * @param IRI $base Base IRI
-     * @param IRI $destination Destination IRI
-     * @return IRI
-     */
-    public static function build_relative(IRI $base, IRI $destination)
-    {
-    }
-
-    /**
      * Parse an IRI into scheme/authority/path/query/fragment segments
      *
      * @param string $iri
