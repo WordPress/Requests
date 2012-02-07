@@ -1,10 +1,19 @@
 <?php
+/**
+ * Class to validate and to work with IPv6 addresses
+ *
+ * @package Requests
+ * @subpackage Utilities
+ */
 
 /**
- * Class to validate and to work with IPv6 addresses.
+ * Class to validate and to work with IPv6 addresses
  *
  * This was originally based on the PEAR class of the same name, but has been
- * almost entirely rewritten.
+ * entirely rewritten.
+ *
+ * @package Requests
+ * @subpackage Utilities
  */
 class Requests_IPv6
 {

@@ -21,26 +21,35 @@
 class Requests {
 	/**
 	 * POST method
+	 *
+	 * @var string
 	 */
 	const POST = 'POST';
 
 	/**
 	 * GET method
+	 *
+	 * @var string
 	 */
 	const GET = 'GET';
 
 	/**
 	 * HEAD method
+	 *
+	 * @var string
 	 */
 	const HEAD = 'HEAD';
 
 	/**
 	 * Current version of Requests
+	 *
+	 * @var string
 	 */
 	const VERSION = '1.5';
 
 	/**
 	 * Registered transport classes
+	 *
 	 * @var array
 	 */
 	protected static $transports = array();
@@ -64,7 +73,7 @@ class Requests {
 	/**
 	 * Register a transport
 	 *
-	 * @param Requests_Transport $transport Transport to add, must support the Requests_Transport interface
+	 * @param string $transport Transport class to add, must support the Requests_Transport interface
 	 */
 	public static function add_transport($transport) {
 		if (empty(self::$transports)) {
@@ -80,6 +89,7 @@ class Requests {
 	/**
 	 * Get a working transport
 	 *
+	 * @throws Requests_Exception If no valid transport is found (`notransport`)
 	 * @return Requests_Transport
 	 */
 	protected static function get_transport() {
@@ -116,7 +126,29 @@ class Requests {
 	}
 
 	/**#@+
-	 * Convienience function
+	 * @see request()
+	 * @param string $url
+	 * @param array $headers
+	 * @param array $options
+	 * @return Requests_Response
+	 */
+	/**
+	 * Send a GET request
+	 */
+	public static function get($url, $headers = array(), $options = array()) {
+		return self::request($url, $headers, null, self::GET, $options);
+	}
+
+	/**
+	 * Send a HEAD request
+	 */
+	public static function head($url, $headers = array(), $options = array()) {
+		return self::request($url, $headers, null, self::HEAD, $options);
+	}
+	/**#@-*/
+
+	/**
+	 * Send a POST request
 	 *
 	 * @see request()
 	 * @param string $url
@@ -125,16 +157,9 @@ class Requests {
 	 * @param array $options
 	 * @return Requests_Response
 	 */
-	public static function get($url, $headers = array(), $options = array()) {
-		return self::request($url, $headers, null, self::GET, $options);
-	}
-	public static function head($url, $headers = array(), $options = array()) {
-		return self::request($url, $headers, null, self::HEAD, $options);
-	}
 	public static function post($url, $headers = array(), $data = array(), $options = array()) {
 		return self::request($url, $headers, $data, self::POST, $options);
 	}
-	/**#@-*/
 
 	/**
 	 * Main interface for HTTP requests
@@ -142,7 +167,7 @@ class Requests {
 	 * This method initiates a request and sends it via a transport before
 	 * parsing.
 	 *
-	 * The $options parameter takes an associative array with the following
+	 * The `$options` parameter takes an associative array with the following
 	 * options:
 	 *
 	 * - `timeout`: How long should we wait for a response?
@@ -166,6 +191,8 @@ class Requests {
 	 *    transport object. Defaults to the first working transport from
 	 *    {@see getTransport()}
 	 *    (string|Requests_Transport, default: {@see getTransport()})
+	 *
+	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
@@ -233,6 +260,10 @@ class Requests {
 
 	/**
 	 * HTTP response parser
+	 *
+	 * @throws Requests_Exception On missing head/body separator (`requests.no_crlf_separator`)
+	 * @throws Requests_Exception On missing head/body separator (`noversion`)
+	 * @throws Requests_Exception On missing head/body separator (`toomanyredirects`)
 	 *
 	 * @param string $headers Full response text including headers and body
 	 * @param string $url Original request URL

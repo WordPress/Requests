@@ -13,6 +13,9 @@
  * @package Requests
  */
 class Requests_Response {
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		$this->headers = new Requests_Response_Headers();
 	}
@@ -53,5 +56,9 @@ class Requests_Response {
 	 */
 	public $url = '';
 
+	/**
+	 * Previous requests (from redirects)
+	 * @var array Array of Requests_Response objects
+	 */
 	public $history = array();
 }

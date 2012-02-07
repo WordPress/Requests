@@ -15,6 +15,7 @@ class Requests_IDNAEncoder {
 	 * ACE prefix used for IDNA
 	 *
 	 * @see http://tools.ietf.org/html/rfc3490#section-5
+	 * @var string
 	 */
 	const ACE_PREFIX = 'xn--';
 
@@ -22,6 +23,7 @@ class Requests_IDNAEncoder {
 	 * Bootstrap constant for Punycode
 	 *
 	 * @see http://tools.ietf.org/html/rfc3492#section-5
+	 * @var int
 	 */
 	const BOOTSTRAP_BASE         = 36;
 	const BOOTSTRAP_TMIN         = 1;
@@ -32,6 +34,12 @@ class Requests_IDNAEncoder {
 	const BOOTSTRAP_INITIAL_N    = 128;
 	/**#@-*/
 
+	/**
+	 * Encode a hostname using Punycode
+	 *
+	 * @param string $string Hostname
+	 * @return string Punycode-encoded hostname
+	 */
 	public static function encode($string) {
 		$parts = explode('.', $string);
 		foreach ($parts as &$part) {
@@ -40,6 +48,17 @@ class Requests_IDNAEncoder {
 		return implode('.', $parts);
 	}
 
+	/**
+	 * Convert a UTF-8 string to an ASCII string using Punycode
+	 *
+	 * @throws Requests_Exception Provided string longer than 64 ASCII characters (`idna.provided_too_long`)
+	 * @throws Requests_Exception Prepared string longer than 64 ASCII characters (`idna.prepared_too_long`)
+	 * @throws Requests_Exception Provided string already begins with xn-- (`idna.provided_is_prefixed`)
+	 * @throws Requests_Exception Encded string longer than 64 ASCII characters (`idna.encoded_too_long`)
+	 *
+	 * @param string $string ASCII or UTF-8 string (max length 64 characters)
+	 * @return string ASCII string
+	 */
 	public static function to_ascii($string) {
 		// Step 1: Check if the string is already ASCII
 		if (self::is_ascii($string)) {
@@ -87,7 +106,7 @@ class Requests_IDNAEncoder {
 	/**
 	 * Check whether a given string contains only ASCII characters
 	 *
-	 * (Testing found regex was the fastest implementation)
+	 * @internal (Testing found regex was the fastest implementation)
 	 *
 	 * @param string $string
 	 * @return bool Is the string ASCII-only?
@@ -111,6 +130,8 @@ class Requests_IDNAEncoder {
 	 * Convert a UTF-8 string to a UCS-4 codepoint array
 	 *
 	 * Based on Requests_IRI::replace_invalid_with_pct_encoding()
+	 *
+	 * @throws Requests_Exception Invalid UTF-8 codepoint (`idna.invalidcodepoint`)
 	 * @param string $input
 	 * @return array Unicode code points
 	 */
@@ -199,6 +220,8 @@ class Requests_IDNAEncoder {
 	 * RFC3492-compliant encoder
 	 *
 	 * @internal Pseudo-code from Section 6.3 is commented with "#" next to relevant code
+	 * @throws Requests_Exception On character outside of the domain (never happens with Punycode) (`idna.character_outside_domain`)
+	 *
 	 * @param string $input UTF-8 encoded string to encode
 	 * @return string Punycode-encoded string
 	 */
@@ -313,6 +336,8 @@ class Requests_IDNAEncoder {
 	 * Convert a digit to its respective character
 	 *
 	 * @see http://tools.ietf.org/html/rfc3492#section-5
+	 * @throws Requests_Exception On invalid digit (`idna.invalid_digit`)
+	 *
 	 * @param int $digit Digit in the range 0-35
 	 * @return string Single character corresponding to digit
 	 */

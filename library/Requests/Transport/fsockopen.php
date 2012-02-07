@@ -3,17 +3,42 @@
  * fsockopen HTTP transport
  *
  * @package Requests
+ * @subpackage Transport
  */
 
 /**
  * fsockopen HTTP transport
  *
  * @package Requests
+ * @subpackage Transport
  */
 class Requests_Transport_fsockopen implements Requests_Transport {
-	public $headers = array();
+	/**
+	 * Raw HTTP data
+	 *
+	 * @var string
+	 */
+	public $headers = '';
+
+	/**
+	 * Stream metadata
+	 *
+	 * @var array Associative array of properties, see {@see http://php.net/stream_get_meta_data}
+	 */
 	public $info;
 
+	/**
+	 * Perform a request
+	 *
+	 * @throws Requests_Exception On failure to connect to socket (`fsockopenerror`)
+	 * @throws Requests_Exception On socket timeout (`timeout`)
+	 *
+	 * @param string $url URL to request
+	 * @param array $headers Associative array of request headers
+	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
+	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @return string Raw HTTP result
+	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$options['hooks']->dispatch('fsockopen.before_request');
 
@@ -133,6 +158,11 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		return $this->headers;
 	}
 
+	/**
+	 * Retrieve the encodings we can accept
+	 *
+	 * @return string Accept-Encoding header value
+	 */
 	protected static function accept_encoding() {
 		$type = array();
 		if (function_exists('gzinflate')) {
@@ -148,6 +178,13 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		return implode(', ', $type);
 	}
 
+	/**
+	 * Format a URL given GET data
+	 *
+	 * @param array $url_parts
+	 * @param array|object $data Data to build query using, see {@see http://php.net/http_build_query}
+	 * @return string URL with data
+	 */
 	protected static function format_get($url_parts, $data) {
 		if (!empty($data)) {
 			if (empty($url_parts['query']))

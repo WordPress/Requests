@@ -3,19 +3,54 @@
  * cURL HTTP transport
  *
  * @package Requests
+ * @subpackage Transport
  */
 
 /**
  * cURL HTTP transport
  *
  * @package Requests
+ * @subpackage Transport
  */
 class Requests_Transport_cURL implements Requests_Transport {
+	/**
+	 * Raw HTTP data
+	 *
+	 * @var string
+	 */
 	public $headers = '';
+
+	/**
+	 * Information on the current request
+	 *
+	 * @var array cURL information array, see {@see http://php.net/curl_getinfo}
+	 */
 	public $info;
 
+	/**
+	 * Version string
+	 *
+	 * @var string
+	 */
+	public $version;
+
+	/**
+	 * cURL handle
+	 *
+	 * @var resource
+	 */
+	protected $fp;
+
+	/**
+	 * Have we finished the heades yet?
+	 *
+	 * @var boolean
+	 */
 	protected $done_headers = false;
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		$curl = curl_version();
 		$this->version = $curl['version'];
@@ -30,6 +65,17 @@ class Requests_Transport_cURL implements Requests_Transport {
 		curl_setopt ($this->fp, CURLOPT_SSL_VERIFYPEER, 0);
 	}
 
+	/**
+	 * Perform a request
+	 *
+	 * @throws Requests_Exception On a cURL error (`curlerror`)
+	 *
+	 * @param string $url URL to request
+	 * @param array $headers Associative array of request headers
+	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
+	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @return string Raw HTTP result
+	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
 
@@ -99,6 +145,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 		return $this->headers;
 	}
 
+	/**
+	 * Collect the headers as they are received
+	 *
+	 * @param resource $handle cURL resource
+	 * @param string $headers Header string
+	 * @return integer Length of provided header
+	 */
 	protected function stream_headers($handle, $headers) {
 		// Why do we do this? cURL will send both the final response and any
 		// interim responses, such as a 100 Continue. We don't need that.
@@ -115,6 +168,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 		return strlen($headers);
 	}
 
+	/**
+	 * Format a URL given GET data
+	 *
+	 * @param string $url
+	 * @param array|object $data Data to build query using, see {@see http://php.net/http_build_query}
+	 * @return string URL with data
+	 */
 	protected static function format_get($url, $data) {
 		if (!empty($data)) {
 			$url_parts = parse_url($url);

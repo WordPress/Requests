@@ -1,4 +1,10 @@
 <?php
+/**
+ * IRI parser/serialiser/normaliser
+ *
+ * @package Requests
+ * @subpackage Utilities
+ */
 
 /**
  * IRI parser/serialiser/normaliser
@@ -32,14 +38,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package IRI
+ * @package Requests
+ * @subpackage Utilities
  * @author Geoffrey Sneddon
  * @author Steve Minutillo
  * @copyright 2007-2009 Geoffrey Sneddon and Steve Minutillo
  * @license http://www.opensource.org/licenses/bsd-license.php
  * @link http://hg.gsnedders.com/iri/
- *
- * @todo Per-scheme validation
  */
 class Requests_IRI
 {
@@ -133,7 +138,6 @@ class Requests_IRI
      *
      * @param string $name Property name
      * @param mixed $value Property value
-     * @return void
      */
     public function __set($name, $value)
     {
@@ -213,8 +217,6 @@ class Requests_IRI
      * Overload __unset() to provide access via properties
      *
      * @param string $name Property name
-     * @param mixed $value Property value
-     * @return void
      */
     public function __unset($name)
     {
@@ -228,7 +230,6 @@ class Requests_IRI
      * Create a new IRI object, from a specified string
      *
      * @param string $iri
-     * @return IRI
      */
     public function __construct($iri = null)
     {
