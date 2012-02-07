@@ -169,6 +169,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	/**
 	 * Whether this transport is valid
 	 *
+	 * @codeCoverageIgnore
 	 * @return boolean True if the transport is valid, false otherwise.
 	 */
 	public static function test() {
