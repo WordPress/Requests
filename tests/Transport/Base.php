@@ -1,8 +1,16 @@
 <?php
 
 abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
+	protected function getOptions($other = array()) {
+		$options = array(
+			'transport' => $this->transport
+		);
+		$options = array_merge($options, $other);
+		return $options;
+	}
+
 	public function testSimpleGET() {
-		$request = Requests::get('http://httpbin.org/get');
+		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -11,7 +19,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testGETWithArgs() {
-		$request = Requests::get('http://httpbin.org/get?test=true&test2=test');
+		$request = Requests::get('http://httpbin.org/get?test=true&test2=test', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -24,7 +32,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::request('http://httpbin.org/get', array(), $data, Requests::GET);
+		$request = Requests::request('http://httpbin.org/get', array(), $data, Requests::GET, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -36,7 +44,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$data = array(
 			'test2' => 'test',
 		);
-		$request = Requests::request('http://httpbin.org/get?test=true', array(), $data, Requests::GET);
+		$request = Requests::request('http://httpbin.org/get?test=true', array(), $data, Requests::GET, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -44,15 +52,24 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
+	public function testChunked() {
+		$request = Requests::get('http://httpbin.org/stream/1', array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('http://httpbin.org/stream/1', $result['url']);
+		$this->assertEmpty($result['args']);
+	}
+
 	public function testHEAD() {
-		$request = Requests::head('http://httpbin.org/get');
+		$request = Requests::head('http://httpbin.org/get', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 		$this->assertEquals('', $request->body);
 	}
 
 	public function testRawPOST() {
 		$data = 'test';
-		$request = Requests::post('http://httpbin.org/post', array(), $data);
+		$request = Requests::post('http://httpbin.org/post', array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -61,7 +78,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFormPost() {
 		$data = 'test=true&test2=test';
-		$request = Requests::post('http://httpbin.org/post', array(), $data);
+		$request = Requests::post('http://httpbin.org/post', array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -69,14 +86,14 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirects() {
-		$request = Requests::get('http://httpbin.org/redirect/6');
+		$request = Requests::get('http://httpbin.org/redirect/6', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$this->assertEquals(6, $request->redirects);
 	}
 
 	public function testRelativeRedirects() {
-		$request = Requests::get('http://httpbin.org/relative-redirect/6');
+		$request = Requests::get('http://httpbin.org/relative-redirect/6', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$this->assertEquals(6, $request->redirects);
@@ -90,7 +107,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'redirects' => 10, // default, but force just in case
 		);
-		$request = Requests::get('http://httpbin.org/redirect/11', array(), $options);
+		$request = Requests::get('http://httpbin.org/redirect/11', array(), $this->getOptions($options));
 	}
 
 	public static function statusCodeSuccessProvider() {
@@ -146,13 +163,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'follow_redirects' => false,
 		);
-		$request = Requests::get($url, array(), $options);
+		$request = Requests::get($url, array(), $this->getOptions($options));
 		$this->assertEquals($code, $request->status_code);
 		$this->assertEquals($success, $request->success);
 	}
 
 	public function testGzipped() {
-		$request = Requests::get('http://httpbin.org/gzip');
+		$request = Requests::get('http://httpbin.org/gzip', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -163,7 +180,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 		);
-		$request = Requests::get('http://httpbin.org/get', array(), $options);
+		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions($options));
 		$this->assertEquals(200, $request->status_code);
 		$this->assertEmpty($request->body);
 
@@ -179,7 +196,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'blocking' => false
 		);
-		$request = Requests::get('http://httpbin.org/get', array(), $options);
+		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions($options));
 		$empty = new Requests_Response();
 		$this->assertEquals($empty, $request);
 	}
@@ -188,6 +205,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testBadIP() {
-		$request = Requests::get('http://256.256.256.0/');
+		$request = Requests::get('http://256.256.256.0/', array(), $this->getOptions());
 	}
 }
