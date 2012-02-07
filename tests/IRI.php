@@ -105,6 +105,16 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider rfc3986_tests
 	 */
+	public function testBothStringRFC3986($relative, $expected)
+	{
+		$base = 'http://a/b/c/d;p?q';
+		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
+		$this->assertEquals($expected, (string) Requests_IRI::absolutize($base, $relative));
+	}
+ 
+	/**
+	 * @dataProvider rfc3986_tests
+	 */
 	public function testObjectRFC3986($relative, $expected)
 	{
 		$base = new Requests_IRI('http://a/b/c/d;p?q');
@@ -316,5 +326,32 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$input = new Requests_IRI($input);
 		$output = new Requests_IRI($output);
 		$this->assertNotEquals($output, $input);
+	}
+
+	public function testInvalidAbsolutizeBase()
+	{
+		$this->assertFalse(Requests_IRI::absolutize('://not a URL', '../'));
+	}
+
+	public function testInvalidAbsolutizeRelative()
+	{
+		$this->assertFalse(Requests_IRI::absolutize('http://example.com/', 'http://example.com//not a URL'));
+	}
+
+	public function testFullGamut()
+	{
+		$iri = new Requests_IRI();
+		$iri->scheme = 'http';
+		$iri->userinfo = 'user:password';
+		$iri->host = 'example.com';
+		$iri->path = '/test/';
+		$iri->fragment = 'test';
+
+		$this->assertEquals('http', $iri->scheme);
+		$this->assertEquals('user:password', $iri->userinfo);
+		$this->assertEquals('example.com', $iri->host);
+		$this->assertEquals(80, $iri->port);
+		$this->assertEquals('/test/', $iri->path);
+		$this->assertEquals('test', $iri->fragment);
 	}
 }

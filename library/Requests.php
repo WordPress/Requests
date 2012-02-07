@@ -73,6 +73,7 @@ class Requests {
 				'Requests_Transport_fsockopen',
 			);
 		}
+
 		self::$transports = array_merge(self::$transports, array($transport));
 	}
 
