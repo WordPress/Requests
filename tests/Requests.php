@@ -8,6 +8,11 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$request = Requests::request('ftp://128.0.0.1/');
 	}
 
+	public function testDefaultTransport() {
+		$request = Requests::get('http://httpbin.org/get');
+		$this->assertEquals(200, $request->status_code);
+	}
+
 	/**
 	 * Standard response header parsing
 	 */
