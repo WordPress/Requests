@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.4.0">
+
+	<title>Class Requests_Auth_Basic | Requests Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?1841058525"></script>
+	<script type="text/javascript" src="elementlist.js?2320803459"></script>
+	<script type="text/javascript">
+		var ApiGen = ApiGen || {};
+		ApiGen.options = {"elementDetailsCollapsed":true,"elementsOrder":"natural"};
+	</script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3295955786">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Requests.html">Requests</a>
+						<span></span>
+						<ul>
+				<li class="active"><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+
+		</div>
+
+		<hr>
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Requests_Auth_Basic.html">Requests_Auth_Basic</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Requests_Auth.html">Requests_Auth</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.Authentication.html" title="Summary of Requests\Authentication"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="requests-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
+			</li>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Requests_Auth_Basic</h1>
+
+	<div class="description">
+	
+<p>Basic Authentication provider</p>
+
+<p>Provides a handler for Basic HTTP authentication via the Authorization
+header.</p>
+
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+<b>Requests_Auth_Basic</b>			
+			 implements 
+				<a href="class-Requests_Auth.html">Requests_Auth</a>
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+
+				<b>Package:</b>
+				<a href="package-Requests.html">Requests</a> <br>
+				<b>Subpackage:</b>
+				<a href="package-Requests.Authentication.html">Authentication</a> <br>
+		<b>Located at</b> <a href="source-class-Requests_Auth_Basic.html#9" title="Go to source code">library/Requests/Auth/Basic.php</a><br>
+	</div>
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Requests_Auth_Basic.html#33" title="Go to source code">__construct</a>( <span>array|null <var>$args</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Constructor</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Constructor</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$args</var></dt>
+					<dd><code>array|null</code><br> Array of user and password. Must have exactly two elements</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On incorrect number of arguments (<code>authbasicbadargs</code>)<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="register" id="_register">
+
+		<td class="attributes"><code>
+			
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_register">#</a>
+		<code><a href="source-class-Requests_Auth_Basic.html#49" title="Go to source code">register</a>( <span><a href="class-Requests_Hooks.html">Requests_Hooks</a> <var>&amp; $hooks</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Register the necessary callbacks</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Register the necessary callbacks</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$hooks</var></dt>
+					<dd><code><code><a href="class-Requests_Hooks.html">Requests_Hooks</a></code></code><br> Hook system</dd>
+				</dl></div>
+
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests_Auth_Basic.html#_curl_before_send">Requests_Auth_Basic::curl_before_send()</a></code></code> <br>
+						<code><code><a href="class-Requests_Auth_Basic.html#_fsockopen_header">Requests_Auth_Basic::fsockopen_header()</a></code></code> <br>
+				</div>
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Requests_Auth.html#_register">Requests_Auth::register</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="curl_before_send" id="_curl_before_send">
+
+		<td class="attributes"><code>
+			
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_curl_before_send">#</a>
+		<code><a href="source-class-Requests_Auth_Basic.html#61" title="Go to source code">curl_before_send</a>( <span>resource <var>&amp; $handle</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set cURL parameters before the data is sent</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set cURL parameters before the data is sent</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$handle</var></dt>
+					<dd><code>resource</code><br> cURL resource</dd>
+				</dl></div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="fsockopen_header" id="_fsockopen_header">
+
+		<td class="attributes"><code>
+			
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_fsockopen_header">#</a>
+		<code><a href="source-class-Requests_Auth_Basic.html#71" title="Go to source code">fsockopen_header</a>( <span>string <var>&amp; $out</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Add extra headers to the request before sending</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add extra headers to the request before sending</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$out</var></dt>
+					<dd><code>string</code><br> HTTP header string</dd>
+				</dl></div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getAuthString" id="_getAuthString">
+
+		<td class="attributes"><code>
+			
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getAuthString">#</a>
+		<code><a href="source-class-Requests_Auth_Basic.html#80" title="Go to source code">getAuthString</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the authentication string (user:pass)</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the authentication string (user:pass)</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="user" id="$user">
+
+		<td class="attributes"><code>
+			
+			public 
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Auth_Basic.html#19" title="Go to source code"><var>$user</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$user" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Username</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Username</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="pass" id="$pass">
+
+		<td class="attributes"><code>
+			
+			public 
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Auth_Basic.html#26" title="Go to source code"><var>$pass</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$pass" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Password</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Password</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+</div>
+
+	<div id="footer">
+		Requests Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.4.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

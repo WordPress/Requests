@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.4.0">
+
+	<title>Class Requests | Requests Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?1841058525"></script>
+	<script type="text/javascript" src="elementlist.js?2320803459"></script>
+	<script type="text/javascript">
+		var ApiGen = ApiGen || {};
+		ApiGen.options = {"elementDetailsCollapsed":true,"elementsOrder":"natural"};
+	</script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3295955786">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Requests.html">Requests</a>
+						<span></span>
+						<ul>
+				<li><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+
+		</div>
+
+		<hr>
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Requests.html">Requests</a></li>
+				<li><a href="class-Requests_Response.html">Requests_Response</a></li>
+				<li><a href="class-Requests_Response_Headers.html">Requests_Response_Headers</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-Requests_Exception.html">Requests_Exception</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.html" title="Summary of Requests"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="requests-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
+			</li>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Requests</h1>
+
+	<div class="description">
+	
+<p>Requests for PHP</p>
+
+<p>Inspired by Requests for Python.</p>
+
+<p>Based on concepts from SimplePie_File, RequestCore and WP_Http.</p>
+
+	</div>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+
+				<b>Package:</b>
+				<a href="package-Requests.html">Requests</a> <br>
+		<b>Located at</b> <a href="source-class-Requests.html#12" title="Go to source code">library/Requests.php</a><br>
+	</div>
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="add_transport" id="_add_transport">
+
+		<td class="attributes"><code>
+			
+			 public static
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_add_transport">#</a>
+		<code><a href="source-class-Requests.html#73" title="Go to source code">add_transport</a>( <span>string <var>$transport</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Register a transport</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Register a transport</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$transport</var></dt>
+					<dd><code>string</code><br> Transport class to add, must support the Requests_Transport interface</dd>
+				</dl></div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_transport" id="_get_transport">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			<code><a href="class-Requests_Transport.html">Requests_Transport</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_transport">#</a>
+		<code><a href="source-class-Requests.html#89" title="Go to source code">get_transport</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get a working transport</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get a working transport</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Transport.html">Requests_Transport</a></code></code><br>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>If no valid transport is found (<code>notransport</code>)<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get" id="_get">
+
+		<td class="attributes"><code>
+			
+			 public static
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get">#</a>
+		<code><a href="source-class-Requests.html#135" title="Go to source code">get</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a GET request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a GET request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code></dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code></dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests.html#_request">Requests::request()</a></code></code> <br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="head" id="_head">
+
+		<td class="attributes"><code>
+			
+			 public static
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_head">#</a>
+		<code><a href="source-class-Requests.html#142" title="Go to source code">head</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a HEAD request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a HEAD request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code></dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code></dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests.html#_request">Requests::request()</a></code></code> <br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="post" id="_post">
+
+		<td class="attributes"><code>
+			
+			 public static
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_post">#</a>
+		<code><a href="source-class-Requests.html#150" title="Go to source code">post</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a POST request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a POST request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code></dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code></dd>
+					<dt><var>$data</var></dt>
+					<dd><code>array</code></dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests.html#_request">Requests::request()</a></code></code> <br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="request" id="_request">
+
+		<td class="attributes"><code>
+			
+			 public static
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_request">#</a>
+		<code><a href="source-class-Requests.html#164" title="Go to source code">request</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>string <var>$type</var> = <code><a href="class-Requests.html#GET">Requests::<b>GET</b></a></code></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Main interface for HTTP requests</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Main interface for HTTP requests</p>
+
+<p>This method initiates a request and sends it via a transport before
+parsing.</p>
+
+<p>The <code>$options</code> parameter takes an associative array with the
+following options:</p>
+
+<ul>
+	<li><code>timeout</code>: How long should we wait for a response? (integer,
+	seconds, default: 10)</li>
+
+	<li><code>useragent</code>: Useragent to send to the server (string, default:
+	php-requests/$version)</li>
+
+	<li><code>follow_redirects</code>: Should we follow 3xx redirects? (boolean,
+	default: true)</li>
+
+	<li><code>redirects</code>: How many times should we redirect before erroring?
+	(integer, default: 10)</li>
+
+	<li><code>blocking</code>: Should we block processing on this request? (boolean,
+	default: true)</li>
+
+	<li><code>filename</code>: File to stream the body to instead. (string|boolean,
+	default: false)</li>
+
+	<li><code>auth</code>: Authentication handler or array of user/password details
+	to use for Basic authentication (Requests_Auth|array|boolean, default:
+	false)</li>
+
+	<li><code>idn</code>: Enable IDN parsing (boolean, default: true)</li>
+
+	<li><code>transport</code>: Custom transport. Either a class name, or a
+	transport object. Defaults to the first working transport from getTransport() (string|Requests_Transport, default: getTransport())</li>
+</ul>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br> URL to request</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br> Extra headers to send with the request</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>array</code><br> Data to send either as a query string for GET/HEAD requests, or in the body for
+POST requests</dd>
+					<dt><var>$type</var></dt>
+					<dd><code>string</code><br> HTTP request type (use Requests constants)</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br> Options for the request (see description for more information)</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On invalid URLs (<code>nonhttp</code>)<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="parse_response" id="_parse_response">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_parse_response">#</a>
+		<code><a href="source-class-Requests.html#261" title="Go to source code">parse_response</a>( <span>string <var>$headers</var></span>, <span>string <var>$url</var></span>, <span>array <var>$req_headers</var></span>, <span>array <var>$req_data</var></span>, <span>array <var>$options</var></span> )</code>
+
+		<div class="description short">
+			
+<p>HTTP response parser</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>HTTP response parser</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$headers</var></dt>
+					<dd><code>string</code><br> Full response text including headers and body</dd>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br> Original request URL</dd>
+					<dt><var>$req_headers</var></dt>
+					<dd><code>array</code><br> Original $headers array passed to <code><a href="class-Requests.html#_request">Requests::request()</a></code>, in case we need to follow
+redirects</dd>
+					<dt><var>$req_data</var></dt>
+					<dd><code>array</code><br> Original $data array passed to <code><a href="class-Requests.html#_request">Requests::request()</a></code>, in case we need to follow
+redirects</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br> Original $options array passed to <code><a href="class-Requests.html#_request">Requests::request()</a></code>, in case we need to follow
+redirects</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On missing head/body separator (<code>requests.no_crlf_separator</code>)<br>
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On missing head/body separator (<code>noversion</code>)<br>
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On missing head/body separator (<code>toomanyredirects</code>)<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="decode_chunked" id="_decode_chunked">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_decode_chunked">#</a>
+		<code><a href="source-class-Requests.html#348" title="Go to source code">decode_chunked</a>( <span>string <var>$data</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Decoded a chunked body as per RFC 2616</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Decoded a chunked body as per RFC 2616</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$data</var></dt>
+					<dd><code>string</code><br> Chunked body</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Decoded body<br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<a
+href="http://tools.ietf.org/html/rfc2616#section-3.6.1">http://tools.ietf.org/html/rfc2616#section-3.6.1</a><br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="flattern" id="_flattern">
+
+		<td class="attributes"><code>
+			
+			 public static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_flattern">#</a>
+		<code><a href="source-class-Requests.html#390" title="Go to source code">flattern</a>( <span>array <var>$array</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Convert a key =&gt; value array to a 'key: value' array for headers</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Convert a key =&gt; value array to a 'key: value' array for headers</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$array</var></dt>
+					<dd><code>array</code><br> Dictionary of header values</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>List of headers<br>
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="decompress" id="_decompress">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_decompress">#</a>
+		<code><a href="source-class-Requests.html#404" title="Go to source code">decompress</a>( <span>string <var>$data</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Decompress an encoded body</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Decompress an encoded body</p>
+
+<p>Implements gzip, compress and deflate. Guesses which it is by attempting to
+decode.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$data</var></dt>
+					<dd><code>string</code><br> Compressed data in one of the above formats</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Decompressed string<br>
+				</div>
+
+
+				<h4>Todo</h4>
+				<div class="list">
+						Make this smarter by defaulting to whatever the headers say first<br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="compatible_gzinflate" id="_compatible_gzinflate">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			string|boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_compatible_gzinflate">#</a>
+		<code><a href="source-class-Requests.html#436" title="Go to source code">compatible_gzinflate</a>( <span>string <var>$gzData</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Decompress deflated string while staying compatible with the majority of
+servers.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Decompress deflated string while staying compatible with the majority of
+servers.</p>
+
+<p>Certain servers will return deflated data with headers which PHP's
+gziniflate() function cannot handle out of the box. The following function
+lifted from <a
+href="http://au2.php.net/manual/en/function.gzinflate.php#77336">http://au2.php.net/manual/en/function.gzinflate.php#77336</a>
+will attempt to deflate the various return forms used.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$gzData</var></dt>
+					<dd><code>string</code><br> String to decompress.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string|boolean</code><br>False on failure.<br>
+				</div>
+
+
+				<h4>Link</h4>
+				<div class="list">
+						<a
+href="http://au2.php.net/manual/en/function.gzinflate.php#77336">http://au2.php.net/manual/en/function.gzinflate.php#77336</a><br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+	<table class="summary" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="POST" id="POST">
+
+		<td class="attributes"><code>
+			
+			string
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests.html#22" title="Go to source code"><b>POST</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'POST'</span></code></td>
+		<td class="description"><div>
+			<a href="#POST" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>POST method</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>POST method</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="GET" id="GET">
+
+		<td class="attributes"><code>
+			
+			string
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests.html#29" title="Go to source code"><b>GET</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'GET'</span></code></td>
+		<td class="description"><div>
+			<a href="#GET" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>GET method</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>GET method</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="HEAD" id="HEAD">
+
+		<td class="attributes"><code>
+			
+			string
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests.html#36" title="Go to source code"><b>HEAD</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'HEAD'</span></code></td>
+		<td class="description"><div>
+			<a href="#HEAD" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>HEAD method</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>HEAD method</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="VERSION" id="VERSION">
+
+		<td class="attributes"><code>
+			
+			string
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests.html#43" title="Go to source code"><b>VERSION</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'1.5'</span></code></td>
+		<td class="description"><div>
+			<a href="#VERSION" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Current version of Requests</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Current version of Requests</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="transports" id="$transports">
+
+		<td class="attributes"><code>
+			
+			protected static
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests.html#50" title="Go to source code"><var>$transports</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$transports" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Registered transport classes</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Registered transport classes</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="transport" id="$transport">
+
+		<td class="attributes"><code>
+			
+			public static
+			string|null
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests.html#57" title="Go to source code"><var>$transport</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">null</span></code></td>
+		<td class="description"><div>
+			<a href="#$transport" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Selected transport name</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Selected transport name</p>
+
+<p>Use <code><a href="class-Requests.html#_get_transport">Requests::get_transport()</a></code> instead</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+</div>
+
+	<div id="footer">
+		Requests Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.4.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

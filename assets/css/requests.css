@@ -1,0 +1,56 @@
+body {
+	padding-top: 50px;
+}
+#masthead {
+	padding: 60px;
+	margin-bottom: 30px;
+	background-color: #f5f5f5;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	text-align: center;
+}
+#masthead h1 {
+	margin-bottom: 0;
+	font-size: 60px;
+	line-height: 1;
+	letter-spacing: -1px;
+}
+#masthead p {
+	font-size: 18px;
+	font-weight: 200;
+	line-height: 27px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	border-bottom: 1px solid #EEEEEE;
+	margin: 18px 0;
+	padding-bottom: 4px;
+}
+
+p {
+	margin-bottom: 18px;
+	line-height: 1.6;
+}
+
+li {
+	margin-bottom: 9px;
+}
+	.linenums li {
+		margin-bottom: 4.5px;
+	}
+
+pre code {
+	border: none;
+	color: #333;
+}
+
+.footer {
+	margin-top: 45px;
+	padding: 35px 0 36px;
+	border-top: 1px solid #e5e5e5;
+}
+.footer p {
+	margin-bottom: 0;
+	color: #555;
+}

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.4.0">
+
+	<title>Class Requests_IDNAEncoder | Requests Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?1841058525"></script>
+	<script type="text/javascript" src="elementlist.js?2320803459"></script>
+	<script type="text/javascript">
+		var ApiGen = ApiGen || {};
+		ApiGen.options = {"elementDetailsCollapsed":true,"elementsOrder":"natural"};
+	</script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3295955786">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Requests.html">Requests</a>
+						<span></span>
+						<ul>
+				<li><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li class="active"><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+
+		</div>
+
+		<hr>
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Requests_Hooks.html">Requests_Hooks</a></li>
+				<li class="active"><a href="class-Requests_IDNAEncoder.html">Requests_IDNAEncoder</a></li>
+				<li><a href="class-Requests_IPv6.html">Requests_IPv6</a></li>
+				<li><a href="class-Requests_IRI.html">Requests_IRI</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.Utilities.html" title="Summary of Requests\Utilities"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="requests-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
+			</li>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Requests_IDNAEncoder</h1>
+
+	<div class="description">
+	
+<p>IDNA URL encoder</p>
+
+<p>Note: Not fully compliant, as nameprep does nothing yet.</p>
+
+	</div>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+
+				<b>Package:</b>
+				<a href="package-Requests.html">Requests</a> <br>
+				<b>Subpackage:</b>
+				<a href="package-Requests.Utilities.html">Utilities</a> <br>
+				<b>See:</b>
+				<a
+href="http://tools.ietf.org/html/rfc3490">http://tools.ietf.org/html/rfc3490</a>
+IDNA specification<br>
+				<b>See:</b>
+				<a
+href="http://tools.ietf.org/html/rfc3492">http://tools.ietf.org/html/rfc3492</a>
+Punycode/Bootstrap specification<br>
+		<b>Located at</b> <a href="source-class-Requests_IDNAEncoder.html#3" title="Go to source code">library/Requests/IDNAEncoder.php</a><br>
+	</div>
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="encode" id="_encode">
+
+		<td class="attributes"><code>
+			
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_encode">#</a>
+		<code><a href="source-class-Requests_IDNAEncoder.html#37" title="Go to source code">encode</a>( <span>string <var>$string</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Encode a hostname using Punycode</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Encode a hostname using Punycode</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$string</var></dt>
+					<dd><code>string</code><br> Hostname</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Punycode-encoded hostname<br>
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="to_ascii" id="_to_ascii">
+
+		<td class="attributes"><code>
+			
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_to_ascii">#</a>
+		<code><a href="source-class-Requests_IDNAEncoder.html#51" title="Go to source code">to_ascii</a>( <span>string <var>$string</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Convert a UTF-8 string to an ASCII string using Punycode</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Convert a UTF-8 string to an ASCII string using Punycode</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$string</var></dt>
+					<dd><code>string</code><br> ASCII or UTF-8 string (max length 64 characters)</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>ASCII string<br>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>Provided string longer than 64 ASCII characters
+(<code>idna.provided_too_long</code>)<br>
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>Prepared string longer than 64 ASCII characters
+(<code>idna.prepared_too_long</code>)<br>
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>Provided string already begins with xn--
+(<code>idna.provided_is_prefixed</code>)<br>
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>Encded string longer than 64 ASCII characters
+(<code>idna.encoded_too_long</code>)<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="is_ascii" id="_is_ascii">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_is_ascii">#</a>
+		<code><a href="source-class-Requests_IDNAEncoder.html#106" title="Go to source code">is_ascii</a>( <span>string <var>$string</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Check whether a given string contains only ASCII characters</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Check whether a given string contains only ASCII characters</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$string</var></dt>
+					<dd><code>string</code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>Is the string ASCII-only?<br>
+				</div>
+
+
+				<h4>Internal</h4>
+				<div class="list">
+						(Testing found regex was the fastest implementation)<br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="nameprep" id="_nameprep">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_nameprep">#</a>
+		<code><a href="source-class-Requests_IDNAEncoder.html#118" title="Go to source code">nameprep</a>( <span>string <var>$string</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Prepare a string for use as an IDNA name</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Prepare a string for use as an IDNA name</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$string</var></dt>
+					<dd><code>string</code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Prepared string<br>
+				</div>
+
+
+				<h4>Todo</h4>
+				<div class="list">
+						Implement this based on RFC 3491 and the newer 5891<br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="utf8_to_codepoints" id="_utf8_to_codepoints">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_utf8_to_codepoints">#</a>
+		<code><a href="source-class-Requests_IDNAEncoder.html#129" title="Go to source code">utf8_to_codepoints</a>( <span>string <var>$input</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Convert a UTF-8 string to a UCS-4 codepoint array</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Convert a UTF-8 string to a UCS-4 codepoint array</p>
+
+<p>Based on Requests_IRI::replace_invalid_with_pct_encoding()</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$input</var></dt>
+					<dd><code>string</code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>Unicode code points<br>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>Invalid UTF-8 codepoint (<code>idna.invalidcodepoint</code>)<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="punycode_encode" id="_punycode_encode">
+
+		<td class="attributes"><code>
+			
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_punycode_encode">#</a>
+		<code><a href="source-class-Requests_IDNAEncoder.html#219" title="Go to source code">punycode_encode</a>( <span>string <var>$input</var></span> )</code>
+
+		<div class="description short">
+			
+<p>RFC3492-compliant encoder</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>RFC3492-compliant encoder</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$input</var></dt>
+					<dd><code>string</code><br> UTF-8 encoded string to encode</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Punycode-encoded string<br>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On character outside of the domain (never happens with Punycode)
+(<code>idna.character_outside_domain</code>)<br>
+				</div>
+
+				<h4>Internal</h4>
+				<div class="list">
+						Pseudo-code from Section 6.3 is commented with "#" next to relevant code<br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="digit_to_char" id="_digit_to_char">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_digit_to_char">#</a>
+		<code><a href="source-class-Requests_IDNAEncoder.html#335" title="Go to source code">digit_to_char</a>( <span>integer <var>$digit</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Convert a digit to its respective character</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Convert a digit to its respective character</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$digit</var></dt>
+					<dd><code>integer</code><br> Digit in the range 0-35</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Single character corresponding to digit<br>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On invalid digit (<code>idna.invalid_digit</code>)<br>
+				</div>
+
+				<h4>See</h4>
+				<div class="list">
+						<a
+href="http://tools.ietf.org/html/rfc3492#section-5">http://tools.ietf.org/html/rfc3492#section-5</a><br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="adapt" id="_adapt">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_adapt">#</a>
+		<code><a href="source-class-Requests_IDNAEncoder.html#352" title="Go to source code">adapt</a>( <span>integer <var>$delta</var></span>, <span>integer <var>$numpoints</var></span>, <span>boolean <var>$firsttime</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Adapt the bias</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Adapt the bias</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$delta</var></dt>
+					<dd><code>integer</code></dd>
+					<dt><var>$numpoints</var></dt>
+					<dd><code>integer</code></dd>
+					<dt><var>$firsttime</var></dt>
+					<dd><code>boolean</code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>integer</code><br>New bias<br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<a
+href="http://tools.ietf.org/html/rfc3492#section-6.1">http://tools.ietf.org/html/rfc3492#section-6.1</a><br>
+				</div>
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+	<table class="summary" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="ACE_PREFIX" id="ACE_PREFIX">
+
+		<td class="attributes"><code>
+			
+			string
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests_IDNAEncoder.html#14" title="Go to source code"><b>ACE_PREFIX</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'xn--'</span></code></td>
+		<td class="description"><div>
+			<a href="#ACE_PREFIX" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>ACE prefix used for IDNA</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>ACE prefix used for IDNA</p>
+
+
+					<h4>See</h4>
+					<div class="list">
+							<a
+href="http://tools.ietf.org/html/rfc3490#section-5">http://tools.ietf.org/html/rfc3490#section-5</a><br>
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BOOTSTRAP_BASE" id="BOOTSTRAP_BASE">
+
+		<td class="attributes"><code>
+			
+			integer
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests_IDNAEncoder.html#22" title="Go to source code"><b>BOOTSTRAP_BASE</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">36</span></code></td>
+		<td class="description"><div>
+			<a href="#BOOTSTRAP_BASE" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Bootstrap constant for Punycode</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Bootstrap constant for Punycode</p>
+
+
+					<h4>See</h4>
+					<div class="list">
+							<a
+href="http://tools.ietf.org/html/rfc3492#section-5">http://tools.ietf.org/html/rfc3492#section-5</a><br>
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BOOTSTRAP_TMIN" id="BOOTSTRAP_TMIN">
+
+		<td class="attributes"><code>
+			
+			integer
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests_IDNAEncoder.html#29" title="Go to source code"><b>BOOTSTRAP_TMIN</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">1</span></code></td>
+		<td class="description"><div>
+			<a href="#BOOTSTRAP_TMIN" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>See</h4>
+					<div class="list">
+							<a
+href="http://tools.ietf.org/html/rfc3492#section-5">http://tools.ietf.org/html/rfc3492#section-5</a><br>
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BOOTSTRAP_TMAX" id="BOOTSTRAP_TMAX">
+
+		<td class="attributes"><code>
+			
+			integer
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests_IDNAEncoder.html#30" title="Go to source code"><b>BOOTSTRAP_TMAX</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">26</span></code></td>
+		<td class="description"><div>
+			<a href="#BOOTSTRAP_TMAX" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>See</h4>
+					<div class="list">
+							<a
+href="http://tools.ietf.org/html/rfc3492#section-5">http://tools.ietf.org/html/rfc3492#section-5</a><br>
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BOOTSTRAP_SKEW" id="BOOTSTRAP_SKEW">
+
+		<td class="attributes"><code>
+			
+			integer
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests_IDNAEncoder.html#31" title="Go to source code"><b>BOOTSTRAP_SKEW</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">38</span></code></td>
+		<td class="description"><div>
+			<a href="#BOOTSTRAP_SKEW" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>See</h4>
+					<div class="list">
+							<a
+href="http://tools.ietf.org/html/rfc3492#section-5">http://tools.ietf.org/html/rfc3492#section-5</a><br>
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BOOTSTRAP_DAMP" id="BOOTSTRAP_DAMP">
+
+		<td class="attributes"><code>
+			
+			integer
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests_IDNAEncoder.html#32" title="Go to source code"><b>BOOTSTRAP_DAMP</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">700</span></code></td>
+		<td class="description"><div>
+			<a href="#BOOTSTRAP_DAMP" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>See</h4>
+					<div class="list">
+							<a
+href="http://tools.ietf.org/html/rfc3492#section-5">http://tools.ietf.org/html/rfc3492#section-5</a><br>
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BOOTSTRAP_INITIAL_BIAS" id="BOOTSTRAP_INITIAL_BIAS">
+
+		<td class="attributes"><code>
+			
+			integer
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests_IDNAEncoder.html#33" title="Go to source code"><b>BOOTSTRAP_INITIAL_BIAS</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">72</span></code></td>
+		<td class="description"><div>
+			<a href="#BOOTSTRAP_INITIAL_BIAS" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>See</h4>
+					<div class="list">
+							<a
+href="http://tools.ietf.org/html/rfc3492#section-5">http://tools.ietf.org/html/rfc3492#section-5</a><br>
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BOOTSTRAP_INITIAL_N" id="BOOTSTRAP_INITIAL_N">
+
+		<td class="attributes"><code>
+			
+			integer
+		</code></td>
+		<td class="name"><code>
+				<a href="source-class-Requests_IDNAEncoder.html#34" title="Go to source code"><b>BOOTSTRAP_INITIAL_N</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">128</span></code></td>
+		<td class="description"><div>
+			<a href="#BOOTSTRAP_INITIAL_N" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>See</h4>
+					<div class="list">
+							<a
+href="http://tools.ietf.org/html/rfc3492#section-5">http://tools.ietf.org/html/rfc3492#section-5</a><br>
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Requests Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.4.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

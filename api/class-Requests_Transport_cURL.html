@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.4.0">
+
+	<title>Class Requests_Transport_cURL | Requests Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?1841058525"></script>
+	<script type="text/javascript" src="elementlist.js?2320803459"></script>
+	<script type="text/javascript">
+		var ApiGen = ApiGen || {};
+		ApiGen.options = {"elementDetailsCollapsed":true,"elementsOrder":"natural"};
+	</script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3295955786">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Requests.html">Requests</a>
+						<span></span>
+						<ul>
+				<li><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li class="active"><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+
+		</div>
+
+		<hr>
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Requests_Transport_cURL.html">Requests_Transport_cURL</a></li>
+				<li><a href="class-Requests_Transport_fsockopen.html">Requests_Transport_fsockopen</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Requests_Transport.html">Requests_Transport</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.Transport.html" title="Summary of Requests\Transport"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="requests-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
+			</li>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Requests_Transport_cURL</h1>
+
+	<div class="description">
+	
+<p>cURL HTTP transport</p>
+
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+<b>Requests_Transport_cURL</b>			
+			 implements 
+				<a href="class-Requests_Transport.html">Requests_Transport</a>
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+
+				<b>Package:</b>
+				<a href="package-Requests.html">Requests</a> <br>
+				<b>Subpackage:</b>
+				<a href="package-Requests.Transport.html">Transport</a> <br>
+		<b>Located at</b> <a href="source-class-Requests_Transport_cURL.html#9" title="Go to source code">library/Requests/Transport/cURL.php</a><br>
+	</div>
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Requests_Transport_cURL.html#51" title="Go to source code">__construct</a>( )</code>
+
+		<div class="description short">
+			
+<p>Constructor</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Constructor</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="request" id="_request">
+
+		<td class="attributes"><code>
+			
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_request">#</a>
+		<code><a href="source-class-Requests_Transport_cURL.html#68" title="Go to source code">request</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>string|array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Perform a request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Perform a request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br> URL to request</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br> Associative array of request headers</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>string|array</code><br> Data to send either as the POST body, or as parameters in the URL for a
+GET/HEAD</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br> Request options, see Requests::response() for documentation</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Raw HTTP result<br>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On a cURL error (<code>curlerror</code>)<br>
+				</div>
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Requests_Transport.html#_request">Requests_Transport::request</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="stream_headers" id="_stream_headers">
+
+		<td class="attributes"><code>
+			
+			 protected 
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_stream_headers">#</a>
+		<code><a href="source-class-Requests_Transport_cURL.html#148" title="Go to source code">stream_headers</a>( <span>resource <var>$handle</var></span>, <span>string <var>$headers</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Collect the headers as they are received</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Collect the headers as they are received</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$handle</var></dt>
+					<dd><code>resource</code><br> cURL resource</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>string</code><br> Header string</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>integer</code><br>Length of provided header<br>
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="format_get" id="_format_get">
+
+		<td class="attributes"><code>
+			
+			 protected static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_format_get">#</a>
+		<code><a href="source-class-Requests_Transport_cURL.html#171" title="Go to source code">format_get</a>( <span>string <var>$url</var></span>, <span>array|object <var>$data</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Format a URL given GET data</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Format a URL given GET data</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code></dd>
+					<dt><var>$data</var></dt>
+					<dd><code>array|object</code><br> Data to build query using, see <a
+href="http://php.net/http_build_query">http://php.net/http_build_query</a></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>URL with data<br>
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="test" id="_test">
+
+		<td class="attributes"><code>
+			
+			 public static
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_test">#</a>
+		<code><a href="source-class-Requests_Transport_cURL.html#201" title="Go to source code">test</a>( )</code>
+
+		<div class="description short">
+			
+<p>Whether this transport is valid</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Whether this transport is valid</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>True if the transport is valid, false otherwise.<br>
+				</div>
+
+
+				<h4>CodeCoverageIgnore</h4>
+				<div class="list">
+				</div>
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Requests_Transport.html#_test">Requests_Transport::test</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="headers" id="$headers">
+
+		<td class="attributes"><code>
+			
+			public 
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Transport_cURL.html#16" title="Go to source code"><var>$headers</var></a>
+		</td>
+		<td class="value"><code><span class="php-quote">''</span></code></td>
+		<td class="description"><div>
+			<a href="#$headers" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Raw HTTP data</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Raw HTTP data</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="info" id="$info">
+
+		<td class="attributes"><code>
+			
+			public 
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Transport_cURL.html#23" title="Go to source code"><var>$info</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$info" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Information on the current request</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Information on the current request</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="version" id="$version">
+
+		<td class="attributes"><code>
+			
+			public 
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Transport_cURL.html#30" title="Go to source code"><var>$version</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$version" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Version string</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Version string</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="fp" id="$fp">
+
+		<td class="attributes"><code>
+			
+			protected 
+			resource
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Transport_cURL.html#37" title="Go to source code"><var>$fp</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$fp" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>cURL handle</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>cURL handle</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="done_headers" id="$done_headers">
+
+		<td class="attributes"><code>
+			
+			protected 
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Transport_cURL.html#44" title="Go to source code"><var>$done_headers</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">false</span></code></td>
+		<td class="description"><div>
+			<a href="#$done_headers" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Have we finished the heades yet?</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Have we finished the heades yet?</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+</div>
+
+	<div id="footer">
+		Requests Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.4.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

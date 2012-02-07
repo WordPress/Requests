@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.4.0">
+	<meta name="robots" content="noindex">
+
+	<title>File library/Requests/Auth.php | Requests Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?1841058525"></script>
+	<script type="text/javascript" src="elementlist.js?2320803459"></script>
+	<script type="text/javascript">
+		var ApiGen = ApiGen || {};
+		ApiGen.options = {"elementDetailsCollapsed":true,"elementsOrder":"natural"};
+	</script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3295955786">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Requests.html">Requests</a>
+						<span></span>
+						<ul>
+				<li class="active"><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+
+		</div>
+
+		<hr>
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Requests_Auth_Basic.html">Requests_Auth_Basic</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li class="active"><a href="class-Requests_Auth.html">Requests_Auth</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.Authentication.html" title="Summary of Requests\Authentication"><span>Package</span></a>
+			</li>
+			<li>
+				<a href="class-Requests_Auth.html" title="Summary of Requests_Auth"><span>Class</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="requests-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
+			</li>
+		</ul>
+	</div>
+
+<pre><code><a href="#1" id="1" class="l"> 1: </a><span class="xlang">&lt;?php</span>
+<a href="#2" id="2" class="l"> 2: </a><span class="php-comment">/**
+</span><a href="#3" id="3" class="l"> 3: </a><span class="php-comment"> * Authentication provider interface
+</span><a href="#4" id="4" class="l"> 4: </a><span class="php-comment"> *
+</span><a href="#5" id="5" class="l"> 5: </a><span class="php-comment"> * @package Requests
+</span><a href="#6" id="6" class="l"> 6: </a><span class="php-comment"> * @subpackage Authentication
+</span><a href="#7" id="7" class="l"> 7: </a><span class="php-comment"> */</span>
+<a href="#8" id="8" class="l"> 8: </a>
+<a href="#9" id="9" class="l"> 9: </a><span class="php-comment">/**
+</span><a href="#10" id="10" class="l">10: </a><span class="php-comment"> * Authentication provider interface
+</span><a href="#11" id="11" class="l">11: </a><span class="php-comment"> *
+</span><a href="#12" id="12" class="l">12: </a><span class="php-comment"> * Implement this interface to act as an authentication provider.
+</span><a href="#13" id="13" class="l">13: </a><span class="php-comment"> * 
+</span><a href="#14" id="14" class="l">14: </a><span class="php-comment"> * Parameters should be passed via the constructor where possible, as this
+</span><a href="#15" id="15" class="l">15: </a><span class="php-comment"> * makes it much easier for users to use your provider.
+</span><a href="#16" id="16" class="l">16: </a><span class="php-comment"> *
+</span><a href="#17" id="17" class="l">17: </a><span class="php-comment"> * @see Requests_Hooks
+</span><a href="#18" id="18" class="l">18: </a><span class="php-comment"> * @package Requests
+</span><a href="#19" id="19" class="l">19: </a><span class="php-comment"> * @subpackage Authentication
+</span><a href="#20" id="20" class="l">20: </a><span class="php-comment"> */</span>
+<a href="#21" id="21" class="l">21: </a><span class="php-keyword1">interface</span> Requests_Auth {
+<a href="#22" id="22" class="l">22: </a>    <span class="php-comment">/**
+</span><a href="#23" id="23" class="l">23: </a><span class="php-comment">     * Register hooks as needed
+</span><a href="#24" id="24" class="l">24: </a><span class="php-comment">     *
+</span><a href="#25" id="25" class="l">25: </a><span class="php-comment">     * This method is called in {@see Requests::request} when the user has set
+</span><a href="#26" id="26" class="l">26: </a><span class="php-comment">     * an instance as the 'auth' option. Use this callback to register all the
+</span><a href="#27" id="27" class="l">27: </a><span class="php-comment">     * hooks you'll need.
+</span><a href="#28" id="28" class="l">28: </a><span class="php-comment">     *
+</span><a href="#29" id="29" class="l">29: </a><span class="php-comment">     * @see Requests_Hooks::register
+</span><a href="#30" id="30" class="l">30: </a><span class="php-comment">     * @param Requests_Hooks $hooks Hook system
+</span><a href="#31" id="31" class="l">31: </a><span class="php-comment">     */</span>
+<a href="#32" id="32" class="l">32: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> register(Requests_Hooks &amp;<span class="php-var">$hooks</span>);
+<a href="#33" id="33" class="l">33: </a>}</code></pre>
+
+	<div id="footer">
+		Requests Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.4.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>
