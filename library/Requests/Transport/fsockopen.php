@@ -18,14 +18,15 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$options['hooks']->dispatch('fsockopen.before_request');
 
 		$url_parts = parse_url($url);
+		$host = $url_parts['host'];
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
-			$url_parts['host'] = "ssl://$url_parts[host]";
+			$host = 'ssl://' . $host;
 			$url_parts['port'] = 443;
 		}
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = 80;
 		}
-		$fp = @fsockopen($url_parts['host'], $url_parts['port'], $errno, $errstr, $options['timeout']);
+		$fp = @fsockopen($host, $url_parts['port'], $errno, $errstr, $options['timeout']);
 		if (!$fp) {
 			throw new Requests_Exception($errstr, 'fsockopenerror');
 			return;
