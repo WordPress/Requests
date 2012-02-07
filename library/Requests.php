@@ -78,6 +78,8 @@ class Requests {
 	 *
 	 * (You can also use `spl_autoload_register` directly if you'd prefer.)
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @param string $class Class name to load
 	 */
 	public static function autoloader($class) {
@@ -94,6 +96,8 @@ class Requests {
 
 	/**
 	 * Register the built-in autoloader
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public static function register_autoloader() {
 		spl_autoload_register(array('Requests', 'autoloader'));
