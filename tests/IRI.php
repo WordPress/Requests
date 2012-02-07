@@ -39,7 +39,7 @@
  * @link http://hg.gsnedders.com/iri/
  *
  */
- 
+
 class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 {
 	public static function rfc3986_tests()
@@ -91,7 +91,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array('http:g', 'http:g'),
 		);
 	}
- 
+
 	/**
 	 * @dataProvider rfc3986_tests
 	 */
@@ -101,7 +101,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
 		$this->assertEquals($expected, (string) Requests_IRI::absolutize($base, $relative));
 	}
- 
+
 	/**
 	 * @dataProvider rfc3986_tests
 	 */
@@ -111,7 +111,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
 		$this->assertEquals($expected, (string) Requests_IRI::absolutize($base, $relative));
 	}
- 
+
 	/**
 	 * @dataProvider rfc3986_tests
 	 */
@@ -121,7 +121,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$expected = new Requests_IRI($expected);
 		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative));
 	}
-	
+
 	public static function sp_tests()
 	{
 		return array(
@@ -143,7 +143,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array('http:g', 'a', 'http:a'),
 		);
 	}
- 
+
 	/**
 	 * @dataProvider sp_tests
 	 */
@@ -153,7 +153,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
 		$this->assertEquals($expected, (string) Requests_IRI::absolutize($base, $relative));
 	}
- 
+
 	/**
 	 * @dataProvider sp_tests
 	 */
@@ -163,7 +163,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$expected = new Requests_IRI($expected);
 		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative));
 	}
-	
+
 	public static function absolutize_tests()
 	{
 		return array(
@@ -171,7 +171,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array('http://example.com/#foo', '', 'http://example.com'),
 		);
 	}
- 
+
 	/**
 	 * @dataProvider absolutize_tests
 	 */
@@ -180,7 +180,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$base = new Requests_IRI($base);
 		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
 	}
- 
+
 	/**
 	 * @dataProvider absolutize_tests
 	 */
@@ -190,7 +190,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$expected = new Requests_IRI($expected);
 		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative));
 	}
-	
+
 	public static function normalization_tests()
 	{
 		return array(
@@ -273,7 +273,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array('///', '///'),
 		);
 	}
- 
+
 	/**
 	 * @dataProvider normalization_tests
 	 */
@@ -283,7 +283,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$this->assertEquals($output, $input->iri);
 		$this->assertEquals($output, (string) $input);
 	}
- 
+
 	/**
 	 * @dataProvider normalization_tests
 	 */
@@ -293,14 +293,14 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$output = new Requests_IRI($output);
 		$this->assertEquals($output, $input);
 	}
-	
+
 	public static function equivalence_tests()
 	{
 		return array(
 			array('http://É.com', 'http://%C3%89.com'),
 		);
 	}
- 
+
 	/**
 	 * @dataProvider equivalence_tests
 	 */
@@ -310,14 +310,14 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$output = new Requests_IRI($output);
 		$this->assertEquals($output, $input);
 	}
-	
+
 	public static function not_equivalence_tests()
 	{
 		return array(
 			array('http://example.com/foo/bar', 'http://example.com/foo%2Fbar'),
 		);
 	}
- 
+
 	/**
 	 * @dataProvider not_equivalence_tests
 	 */
