@@ -71,6 +71,35 @@ class Requests {
 	private function __construct() {}
 
 	/**
+	 * Autoloader for Requests
+	 *
+	 * Register this with {@see register_autoloader()} if you'd like to avoid
+	 * having to create your own.
+	 *
+	 * (You can also use `spl_autoload_register` directly if you'd prefer.)
+	 *
+	 * @param string $class Class name to load
+	 */
+	public static function autoloader($class) {
+		// Check that the class starts with "Requests"
+		if (strpos($class, 'Requests') !== 0) {
+			return;
+		}
+
+		$file = str_replace('_', '/', $class);
+		if (file_exists(dirname(__FILE__) . '/' . $file . '.php')) {
+			require_once(dirname(__FILE__) . '/' . $file . '.php');
+		}
+	}
+
+	/**
+	 * Register the built-in autoloader
+	 */
+	public static function register_autoloader() {
+		spl_autoload_register(array('Requests', 'autoloader'));
+	}
+
+	/**
 	 * Register a transport
 	 *
 	 * @param string $transport Transport class to add, must support the Requests_Transport interface

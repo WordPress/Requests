@@ -1,13 +1,7 @@
 <?php
 
-define('REQUESTS_DIR', dirname(dirname(__FILE__)) . '/library');
-
-function autoload_requests($class) {
-	$file = str_replace('_', '/', $class);
-	if (file_exists(REQUESTS_DIR . '/' . $file . '.php')) {
-		require_once(REQUESTS_DIR . '/' . $file . '.php');
-	}
-}
+include(dirname(dirname(__FILE__)) . '/library/Requests.php');
+Requests::register_autoloader();
 
 function autoload_tests($class) {
 	if (strpos($class, 'RequestsTest_') !== 0) {
@@ -21,7 +15,6 @@ function autoload_tests($class) {
 	}
 }
 
-spl_autoload_register('autoload_requests');
 spl_autoload_register('autoload_tests');
 
 class MockTransport implements Requests_Transport {
