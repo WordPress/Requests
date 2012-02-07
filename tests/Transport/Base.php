@@ -219,4 +219,23 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testBadIP() {
 		$request = Requests::get('http://256.256.256.0/', array(), $this->getOptions());
 	}
+
+	public function testHTTPS() {
+		$request = Requests::get('https://httpbin.org/get', array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEmpty($result['args']);
+	}
+
+	/**
+	 * @expectedOtherException Requests_Exception
+	 */
+	public function testTimeout() {
+		$options = array(
+			'timeout' => 1,
+		);
+		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions($options));
+	}
 }
