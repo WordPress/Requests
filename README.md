@@ -49,10 +49,6 @@ Features
 Installation
 ------------
 
-To install Requests via PEAR, simply:
-
-    $ pear install ryanmccue.info/requests
-
 If you want to include it with your project, either [grab it as a zip](https://github.com/rmccue/Requests/zipball/master) or grab it as a tarball:
 
     $ curl https://github.com/rmccue/Requests/tarball/master | tar xzv
