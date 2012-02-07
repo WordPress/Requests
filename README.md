@@ -61,6 +61,17 @@ Or clone it via Git:
     $ git clone https://github.com/rmccue/Requests.git
 
 
+Documentation
+-------------
+The best place to start is looking at [the documentation for
+`Requests::request()`](http://requests.ryanmccue.info/api/class-Requests.html#_request),
+where all the parameters are fully documented.
+
+Requests is [100% documented with PHPDoc](http://requests.ryanmccue.info/api/).
+If you find any problems with it, [create a new
+issue](https://github.com/rmccue/Requests/issues/new)!
+
+
 Contribute
 ----------
 
