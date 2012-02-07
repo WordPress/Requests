@@ -53,8 +53,12 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				else {
 					$request_body = $data;
 				}
-				$headers['Content-Length'] = strlen($request_body);
-				$headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+				if (empty($headers['Content-Length'])) {
+					$headers['Content-Length'] = strlen($request_body);
+				}
+				if (empty($headers['Content-Type'])) {
+					$headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+				}
 				break;
 			case Requests::HEAD:
 				$head = self::format_get($url_parts, $data);
