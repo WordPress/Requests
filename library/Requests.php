@@ -157,6 +157,10 @@ class Requests {
 	 *    (Requests_Auth|array|boolean, default: false)
 	 * - `idn`: Enable IDN parsing
 	 *    (boolean, default: true)
+	 * - `transport`: Custom transport. Either a class name, or a
+	 *    transport object. Defaults to the first working transport from
+	 *    {@see getTransport()}
+	 *    (string|Requests_Transport, default: {@see getTransport()})
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
@@ -181,6 +185,7 @@ class Requests {
 			'auth' => false,
 			'idn' => true,
 			'hooks' => null,
+			'transport' => null,
 		);
 		$options = array_merge($defaults, $options);
 
