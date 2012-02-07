@@ -51,15 +51,34 @@ Features
 Installation
 ------------
 
-If you want to include it with your project, either [grab it as a zip](https://github.com/rmccue/Requests/zipball/master) or grab it as a tarball:
+### Install with Composer
+If you're using [Composer](https://github.com/composer/composer) to manage dependencies, you can add Requests with it.
+
+	{
+		"require": {
+			"rmccue/Requests": ">=1.0"
+		}
+	}
+
+### Install source from GitHub
+To install the source code:
+
+	git clone git://github.com/rmccue/Requests.git
+
+And include it in your scripts:
+
+	require_once '/path/to/Requests/library/Requests.php';
+
+Alternatively, you can fetch a [tarball](https://github.com/rmccue/Requests/tarball/master) or [zipball](https://github.com/rmccue/Requests/zipball/master):
 
     $ curl https://github.com/rmccue/Requests/tarball/master | tar xzv
     (or)
     $ wget https://github.com/rmccue/Requests/tarball/master -O - | tar xzv
 
-Or clone it via Git:
+### Using a Class Loader
+If you're using a class loader (e.g., [Symfony Class Loader](https://github.com/symfony/ClassLoader)) for [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) class loading:
 
-    $ git clone https://github.com/rmccue/Requests.git
+	$loader->registerNamespace('Requests', 'path/to/vendor/Requests/library');
 
 
 Documentation
