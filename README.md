@@ -29,8 +29,6 @@ var_dump($request->body);
 // string(26891) "[...]"
 ```
 
-See [the same code, without Requests](https://gist.github.com/973705).
-
 Requests allows you to send  **HEAD**, **GET** and **POST** HTTP requests. You
 can add headers, form data, multipart files, and parameters with simple arrays,
 and access the response data in the same way. Requests uses cURL and fsockopen,
