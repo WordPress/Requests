@@ -3,9 +3,21 @@
 Requests::$transport = 'Requests_Transport_fsockopen';
 
 class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
-	public function testUsingArray() {
+	public static function transportProvider() {
+		$transports = array(
+			array('Requests_Transport_fsockopen'),
+			array('Requests_Transport_cURL'),
+		);
+		return $transports;
+	}
+
+	/**
+	 * @dataProvider transportProvider
+	 */
+	public function testUsingArray($transport) {
 		$options = array(
-			'auth' => array('user', 'passwd')
+			'auth' => array('user', 'passwd'),
+			'transport' => $transport,
 		);
 		$request = Requests::get('http://httpbin.org/basic-auth/user/passwd', array(), $options);
 		$this->assertEquals(200, $request->status_code);
@@ -15,9 +27,13 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('user', $result->user);
 	}
 
-	public function testUsingInstantiation() {
+	/**
+	 * @dataProvider transportProvider
+	 */
+	public function testUsingInstantiation($transport) {
 		$options = array(
-			'auth' => new Requests_Auth_Basic(array('user', 'passwd'))
+			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
+			'transport' => $transport,
 		);
 		$request = Requests::get('http://httpbin.org/basic-auth/user/passwd', array(), $options);
 		$this->assertEquals(200, $request->status_code);
