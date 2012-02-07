@@ -3,8 +3,9 @@ Requests for PHP
 
 Requests is a HTTP library written in PHP, for human beings. It is roughly
 based on the API from the excellent [Requests Python
-library](http://python-requests.org/). Requests is ISC Licensed (similar to the
-New BSD license) and has no dependencies.
+library](http://python-requests.org/). Requests is [ISC
+Licensed](https://github.com/rmccue/Requests/blob/master/LICENSE) (similar to
+the new BSD license) and has no dependencies.
 
 Despite PHP's use as a language for the web, its tools for sending HTTP requests
 are severely lacking. cURL has an
