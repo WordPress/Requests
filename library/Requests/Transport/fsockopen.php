@@ -71,10 +71,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$out .= "Accept-Encoding: $accept_encoding\r\n";
 		}
 
-		if (isset($url_parts['user']) && isset($url_parts['pass'])) {
-			$out .= "Authorization: Basic " . base64_encode("$url_parts[user]:$url_parts[pass]") . "\r\n";
-		}
-
 		$headers = Requests::flattern($headers);
 		$out .= implode($headers, "\r\n");
 
