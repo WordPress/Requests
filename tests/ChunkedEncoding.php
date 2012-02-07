@@ -33,4 +33,36 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expected, $response->body);
 	}
+
+	/**
+	 * Response says it's chunked, but actually isn't
+	 */
+	public function testNotActuallyChunked() {
+		$transport = new MockTransport();
+		$transport->body = 'Hello! This is a non-chunked response!';
+		$transport->chunked = true;
+
+		$options = array(
+			'transport' => $transport
+		);
+		$response = Requests::get('http://example.com/', array(), $options);
+
+		$this->assertEquals($transport->body, $response->body);
+	}
+
+	/**
+	 * Response says it's chunked and starts looking like it is, but turns out
+	 * that they're lying to us
+	 */
+	public function testMixedChunkiness() {
+		$transport = new MockTransport();
+		$transport->body = "02\r\nab\r\nNot actually chunked!";
+		$transport->chunked = true;
+
+		$options = array(
+			'transport' => $transport
+		);
+		$response = Requests::get('http://example.com/', array(), $options);
+		$this->assertEquals($transport->body, $response->body);
+	}
 }
