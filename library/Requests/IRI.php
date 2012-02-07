@@ -166,6 +166,10 @@ class Requests_IRI
      */
     public function __get($name)
     {
+        // isset() returns false for null, we don't want to do that
+        // Also why we use array_key_exists below instead of isset()
+        $props = get_object_vars($this);
+
         if (
             $name === 'iri' ||
             $name === 'uri' ||
@@ -175,9 +179,19 @@ class Requests_IRI
         {
             $return = $this->{"get_$name"}();
         }
-        elseif (isset($this->$name))
+        elseif (array_key_exists($name, $props))
         {
             $return = $this->$name;
+        }
+        // host -> ihost
+        elseif (($prop = 'i' . $name) && array_key_exists($prop, $props))
+        {
+            $return = $this->$prop;
+        }
+        // ischeme -> scheme
+        elseif (($prop = substr($name, 1)) && array_key_exists($prop, $props))
+        {
+            $return = $this->$prop;
         }
         else
         {
