@@ -69,6 +69,10 @@ And include it in your scripts:
 
 	require_once '/path/to/Requests/library/Requests.php';
 
+You'll probably also want to register an autoloader:
+
+    Requests::register_autoloader();
+
 ### Install source from zip/tarball
 Alternatively, you can fetch a [tarball](https://github.com/rmccue/Requests/tarball/master) or [zipball](https://github.com/rmccue/Requests/zipball/master):
 
