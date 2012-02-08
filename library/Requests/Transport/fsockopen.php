@@ -63,6 +63,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		switch ($options['type']) {
 			case Requests::POST:
 			case Requests::PUT:
+			case Requests::PATCH:
 				if (isset($url_parts['path'])) {
 					$path = $url_parts['path'];
 					if (isset($url_parts['query'])) {

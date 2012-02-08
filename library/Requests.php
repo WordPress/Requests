@@ -55,6 +55,14 @@ class Requests {
 	const DELETE = 'DELETE';
 
 	/**
+	 * PATCH method
+	 *
+	 * @link http://tools.ietf.org/html/rfc5789
+	 * @var string
+	 */
+	const PATCH = 'PATCH';
+
+	/**
 	 * Current version of Requests
 	 *
 	 * @var string
@@ -220,6 +228,18 @@ class Requests {
 	 */
 	public static function put($url, $headers = array(), $data = array(), $options = array()) {
 		return self::request($url, $headers, $data, self::PUT, $options);
+	}
+
+	/**
+	 * Send a PATCH request
+	 *
+	 * Note: Unlike {@see post} and {@see put}, `$headers` is required, as the
+	 * specification recommends that should send an ETag
+	 *
+	 * @link http://tools.ietf.org/html/rfc5789
+	 */
+	public static function patch($url, $headers, $data = array(), $options = array()) {
+		return self::request($url, $headers, $data, self::PATCH, $options);
 	}
 	/**#@-*/
 
