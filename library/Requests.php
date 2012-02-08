@@ -27,6 +27,13 @@ class Requests {
 	const POST = 'POST';
 
 	/**
+	 * PUT method
+	 *
+	 * @var string
+	 */
+	const PUT = 'PUT';
+
+	/**
 	 * GET method
 	 *
 	 * @var string
@@ -180,9 +187,7 @@ class Requests {
 	}
 	/**#@-*/
 
-	/**
-	 * Send a POST request
-	 *
+	/**#@+
 	 * @see request()
 	 * @param string $url
 	 * @param array $headers
@@ -190,9 +195,19 @@ class Requests {
 	 * @param array $options
 	 * @return Requests_Response
 	 */
+	/**
+	 * Send a POST request
+	 */
 	public static function post($url, $headers = array(), $data = array(), $options = array()) {
 		return self::request($url, $headers, $data, self::POST, $options);
 	}
+	/**
+	 * Send a PUT request
+	 */
+	public static function put($url, $headers = array(), $data = array(), $options = array()) {
+		return self::request($url, $headers, $data, self::PUT, $options);
+	}
+	/**#@-*/
 
 	/**
 	 * Main interface for HTTP requests

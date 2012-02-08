@@ -108,6 +108,36 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
+	public function testRawPUT() {
+		$data = 'test';
+		$request = Requests::put('http://httpbin.org/put', array(), $data, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('test', $result['data']);
+	}
+
+	public function testFormPUT() {
+		$data = 'test=true&test2=test';
+		$request = Requests::put('http://httpbin.org/put', array(), $data, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+	}
+
+	public function testPUTWithArray() {
+		$data = array(
+			'test' => 'true',
+			'test2' => 'test',
+		);
+		$request = Requests::put('http://httpbin.org/put', array(), $data, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+	}
+
 	public function testRedirects() {
 		$request = Requests::get('http://httpbin.org/redirect/6', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);

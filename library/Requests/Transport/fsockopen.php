@@ -62,6 +62,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$out = '';
 		switch ($options['type']) {
 			case Requests::POST:
+			case Requests::PUT:
 				if (isset($url_parts['path'])) {
 					$path = $url_parts['path'];
 					if (isset($url_parts['query'])) {
@@ -71,7 +72,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				else {
 					$path = '/';
 				}
-				$out = "POST $path HTTP/1.0\r\n";
+				$out = $options['type'] . " $path HTTP/1.0\r\n";
 				if (is_array($data)) {
 					$request_body = http_build_query($data, null, '&');
 				}

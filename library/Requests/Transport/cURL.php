@@ -89,6 +89,10 @@ class Requests_Transport_cURL implements Requests_Transport {
 				curl_setopt($this->fp, CURLOPT_POST, true);
 				curl_setopt($this->fp, CURLOPT_POSTFIELDS, $data);
 				break;
+			case Requests::PUT:
+				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, 'PUT');
+				curl_setopt($this->fp, CURLOPT_POSTFIELDS, $data);
+				break;
 			case Requests::HEAD:
 				curl_setopt($this->fp, CURLOPT_NOBODY, true);
 				break;
