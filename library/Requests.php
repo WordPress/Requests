@@ -48,6 +48,13 @@ class Requests {
 	const HEAD = 'HEAD';
 
 	/**
+	 * DELETE method
+	 *
+	 * @var string
+	 */
+	const DELETE = 'DELETE';
+
+	/**
 	 * Current version of Requests
 	 *
 	 * @var string
@@ -184,6 +191,13 @@ class Requests {
 	 */
 	public static function head($url, $headers = array(), $options = array()) {
 		return self::request($url, $headers, null, self::HEAD, $options);
+	}
+
+	/**
+	 * Send a DELETE request
+	 */
+	public static function delete($url, $headers = array(), $options = array()) {
+		return self::request($url, $headers, null, self::DELETE, $options);
 	}
 	/**#@-*/
 

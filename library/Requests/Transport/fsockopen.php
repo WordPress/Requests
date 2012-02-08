@@ -87,12 +87,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				}
 				break;
 			case Requests::HEAD:
-				$head = self::format_get($url_parts, $data);
-				$out = "HEAD $head HTTP/1.0\r\n";
-				break;
-			default:
+			case Requests::GET:
+			case Requests::DELETE:
 				$get = self::format_get($url_parts, $data);
-				$out = "GET $get HTTP/1.0\r\n";
+				$out = $options['type'] . " $get HTTP/1.0\r\n";
 				break;
 		}
 		$out .= "Host: {$url_parts['host']}\r\n";

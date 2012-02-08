@@ -138,6 +138,28 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
+	public function testDELETE() {
+		$request = Requests::delete('http://httpbin.org/delete', array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('http://httpbin.org/delete', $result['url']);
+		$this->assertEmpty($result['args']);
+	}
+
+	public function testDELETEWithData() {
+		$data = array(
+			'test' => 'true',
+			'test2' => 'test',
+		);
+		$request = Requests::request('http://httpbin.org/delete', array(), $data, Requests::DELETE, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('http://httpbin.org/delete?test=true&test2=test', $result['url']);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+	}
+
 	public function testRedirects() {
 		$request = Requests::get('http://httpbin.org/redirect/6', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);

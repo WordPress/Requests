@@ -80,7 +80,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
 
 		$headers = Requests::flattern($headers);
-		if (($options['type'] === Requests::HEAD || $options['type'] === Requests::GET) & !empty($data)) {
+		if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE)) & !empty($data)) {
 			$url = self::format_get($url, $data);
 		}
 
@@ -92,6 +92,9 @@ class Requests_Transport_cURL implements Requests_Transport {
 			case Requests::PUT:
 				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, 'PUT');
 				curl_setopt($this->fp, CURLOPT_POSTFIELDS, $data);
+				break;
+			case Requests::DELETE:
+				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, 'DELETE');
 				break;
 			case Requests::HEAD:
 				curl_setopt($this->fp, CURLOPT_NOBODY, true);
