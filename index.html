@@ -92,16 +92,53 @@ out of your way, providing a consistent API.</p>
 
 <h2>Installation</h2>
 
-<p>If you want to include it with your project, either <a href="https://github.com/rmccue/Requests/zipball/v1.5">grab it as a zip</a> or grab it as a tarball via the command line:</p>
+<h3>Install with Composer</h3>
 
-<pre class="prettyprint linenums lang-sh"><code>$ curl https://github.com/rmccue/Requests/tarball/v1.5 | tar xzv
-(or)
-$ wget https://github.com/rmccue/Requests/tarball/v1.5 -O - | tar xzv
+<p>If you're using <a href="https://github.com/composer/composer">Composer</a> to manage
+dependencies, you can add Requests with it.</p>
+
+<pre class="prettyprint linenums lang-js"><code>{
+    "require": {
+        "rmccue/requests": "&gt;=1.0"
+    }
+}
 </code></pre>
 
-<p>Or clone it via Git:</p>
+<h3>Install source from GitHub</h3>
 
-<pre class="prettyprint linenums lang-sh"><code>$ git clone https://github.com/rmccue/Requests.git</code></pre>
+<p>To install the source code:</p>
+
+<pre class="prettyprint linenums lang-sh"><code>$ git clone git://github.com/rmccue/Requests.git
+</code></pre>
+
+<p>And include it in your scripts:</p>
+
+<pre class="prettyprint linenums lang-php"><code>require_once '/path/to/Requests/library/Requests.php';
+</code></pre>
+
+<p>You'll probably also want to register an autoloader:</p>
+
+<pre class="prettyprint linenums lang-php"><code>Requests::register_autoloader();
+</code></pre>
+
+<h3>Install source from zip/tarball</h3>
+
+<p>Alternatively, you can fetch a
+<a href="https://github.com/rmccue/Requests/tarball/master">tarball</a> or
+<a href="https://github.com/rmccue/Requests/zipball/master">zipball</a>:</p>
+
+<pre class="prettyprint linenums lang-sh"><code>$ curl https://github.com/rmccue/Requests/tarball/master | tar xzv
+(or)
+$ wget https://github.com/rmccue/Requests/tarball/master -O - | tar xzv
+</code></pre>
+
+<h3>Using a Class Loader</h3>
+
+<p>If you're using a class loader (e.g., <a href="https://github.com/symfony/ClassLoader">Symfony Class Loader</a>) for <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a>-style
+class loading:</p>
+
+<pre class="prettyprint linenums lang-php"><code>$loader-&gt;registerNamespace('Requests', 'path/to/vendor/Requests/library');
+</code></pre>
 
 <h2>Documentation</h2>
 
