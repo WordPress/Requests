@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.8.0" version="2.0"
+	xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+				http://pear.php.net/dtd/tasks-1.0.xsd
+				http://pear.php.net/dtd/package-2.0
+				http://pear.php.net/dtd/package-2.0.xsd">
+	<name></name>
+	<channel>pear.ryanmccue.info</channel>
+	<summary>A HTTP library written in PHP, for human beings.</summary>
+	<description>
+			A HTTP library written in PHP, for human beings.
+	</description>
+	<lead>
+		<name>Ryan Mccue</name>
+		<user>rmccue</user>
+		<email>me plus pear at ryanmccue dot info</email>
+		<active>yes</active>
+	</lead>
+	<date>2012-02-08</date>
+	<time>14:35:00</time>
+	<version>
+		<release>1.6.0-dev</release>
+		<api>1.6.0-dev</api>
+	</version>
+	<stability>
+		<release>devel</release>
+		<api>devel</api>
+	</stability>
+	<license uri="https://github.com/rmccue/Requests/blob/master/LICENSE" filesource="LICENSE">ISC</license>
+	<notes>-</notes>
+	<contents>
+			<dir name="/">
+				<!-- This needs to be updated on release -->
+			</dir>
+	</contents>
+	<dependencies>
+		<required>
+			<php>
+				<min>5.2.0</min>
+			</php>
+			<pearinstaller>
+				<min>1.4.0</min>
+			</pearinstaller>
+		</required>
+	</dependencies>
+	<phprelease />
+</package>
