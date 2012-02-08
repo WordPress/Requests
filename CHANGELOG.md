@@ -9,6 +9,7 @@ Changelog
 * [Added PATCH support](https://github.com/rmccue/Requests/issues/2)
 * IDNAEncoder now uses substr instead of string offsets, fixes compatibility
   for PHP 5.4
+* [303 See Other requests now conform to spec](https://github.com/rmccue/Requests/issues/7)
 
 1.5.0
 -----

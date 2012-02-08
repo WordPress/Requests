@@ -410,6 +410,9 @@ class Requests {
 
 		if ((in_array($return->status_code, array(300, 301, 302, 303, 307)) || $return->status_code > 307 && $return->status_code < 400) && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
+				if ($return->status_code === 303) {
+					$options['type'] = Requests::GET;
+				}
 				$options['redirected']++;
 				$location = $return->headers['location'];
 				$redirected = self::request($location, $req_headers, $req_data, false, $options);
