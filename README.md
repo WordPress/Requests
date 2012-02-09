@@ -98,14 +98,19 @@ If you're using a class loader (e.g., [Symfony Class Loader][]) for
 
 Documentation
 -------------
-The best place to start is looking at [the documentation for
-`Requests::request()`](http://requests.ryanmccue.info/api/class-Requests.html#_request),
-where all the parameters are fully documented.
+The best place to start is our [prose-based documentation][], which will guide
+you through using Requests.
+
+After that, take a look at [the documentation for
+`Requests::request()`][request_method], where all the parameters are fully
+documented.
 
 Requests is [100% documented with PHPDoc](http://requests.ryanmccue.info/api/).
 If you find any problems with it, [create a new
 issue](https://github.com/rmccue/Requests/issues/new)!
 
+[prose-based documentation]: https://github.com/rmccue/Requests/tree/master/docs/
+[request_method]: http://requests.ryanmccue.info/api/class-Requests.html#_request
 
 Testing
 -------
