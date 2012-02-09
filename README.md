@@ -109,7 +109,7 @@ Requests is [100% documented with PHPDoc](http://requests.ryanmccue.info/api/).
 If you find any problems with it, [create a new
 issue](https://github.com/rmccue/Requests/issues/new)!
 
-[prose-based documentation]: https://github.com/rmccue/Requests/tree/master/docs/
+[prose-based documentation]: https://github.com/rmccue/Requests/blob/master/docs/README.md
 [request_method]: http://requests.ryanmccue.info/api/class-Requests.html#_request
 
 Testing
