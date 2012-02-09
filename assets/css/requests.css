@@ -22,6 +22,11 @@ body {
 	line-height: 27px;
 }
 
+#watch {
+	float: right;
+	margin-top: 3px;
+}
+
 h1, h2, h3, h4, h5, h6 {
 	border-bottom: 1px solid #EEEEEE;
 	margin: 18px 0;
