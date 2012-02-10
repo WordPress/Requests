@@ -27,6 +27,12 @@ class Requests_Response {
 	public $body = '';
 
 	/**
+	 * Raw HTTP data from the transport
+	 * @var string
+	 */
+	public $raw = '';
+
+	/**
 	 * Headers, as an associative array
 	 * @var array
 	 */

@@ -45,6 +45,20 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $response->headers);
 	}
 
+	public function testRawAccess() {
+		$transport = new RawTransport();
+		$transport->data =
+			"HTTP/1.0 200 OK\r\n".
+			"Host: localhost\r\n\r\n".
+			"Test";
+
+		$options = array(
+			'transport' => $transport
+		);
+		$response = Requests::get('http://example.com/', array(), $options);
+		$this->assertEquals($transport->data, $response->raw);
+	}
+
 	/**
 	 * Headers with only \n delimiting should be treated as if they're \r\n
 	 */

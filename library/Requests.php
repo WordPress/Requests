@@ -360,6 +360,7 @@ class Requests {
 			return $return;
 		}
 
+		$return->raw = $headers;
 		$return->url = $url;
 
 		if (!$options['filename']) {
