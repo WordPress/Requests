@@ -10,6 +10,7 @@ Changelog
 * IDNAEncoder now uses substr instead of string offsets, fixes compatibility
   for PHP 5.4
 * [303 See Other requests now conform to spec](https://github.com/rmccue/Requests/issues/7)
+* [Add ability to get raw data from response](https://github.com/rmccue/Requests/issues/9)
 
 1.5.0
 -----
