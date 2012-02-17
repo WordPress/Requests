@@ -65,7 +65,7 @@ PECL HttpRequest
    Similar to PEAR, users aren't big fans of installing extra libraries. Unlike
    PEAR though, PECL extensions require compiling, which end users will be
    unfamiliar with. In addition, on systems where users do not have full
-   control over PHP, they will be able to install custom extensions.
+   control over PHP, they will be unable to install custom extensions.
 
 
 Zend Framework's Zend_Http_Client
