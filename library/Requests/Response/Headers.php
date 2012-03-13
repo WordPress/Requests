@@ -49,7 +49,7 @@ class Requests_Response_Headers implements ArrayAccess, IteratorAggregate {
 	 * @param string $value Header value
 	 */
 	public function offsetSet($key, $value) {
-		if (is_null($key)) {
+		if ($key === null) {
 			throw new Requests_Exception('Headers is a dictionary, not a list', 'invalidset');
 		}
 
