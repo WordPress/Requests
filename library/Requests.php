@@ -150,7 +150,7 @@ class Requests {
 	protected static function get_transport() {
 		// Caching code, don't bother testing coverage
 		// @codeCoverageIgnoreStart
-		if (!is_null(self::$transport)) {
+		if (self::$transport !== null) {
 			return new self::$transport();
 		}
 		// @codeCoverageIgnoreEnd
