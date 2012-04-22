@@ -2,12 +2,14 @@
 /**
  * Exception for 511 Network Authentication Required responses
  *
+ * @see http://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
 
 /**
  * Exception for 511 Network Authentication Required responses
  *
+ * @see http://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
 class Requests_Exception_HTTP_511 extends Requests_Exception_HTTP {

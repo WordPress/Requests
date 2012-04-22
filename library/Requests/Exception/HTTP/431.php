@@ -2,12 +2,14 @@
 /**
  * Exception for 431 Request Header Fields Too Large responses
  *
+ * @see http://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
 
 /**
  * Exception for 431 Request Header Fields Too Large responses
  *
+ * @see http://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
 class Requests_Exception_HTTP_431 extends Requests_Exception_HTTP {

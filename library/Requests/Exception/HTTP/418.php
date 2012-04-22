@@ -2,12 +2,14 @@
 /**
  * Exception for 418 I'm A Teapot responses
  *
+ * @see http://tools.ietf.org/html/rfc2324
  * @package Requests
  */
 
 /**
  * Exception for 418 I'm A Teapot responses
  *
+ * @see http://tools.ietf.org/html/rfc2324
  * @package Requests
  */
 class Requests_Exception_HTTP_418 extends Requests_Exception_HTTP {
