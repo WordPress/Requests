@@ -31,9 +31,10 @@ class Requests_Exception extends Exception {
 	 * @param string $message Exception message
 	 * @param string $type Exception type
 	 * @param mixed $data Associated data
+	 * @param integer $code Exception numerical code, if applicable
 	 */
-	public function __construct($message, $type, $data = null) {
-		parent::__construct($message, 0);
+	public function __construct($message, $type, $data = null, $code = 0) {
+		parent::__construct($message, $code);
 
 		$this->type = $type;
 		$this->data = $data;
