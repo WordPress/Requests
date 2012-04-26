@@ -104,9 +104,17 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$headers = Requests::flattern($headers);
 		$out .= implode($headers, "\r\n");
 
+		if (substr($out, -2) !== "\r\n") {
+			$out .= "\r\n";
+		}
+
 		$options['hooks']->dispatch('fsockopen.after_headers', array(&$out));
 
-		$out .= "\r\nConnection: Close\r\n\r\n" . $request_body;
+		if (substr($out, -2) !== "\r\n") {
+			$out .= "\r\n";
+		}
+
+		$out .= "Connection: Close\r\n\r\n" . $request_body;
 
 		$options['hooks']->dispatch('fsockopen.before_send', array(&$out));
 
