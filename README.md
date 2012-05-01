@@ -56,9 +56,11 @@ If you're using [Composer](https://github.com/composer/composer) to manage
 dependencies, you can add Requests with it.
 
     {
-        "require": {
-            "rmccue/requests": ">=1.0"
-        }
+    "require": {
+        "rmccue/requests": ">=1.0"
+    },
+    "autoload": {
+        "psr-0": {"Requests": "library/"}
     }
 
 ### Install source from GitHub
