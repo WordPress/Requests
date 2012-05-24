@@ -13,5 +13,8 @@
 	"require": {
 		"php": ">=5.2"
 	},
-	"type": "library"
+	"type": "library",
+	"autoload": {
+            "psr-0": {"Requests": "library/"}
+        }
 }
