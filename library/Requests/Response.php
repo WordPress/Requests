@@ -76,8 +76,10 @@ class Requests_Response {
 	 * @param boolean $allow_redirects Set to false to throw on a 3xx as well
 	 */
 	public function throw_for_status($allow_redirects = true) {
-		if ($this->status_code >= 300 && $this->status_code < 400 && !$allow_redirects) {
-			throw new Requests_Exception('Redirection not allowed', 'response.no_redirects', $this);
+		if ($this->status_code >= 300 && $this->status_code < 400) {
+			if (!$allow_redirects) {
+				throw new Requests_Exception('Redirection not allowed', 'response.no_redirects', $this);
+			}
 		}
 
 		elseif (!$this->success) {
