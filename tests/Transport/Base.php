@@ -334,11 +334,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException Requests_Exception
 	 */
-	/*public function testTimeout() {
+	public function testTimeout() {
 		$options = array(
 			'timeout' => 1,
 		);
-		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions($options));
+		$request = Requests::get('http://httpbin.org/delay/10', array(), $this->getOptions($options));
 		var_dump($request);
-	}*/
+	}
 }
