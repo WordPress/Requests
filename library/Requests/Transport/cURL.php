@@ -140,14 +140,16 @@ class Requests_Transport_cURL implements Requests_Transport {
 		foreach ($requests as $id => $request) {
 			$subrequests[$id] = new $class();
 			$subhandles[$id] = $subrequests[$id]->get_subrequest_handle($request['url'], $request['headers'], $request['data'], $request['options']);
+			$request['options']['hooks']->dispatch('curl.before_multi_add', array(&$subhandles[$id]));
 			curl_multi_add_handle($multihandle, $subhandles[$id]);
 		}
 
 		$completed = 0;
 		$responses = array();
 
+		$request['options']['hooks']->dispatch('curl.before_multi_exec', array(&$multihandle));
+
 		do {
-			// blah
 			$active = false;
 
 			while (($status = curl_multi_exec($multihandle, $active)) === CURLM_CALL_MULTI_PERFORM) {
@@ -158,6 +160,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 			$to_process = array();
 
+			// Read the information as needed
 			while ($done = curl_multi_info_read($multihandle)) {
 				if ($done['result'] > 0) {
 					throw Requests_Exception();
@@ -168,6 +171,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 				}
 			}
 
+			// Parse the finished requests before we start getting the new ones
 			foreach ($to_process as $key => $done) {
 				$options = $requests[$key]['options'];
 				$responses[$key] = $subrequests[$key]->process_response(curl_multi_getcontent($done['handle']), $options);
@@ -184,6 +188,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 			}
 		}
 		while ($active || $completed < count($subrequests));
+
+		$request['options']['hooks']->dispatch('curl.after_multi_exec', array(&$multihandle));
 
 		curl_multi_close($multihandle);
 
