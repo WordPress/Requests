@@ -393,6 +393,18 @@ class Requests {
 			if ($request['options']['hooks'] !== $options['hooks']) {
 				$request['options']['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
 			}
+
+			if (is_array($request['options']['auth'])) {
+				$request['options']['auth'] = new Requests_Auth_Basic($request['options']['auth']);
+			}
+			if ($request['options']['auth'] !== false) {
+				$request['options']['auth']->register($request['options']['hooks']);
+			}
+			if ($request['options']['idn'] !== false) {
+				$iri = new Requests_IRI($request['url']);
+				$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
+				$request['url'] = $iri->uri;
+			}
 		}
 		unset($request);
 
