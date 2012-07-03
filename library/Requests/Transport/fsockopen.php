@@ -187,7 +187,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			}
 
 			if (!is_string($responses[$id])) {
-				$options['hooks']->dispatch('multiple.request.complete', array(&$responses[$id]));
+				$options['hooks']->dispatch('multiple.request.complete', array(&$responses[$id], $id));
 			}
 		}
 

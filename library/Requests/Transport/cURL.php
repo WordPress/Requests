@@ -154,7 +154,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 				curl_close($done['handle']);
 
 				if (!is_string($responses[$key])) {
-					$options['hooks']->dispatch('multiple.request.complete', array(&$responses[$key]));
+					$options['hooks']->dispatch('multiple.request.complete', array(&$responses[$key], $key));
 				}
 				$completed++;
 			}
