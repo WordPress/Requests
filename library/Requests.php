@@ -343,6 +343,33 @@ class Requests {
 	/**
 	 * Send multiple HTTP requests simultaneously
 	 *
+	 * The `$requests` parameter takes an associative or indexed array of
+	 * request fields. The key of each request can be used to match up the
+	 * request with the returned data, or with the request passed into your
+	 * `multiple.request.complete` callback.
+	 *
+	 * The request fields value is an associative array with the following keys:
+	 *
+	 * - `url`: Request URL Same as the `$url` parameter to
+	 *    {@see Requests::request}
+	 *    (string, required)
+	 * - `headers`: Associative array of header fields. Same as the `$headers`
+	 *    parameter to {@see Requests::request}
+	 *    (array, default: `array()`)
+	 * - `data`: Associative array of data fields or a string. Same as the
+	 *    `$data` parameter to {@see Requests::request}
+	 *    (array|string, default: `array()`)
+	 * - `type`: HTTP request type (use Requests constants). Same as the `$type`
+	 *    parameter to {@see Requests::request}
+	 *    (string, default: `Requests::GET`)
+	 * - `data`: Associative array of options. Same as the `$options` parameter
+	 *    to {@see Requests::request}
+	 *    (array, default: see {@see Requests::request})
+	 *
+	 * If the `$options` parameter is specified, individual requests will
+	 * inherit options from it. This can be used to use a single hooking system,
+	 * or set all the types to `Requests::POST`, for example.
+	 *
 	 * @param array $requests Requests data (see description for more information)
 	 * @param array $options Global and default options (see {@see Requests::request})
 	 * @return array Responses (either Requests_Response or a Requests_Exception object)
