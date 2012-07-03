@@ -370,6 +370,14 @@ class Requests {
 	 * inherit options from it. This can be used to use a single hooking system,
 	 * or set all the types to `Requests::POST`, for example.
 	 *
+	 * In addition, the `$options` parameter takes the following global options:
+	 *
+	 * - `complete`: A callback for when a request is complete. Takes two
+	 *    parameters, a Requests_Response/Requests_Exception reference, and the
+	 *    ID from the request array (Note: this can also be overriden on a
+	 *    per-request basis, although that's a little silly)
+	 *    (callback)
+	 *
 	 * @param array $requests Requests data (see description for more information)
 	 * @param array $options Global and default options (see {@see Requests::request})
 	 * @return array Responses (either Requests_Response or a Requests_Exception object)
@@ -388,11 +396,15 @@ class Requests {
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
+			'complete' => null,
 		);
 		$options = array_merge($defaults, $options);
 
 		if (!empty($options['hooks'])) {
 			$options['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+			if (!empty($options['complete'])) {
+				$options['hooks']->register('multiple.request.complete', $options['complete']);
+			}
 		}
 
 		foreach ($requests as $id => &$request) {
@@ -419,6 +431,9 @@ class Requests {
 			// Ensure we only hook in once
 			if ($request['options']['hooks'] !== $options['hooks']) {
 				$request['options']['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+				if (!empty($request['options']['complete'])) {
+					$request['options']['hooks']->register('multiple.request.complete', $request['options']['complete']);
+				}
 			}
 
 			if (is_array($request['options']['auth'])) {
