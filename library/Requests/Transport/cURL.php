@@ -98,29 +98,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		$this->process_response($response, $options);
-
-		if ($options['blocking'] === false) {
-			curl_close($this->fp);
-			$fake_headers = '';
-			$options['hooks']->dispatch('curl.after_request', array(&$fake_headers));
-			return false;
-		}
-		if ($options['filename'] !== false) {
-			fclose($stream_handle);
-			$this->headers = trim($this->headers);
-		}
-		else {
-			$this->headers .= $response;
-		}
-
-		if (curl_errno($this->fp)) {
-			throw new Requests_Exception('cURL error ' . curl_errno($this->fp) . ': ' . curl_error($this->fp), 'curlerror', $this->fp);
-			return;
-		}
-		$this->info = curl_getinfo($this->fp);
-		curl_close($this->fp);
-
-		$options['hooks']->dispatch('curl.after_request', array(&$this->headers));
 		return $this->headers;
 	}
 
