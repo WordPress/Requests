@@ -438,7 +438,6 @@ class Requests {
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
-			'complete' => null,
 		);
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
@@ -473,8 +472,6 @@ class Requests {
 			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
 			$url = $iri->uri;
 		}
-
-		return $options;
 	}
 
 	/**
