@@ -49,6 +49,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 	protected $done_headers = false;
 
 	/**
+	 * If streaming to a file, keep the file pointer
+	 *
+	 * @var resource
+	 */
+	protected $stream_handle;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -82,8 +89,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
 
 		if ($options['filename'] !== false) {
-			$stream_handle = fopen($options['filename'], 'wb');
-			curl_setopt($this->fp, CURLOPT_FILE, $stream_handle);
+			$this->stream_handle = fopen($options['filename'], 'wb');
+			curl_setopt($this->fp, CURLOPT_FILE, $this->stream_handle);
 		}
 
 		$response = curl_exec($this->fp);
@@ -181,8 +188,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$this->setup_handle($url, $headers, $data, $options);
 
 		if ($options['filename'] !== false) {
-			$stream_handle = fopen($options['filename'], 'wb');
-			curl_setopt($this->fp, CURLOPT_FILE, $stream_handle);
+			$this->stream_handle = fopen($options['filename'], 'wb');
+			curl_setopt($this->fp, CURLOPT_FILE, $this->stream_handle);
 		}
 
 		return $this->fp;
@@ -242,7 +249,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			return false;
 		}
 		if ($options['filename'] !== false) {
-			fclose($stream_handle);
+			fclose($this->stream_handle);
 			$this->headers = trim($this->headers);
 		}
 		else {
