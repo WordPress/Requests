@@ -137,8 +137,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 			// Read the information as needed
 			while ($done = curl_multi_info_read($multihandle)) {
-				if (!isset($to_process[(int) $done['handle']])) {
-					$key = array_search($done['handle'], $subhandles, true);
+				$key = array_search($done['handle'], $subhandles, true);
+				if (!isset($to_process[$key])) {
 					$to_process[$key] = $done;
 				}
 			}
