@@ -77,8 +77,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @return string Raw HTTP result
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
-		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
-
 		$this->setup_handle($url, $headers, $data, $options);
 
 		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
@@ -202,6 +200,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
 	 */
 	protected function setup_handle($url, $headers, $data, $options) {
+		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
+
 		$headers = Requests::flattern($headers);
 		if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE)) & !empty($data)) {
 			$url = self::format_get($url, $data);
@@ -238,8 +238,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 	}
 
 	public function &process_response($response, $options) {
-		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
-
 		if ($options['blocking'] === false) {
 			curl_close($this->fp);
 			$fake_headers = '';
