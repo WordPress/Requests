@@ -241,7 +241,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 	}
 
-	public function &process_response($response, $options) {
+	public function process_response($response, $options) {
 		if ($options['blocking'] === false) {
 			curl_close($this->fp);
 			$fake_headers = '';
