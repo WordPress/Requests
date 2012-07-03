@@ -417,6 +417,13 @@ class Requests {
 		return $responses;
 	}
 
+	/**
+	 * Get the default options
+	 *
+	 * @see Requests::request() for values returned by this method
+	 * @param boolean $multirequest Is this a multirequest?
+	 * @return array Default option values
+	 */
 	protected static function get_default_options($multirequest = false) {
 		$defaults = array(
 			'timeout' => 10,
@@ -439,6 +446,16 @@ class Requests {
 		return $defaults;
 	}
 
+	/**
+	 * Set the default values
+	 *
+	 * @param string $url URL to request
+	 * @param array $headers Extra headers to send with the request
+	 * @param array $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param string $type HTTP request type
+	 * @param array $options Options for the request
+	 * @return array $options
+	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (empty($options['hooks'])) {
 			$options['hooks'] = new Requests_Hooks();
