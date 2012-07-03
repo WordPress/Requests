@@ -341,6 +341,79 @@ class Requests {
 	}
 
 	/**
+	 * Send multiple HTTP requests simultaneously
+	 *
+	 * @param array $requests Requests data (see description for more information)
+	 * @param array $options Global and default options (see {@see Requests::request})
+	 * @return array Responses (either Requests_Response or a Requests_Exception object)
+	 */
+	public static function request_multiple($requests, $options = array()) {
+		$defaults = array(
+			'timeout' => 10,
+			'useragent' => 'php-requests/' . self::VERSION,
+			'redirected' => 0,
+			'redirects' => 10,
+			'follow_redirects' => true,
+			'blocking' => true,
+			'type' => self::GET,
+			'filename' => false,
+			'auth' => false,
+			'idn' => true,
+			'hooks' => null,
+			'transport' => null,
+		);
+		$options = array_merge($defaults, $options);
+
+		foreach ($requests as $id => &$request) {
+			if (!isset($request['headers'])) {
+				$request['headers'] = array();
+			}
+			if (!isset($request['data'])) {
+				$request['data'] = array();
+			}
+			if (!isset($request['type'])) {
+				$request['type'] = self::GET;
+			}
+			if (!isset($request['options'])) {
+				$request['options'] = $options;
+				$request['options']['type'] = $request['type'];
+			}
+			else {
+				$request['options'] = array_merge($options, $request['options']);
+			}
+			if (empty($request['options']['hooks'])) {
+				$request['options']['hooks'] = new Requests_Hooks();
+			}
+
+			$request['options']['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+		}
+		unset($request);
+
+		if (!empty($options['transport'])) {
+			$transport = $options['transport'];
+
+			if (is_string($options['transport'])) {
+				$transport = new $transport();
+			}
+		}
+		else {
+			$transport = self::get_transport();
+		}
+		$responses = $transport->request_multiple($requests, $options);
+
+		foreach ($responses as $id => &$response) {
+			// If our hook got messed with somehow, ensure we end up with the
+			// correct response
+			if (is_string($response)) {
+				$request = $requests[$id];
+				$response = self::parse_multiple($response, $request);
+			}
+		}
+
+		return $responses;
+	}
+
+	/**
 	 * HTTP response parser
 	 *
 	 * @throws Requests_Exception On missing head/body separator (`requests.no_crlf_separator`)
@@ -429,6 +502,25 @@ class Requests {
 
 		$options['hooks']->dispatch('requests.after_request', array(&$return, $req_headers, $req_data, $options));
 		return $return;
+	}
+
+	/**
+	 * Callback for `transport.internal.parse_response`
+	 *
+	 * Internal use only. Converts a raw HTTP response to a Requests_Response
+	 * while still executing a multiple request.
+	 *
+	 * @param string $headers Full response text including headers and body
+	 * @param array $request Request data as passed into {@see Requests::request_multiple()}
+	 * @return null `$response` is either set to a Requests_Response instance, or a Requests_Exception object
+	 */
+	public static function parse_multiple(&$response, $request) {
+		try {
+			$response = self::parse_response($response, $request['url'], $request['headers'], $request['data'], $request['options']);
+		}
+		catch (Requests_Exception $e) {
+			$response = $e;
+		}
 	}
 
 	/**

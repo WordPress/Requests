@@ -79,6 +79,144 @@ class Requests_Transport_cURL implements Requests_Transport {
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
 
+		$this->setup_handle($url, $headers, $data, $options);
+
+		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
+
+		if ($options['filename'] !== false) {
+			$stream_handle = fopen($options['filename'], 'wb');
+			curl_setopt($this->fp, CURLOPT_FILE, $stream_handle);
+		}
+
+		$response = curl_exec($this->fp);
+
+		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
+
+		if (curl_errno($this->fp) === 23 || curl_errno($this->fp) === 61) {
+			curl_setopt($this->fp, CURLOPT_ENCODING, 'none');
+			$response = curl_exec($this->fp);
+		}
+
+		$this->process_response($response, $options);
+
+		if ($options['blocking'] === false) {
+			curl_close($this->fp);
+			$fake_headers = '';
+			$options['hooks']->dispatch('curl.after_request', array(&$fake_headers));
+			return false;
+		}
+		if ($options['filename'] !== false) {
+			fclose($stream_handle);
+			$this->headers = trim($this->headers);
+		}
+		else {
+			$this->headers .= $response;
+		}
+
+		if (curl_errno($this->fp)) {
+			throw new Requests_Exception('cURL error ' . curl_errno($this->fp) . ': ' . curl_error($this->fp), 'curlerror', $this->fp);
+			return;
+		}
+		$this->info = curl_getinfo($this->fp);
+		curl_close($this->fp);
+
+		$options['hooks']->dispatch('curl.after_request', array(&$this->headers));
+		return $this->headers;
+	}
+
+	/**
+	 * Send multiple requests simultaneously
+	 *
+	 * @param array $requests Request data
+	 * @param array $options Global options
+	 * @return array Array of Requests_Response objects (may contain Requests_Exception or string responses as well)
+	 */
+	public function request_multiple($requests, $options) {
+		$multihandle = curl_multi_init();
+		$subrequests = array();
+		$subhandles = array();
+
+		$class = get_class($this);
+		foreach ($requests as $id => $request) {
+			$subrequests[$id] = new $class();
+			$subhandles[$id] = $subrequests[$id]->get_subrequest_handle($request['url'], $request['headers'], $request['data'], $request['options']);
+			curl_multi_add_handle($multihandle, $subhandles[$id]);
+		}
+
+		$completed = 0;
+		$responses = array();
+
+		do {
+			// blah
+			$active = false;
+
+			while (($status = curl_multi_exec($multihandle, $active)) === CURLM_CALL_MULTI_PERFORM) {
+				if (count($handles) > 0) {
+					break;
+				}
+			}
+
+			$to_process = array();
+
+			while ($done = curl_multi_info_read($multihandle)) {
+				if ($done['result'] > 0) {
+					throw Requests_Exception();
+				}
+				elseif (!isset($to_process[(int) $done['handle']])) {
+					$key = array_search($done['handle'], $subhandles, true);
+					$to_process[$key] = $done;
+				}
+			}
+
+			foreach ($to_process as $key => $done) {
+				$options = $requests[$key]['options'];
+				$responses[$key] = $subrequests[$key]->process_response(curl_multi_getcontent($done['handle']), $options);
+
+				$options['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$key], $requests[$key]));
+
+				curl_multi_remove_handle($multihandle, $done['handle']);
+				curl_close($done['handle']);
+
+				$options['hooks']->dispatch('multiple.request.complete', array(&$responses[$key]));
+				$completed++;
+			}
+		}
+		while ($active || $completed < count($subrequests));
+
+		curl_multi_close($multihandle);
+
+		return $responses;
+	}
+
+	/**
+	 * Get the cURL handle for use in a multi-request
+	 *
+	 * @param string $url URL to request
+	 * @param array $headers Associative array of request headers
+	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
+	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @return resource Subrequest's cURL handle
+	 */
+	public function &get_subrequest_handle($url, $headers, $data, $options) {
+		$this->setup_handle($url, $headers, $data, $options);
+
+		if ($options['filename'] !== false) {
+			$stream_handle = fopen($options['filename'], 'wb');
+			curl_setopt($this->fp, CURLOPT_FILE, $stream_handle);
+		}
+
+		return $this->fp;
+	}
+
+	/**
+	 * Setup the cURL handle for the given data
+	 *
+	 * @param string $url URL to request
+	 * @param array $headers Associative array of request headers
+	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
+	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 */
+	protected function setup_handle($url, $headers, $data, $options) {
 		$headers = Requests::flattern($headers);
 		if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE)) & !empty($data)) {
 			$url = self::format_get($url, $data);
@@ -112,16 +250,9 @@ class Requests_Transport_cURL implements Requests_Transport {
 		if (true === $options['blocking']) {
 			curl_setopt($this->fp, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
 		}
+	}
 
-		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
-
-		if ($options['filename'] !== false) {
-			$stream_handle = fopen($options['filename'], 'wb');
-			curl_setopt($this->fp, CURLOPT_FILE, $stream_handle);
-		}
-
-		$response = curl_exec($this->fp);
-
+	public function &process_response($response, $options) {
 		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
 
 		if ($options['blocking'] === false) {
@@ -138,16 +269,11 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$this->headers .= $response;
 		}
 
-		if (curl_errno($this->fp) === 23 || curl_errno($this->fp) === 61) {
-			curl_setopt($this->fp, CURLOPT_ENCODING, 'none');
-			$this->headers = curl_exec($this->fp);
-		}
 		if (curl_errno($this->fp)) {
 			throw new Requests_Exception('cURL error ' . curl_errno($this->fp) . ': ' . curl_error($this->fp), 'curlerror', $this->fp);
 			return;
 		}
 		$this->info = curl_getinfo($this->fp);
-		curl_close($this->fp);
 
 		$options['hooks']->dispatch('curl.after_request', array(&$this->headers));
 		return $this->headers;
