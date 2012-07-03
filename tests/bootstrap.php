@@ -80,6 +80,25 @@ class MockTransport implements Requests_Transport {
 		return $response;
 	}
 
+	public function request_multiple($requests, $options) {
+		$responses = array();
+		foreach ($requests as $id => $request) {
+			$handler = new MockTransport();
+			$handler->code = $request['options']['mock.code'];
+			$handler->chunked = $request['options']['mock.chunked'];
+			$handler->body = $request['options']['mock.body'];
+			$handler->raw_headers = $request['options']['mock.raw_headers'];
+			$responses[$id] = $handler->request($request['url'], $request['headers'], $request['data'], $request['options']);
+
+			if (!empty($options['mock.parse'])) {
+				$request['options']['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$id], $request));
+				$request['options']['hooks']->dispatch('multiple.request.complete', array(&$responses[$id], $id));
+			}
+		}
+
+		return $responses;
+	}
+
 	public static function test() {
 		return true;
 	}
