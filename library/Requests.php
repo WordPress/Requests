@@ -287,41 +287,11 @@ class Requests {
 		if (!preg_match('/^http(s)?:\/\//i', $url)) {
 			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
 		}
-		$defaults = array(
-			'timeout' => 10,
-			'useragent' => 'php-requests/' . self::VERSION,
-			'redirected' => 0,
-			'redirects' => 10,
-			'follow_redirects' => true,
-			'blocking' => true,
-			'type' => $type,
-			'filename' => false,
-			'auth' => false,
-			'idn' => true,
-			'hooks' => null,
-			'transport' => null,
-		);
-		$options = array_merge($defaults, $options);
+		$options = array_merge(self::get_default_options(), $options);
 
-		if (empty($options['hooks'])) {
-			$options['hooks'] = new Requests_Hooks();
-		}
-
-		// Special case for simple basic auth
-		if (is_array($options['auth'])) {
-			$options['auth'] = new Requests_Auth_Basic($options['auth']);
-		}
-		if ($options['auth'] !== false) {
-			$options['auth']->register($options['hooks']);
-		}
+		self::set_defaults($url, $headers, $data, $type, $options);
 
 		$options['hooks']->dispatch('requests.before_request', array(&$url, &$headers, &$data, &$type, &$options));
-
-		if ($options['idn'] !== false) {
-			$iri = new Requests_IRI($url);
-			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
-			$url = $iri->uri;
-		}
 
 		if (!empty($options['transport'])) {
 			$transport = $options['transport'];
@@ -383,22 +353,7 @@ class Requests {
 	 * @return array Responses (either Requests_Response or a Requests_Exception object)
 	 */
 	public static function request_multiple($requests, $options = array()) {
-		$defaults = array(
-			'timeout' => 10,
-			'useragent' => 'php-requests/' . self::VERSION,
-			'redirected' => 0,
-			'redirects' => 10,
-			'follow_redirects' => true,
-			'blocking' => true,
-			'type' => self::GET,
-			'filename' => false,
-			'auth' => false,
-			'idn' => true,
-			'hooks' => null,
-			'transport' => null,
-			'complete' => null,
-		);
-		$options = array_merge($defaults, $options);
+		$options = array_merge(self::get_default_options(true), $options);
 
 		if (!empty($options['hooks'])) {
 			$options['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
@@ -424,9 +379,8 @@ class Requests {
 			else {
 				$request['options'] = array_merge($options, $request['options']);
 			}
-			if (empty($request['options']['hooks'])) {
-				$request['options']['hooks'] = new Requests_Hooks();
-			}
+
+			self::set_defaults($request['url'], $request['headers'], $request['data'], $request['type'], $request['options']);
 
 			// Ensure we only hook in once
 			if ($request['options']['hooks'] !== $options['hooks']) {
@@ -434,18 +388,6 @@ class Requests {
 				if (!empty($request['options']['complete'])) {
 					$request['options']['hooks']->register('multiple.request.complete', $request['options']['complete']);
 				}
-			}
-
-			if (is_array($request['options']['auth'])) {
-				$request['options']['auth'] = new Requests_Auth_Basic($request['options']['auth']);
-			}
-			if ($request['options']['auth'] !== false) {
-				$request['options']['auth']->register($request['options']['hooks']);
-			}
-			if ($request['options']['idn'] !== false) {
-				$iri = new Requests_IRI($request['url']);
-				$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
-				$request['url'] = $iri->uri;
 			}
 		}
 		unset($request);
@@ -473,6 +415,49 @@ class Requests {
 		}
 
 		return $responses;
+	}
+
+	protected static function get_default_options($multirequest = false) {
+		$defaults = array(
+			'timeout' => 10,
+			'useragent' => 'php-requests/' . self::VERSION,
+			'redirected' => 0,
+			'redirects' => 10,
+			'follow_redirects' => true,
+			'blocking' => true,
+			'type' => self::GET,
+			'filename' => false,
+			'auth' => false,
+			'idn' => true,
+			'hooks' => null,
+			'transport' => null,
+			'complete' => null,
+		);
+		if ($multirequest !== false) {
+			$defaults['complete'] = null;
+		}
+		return $defaults;
+	}
+
+	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
+		if (empty($options['hooks'])) {
+			$options['hooks'] = new Requests_Hooks();
+		}
+
+		if (is_array($options['auth'])) {
+			$options['auth'] = new Requests_Auth_Basic($options['auth']);
+		}
+		if ($options['auth'] !== false) {
+			$options['auth']->register($options['hooks']);
+		}
+
+		if ($options['idn'] !== false) {
+			$iri = new Requests_IRI($url);
+			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
+			$url = $iri->uri;
+		}
+
+		return $options;
 	}
 
 	/**
