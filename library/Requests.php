@@ -364,6 +364,10 @@ class Requests {
 		);
 		$options = array_merge($defaults, $options);
 
+		if (!empty($options['hooks'])) {
+			$options['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+		}
+
 		foreach ($requests as $id => &$request) {
 			if (!isset($request['headers'])) {
 				$request['headers'] = array();
@@ -385,7 +389,10 @@ class Requests {
 				$request['options']['hooks'] = new Requests_Hooks();
 			}
 
-			$request['options']['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+			// Ensure we only hook in once
+			if ($request['options']['hooks'] !== $options['hooks']) {
+				$request['options']['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+			}
 		}
 		unset($request);
 
