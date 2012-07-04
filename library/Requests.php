@@ -287,6 +287,9 @@ class Requests {
 		if (!preg_match('/^http(s)?:\/\//i', $url)) {
 			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
 		}
+		if (empty($options['type'])) {
+			$options['type'] = $type;
+		}
 		$options = array_merge(self::get_default_options(), $options);
 
 		self::set_defaults($url, $headers, $data, $type, $options);
