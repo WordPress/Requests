@@ -341,4 +341,75 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$request = Requests::get('http://httpbin.org/delay/10', array(), $this->getOptions($options));
 		var_dump($request);
 	}
+
+	public function testMultiple() {
+		$requests = array(
+			'test1' => array(
+				'url' => 'http://httpbin.org/get'
+			),
+			'test2' => array(
+				'url' => 'http://httpbin.org/get'
+			),
+		);
+		$responses = Requests::request_multiple($requests, $this->getOptions());
+
+		// test1
+		$this->assertNotEmpty($responses['test1']);
+		$this->assertInstanceOf('Requests_Response', $responses['test1']);
+		$this->assertEquals(200, $responses['test1']->status_code);
+
+		$result = json_decode($responses['test1']->body, true);
+		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEmpty($result['args']);
+
+		// test2
+		$this->assertNotEmpty($responses['test1']);
+		$this->assertInstanceOf('Requests_Response', $responses['test1']);
+		$this->assertEquals(200, $responses['test1']->status_code);
+
+		$result = json_decode($responses['test1']->body, true);
+		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEmpty($result['args']);
+	}
+
+	public function testMultipleWithDifferingMethods() {
+		$requests = array(
+			'get' => array(
+				'url' => 'http://httpbin.org/get',
+			),
+			'post' => array(
+				'url' => 'http://httpbin.org/post',
+				'data' => 'test',
+			),
+		);
+		$responses = Requests::request_multiple($requests, $this->getOptions());
+
+		// get
+		$this->assertEquals(200, $responses['get']->status_code);
+
+		// post
+		$this->assertEquals(200, $responses['post']->status_code);
+		$result = json_decode($responses['post']->body, true);
+		$this->assertEquals('test', $result['data']);
+	}
+
+	/**
+	 * @depends testTimeout
+	 */
+	public function testMultipleWithFailure() {
+		$requests = array(
+			'success' => array(
+				'url' => 'http://httpbin.org/get',
+			),
+			'timeout' => array(
+				'url' => 'http://httpbin.org/delay/10',
+				'options' => array(
+					'timeout' => 1,
+				),
+			),
+		);
+		$responses = Requests::request_multiple($requests, $this->getOptions());
+		$this->assertEquals(200, $responses['success']->status_code);
+		$this->assertInstanceOf('Requests_Exception', $responses['timeout']);
+	}
 }
