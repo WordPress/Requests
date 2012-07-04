@@ -231,7 +231,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 		if (isset($url_parts['path'])) {
 			if (isset($url_parts['query'])) {
-				$get = "$url_parts[path]?$url_parts[query]";
+				$get = $url_parts['path'] . '?' . $url_parts['query'];
 			}
 			else {
 				$get = $url_parts['path'];
