@@ -379,6 +379,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			),
 			'post' => array(
 				'url' => 'http://httpbin.org/post',
+				'type' => Requests::POST,
 				'data' => 'test',
 			),
 		);
