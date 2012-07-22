@@ -42,9 +42,28 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider transportProvider
+	 */
+	public function testPOSTUsingInstantiation($transport) {
+		$options = array(
+			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
+			'transport' => $transport,
+		);
+		$data = 'test';
+		$request = Requests::post('http://httpbin.org/basic-auth-post/user/passwd', array(), $data, $options);
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body);
+		$this->assertEquals(true, $result->authenticated);
+		$this->assertEquals('user', $result->user);
+        $this->assertEquals('test', $result->data);
+	}
+
+	/**
 	 * @expectedException Requests_Exception
 	 */
 	public function testMissingPassword() {
 		$auth = new Requests_Auth_Basic(array('user'));
 	}
+
 }
