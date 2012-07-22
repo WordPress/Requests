@@ -243,6 +243,45 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($success, $request->success);
 	}
 
+	/**
+	 * @dataProvider statusCodeSuccessProvider
+	 */
+	public function testStatusCodeThrow($code, $success) {
+		$url = sprintf('http://httpbin.org/status/%d', $code);
+		$options = array(
+			'follow_redirects' => false,
+		);
+
+		if (!$success) {
+			if ($code >= 400) {
+				$this->setExpectedException('Requests_Exception_HTTP_' . $code, $code);
+			}
+			elseif ($code >= 300 && $code < 400) {
+				$this->setExpectedException('Requests_Exception');
+			}
+		}
+		$request = Requests::get($url, array(), $this->getOptions($options));
+		$request->throw_for_status(false);
+	}
+
+	/**
+	 * @dataProvider statusCodeSuccessProvider
+	 */
+	public function testStatusCodeThrowAllowRedirects($code, $success) {
+		$url = sprintf('http://httpbin.org/status/%d', $code);
+		$options = array(
+			'follow_redirects' => false,
+		);
+
+		if (!$success) {
+			if ($code >= 400) {
+				$this->setExpectedException('Requests_Exception_HTTP_' . $code, $code);
+			}
+		}
+		$request = Requests::get($url, array(), $this->getOptions($options));
+		$request->throw_for_status(true);
+	}
+
 	public function testGzipped() {
 		$request = Requests::get('http://httpbin.org/gzip', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
@@ -295,11 +334,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException Requests_Exception
 	 */
-	/*public function testTimeout() {
+	public function testTimeout() {
 		$options = array(
 			'timeout' => 1,
 		);
-		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions($options));
+		$request = Requests::get('http://httpbin.org/delay/10', array(), $this->getOptions($options));
 		var_dump($request);
-	}*/
+	}
 }

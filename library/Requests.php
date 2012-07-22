@@ -416,6 +416,10 @@ class Requests {
 				}
 				$options['redirected']++;
 				$location = $return->headers['location'];
+				if (strpos ($location, '/') === 0) {
+					// relative redirect, for compatibility make it absolute
+					$location = Requests_IRI::absolutize($url, $location);
+				}
 				$redirected = self::request($location, $req_headers, $req_data, false, $options);
 				$redirected->history[] = $return;
 				return $redirected;
