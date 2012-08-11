@@ -50,12 +50,15 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$data = 'test';
-		$request = Requests::post('http://httpbin.org/basic-auth-post/user/passwd', array(), $data, $options);
+		$request = Requests::post('http://httpbin.org/post', array(), $data, $options);
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
-		$this->assertEquals(true, $result->authenticated);
-		$this->assertEquals('user', $result->user);
+
+		$auth = $result->headers->Authorization;
+		$auth = explode(' ', $auth);
+
+		$this->assertEquals(base64_encode('user:passwd'), $auth[1]);
         $this->assertEquals('test', $result->data);
 	}
 
