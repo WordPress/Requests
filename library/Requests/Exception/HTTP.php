@@ -46,7 +46,7 @@ class Requests_Exception_HTTP extends Requests_Exception {
 	/**
 	 * Get the status message
 	 */
-	public function get_reason() {
+	public function getReason() {
 		return $this->reason;
 	}
 
