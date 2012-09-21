@@ -15,6 +15,6 @@
 	},
 	"type": "library",
 	"autoload": {
-            "psr-0": {"Requests": "library/"}
-        }
+		"psr-0": {"Requests": "library/"}
+	}
 }
