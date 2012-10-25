@@ -425,14 +425,39 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'data' => 'test',
 			),
 		);
-		$results = array();
+		$this->completed = array();
 		$options = array(
-			'complete' => function ($response, $key) use (&$results) {
-				$results[$key] = $response;
-			}
+			'complete' => array($this, 'completeCallback'),
 		);
 		$responses = Requests::request_multiple($requests, $this->getOptions($options));
 
-		$this->assertEquals($results, $responses);
+		$this->assertEquals($this->completed, $responses);
+		$this->completed = array();
+	}
+
+	public function testMultipleUsingCallbackAndFailure() {
+		$requests = array(
+			'success' => array(
+				'url' => 'http://httpbin.org/get',
+			),
+			'timeout' => array(
+				'url' => 'http://httpbin.org/delay/10',
+				'options' => array(
+					'timeout' => 1,
+				),
+			),
+		);
+		$this->completed = array();
+		$options = array(
+			'complete' => array($this, 'completeCallback'),
+		);
+		$responses = Requests::request_multiple($requests, $this->getOptions($options));
+
+		$this->assertEquals($this->completed, $responses);
+		$this->completed = array();
+	}
+
+	public function completeCallback($response, $key) {
+		$this->completed[$key] = $response;
 	}
 }
