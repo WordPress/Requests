@@ -286,6 +286,20 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$request->throw_for_status(true);
 	}
 
+	public function testStatusCodeUnknown(){
+		$request = Requests::get('http://httpbin.org/status/599', array(), $this->getOptions());
+		$this->assertEquals(599, $request->status_code);
+		$this->assertEquals(false, $request->success);
+	}
+
+	/**
+	 * @expectedException Requests_Exception_HTTP_Unknown
+	 */
+	public function testStatusCodeThrowUnknown(){
+		$request = Requests::get('http://httpbin.org/status/599', array(), $this->getOptions());
+		$request->throw_for_status(true);
+	}
+
 	public function testGzipped() {
 		$request = Requests::get('http://httpbin.org/gzip', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
