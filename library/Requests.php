@@ -287,41 +287,14 @@ class Requests {
 		if (!preg_match('/^http(s)?:\/\//i', $url)) {
 			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
 		}
-		$defaults = array(
-			'timeout' => 10,
-			'useragent' => 'php-requests/' . self::VERSION,
-			'redirected' => 0,
-			'redirects' => 10,
-			'follow_redirects' => true,
-			'blocking' => true,
-			'type' => $type,
-			'filename' => false,
-			'auth' => false,
-			'idn' => true,
-			'hooks' => null,
-			'transport' => null,
-		);
-		$options = array_merge($defaults, $options);
+		if (empty($options['type'])) {
+			$options['type'] = $type;
+		}
+		$options = array_merge(self::get_default_options(), $options);
 
-		if (empty($options['hooks'])) {
-			$options['hooks'] = new Requests_Hooks();
-		}
-
-		// Special case for simple basic auth
-		if (is_array($options['auth'])) {
-			$options['auth'] = new Requests_Auth_Basic($options['auth']);
-		}
-		if ($options['auth'] !== false) {
-			$options['auth']->register($options['hooks']);
-		}
+		self::set_defaults($url, $headers, $data, $type, $options);
 
 		$options['hooks']->dispatch('requests.before_request', array(&$url, &$headers, &$data, &$type, &$options));
-
-		if ($options['idn'] !== false) {
-			$iri = new Requests_IRI($url);
-			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
-			$url = $iri->uri;
-		}
 
 		if (!empty($options['transport'])) {
 			$transport = $options['transport'];
@@ -338,6 +311,173 @@ class Requests {
 		$options['hooks']->dispatch('requests.before_parse', array(&$response, $url, $headers, $data, $type, $options));
 
 		return self::parse_response($response, $url, $headers, $data, $options);
+	}
+
+	/**
+	 * Send multiple HTTP requests simultaneously
+	 *
+	 * The `$requests` parameter takes an associative or indexed array of
+	 * request fields. The key of each request can be used to match up the
+	 * request with the returned data, or with the request passed into your
+	 * `multiple.request.complete` callback.
+	 *
+	 * The request fields value is an associative array with the following keys:
+	 *
+	 * - `url`: Request URL Same as the `$url` parameter to
+	 *    {@see Requests::request}
+	 *    (string, required)
+	 * - `headers`: Associative array of header fields. Same as the `$headers`
+	 *    parameter to {@see Requests::request}
+	 *    (array, default: `array()`)
+	 * - `data`: Associative array of data fields or a string. Same as the
+	 *    `$data` parameter to {@see Requests::request}
+	 *    (array|string, default: `array()`)
+	 * - `type`: HTTP request type (use Requests constants). Same as the `$type`
+	 *    parameter to {@see Requests::request}
+	 *    (string, default: `Requests::GET`)
+	 * - `data`: Associative array of options. Same as the `$options` parameter
+	 *    to {@see Requests::request}
+	 *    (array, default: see {@see Requests::request})
+	 *
+	 * If the `$options` parameter is specified, individual requests will
+	 * inherit options from it. This can be used to use a single hooking system,
+	 * or set all the types to `Requests::POST`, for example.
+	 *
+	 * In addition, the `$options` parameter takes the following global options:
+	 *
+	 * - `complete`: A callback for when a request is complete. Takes two
+	 *    parameters, a Requests_Response/Requests_Exception reference, and the
+	 *    ID from the request array (Note: this can also be overriden on a
+	 *    per-request basis, although that's a little silly)
+	 *    (callback)
+	 *
+	 * @param array $requests Requests data (see description for more information)
+	 * @param array $options Global and default options (see {@see Requests::request})
+	 * @return array Responses (either Requests_Response or a Requests_Exception object)
+	 */
+	public static function request_multiple($requests, $options = array()) {
+		$options = array_merge(self::get_default_options(true), $options);
+
+		if (!empty($options['hooks'])) {
+			$options['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+			if (!empty($options['complete'])) {
+				$options['hooks']->register('multiple.request.complete', $options['complete']);
+			}
+		}
+
+		foreach ($requests as $id => &$request) {
+			if (!isset($request['headers'])) {
+				$request['headers'] = array();
+			}
+			if (!isset($request['data'])) {
+				$request['data'] = array();
+			}
+			if (!isset($request['type'])) {
+				$request['type'] = self::GET;
+			}
+			if (!isset($request['options'])) {
+				$request['options'] = $options;
+				$request['options']['type'] = $request['type'];
+			}
+			else {
+				if (empty($request['options']['type'])) {
+					$request['options']['type'] = $request['type'];
+				}
+				$request['options'] = array_merge($options, $request['options']);
+			}
+
+			self::set_defaults($request['url'], $request['headers'], $request['data'], $request['type'], $request['options']);
+
+			// Ensure we only hook in once
+			if ($request['options']['hooks'] !== $options['hooks']) {
+				$request['options']['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+				if (!empty($request['options']['complete'])) {
+					$request['options']['hooks']->register('multiple.request.complete', $request['options']['complete']);
+				}
+			}
+		}
+		unset($request);
+
+		if (!empty($options['transport'])) {
+			$transport = $options['transport'];
+
+			if (is_string($options['transport'])) {
+				$transport = new $transport();
+			}
+		}
+		else {
+			$transport = self::get_transport();
+		}
+		$responses = $transport->request_multiple($requests, $options);
+
+		foreach ($responses as $id => &$response) {
+			// If our hook got messed with somehow, ensure we end up with the
+			// correct response
+			if (is_string($response)) {
+				$request = $requests[$id];
+				$response = self::parse_multiple($response, $request);
+				$request['options']['hooks']->dispatch('multiple.request.complete', array(&$response, $id));
+			}
+		}
+
+		return $responses;
+	}
+
+	/**
+	 * Get the default options
+	 *
+	 * @see Requests::request() for values returned by this method
+	 * @param boolean $multirequest Is this a multirequest?
+	 * @return array Default option values
+	 */
+	protected static function get_default_options($multirequest = false) {
+		$defaults = array(
+			'timeout' => 10,
+			'useragent' => 'php-requests/' . self::VERSION,
+			'redirected' => 0,
+			'redirects' => 10,
+			'follow_redirects' => true,
+			'blocking' => true,
+			'type' => self::GET,
+			'filename' => false,
+			'auth' => false,
+			'idn' => true,
+			'hooks' => null,
+			'transport' => null,
+		);
+		if ($multirequest !== false) {
+			$defaults['complete'] = null;
+		}
+		return $defaults;
+	}
+
+	/**
+	 * Set the default values
+	 *
+	 * @param string $url URL to request
+	 * @param array $headers Extra headers to send with the request
+	 * @param array $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param string $type HTTP request type
+	 * @param array $options Options for the request
+	 * @return array $options
+	 */
+	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
+		if (empty($options['hooks'])) {
+			$options['hooks'] = new Requests_Hooks();
+		}
+
+		if (is_array($options['auth'])) {
+			$options['auth'] = new Requests_Auth_Basic($options['auth']);
+		}
+		if ($options['auth'] !== false) {
+			$options['auth']->register($options['hooks']);
+		}
+
+		if ($options['idn'] !== false) {
+			$iri = new Requests_IRI($url);
+			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
+			$url = $iri->uri;
+		}
 	}
 
 	/**
@@ -433,6 +573,25 @@ class Requests {
 
 		$options['hooks']->dispatch('requests.after_request', array(&$return, $req_headers, $req_data, $options));
 		return $return;
+	}
+
+	/**
+	 * Callback for `transport.internal.parse_response`
+	 *
+	 * Internal use only. Converts a raw HTTP response to a Requests_Response
+	 * while still executing a multiple request.
+	 *
+	 * @param string $headers Full response text including headers and body
+	 * @param array $request Request data as passed into {@see Requests::request_multiple()}
+	 * @return null `$response` is either set to a Requests_Response instance, or a Requests_Exception object
+	 */
+	public static function parse_multiple(&$response, $request) {
+		try {
+			$response = self::parse_response($response, $request['url'], $request['headers'], $request['data'], $request['options']);
+		}
+		catch (Requests_Exception $e) {
+			$response = $e;
+		}
 	}
 
 	/**
