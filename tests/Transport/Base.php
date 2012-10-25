@@ -460,4 +460,38 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function completeCallback($response, $key) {
 		$this->completed[$key] = $response;
 	}
+
+	public function testMultipleToFile() {
+		$requests = array(
+			'get' => array(
+				'url' => 'http://httpbin.org/get',
+				'options' => array(
+					'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+				),
+			),
+			'post' => array(
+				'url' => 'http://httpbin.org/post',
+				'type' => Requests::POST,
+				'data' => 'test',
+				'options' => array(
+					'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+				),
+			),
+		);
+		$responses = Requests::request_multiple($requests, $this->getOptions());
+
+		// GET request
+		$contents = file_get_contents($requests['get']['options']['filename']);
+		$result = json_decode($contents, true);
+		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEmpty($result['args']);
+		unlink($requests['get']['options']['filename']);
+
+		// POST request
+		$contents = file_get_contents($requests['post']['options']['filename']);
+		$result = json_decode($contents, true);
+		$this->assertEquals('http://httpbin.org/post', $result['url']);
+		$this->assertEquals('test', $result['data']);
+		unlink($requests['post']['options']['filename']);
+	}
 }
