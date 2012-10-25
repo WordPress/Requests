@@ -413,4 +413,26 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(200, $responses['success']->status_code);
 		$this->assertInstanceOf('Requests_Exception', $responses['timeout']);
 	}
+
+	public function testMultipleUsingCallback() {
+		$requests = array(
+			'get' => array(
+				'url' => 'http://httpbin.org/get',
+			),
+			'post' => array(
+				'url' => 'http://httpbin.org/post',
+				'type' => Requests::POST,
+				'data' => 'test',
+			),
+		);
+		$results = array();
+		$options = array(
+			'complete' => function ($response, $key) use (&$results) {
+				$results[$key] = $response;
+			}
+		);
+		$responses = Requests::request_multiple($requests, $this->getOptions($options));
+
+		$this->assertEquals($results, $responses);
+	}
 }
