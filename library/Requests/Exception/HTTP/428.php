@@ -2,14 +2,14 @@
 /**
  * Exception for 428 Precondition Required responses
  *
- * @see http://tools.ietf.org/html/draft-nottingham-http-new-status-04
+ * @see http://tools.ietf.org/html/rfc6585
  * @package Requests
  */
 
 /**
  * Exception for 428 Precondition Required responses
  *
- * @see http://tools.ietf.org/html/draft-nottingham-http-new-status-04
+ * @see http://tools.ietf.org/html/rfc6585
  * @package Requests
  */
 class Requests_Exception_HTTP_428 extends Requests_Exception_HTTP {

@@ -221,12 +221,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			array(416, false),
 			array(417, false),
 			array(418, false), // RFC 2324
+			array(428, false), // RFC 6585
+			array(429, false), // RFC 6585
+			array(431, false), // RFC 6585
 			array(500, false),
 			array(501, false),
 			array(502, false),
 			array(503, false),
 			array(504, false),
 			array(505, false),
+			array(511, false), // RFC 6585
 		);
 	}
 
