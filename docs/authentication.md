@@ -8,7 +8,7 @@ Making a Basic authenticated call is ridiculously easy:
 
 ```php
 $options = array(
-	'auth' => new Requests_Basic_Auth(array('user', 'password'))
+	'auth' => new Requests_Auth_Basic(array('user', 'password'))
 );
 Requests::get('http://httpbin.org/basic-auth/user/password', array(), $options);
 ```
