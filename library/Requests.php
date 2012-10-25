@@ -380,6 +380,9 @@ class Requests {
 				$request['options']['type'] = $request['type'];
 			}
 			else {
+				if (empty($request['options']['type'])) {
+					$request['options']['type'] = $request['type'];
+				}
 				$request['options'] = array_merge($options, $request['options']);
 			}
 
