@@ -134,11 +134,10 @@ class Requests_Transport_cURL implements Requests_Transport {
 		do {
 			$active = false;
 
-			while (($status = curl_multi_exec($multihandle, $active)) === CURLM_CALL_MULTI_PERFORM) {
-				if (count($handles) > 0) {
-					break;
-				}
+			do {
+				$status = curl_multi_exec($multihandle, $active);
 			}
+			while ($status === CURLM_CALL_MULTI_PERFORM);
 
 			$to_process = array();
 
