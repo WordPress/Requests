@@ -85,6 +85,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$this->setup_handle($url, $headers, $data, $options);
+		
+		if (isset($options['proxy'])) {
+			curl_setopt($this->fp, CURLOPT_PROXY, $options['proxy']);
+		}
+		if (isset($options['proxy_type'])) {
+			curl_setopt($this->fp, CURLOPT_PROXYTYPE, $options['proxy_type']);
+		}
 
 		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
 
