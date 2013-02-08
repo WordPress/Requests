@@ -504,14 +504,13 @@ class Requests {
 		$return->url = $url;
 
 		if (!$options['filename']) {
-			if (strpos($headers, "\r\n\r\n") === false) {
+			if (($pos = strpos($headers, "\r\n\r\n")) === false) {
 				// Crap!
 				throw new Requests_Exception('Missing header/body separator', 'requests.no_crlf_separator');
 			}
 
-			$headers = explode("\r\n\r\n", $headers, 2);
-			$return->body = array_pop($headers);
-			$headers = $headers[0];
+			$headers = substr($return->raw, 0, $pos);
+            $return->body = substr($return->raw, $pos + strlen("\n\r\n\r"));
 		}
 		else {
 			$return->body = '';
