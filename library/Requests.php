@@ -284,9 +284,6 @@ class Requests {
 	 * @return Requests_Response
 	 */
 	public static function request($url, $headers = array(), $data = array(), $type = self::GET, $options = array()) {
-		if (!preg_match('/^http(s)?:\/\//i', $url)) {
-			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
-		}
 		if (empty($options['type'])) {
 			$options['type'] = $type;
 		}
@@ -462,6 +459,10 @@ class Requests {
 	 * @return array $options
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
+		if (!preg_match('/^http(s)?:\/\//i', $url)) {
+			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
+		}
+
 		if (empty($options['hooks'])) {
 			$options['hooks'] = new Requests_Hooks();
 		}
