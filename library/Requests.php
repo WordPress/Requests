@@ -510,7 +510,7 @@ class Requests {
 			}
 
 			$headers = substr($return->raw, 0, $pos);
-            $return->body = substr($return->raw, $pos + strlen("\n\r\n\r"));
+			$return->body = substr($return->raw, $pos + strlen("\n\r\n\r"));
 		}
 		else {
 			$return->body = '';
