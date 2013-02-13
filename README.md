@@ -81,7 +81,7 @@ You'll probably also want to register an autoloader:
 ### Install source from zip/tarball
 Alternatively, you can fetch a [tarball][] or [zipball][]:
 
-    $ curl https://github.com/rmccue/Requests/tarball/master | tar xzv
+    $ curl -L https://github.com/rmccue/Requests/tarball/master | tar xzv
     (or)
     $ wget https://github.com/rmccue/Requests/tarball/master -O - | tar xzv
 
