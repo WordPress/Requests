@@ -347,7 +347,7 @@ class Requests {
 	 *
 	 * - `complete`: A callback for when a request is complete. Takes two
 	 *    parameters, a Requests_Response/Requests_Exception reference, and the
-	 *    ID from the request array (Note: this can also be overriden on a
+	 *    ID from the request array (Note: this can also be overridden on a
 	 *    per-request basis, although that's a little silly)
 	 *    (callback)
 	 *

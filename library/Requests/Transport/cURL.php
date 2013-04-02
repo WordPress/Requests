@@ -42,7 +42,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	protected $fp;
 
 	/**
-	 * Have we finished the heades yet?
+	 * Have we finished the headers yet?
 	 *
 	 * @var boolean
 	 */
