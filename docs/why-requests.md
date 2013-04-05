@@ -20,7 +20,7 @@ cURL
    horrible functions such as `curl_setopt()`. Combined with that, it uses 229
    global constants, polluting the global namespace horribly.
 
-   Requests, on the other hand, exposes only a handleful of classes to the
+   Requests, on the other hand, exposes only a handful of classes to the
    global namespace.
 
 

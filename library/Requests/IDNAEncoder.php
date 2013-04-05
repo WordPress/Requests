@@ -54,7 +54,7 @@ class Requests_IDNAEncoder {
 	 * @throws Requests_Exception Provided string longer than 64 ASCII characters (`idna.provided_too_long`)
 	 * @throws Requests_Exception Prepared string longer than 64 ASCII characters (`idna.prepared_too_long`)
 	 * @throws Requests_Exception Provided string already begins with xn-- (`idna.provided_is_prefixed`)
-	 * @throws Requests_Exception Encded string longer than 64 ASCII characters (`idna.encoded_too_long`)
+	 * @throws Requests_Exception Encoded string longer than 64 ASCII characters (`idna.encoded_too_long`)
 	 *
 	 * @param string $string ASCII or UTF-8 string (max length 64 characters)
 	 * @return string ASCII string

@@ -20,7 +20,7 @@ class Requests_IPv6
     /**
      * Uncompresses an IPv6 address
      *
-     * RFC 4291 allows you to compress concecutive zero pieces in an address to
+     * RFC 4291 allows you to compress consecutive zero pieces in an address to
      * '::'. This method expects a valid IPv6 address and expands the '::' to
      * the required number of zero pieces.
      *
@@ -92,7 +92,7 @@ class Requests_IPv6
     /**
      * Compresses an IPv6 address
      *
-     * RFC 4291 allows you to compress concecutive zero pieces in an address to
+     * RFC 4291 allows you to compress consecutive zero pieces in an address to
      * '::'. This method expects a valid IPv6 address and compresses consecutive
      * zero pieces to '::'.
      *
