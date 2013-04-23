@@ -61,7 +61,8 @@ dependencies, you can add Requests with it.
         },
         "autoload": {
             "psr-0": {"Requests": "library/"}
-        }
+        },
+        "minimum-stability": "dev"
     }
 
 ### Install source from GitHub
