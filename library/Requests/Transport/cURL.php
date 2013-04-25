@@ -274,6 +274,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 		$this->info = curl_getinfo($this->fp);
 
+		curl_close($this->fp);
 		$options['hooks']->dispatch('curl.after_request', array(&$this->headers));
 		return $this->headers;
 	}
