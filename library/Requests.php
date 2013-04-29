@@ -559,6 +559,7 @@ class Requests {
 				if (strpos ($location, '/') === 0) {
 					// relative redirect, for compatibility make it absolute
 					$location = Requests_IRI::absolutize($url, $location);
+					$location = $location->uri;
 				}
 				$redirected = self::request($location, $req_headers, $req_data, false, $options);
 				$redirected->history[] = $return;
