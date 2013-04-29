@@ -415,7 +415,7 @@ class Requests {
 			// correct response
 			if (is_string($response)) {
 				$request = $requests[$id];
-				$response = self::parse_multiple($response, $request);
+				self::parse_multiple($response, $request);
 				$request['options']['hooks']->dispatch('multiple.request.complete', array(&$response, $id));
 			}
 		}
