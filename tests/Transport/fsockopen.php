@@ -12,18 +12,19 @@ class RequestsTest_Transport_fsockopen extends RequestsTest_Transport_Base {
 		return parent::testHTTPS();
 	}
 
-	public function testHostHeader()
-	{
+	public function testHostHeader() {
 		$hooks = new Requests_Hooks();
-		$hooks->register('fsockopen.after_headers', function(&$transport) {
-			preg_match('/Host:\s+(.+)\r\n/m', $transport, $headerMatch);
-			$this->assertEquals('portquiz.positon.org:8080', $headerMatch[1]);
-		});
+		$hooks->register('fsockopen.after_headers', array($this, 'headerParseCallback'));
 
 		$request = Requests::get(
 			'http://portquiz.positon.org:8080/',
 			array(),
 			$this->getOptions(array('hooks' => $hooks))
 		);
+	}
+
+	public function headerParseCallback($transport) {
+		preg_match('/Host:\s+(.+)\r\n/m', $transport, $headerMatch);
+		$this->assertEquals('portquiz.positon.org:8080', $headerMatch[1]);
 	}
 }
