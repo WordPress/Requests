@@ -512,4 +512,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('test', $result['data']);
 		unlink($requests['post']['options']['filename']);
 	}
+
+	public function testHostHeader() {
+		$request = Requests::get('http://portquiz.positon.org:8080/', array(), $this->getOptions());
+		$responseDoc = new DOMDocument;
+		$responseDoc->loadHTML($request->body);
+		$portXpath = new DOMXPath($responseDoc);
+		$portXpathMatches = $portXpath->query('//p/b');
+		$this->assertEquals(8080, $portXpathMatches->item(0)->nodeValue);
+	}
 }
