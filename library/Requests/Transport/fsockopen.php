@@ -93,7 +93,14 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				$out = $options['type'] . " $get HTTP/1.0\r\n";
 				break;
 		}
-		$out .= "Host: {$url_parts['host']}\r\n";
+		$out .= "Host: {$url_parts['host']}";
+
+		if ($url_parts['port'] !== 80) {
+			$out .= ":{$url_parts['port']}";
+		}
+
+		$out .= "\r\n";
+
 		$out .= "User-Agent: {$options['useragent']}\r\n";
 		$accept_encoding = $this->accept_encoding();
 		if (!empty($accept_encoding)) {
