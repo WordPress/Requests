@@ -7,6 +7,7 @@ before_script:
 script:
  - phpunit --coverage-clover clover.xml
 after_script:
+ - cd ..
  - phpenv local 5.4
  - php vendor/bin/coveralls -v
  - phpenv local --unset
