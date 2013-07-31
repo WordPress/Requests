@@ -1,5 +1,12 @@
 language: php
-before_script: cd tests
+before_script:
+ - wget http://getcomposer.org/composer.phar
+ - php composer.phar install --dev --no-interaction
+ - cd tests
+script:
+ - phpunit --coverage-clover clover.xml
+after_script:
+ - php vendor/bin/coveralls -v
 php:
   - 5.2
   - 5.3
