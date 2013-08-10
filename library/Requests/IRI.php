@@ -186,11 +186,13 @@ class Requests_IRI
         // host -> ihost
         elseif (($prop = 'i' . $name) && array_key_exists($prop, $props))
         {
+            $name = $prop;
             $return = $this->$prop;
         }
         // ischeme -> scheme
         elseif (($prop = substr($name, 1)) && array_key_exists($prop, $props))
         {
+            $name = $prop;
             $return = $this->$prop;
         }
         else
