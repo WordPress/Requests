@@ -273,6 +273,8 @@ class Requests {
 	 *    transport object. Defaults to the first working transport from
 	 *    {@see getTransport()}
 	 *    (string|Requests_Transport, default: {@see getTransport()})
+	 * - `hooks`: Hooks handler.
+	 *    (Requests_Hooker, default: new Requests_Hooks())
 	 *
 	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
 	 *
