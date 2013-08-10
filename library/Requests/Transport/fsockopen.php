@@ -27,6 +27,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 */
 	public $info;
 
+	protected $connect_error = '';
+
 	/**
 	 * Perform a request
 	 *
@@ -44,17 +46,48 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$url_parts = parse_url($url);
 		$host = $url_parts['host'];
+		$context = stream_context_create();
+
+		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
-			$host = 'ssl://' . $host;
+			$remote_socket = 'ssl://' . $host;
 			$url_parts['port'] = 443;
+
+			$context_options = array(
+				'verify_peer' => true,
+			);
+			if (isset($options['verify'])) {
+				if ($options['verify'] === false) {
+					$context_options['verify_peer'] = false;
+				} elseif (is_string($options['verify'])) {
+					$context_options['cafile'] = $options['verify'];
+				}
+			}
+
+			$context = stream_context_create(array('ssl' => $context_options));
 		}
+		else {
+			$remote_socket = 'tcp://' . $host;
+		}
+
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = 80;
 		}
-		$fp = @fsockopen($host, $url_parts['port'], $errno, $errstr, $options['timeout']);
+		$remote_socket .= ':' . $url_parts['port'];
+
+		set_error_handler(array($this, 'connect_error_handler'), E_WARNING | E_NOTICE);
+		$fp = stream_socket_client($remote_socket, $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
+		restore_error_handler();
+
 		if (!$fp) {
-			throw new Requests_Exception($errstr, 'fsockopenerror');
-			return;
+			if ($errno === 0) {
+				// Connection issue
+				throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
+			}
+			else {
+				throw new Requests_Exception($errstr, 'fsockopenerror');
+				return;
+			}
 		}
 
 		$request_body = '';
@@ -255,6 +288,23 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$get = '/';
 		}
 		return $get;
+	}
+
+	/**
+	 * Error handler for stream_socket_client()
+	 *
+	 * @param int $errno Error number (e.g. E_WARNING)
+	 * @param string $errstr Error message
+	 */
+	public function connect_error_handler($errno, $errstr) {
+		// Double-check we can handle it
+		if (($errno & E_WARNING) === 0 && ($errno & E_NOTICE) === 0) {
+			// Return false to indicate the default error handler should engage
+			return false;
+		}
+
+		$this->connect_error .= $errstr . "\n";
+		return true;
 	}
 
 	/**
