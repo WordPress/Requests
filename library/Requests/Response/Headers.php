@@ -82,4 +82,13 @@ class Requests_Response_Headers implements ArrayAccess, IteratorAggregate {
 	public function getIterator() {
 		return new ArrayIterator($this->data);
 	}
+
+	/**
+	 * Get the headers as an array
+	 *
+	 * @return array Header data
+	 */
+	public function getAll() {
+		return $this->data;
+	}
 }
