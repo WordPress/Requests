@@ -75,7 +75,7 @@ class Requests_Response_Headers implements ArrayAccess, IteratorAggregate {
 	}
 
 	/**
-	 * Get an iterator for the data
+	 * Get an interator for the data
 	 *
 	 * @return ArrayIterator
 	 */
