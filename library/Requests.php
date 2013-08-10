@@ -275,6 +275,11 @@ class Requests {
 	 *    (string|Requests_Transport, default: {@see getTransport()})
 	 * - `hooks`: Hooks handler.
 	 *    (Requests_Hooker, default: new Requests_Hooks())
+	 * - `verify`: Should we verify SSL certificates? Allows passing in a custom
+	 *    certificate file as a string.
+	 *    (string|boolean, default: true)
+	 * - `verifyname`: Should we verify the common name in the SSL certificate?
+	 *    (boolean: default, true)
 	 *
 	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
 	 *
