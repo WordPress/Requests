@@ -138,6 +138,36 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
+	public function testRawPATCH() {
+		$data = 'test';
+		$request = Requests::patch('http://httpbin.org/patch', array(), $data, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('test', $result['data']);
+	}
+
+	public function testFormPATCH() {
+		$data = 'test=true&test2=test';
+		$request = Requests::patch('http://httpbin.org/patch', array(), $data, $this->getOptions());
+		$this->assertEquals(200, $request->status_code, $request->body);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+	}
+
+	public function testPATCHWithArray() {
+		$data = array(
+			'test' => 'true',
+			'test2' => 'test',
+		);
+		$request = Requests::patch('http://httpbin.org/patch', array(), $data, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+	}
+
 	public function testDELETE() {
 		$request = Requests::delete('http://httpbin.org/delete', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
