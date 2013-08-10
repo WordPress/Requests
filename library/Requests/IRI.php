@@ -800,7 +800,7 @@ class Requests_IRI
         {
             return true;
         }
-        elseif (isset($cache[$iri]))
+        elseif (isset($cache[(string)$iri]))
         {
             list($this->scheme,
                  $this->iuserinfo,
@@ -822,7 +822,7 @@ class Requests_IRI
                 && $this->set_query($parsed['query'])
                 && $this->set_fragment($parsed['fragment']);
 
-            $cache[$iri] = array($this->scheme,
+            $cache[(string)$iri] = array($this->scheme,
                                  $this->iuserinfo,
                                  $this->ihost,
                                  $this->port,
