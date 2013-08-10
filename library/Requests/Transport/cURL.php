@@ -116,6 +116,9 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		$this->process_response($response, $options);
+		
+		curl_close($this->fp);
+		
 		return $this->headers;
 	}
 
