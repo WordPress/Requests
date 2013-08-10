@@ -73,7 +73,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				}
 			}
 
-			$context = stream_context_create(array('ssl' => $context_options));
+			stream_context_set_option($context, array('ssl' => $context_options));
 		}
 		else {
 			$remote_socket = 'tcp://' . $host;
