@@ -276,8 +276,10 @@ class Requests {
 	 * - `hooks`: Hooks handler.
 	 *    (Requests_Hooker, default: new Requests_Hooks())
 	 * - `verify`: Should we verify SSL certificates? Allows passing in a custom
-	 *    certificate file as a string.
-	 *    (string|boolean, default: true)
+	 *    certificate file as a string. (Using true uses the system-wide root
+	 *    certificate store instead, but this may have different behaviour
+	 *    across transports.)
+	 *    (string|boolean, default: library/Requests/Transport/cacert.pem)
 	 * - `verifyname`: Should we verify the common name in the SSL certificate?
 	 *    (boolean: default, true)
 	 *
@@ -448,6 +450,8 @@ class Requests {
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
+			'verify' => dirname( __FILE__ ) . '/Requests/Transport/cacert.pem',
+			'verifyname' => true,
 		);
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
