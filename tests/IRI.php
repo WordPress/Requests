@@ -354,4 +354,65 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$this->assertEquals('/test/', $iri->path);
 		$this->assertEquals('test', $iri->fragment);
 	}
+
+	public function testReadAliased()
+	{
+		$iri = new Requests_IRI();
+		$iri->scheme = 'http';
+		$iri->userinfo = 'user:password';
+		$iri->host = 'example.com';
+		$iri->path = '/test/';
+		$iri->fragment = 'test';
+
+		$this->assertEquals('http', $iri->ischeme);
+		$this->assertEquals('user:password', $iri->iuserinfo);
+		$this->assertEquals('example.com', $iri->ihost);
+		$this->assertEquals(80, $iri->iport);
+		$this->assertEquals('/test/', $iri->ipath);
+		$this->assertEquals('test', $iri->ifragment);
+	}
+
+	public function testWriteAliased()
+	{
+		$iri = new Requests_IRI();
+		$iri->scheme = 'http';
+		$iri->iuserinfo = 'user:password';
+		$iri->ihost = 'example.com';
+		$iri->ipath = '/test/';
+		$iri->ifragment = 'test';
+
+		$this->assertEquals('http', $iri->scheme);
+		$this->assertEquals('user:password', $iri->userinfo);
+		$this->assertEquals('example.com', $iri->host);
+		$this->assertEquals(80, $iri->port);
+		$this->assertEquals('/test/', $iri->path);
+		$this->assertEquals('test', $iri->fragment);
+	}
+
+	/**
+	 * @expectedException PHPUnit_Framework_Error_Notice
+	 */
+	public function testNonexistantProperty()
+	{
+		$iri = new Requests_IRI();
+		$this->assertFalse(isset($iri->nonexistant_prop));
+		$should_fail = $iri->nonexistant_prop;
+	}
+
+	public function testBlankHost()
+	{
+		$iri = new Requests_IRI('http://example.com/a/?b=c#d');
+		$iri->host = null;
+
+		$this->assertEquals(null, $iri->host);
+		$this->assertEquals('http:/a/?b=c#d', (string) $iri);
+	}
+
+	public function testBadPort()
+	{
+		$iri = new Requests_IRI();
+		$iri->port = 'example';
+
+		$this->assertEquals(null, $iri->port);
+	}
 }
