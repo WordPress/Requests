@@ -12,7 +12,7 @@
  * @package Requests
  * @subpackage Utilities
  */
-class Requests_Hooks {
+class Requests_Hooks implements Requests_Hooker {
 	/**
 	 * Constructor
 	 */
