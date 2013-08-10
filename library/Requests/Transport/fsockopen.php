@@ -56,6 +56,15 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$context_options = array(
 				'verify_peer' => true,
 			);
+
+			// SNI, if enabled (OpenSSL >=0.9.8j)
+			if (defined('OPENSSL_TLSEXT_SERVER_NAME') && OPENSSL_TLSEXT_SERVER_NAME) {
+				$context_options['SNI_enabled'] = true;
+				if (isset($options['verifyname']) && $options['verifyname'] === false) {
+					$context_options['SNI_enabled'] = false;
+				}
+			}
+
 			if (isset($options['verify'])) {
 				if ($options['verify'] === false) {
 					$context_options['verify_peer'] = false;
