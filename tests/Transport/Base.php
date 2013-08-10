@@ -381,11 +381,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEmpty($result['args']);
 
 		// test2
-		$this->assertNotEmpty($responses['test1']);
-		$this->assertInstanceOf('Requests_Response', $responses['test1']);
-		$this->assertEquals(200, $responses['test1']->status_code);
+		$this->assertNotEmpty($responses['test2']);
+		$this->assertInstanceOf('Requests_Response', $responses['test2']);
+		$this->assertEquals(200, $responses['test2']->status_code);
 
-		$result = json_decode($responses['test1']->body, true);
+		$result = json_decode($responses['test2']->body, true);
 		$this->assertEquals('http://httpbin.org/get', $result['url']);
 		$this->assertEmpty($result['args']);
 	}
