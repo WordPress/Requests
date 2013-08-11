@@ -413,6 +413,20 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException Requests_Exception
 	 */
+	public function testExpiredHTTPS() {
+		$request = Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
+	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testRevokedHTTPS() {
+		$request = Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
+	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
 	public function testTimeout() {
 		$options = array(
 			'timeout' => 1,
