@@ -41,4 +41,4 @@ $response = Requests::get('http://hotdogbin.org/admin', array(), $options);
 (For more information on how to register and use hooks, see the [hooking
 system documentation][hooks])
 
-[hooks]: https://github.com/rmccue/Requests/tree/master/docs/hooks.md
+[hooks]: hooks.md

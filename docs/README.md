@@ -17,10 +17,10 @@ here are prose; you might also want to check out the [API documentation][].
 	* [Custom authentication][authentication-custom]
 	* [Hooking system][hooks]
 
-[goals]: https://github.com/rmccue/Requests/tree/master/docs/goals.md
-[why-requests]: https://github.com/rmccue/Requests/tree/master/docs/why-requests.md
-[usage]: https://github.com/rmccue/Requests/tree/master/docs/usage.md
-[usage-advanced]: https://github.com/rmccue/Requests/tree/master/docs/usage-advanced.md
-[authentication]: https://github.com/rmccue/Requests/tree/master/docs/authentication.md
-[authentication-custom]: https://github.com/rmccue/Requests/tree/master/docs/authentication-custom.md
-[hooks]: https://github.com/rmccue/Requests/tree/master/docs/hooks.md
+[goals]: goals.md
+[why-requests]: why-requests.md
+[usage]: usage.md
+[usage-advanced]: usage-advanced.md
+[authentication]: authentication.md
+[authentication-custom]: authentication-custom.md
+[hooks]: hooks.md
