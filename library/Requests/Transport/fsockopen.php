@@ -346,7 +346,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		// If we don't have SSL options, then we couldn't make the connection at
 		// all
 		if (empty($meta) || empty($meta['ssl']) || empty($meta['ssl']['peer_certificate'])) {
-			throw new Requests_Exception('SSL certificate was not given; check that the host is valid', 'fsockopen.ssl.no_params');
+			throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.ssl.connect_error');
 		}
 
 		$cert = openssl_x509_parse($meta['ssl']['peer_certificate']);
