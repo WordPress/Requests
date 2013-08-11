@@ -336,9 +336,12 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * Instead
 	 *
 	 * @see http://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
-	 * @param [type] $host [description]
-	 * @param [type] $context [description]
-	 * @return [type] [description]
+	 *
+	 * @throws Requests_Exception On failure to connect via TLS (`fsockopen.ssl.connect_error`)
+	 * @throws Requests_Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
+	 * @param string $host Host name to verify against
+	 * @param resource $context Stream context
+	 * @return bool
 	 */
 	public function verify_certificate_from_context($host, $context) {
 		$meta = stream_context_get_options($context);
