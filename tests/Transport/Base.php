@@ -425,6 +425,43 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Test that SSL fails with a bad certificate
+	 *
+	 * This is defined as invalid by
+	 * https://onlinessl.netlock.hu/en/test-center/invalid-ssl-certificate.html
+	 * and is used in testing in PhantomJS. That said, expect this to break.
+	 *
+	 * @expectedException Requests_Exception
+	 */
+	public function testBadDomain() {
+		$request = Requests::get('https://tv.eurosport.com/', array(), $this->getOptions());
+	}
+
+	/**
+	 * Test that the transport supports Server Name Indication with HTTPS
+	 *
+	 * sni.velox.ch is used for SNI testing, and the common name is set to
+	 * `*.sni.velox.ch` as such. Without alternate name support, this will fail
+	 * as `sni.velox.ch` is only in the alternate name
+	 */
+	public function testAlternateNameSupport() {
+		$request = Requests::get('https://sni.velox.ch/', array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+	}
+
+	/**
+	 * Test that the transport supports Server Name Indication with HTTPS
+	 *
+	 * sni.velox.ch is used for SNI testing, and the common name is set to
+	 * `*.sni.velox.ch` as such. Without SNI support, this will fail. Also tests
+	 * our wildcard support.
+	 */
+	public function testSNISupport() {
+		$request = Requests::get('https://abc.sni.velox.ch/', array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+	}
+
+	/**
 	 * @expectedException Requests_Exception
 	 */
 	public function testTimeout() {
