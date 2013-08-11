@@ -341,12 +341,15 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * @return [type] [description]
 	 */
 	public function verify_certificate_from_context($host, $context) {
-		$meta = stream_context_get_params($context);
-		if (empty($meta['options']) || empty($meta['options']['ssl']) || empty($meta['options']['ssl']['peer_certificate'])) {
+		$meta = stream_context_get_options($context);
+
+		// If we don't have SSL options, then we couldn't make the connection at
+		// all
+		if (empty($meta) || empty($meta['ssl']) || empty($meta['ssl']['peer_certificate'])) {
 			throw new Requests_Exception('SSL certificate was not given; check that the host is valid', 'fsockopen.ssl.no_params');
 		}
 
-		$cert = openssl_x509_parse($meta['options']['ssl']['peer_certificate']);
+		$cert = openssl_x509_parse($meta['ssl']['peer_certificate']);
 
 		// Calculate the valid wildcard match if the host is not an IP address
 		$parts = explode('.', $host);
