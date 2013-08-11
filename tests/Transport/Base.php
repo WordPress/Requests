@@ -40,6 +40,22 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
+	public function testGETWithNestedData() {
+		$data = array(
+			'test' => 'true',
+			'test2' => array(
+				'test3' => 'test',
+				'test4' => 'test-too',
+			),
+		);
+		$request = Requests::request('http://httpbin.org/get', array(), $data, Requests::GET, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals('http://httpbin.org/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too', $result['url']);
+		$this->assertEquals(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['args']);
+	}
+
 	public function testGETWithDataAndQuery() {
 		$data = array(
 			'test2' => 'test',
@@ -106,6 +122,21 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		$result = json_decode($request->body, true);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+	}
+
+	public function testPOSTWithNestedData() {
+		$data = array(
+			'test' => 'true',
+			'test2' => array(
+				'test3' => 'test',
+				'test4' => 'test-too',
+			),
+		);
+		$request = Requests::post('http://httpbin.org/post', array(), $data, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['form']);
 	}
 
 	public function testRawPUT() {
