@@ -1,6 +1,8 @@
 <?php
 
 abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
+	protected $skip_https = false;
+
 	protected function getOptions($other = array()) {
 		$options = array(
 			'transport' => $this->transport
@@ -402,6 +404,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testHTTPS() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
 		$request = Requests::get('https://httpbin.org/get', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
@@ -414,6 +421,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testExpiredHTTPS() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
 		$request = Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
@@ -421,6 +433,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testRevokedHTTPS() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
 		$request = Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
@@ -434,6 +451,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testBadDomain() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
 		$request = Requests::get('https://tv.eurosport.com/', array(), $this->getOptions());
 	}
 
@@ -445,6 +467,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * as `sni.velox.ch` is only in the alternate name
 	 */
 	public function testAlternateNameSupport() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
 		$request = Requests::get('https://sni.velox.ch/', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
@@ -457,6 +484,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * our wildcard support.
 	 */
 	public function testSNISupport() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
 		$request = Requests::get('https://abc.sni.velox.ch/', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
