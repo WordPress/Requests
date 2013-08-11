@@ -47,6 +47,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$url_parts = parse_url($url);
 		$host = $url_parts['host'];
 		$context = stream_context_create();
+		$verifyname = false;
 
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
@@ -55,7 +56,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 			$context_options = array(
 				'verify_peer' => true,
+				// 'CN_match' => $host,
+				'capture_peer_cert' => true
 			);
+			$verifyname = true;
 
 			// SNI, if enabled (OpenSSL >=0.9.8j)
 			if (defined('OPENSSL_TLSEXT_SERVER_NAME') && OPENSSL_TLSEXT_SERVER_NAME) {
@@ -73,6 +77,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				}
 			}
 
+			if (isset($options['verifyname']) && $options['verifyname'] === false) {
+				$verifyname = false;
+			}
+
 			stream_context_set_option($context, array('ssl' => $context_options));
 		}
 		else {
@@ -87,6 +95,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		set_error_handler(array($this, 'connect_error_handler'), E_WARNING | E_NOTICE);
 		$fp = stream_socket_client($remote_socket, $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
 		restore_error_handler();
+
+		if ($verifyname) {
+			$this->verify_certificate_from_context($host, $context);
+		}
 
 		if (!$fp) {
 			if ($errno === 0) {
@@ -314,6 +326,71 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$this->connect_error .= $errstr . "\n";
 		return true;
+	}
+
+	/**
+	 * Verify the certificate against common name and subject alternative names
+	 *
+	 * Unfortunately, PHP doesn't check the certificate against the alternative
+	 * names, leading things like 'https://www.github.com/' to be invalid.
+	 * Instead
+	 *
+	 * @see http://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
+	 * @param [type] $host [description]
+	 * @param [type] $context [description]
+	 * @return [type] [description]
+	 */
+	public function verify_certificate_from_context($host, $context) {
+		$meta = stream_context_get_params($context);
+		if (empty($meta['options']) || empty($meta['options']['ssl']) || empty($meta['options']['ssl']['peer_certificate'])) {
+			throw new Requests_Exception('SSL certificate was not given; check that the host is valid', 'fsockopen.ssl.no_params');
+		}
+
+		$cert = openssl_x509_parse($meta['options']['ssl']['peer_certificate']);
+
+		// Calculate the valid wildcard match if the host is not an IP address
+		$parts = explode('.', $host);
+		if (ip2long($host) === false) {
+			$parts[0] = '*';
+		}
+		$wildcard = implode('.', $parts);
+
+		$has_dns_alt = false;
+
+		// Check the subjectAltName
+		if (!empty($cert['extensions']) && !empty($cert['extensions']['subjectAltName'])) {
+			$altnames = explode(',', $cert['extensions']['subjectAltName']);
+			foreach ($altnames as $altname) {
+				$altname = trim($altname);
+				if (strpos($altname, 'DNS:') !== 0)
+					continue;
+
+				$has_dns_alt = true;
+
+				// Strip the 'DNS:' prefix and trim whitespace
+				$altname = trim(substr($altname, 4));
+
+				if ($host === $altname) {
+					return true;
+				}
+				elseif ($wildcard === $altname) {
+					return true;
+				}
+			}
+		}
+
+		// Fall back to checking the common name if we didn't get any dNSName
+		// alt names, as per RFC2818
+		if (!$has_dns_alt && !empty($cert['subject']['CN'])) {
+			if ($host === $cert['subject']['CN']) {
+				return true;
+			}
+			elseif ($wildcard === $cert['subject']['CN']) {
+				return true;
+			}
+		}
+
+		throw new Requests_Exception('SSL certificate did not match the requested domain name', 'fsockopen.ssl.no_match');
 	}
 
 	/**
