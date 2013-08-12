@@ -149,7 +149,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$out .= "Accept-Encoding: $accept_encoding\r\n";
 		}
 
-		$headers = Requests::flattern($headers);
+		$headers = Requests::flatten($headers);
 
 		if (!empty($headers)) {
 			$out .= implode($headers, "\r\n") . "\r\n";

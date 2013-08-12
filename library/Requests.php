@@ -654,12 +654,23 @@ class Requests {
 	 * @param array $array Dictionary of header values
 	 * @return array List of headers
 	 */
-	public static function flattern($array) {
+	public static function flatten($array) {
 		$return = array();
 		foreach ($array as $key => $value) {
 			$return[] = "$key: $value";
 		}
 		return $return;
+	}
+
+	/**
+	 * Convert a key => value array to a 'key: value' array for headers
+	 *
+	 * @deprecated Misspelling of {@see Requests::flatten}
+	 * @param array $array Dictionary of header values
+	 * @return array List of headers
+	 */
+	public static function flattern($array) {
+		return self::flatten($array);
 	}
 
 	/**
