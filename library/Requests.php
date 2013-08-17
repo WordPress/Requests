@@ -683,7 +683,7 @@ class Requests {
 	 * @param string $data Compressed data in one of the above formats
 	 * @return string Decompressed string
 	 */
-	protected static function decompress($data) {
+	public static function decompress($data) {
 		if (substr($data, 0, 2) !== "\x1f\x8b") {
 			// Not actually compressed. Probably cURL ruining this for us.
 			return $data;
@@ -718,7 +718,7 @@ class Requests {
 	 * @param string $gzData String to decompress.
 	 * @return string|bool False on failure.
 	 */
-	protected static function compatible_gzinflate($gzData) {
+	public static function compatible_gzinflate($gzData) {
 		if ( substr($gzData, 0, 3) == "\x1f\x8b\x08" ) {
 			$i = 10;
 			$flg = ord( substr($gzData, 3, 1) );
