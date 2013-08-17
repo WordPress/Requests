@@ -684,12 +684,12 @@ class Requests {
 	 * @return string Decompressed string
 	 */
 	public static function decompress($data) {
-		if (substr($data, 0, 2) !== "\x1f\x8b") {
+		if (substr($data, 0, 2) !== "\x1f\x8b" && substr($data, 0, 2) !== "\x78\x9c") {
 			// Not actually compressed. Probably cURL ruining this for us.
 			return $data;
 		}
 
-		if (function_exists('gzdecode') && ($decoded = gzdecode($data)) !== false) {
+		if (function_exists('gzdecode') && ($decoded = @gzdecode($data)) !== false) {
 			return $decoded;
 		}
 		elseif (function_exists('gzinflate') && ($decoded = @gzinflate($data)) !== false) {
