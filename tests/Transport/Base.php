@@ -1,6 +1,13 @@
 <?php
 
 abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
+	public function setUp() {
+		if (!call_user_func(array($this->transport, 'test'))) {
+			$this->markTestSkipped($this->transport . ' is not available');
+			return;
+		}
+	}
+
 	protected function getOptions($other = array()) {
 		$options = array(
 			'transport' => $this->transport

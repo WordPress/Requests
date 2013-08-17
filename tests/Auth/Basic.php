@@ -13,6 +13,11 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	 * @dataProvider transportProvider
 	 */
 	public function testUsingArray($transport) {
+		if (!call_user_func(array($transport, 'test'))) {
+			$this->markTestSkipped($transport . ' is not available');
+			return;
+		}
+
 		$options = array(
 			'auth' => array('user', 'passwd'),
 			'transport' => $transport,
@@ -29,6 +34,11 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	 * @dataProvider transportProvider
 	 */
 	public function testUsingInstantiation($transport) {
+		if (!call_user_func(array($transport, 'test'))) {
+			$this->markTestSkipped($transport . ' is not available');
+			return;
+		}
+
 		$options = array(
 			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
 			'transport' => $transport,
@@ -45,6 +55,11 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	 * @dataProvider transportProvider
 	 */
 	public function testPOSTUsingInstantiation($transport) {
+		if (!call_user_func(array($transport, 'test'))) {
+			$this->markTestSkipped($transport . ' is not available');
+			return;
+		}
+
 		$options = array(
 			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
 			'transport' => $transport,
