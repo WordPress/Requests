@@ -706,19 +706,28 @@ class Requests {
 	}
 
 	/**
-	 * Decompress deflated string while staying compatible with the majority of servers.
+	 * Decompression of deflated string while staying compatible with the majority of servers.
 	 *
-	 * Certain servers will return deflated data with headers which PHP's gziniflate()
-	 * function cannot handle out of the box. The following function lifted from
-	 * http://au2.php.net/manual/en/function.gzinflate.php#77336 will attempt to deflate
-	 * the various return forms used.
+	 * Certain Servers will return deflated data with headers which PHP's gzinflate()
+	 * function cannot handle out of the box. The following function has been created from
+	 * various snippets on the gzinflate() PHP documentation.
 	 *
+	 * Warning: Magic numbers within. Due to the potential different formats that the compressed
+	 * data may be returned in, some "magic offsets" are needed to ensure proper decompression
+	 * takes place. For a simple progmatic way to determine the magic offset in use, see:
+	 * http://core.trac.wordpress.org/ticket/18273
+	 *
+	 * @since 2.8.1
+	 * @link http://core.trac.wordpress.org/ticket/18273
+	 * @link http://au2.php.net/manual/en/function.gzinflate.php#70875
 	 * @link http://au2.php.net/manual/en/function.gzinflate.php#77336
 	 *
 	 * @param string $gzData String to decompress.
 	 * @return string|bool False on failure.
 	 */
 	public static function compatible_gzinflate($gzData) {
+		// Compressed data might contain a full zlib header, if so strip it for
+		// gzinflate()
 		if ( substr($gzData, 0, 3) == "\x1f\x8b\x08" ) {
 			$i = 10;
 			$flg = ord( substr($gzData, 3, 1) );
@@ -734,9 +743,75 @@ class Requests {
 				if ( $flg & 2 )
 					$i = $i + 2;
 			}
-			return gzinflate( substr($gzData, $i, -8) );
-		} else {
+			$decompressed = self::compatible_gzinflate( substr( $gzData, $i ) );
+			if ( false !== $decompressed ) {
+				return $decompressed;
+			}
+		}
+
+		// If the data is Huffman Encoded, we must first strip the leading 2
+		// byte Huffman marker for gzinflate()
+		// The response is Huffman coded by many compressors such as
+		// java.util.zip.Deflater, Ruby’s Zlib::Deflate, and .NET's
+		// System.IO.Compression.DeflateStream.
+		//
+		// See http://decompres.blogspot.com/ for a quick explanation of this
+		// data type
+		$huffman_encoded = false;
+
+		// low nibble of first byte should be 0x08
+		list( , $first_nibble )    = unpack( 'h', $gzData );
+
+		// First 2 bytes should be divisible by 0x1F
+		list( , $first_two_bytes ) = unpack( 'n', $gzData );
+
+		if ( 0x08 == $first_nibble && 0 == ( $first_two_bytes % 0x1F ) )
+			$huffman_encoded = true;
+
+		if ( $huffman_encoded ) {
+			if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 2 ) ) ) )
+				return $decompressed;
+		}
+
+		if ( "\x50\x4b\x03\x04" == substr( $gzData, 0, 4 ) ) {
+			// ZIP file format header
+			// Offset 6: 2 bytes, General-purpose field
+			// Offset 26: 2 bytes, filename length
+			// Offset 28: 2 bytes, optional field length
+			// Offset 30: Filename field, followed by optional field, followed
+			// immediately by data
+			list( , $general_purpose_flag ) = unpack( 'v', substr( $gzData, 6, 2 ) );
+
+			// If the file has been compressed on the fly, 0x08 bit is set of
+			// the general purpose field. We can use this to differentiate
+			// between a compressed document, and a ZIP file
+			$zip_compressed_on_the_fly = ( 0x08 == (0x08 & $general_purpose_flag ) );
+
+			if ( ! $zip_compressed_on_the_fly ) {
+				// Don't attempt to decode a compressed zip file
+				return $gzData;
+			}
+
+			// Determine the first byte of data, based on the above ZIP header
+			// offsets:
+			$first_file_start = array_sum( unpack( 'v2', substr( $gzData, 26, 4 ) ) );
+			if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 30 + $first_file_start ) ) ) ) {
+				return $decompressed;
+			}
 			return false;
 		}
+
+		// Finally fall back to straight gzinflate
+		if ( false !== ( $decompressed = @gzinflate( $gzData ) ) ) {
+			return $decompressed;
+		}
+
+		// Fallback for all above failing, not expected, but included for
+		// debugging and preventing regressions and to track stats
+		if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 2 ) ) ) ) {
+			return $decompressed;
+		}
+
+		return false;
 	}
 }
