@@ -344,6 +344,8 @@ class Requests {
 	 * - `data`: Associative array of options. Same as the `$options` parameter
 	 *    to {@see Requests::request}
 	 *    (array, default: see {@see Requests::request})
+	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
+	 *    (array|Requests_Cookie_Jar)
 	 *
 	 * If the `$options` parameter is specified, individual requests will
 	 * inherit options from it. This can be used to use a single hooking system,
@@ -447,6 +449,7 @@ class Requests {
 			'type' => self::GET,
 			'filename' => false,
 			'auth' => false,
+			'cookies' => false,
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
@@ -483,6 +486,13 @@ class Requests {
 		}
 		if ($options['auth'] !== false) {
 			$options['auth']->register($options['hooks']);
+		}
+
+		if (is_array($options['cookies'])) {
+			$options['cookies'] = new Requests_Cookie_Jar($options['cookies']);
+		}
+		if ($options['cookies'] !== false) {
+			$options['cookies']->register($options['hooks']);
 		}
 
 		if ($options['idn'] !== false) {
