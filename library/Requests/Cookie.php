@@ -109,11 +109,13 @@ class Requests_Cookie {
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=169091
 		if (strpos($kvparts, '=') === false) {
 			$name = '';
-			$value = trim($kvparts);
+			$value = $kvparts;
 		}
 		else {
 			list($name, $value) = explode('=', $kvparts, 2);
 		}
+		$name = trim($name);
+		$value = trim($value);
 
 		// Attribute key are handled case-insensitively
 		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
@@ -128,6 +130,8 @@ class Requests_Cookie {
 					list($part_key, $part_value) = explode('=', $part, 2);
 				}
 
+				$part_key = trim($part_key);
+				$part_value = trim($part_value);
 				$attributes[$part_key] = $part_value;
 			}
 		}
