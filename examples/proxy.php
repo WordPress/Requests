@@ -12,9 +12,9 @@ $request = Requests::get('http://httpbin.org/ip' );
 // Check what we received
 var_dump( $request->body );
 
-// Now let's make a request via a proxy
+// Now let's make a request via a proxy.
 $options = array(
-	'proxy' => '95.65.58.61:443',
+	'proxy' => '127.0.0.1:8080', // syntax: host:port, eg 12.13.14.14:8080 or someproxy.com:3128
 );
 $request = Requests::get('http://httpbin.org/ip', array(), $options );
 
