@@ -78,14 +78,23 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		else {
 			$remote_socket = 'tcp://' . $host;
 		}
-
+		
+		$proxy = isset( $options['proxy'] );
+		$proxy_auth = $proxy && isset( $options['proxy_username'] ) && isset( $options['proxy_password'] );
+		
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = 80;
 		}
 		$remote_socket .= ':' . $url_parts['port'];
 
 		set_error_handler(array($this, 'connect_error_handler'), E_WARNING | E_NOTICE);
-		$fp = stream_socket_client($remote_socket, $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
+
+		if ( $proxy )
+			$fp = stream_socket_client( 'tcp://' . $options['proxy'], $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
+		else
+			$fp = stream_socket_client( $remote_socket, $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
+
+		
 		restore_error_handler();
 
 		if (!$fp) {
@@ -105,14 +114,18 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			case Requests::POST:
 			case Requests::PUT:
 			case Requests::PATCH:
-				if (isset($url_parts['path'])) {
-					$path = $url_parts['path'];
-					if (isset($url_parts['query'])) {
-						$path .= '?' . $url_parts['query'];
+				if( $proxy ) {
+					$path = $url;
+				} else {
+					if (isset($url_parts['path'])) {
+						$path = $url_parts['path'];
+						if (isset($url_parts['query'])) {
+							$path .= '?' . $url_parts['query'];
+						}
 					}
-				}
-				else {
-					$path = '/';
+					else {
+						$path = '/';
+					}
 				}
 				$out = $options['type'] . " $path HTTP/1.0\r\n";
 				if (is_array($data)) {
@@ -131,7 +144,11 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			case Requests::HEAD:
 			case Requests::GET:
 			case Requests::DELETE:
-				$get = self::format_get($url_parts, $data);
+				if( $proxy ) {
+					$get = $url;
+				} else {
+					$get = self::format_get($url_parts, $data);
+				}
 				$out = $options['type'] . " $get HTTP/1.0\r\n";
 				break;
 		}
@@ -140,6 +157,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		if ($url_parts['port'] !== 80) {
 			$out .= ":{$url_parts['port']}";
 		}
+		
+		if( $proxy_auth )
+			$out .= 'Proxy-Authorization: Basic ' . base64_encode( $options['proxy_username'] . ':' . $options['proxy_password'] ) . "\r\n";
 
 		$out .= "\r\n";
 

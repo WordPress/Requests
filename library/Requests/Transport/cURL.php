@@ -84,7 +84,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$this->setup_handle($url, $headers, $data, $options);
-
+		
 		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
 
 		if ($options['filename'] !== false) {
@@ -104,6 +104,17 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if (isset($options['verifyname']) && $options['verifyname'] === false) {
 			curl_setopt($this->fp, CURLOPT_SSL_VERIFYHOST, 0);
+		}
+
+		// Proxy support
+		if ( isset( $options['proxy'] ) ) {
+			curl_setopt( $this->fp, CURLOPT_PROXYTYPE, CURLPROXY_HTTP );
+			curl_setopt( $this->fp, CURLOPT_PROXY, $options['proxy'] );
+
+			if ( isset( $options['proxy_username'] ) && isset( $options['proxy_password'] ) ) {
+				curl_setopt( $this->fp, CURLOPT_PROXYAUTH, CURLAUTH_ANY );
+				curl_setopt( $this->fp, CURLOPT_PROXYUSERPWD, $options['proxy_username'] . ':' . $options['proxy_password'] );
+			}
 		}
 
 		$response = curl_exec($this->fp);
