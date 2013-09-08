@@ -106,17 +106,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->fp, CURLOPT_SSL_VERIFYHOST, 0);
 		}
 
-		// Proxy support
-		if ( isset( $options['proxy'] ) ) {
-			curl_setopt( $this->fp, CURLOPT_PROXYTYPE, CURLPROXY_HTTP );
-			curl_setopt( $this->fp, CURLOPT_PROXY, $options['proxy'] );
-
-			if ( isset( $options['proxy_username'] ) && isset( $options['proxy_password'] ) ) {
-				curl_setopt( $this->fp, CURLOPT_PROXYAUTH, CURLAUTH_ANY );
-				curl_setopt( $this->fp, CURLOPT_PROXYUSERPWD, $options['proxy_username'] . ':' . $options['proxy_password'] );
-			}
-		}
-
 		$response = curl_exec($this->fp);
 
 		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
