@@ -89,11 +89,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		set_error_handler(array($this, 'connect_error_handler'), E_WARNING | E_NOTICE);
 
-		if ( $proxy )
-			$fp = stream_socket_client( 'tcp://' . $options['proxy'], $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
-		else
-			$fp = stream_socket_client( $remote_socket, $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
+		$options['hooks']->dispatch('fsockopen.remote_socket', array(&$remote_socket));
 
+		$fp = stream_socket_client( $remote_socket, $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
 		
 		restore_error_handler();
 
@@ -114,20 +112,19 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			case Requests::POST:
 			case Requests::PUT:
 			case Requests::PATCH:
-				if( $proxy ) {
-					$path = $url;
-				} else {
-					if (isset($url_parts['path'])) {
-						$path = $url_parts['path'];
-						if (isset($url_parts['query'])) {
-							$path .= '?' . $url_parts['query'];
-						}
-					}
-					else {
-						$path = '/';
+				if (isset($url_parts['path'])) {
+					$path = $url_parts['path'];
+					if (isset($url_parts['query'])) {
+						$path .= '?' . $url_parts['query'];
 					}
 				}
+				else {
+					$path = '/';
+				}
+				
+				$options['hooks']->dispatch( 'fsockopen.remote_host_path', array( &$path, $url ) );
 				$out = $options['type'] . " $path HTTP/1.0\r\n";
+				
 				if (is_array($data)) {
 					$request_body = http_build_query($data, null, '&');
 				}
@@ -144,12 +141,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			case Requests::HEAD:
 			case Requests::GET:
 			case Requests::DELETE:
-				if( $proxy ) {
-					$get = $url;
-				} else {
-					$get = self::format_get($url_parts, $data);
-				}
-				$out = $options['type'] . " $get HTTP/1.0\r\n";
+				$path = self::format_get($url_parts, $data);
+				$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
+				$out = $options['type'] . " $path HTTP/1.0\r\n";
 				break;
 		}
 		$out .= "Host: {$url_parts['host']}";
@@ -158,9 +152,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$out .= ":{$url_parts['port']}";
 		}
 		
-		if( $proxy_auth )
-			$out .= 'Proxy-Authorization: Basic ' . base64_encode( $options['proxy_username'] . ':' . $options['proxy_password'] ) . "\r\n";
-
 		$out .= "\r\n";
 
 		$out .= "User-Agent: {$options['useragent']}\r\n";
