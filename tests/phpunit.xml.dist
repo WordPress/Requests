@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="bootstrap.php">
 	<testsuites>
+		<testsuite name="Proxy">
+			<directory suffix=".php">Proxy</directory>
+		</testsuite>
 		<testsuite name="Authentication">
 			<directory suffix=".php">Auth</directory>
 		</testsuite>
