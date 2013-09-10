@@ -79,13 +79,20 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$remote_socket = 'tcp://' . $host;
 		}
 
+		$proxy = isset( $options['proxy'] );
+		$proxy_auth = $proxy && isset( $options['proxy_username'] ) && isset( $options['proxy_password'] );
+
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = 80;
 		}
 		$remote_socket .= ':' . $url_parts['port'];
 
 		set_error_handler(array($this, 'connect_error_handler'), E_WARNING | E_NOTICE);
+
+		$options['hooks']->dispatch('fsockopen.remote_socket', array(&$remote_socket));
+
 		$fp = stream_socket_client($remote_socket, $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
+
 		restore_error_handler();
 
 		if (!$fp) {
@@ -114,7 +121,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				else {
 					$path = '/';
 				}
+
+				$options['hooks']->dispatch( 'fsockopen.remote_host_path', array( &$path, $url ) );
 				$out = $options['type'] . " $path HTTP/1.0\r\n";
+
 				if (is_array($data)) {
 					$request_body = http_build_query($data, null, '&');
 				}
@@ -131,8 +141,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			case Requests::HEAD:
 			case Requests::GET:
 			case Requests::DELETE:
-				$get = self::format_get($url_parts, $data);
-				$out = $options['type'] . " $get HTTP/1.0\r\n";
+				$path = self::format_get($url_parts, $data);
+				$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
+				$out = $options['type'] . " $path HTTP/1.0\r\n";
 				break;
 		}
 		$out .= "Host: {$url_parts['host']}";
@@ -140,7 +151,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		if ($url_parts['port'] !== 80) {
 			$out .= ":{$url_parts['port']}";
 		}
-
 		$out .= "\r\n";
 
 		$out .= "User-Agent: {$options['useragent']}\r\n";
