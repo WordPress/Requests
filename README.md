@@ -94,7 +94,7 @@ Alternatively, you can fetch a [tarball][] or [zipball][]:
 If you're using a class loader (e.g., [Symfony Class Loader][]) for
 [PSR-0][]-style class loading:
 
-    $loader->registerNamespace('Requests', 'path/to/vendor/Requests/library');
+    $loader->registerPrefix('Requests', 'path/to/vendor/Requests/library');
 
 [Symfony Class Loader]: https://github.com/symfony/ClassLoader
 [PSR-0]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md
