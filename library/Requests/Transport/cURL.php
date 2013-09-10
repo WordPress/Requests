@@ -84,7 +84,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$this->setup_handle($url, $headers, $data, $options);
-
+		
 		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
 
 		if ($options['filename'] !== false) {

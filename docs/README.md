@@ -15,6 +15,7 @@ here are prose; you might also want to check out the [API documentation][].
 	* [Authenticating your request][authentication]
 * Advanced Usage
 	* [Custom authentication][authentication-custom]
+	* [Requests through proxy][proxy]
 	* [Hooking system][hooks]
 
 [goals]: goals.md
@@ -24,3 +25,4 @@ here are prose; you might also want to check out the [API documentation][].
 [authentication]: authentication.md
 [authentication-custom]: authentication-custom.md
 [hooks]: hooks.md
+[proxy]: proxy.md

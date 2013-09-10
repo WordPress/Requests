@@ -267,6 +267,8 @@ class Requests {
 	 * - `auth`: Authentication handler or array of user/password details to use
 	 *    for Basic authentication
 	 *    (Requests_Auth|array|boolean, default: false)
+	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
+	 *    (Requests_Proxy|array|boolean, default: false)
 	 * - `idn`: Enable IDN parsing
 	 *    (boolean, default: true)
 	 * - `transport`: Custom transport. Either a class name, or a
@@ -447,6 +449,7 @@ class Requests {
 			'type' => self::GET,
 			'filename' => false,
 			'auth' => false,
+			'proxy' => false,
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
@@ -477,12 +480,19 @@ class Requests {
 		if (empty($options['hooks'])) {
 			$options['hooks'] = new Requests_Hooks();
 		}
-
+		
 		if (is_array($options['auth'])) {
 			$options['auth'] = new Requests_Auth_Basic($options['auth']);
 		}
 		if ($options['auth'] !== false) {
 			$options['auth']->register($options['hooks']);
+		}
+
+		if (!empty($options['proxy'])) {
+			$options['proxy'] = new Requests_Proxy_HTTP($options['proxy']);
+		}
+		if ($options['proxy'] !== false) {
+			$options['proxy']->register($options['hooks']);
 		}
 
 		if ($options['idn'] !== false) {
