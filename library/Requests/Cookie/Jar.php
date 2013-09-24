@@ -107,7 +107,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 */
 	public function register(Requests_Hooker $hooks) {
 		$hooks->register('requests.before_request', array($this, 'before_request'));
-		$hooks->register('requests.after_request', array($this, 'after_request'));
+		$hooks->register('requests.before_redirect_check', array($this, 'before_redirect_check'));
 	}
 
 	/**
@@ -138,8 +138,9 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @var Requests_Response $response
 	 */
-	public function after_request(Requests_Response &$return) {
+	public function before_redirect_check(Requests_Response &$return) {
 		$cookies = Requests_Cookie::parseFromHeaders($return->headers);
-		$return->cookies = new Requests_Cookie_Jar($cookies);
+		$this->cookies = array_merge($this->cookies, $cookies);
+		$return->cookies = $this;
 	}
 }
