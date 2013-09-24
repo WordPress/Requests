@@ -491,6 +491,9 @@ class Requests {
 		if (is_array($options['cookies'])) {
 			$options['cookies'] = new Requests_Cookie_Jar($options['cookies']);
 		}
+		elseif (empty($options['cookies'])) {
+			$options['cookies'] = new Requests_Cookie_Jar();
+		}
 		if ($options['cookies'] !== false) {
 			$options['cookies']->register($options['hooks']);
 		}
