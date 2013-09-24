@@ -79,7 +79,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 			throw new Requests_Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
-		$this->cookies[$key][] = $value;
+		$this->cookies[$key] = $value;
 	}
 
 	/**
