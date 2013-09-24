@@ -346,6 +346,8 @@ class Requests {
 	 * - `data`: Associative array of options. Same as the `$options` parameter
 	 *    to {@see Requests::request}
 	 *    (array, default: see {@see Requests::request})
+	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
+	 *    (array|Requests_Cookie_Jar)
 	 *
 	 * If the `$options` parameter is specified, individual requests will
 	 * inherit options from it. This can be used to use a single hooking system,
@@ -450,6 +452,7 @@ class Requests {
 			'filename' => false,
 			'auth' => false,
 			'proxy' => false,
+			'cookies' => false,
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
@@ -493,6 +496,16 @@ class Requests {
 		}
 		if ($options['proxy'] !== false) {
 			$options['proxy']->register($options['hooks']);
+		}
+
+		if (is_array($options['cookies'])) {
+			$options['cookies'] = new Requests_Cookie_Jar($options['cookies']);
+		}
+		elseif (empty($options['cookies'])) {
+			$options['cookies'] = new Requests_Cookie_Jar();
+		}
+		if ($options['cookies'] !== false) {
+			$options['cookies']->register($options['hooks']);
 		}
 
 		if ($options['idn'] !== false) {
@@ -569,6 +582,8 @@ class Requests {
 		if (isset($return->headers['connection'])) {
 			unset($return->headers['connection']);
 		}
+
+		$options['hooks']->dispatch('requests.before_redirect_check', array(&$return, $req_headers, $req_data, $options));
 
 		if ((in_array($return->status_code, array(300, 301, 302, 303, 307)) || $return->status_code > 307 && $return->status_code < 400) && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {

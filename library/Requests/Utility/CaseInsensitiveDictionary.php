@@ -59,12 +59,7 @@ class Requests_Utility_CaseInsensitiveDictionary implements ArrayAccess, Iterato
 		}
 
 		$key = strtolower($key);
-
-		if (!isset($this->data[$key])) {
-			$this->data[$key] = array();
-		}
-
-		$this->data[$key][] = $value;
+		$this->data[$key] = $value;
 	}
 
 	/**
