@@ -4,7 +4,7 @@ before_script:
  - composer install --dev --no-interaction
  - phpenv local --unset
  - cd tests
- - pip install mitmproxy
+ - pip install --user mitmproxy
  - utils/proxy/start.sh
 script:
  - phpunit --coverage-clover clover.xml
