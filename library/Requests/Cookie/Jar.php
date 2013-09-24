@@ -35,12 +35,12 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 * @param string|Requests_Cookie $cookie
 	 * @return Requests_Cookie
 	 */
-	public function normalizeCookie($cookie) {
+	public function normalizeCookie($cookie, $key = null) {
 		if (is_a('Requests_Cookie', $cookie)) {
 			return $cookie;
 		}
 
-		return Requests_Cookie::parse($cookie);
+		return Requests_Cookie::parse($cookie, $key);
 	}
 
 	/**
@@ -124,7 +124,8 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	public function before_request(&$url, &$headers, &$data, &$type, &$options) {
 		if (!empty($this->cookies)) {
 			$cookies = array();
-			foreach ($this->cookies as $cookie) {
+			foreach ($this->cookies as $key => $cookie) {
+				$cookie = $this->normalizeCookie($cookie, $key);
 				$cookies[] = $cookie->formatForHeader();
 			}
 

@@ -98,16 +98,19 @@ class Requests_Cookie {
 	 * @param string Cookie header value (from a Set-Cookie header)
 	 * @return Requests_Cookie Parsed cookie object
 	 */
-	public static function parse($string) {
+	public static function parse($string, $name = '') {
 		$parts = explode(';', $string);
 		$kvparts = array_shift($parts);
 
-		// Some sites might only have a value without the equals separator.
-		// Deviate from RFC 6265 and pretend it was actually a blank name
-		// (`=foo`)
-		// 
-		// https://bugzilla.mozilla.org/show_bug.cgi?id=169091
-		if (strpos($kvparts, '=') === false) {
+		if (!empty($name)) {
+			$value = $string;
+		}
+		elseif (strpos($kvparts, '=') === false) {
+			// Some sites might only have a value without the equals separator.
+			// Deviate from RFC 6265 and pretend it was actually a blank name
+			// (`=foo`)
+			//
+			// https://bugzilla.mozilla.org/show_bug.cgi?id=169091
 			$name = '';
 			$value = $kvparts;
 		}
