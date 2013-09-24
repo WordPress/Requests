@@ -85,7 +85,7 @@ class Requests_Cookie {
 	 * Attributes and other data can be accessed via methods.
 	 */
 	public function __toString() {
-		return $value;
+		return $this->value;
 	}
 
 	/**
