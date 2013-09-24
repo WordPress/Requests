@@ -42,7 +42,13 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$expected['empty'] = '';
 		$expected['empty2'] = '';
 		$expected['folded'] = 'one two  three';
-		$this->assertEquals($expected, $response->headers);
+		foreach ($expected as $key => $value) {
+			$this->assertEquals($value, $response->headers[$key]);
+		}
+
+		foreach ($response->headers as $key => $value) {
+			$this->assertEquals($value, $expected[$key]);
+		}
 	}
 
 	public function testRawAccess() {
