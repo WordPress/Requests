@@ -4,9 +4,12 @@ before_script:
  - composer install --dev --no-interaction
  - phpenv local --unset
  - cd tests
+ - pip install mitmproxy
+ - utils/proxy/start.sh
 script:
  - phpunit --coverage-clover clover.xml
 after_script:
+ - utils/proxy/stop.sh
  - cd ..
  - phpenv local 5.4
  - php vendor/bin/coveralls -v
