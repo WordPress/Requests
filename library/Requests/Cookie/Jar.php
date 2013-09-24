@@ -36,7 +36,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 * @return Requests_Cookie
 	 */
 	public function normalizeCookie($cookie, $key = null) {
-		if (is_a('Requests_Cookie', $cookie)) {
+		if ($cookie instanceof Requests_Cookie) {
 			return $cookie;
 		}
 
