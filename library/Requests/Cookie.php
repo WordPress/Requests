@@ -71,7 +71,13 @@ class Requests_Cookie {
 		if (!empty($this->attributes)) {
 			$parts = array();
 			foreach ($this->attributes as $key => $value) {
-				$parts[] = sprintf('%s=%s', $key, $value);
+				// Ignore non-associative attributes
+				if (is_numeric($key)) {
+					$parts[] = $value;
+				}
+				else {
+					$parts[] = sprintf('%s=%s', $key, $value);
+				}
 			}
 
 			$header_value .= '; ' . implode('; ', $parts);
@@ -131,10 +137,10 @@ class Requests_Cookie {
 				}
 				else {
 					list($part_key, $part_value) = explode('=', $part, 2);
+					$part_value = trim($part_value);
 				}
 
 				$part_key = trim($part_key);
-				$part_value = trim($part_value);
 				$attributes[$part_key] = $part_value;
 			}
 		}
