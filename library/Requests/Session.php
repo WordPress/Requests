@@ -56,6 +56,10 @@ class Requests_Session {
 		$this->headers = $headers;
 		$this->data = $data;
 		$this->options = $options;
+
+		if (empty($this->options['cookies'])) {
+			$this->options['cookies'] = new Requests_Cookie_Jar();
+		}
 	}
 
 	/**
