@@ -1,6 +1,36 @@
 Advanced Usage
 ==============
 
+Session Handling
+----------------
+Making multiple requests to the same site with similar options can be a pain,
+since you end up repeating yourself. The Session object can be used to set
+default parameters for these.
+
+Let's simulate communicating with GitHub.
+
+```php
+$session = new Requests_Session('https://api.github.com/');
+$session->headers['X-ContactAuthor'] = 'rmccue';
+$session->useragent = 'My-Awesome-App';
+
+$response = $session->get('/zen');
+```
+
+You can use the `url`, `headers`, `data` and `options` properties of the Session
+object to set the defaults for this session, and the constructor also takes
+parameters in the same order as `Requests::request()`. Accessing any other
+properties will set the corresponding key in the options array; that is:
+
+```php
+// Setting the property...
+$session->useragent = 'My-Awesome-App';
+
+// ...is the same as setting the option
+$session->options['useragent'] = 'My-Awesome-App';
+```
+
+
 Secure Requests with SSL
 ------------------------
 By default, HTTPS requests will use the most secure options available:
