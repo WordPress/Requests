@@ -9,6 +9,11 @@
 /**
  * Session handler for persistent requests and default parameters
  *
+ * Allows various options to be set as default values, and merges both the
+ * options and URL properties together. A base URL can be set for all requests,
+ * with all subrequests resolved from this. Base options can be set (including
+ * a shared cookie jar), then overridden for individual requests.
+ *
  * @package Requests
  * @subpackage Session Handler
  */
@@ -29,12 +34,19 @@ class Requests_Session {
 
 	/**
 	 * Base data for requests
+	 *
+	 * If both the base data and the per-request data are arrays, the data will
+	 * be merged before sending the request.
+	 *
 	 * @var array
 	 */
 	public $data = array();
 
 	/**
 	 * Base options for requests
+	 *
+	 * The base options are merged with the per-request data for each request.
+	 * The only default option is a shared cookie jar between requests.
 	 *
 	 * Values here can also be set directly via properties on the Session
 	 * object, e.g. `$session->useragent = 'X';`
@@ -47,9 +59,9 @@ class Requests_Session {
 	 * Create a new session
 	 *
 	 * @param string|null $url Base URL for requests
-	 * @param array $headers Headers
-	 * @param array $data [description]
-	 * @param array $options [description]
+	 * @param array $headers Default headers for requests
+	 * @param array $data Default data for requests
+	 * @param array $options Default options for requests
 	 */
 	public function __construct($url = null, $headers = array(), $data = array(), $options = array()) {
 		$this->url = $url;
