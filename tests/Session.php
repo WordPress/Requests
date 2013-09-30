@@ -1,6 +1,51 @@
 <?php
 
 class RequestsTest_Session extends PHPUnit_Framework_TestCase {
+	public function testPropertyUsage() {
+		$headers = array(
+			'X-TestHeader' => 'testing',
+			'X-TestHeader2' => 'requests-test'
+		);
+		$data = array(
+			'testdata' => 'value1',
+			'test2' => 'value2',
+			'test3' => array(
+				'foo' => 'bar',
+				'abc' => 'xyz'
+			)
+		);
+		$options = array(
+			'testoption' => 'test',
+			'foo' => 'bar'
+		);
+
+		$session = new Requests_Session('http://example.com/', $headers, $data, $options);
+		$this->assertEquals('http://example.com/', $session->url);
+		$this->assertEquals($headers, $session->headers);
+		$this->assertEquals($data, $session->data);
+		$this->assertEquals($options['testoption'], $session->options['testoption']);
+
+		// Test via property access
+		$this->assertEquals($options['testoption'], $session->testoption);
+
+		// Test setting new property
+		$session->newoption = 'foobar';
+		$options['newoption'] = 'foobar';
+		$this->assertEquals($options['newoption'], $session->options['newoption']);
+
+		// Test unsetting property
+		unset($session->newoption);
+		$this->assertFalse(isset($session->newoption));
+
+		// Update property
+		$session->testoption = 'foobar';
+		$options['testoption'] = 'foobar';
+		$this->assertEquals($options['testoption'], $session->testoption);
+
+		// Test getting invalid property
+		$this->assertNull($session->invalidoption);
+	}
+
 	public function testURLResolution() {
 		$session = new Requests_Session('http://httpbin.org/');
 
