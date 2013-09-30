@@ -85,6 +85,24 @@ class Requests_Session {
 		$this->options[$key] = $value;
 	}
 
+	/**
+	 * Remove a property's value
+	 *
+	 * @param string $key Property key
+	 */
+	public function __isset($key) {
+		return isset($this->options[$key]);
+	}
+
+	/**
+	 * Remove a property's value
+	 *
+	 * @param string $key Property key
+	 */
+	public function __unset($key) {
+		$this->options[$key] = null;
+	}
+
 	/**#@+
 	 * @see request()
 	 * @param string $url
