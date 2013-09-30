@@ -5,7 +5,7 @@ Requests is a HTTP library written in PHP, for human beings. It is roughly
 based on the API from the excellent [Requests Python
 library](http://python-requests.org/). Requests is [ISC
 Licensed](https://github.com/rmccue/Requests/blob/master/LICENSE) (similar to
-the new BSD license) and has no dependencies.
+the new BSD license) and has no dependencies, except for PHP 5.2+.
 
 Despite PHP's use as a language for the web, its tools for sending HTTP requests
 are severely lacking. cURL has an
@@ -94,7 +94,7 @@ Alternatively, you can fetch a [tarball][] or [zipball][]:
 If you're using a class loader (e.g., [Symfony Class Loader][]) for
 [PSR-0][]-style class loading:
 
-    $loader->registerNamespace('Requests', 'path/to/vendor/Requests/library');
+    $loader->registerPrefix('Requests', 'path/to/vendor/Requests/library');
 
 [Symfony Class Loader]: https://github.com/symfony/ClassLoader
 [PSR-0]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md

@@ -79,7 +79,7 @@ Registering Hooks
 Note: if you're doing this in an authentication handler, see the [Custom
 Authentication guide][authentication-custom] instead.
 
-[authentication-custom]: https://github.com/rmccue/Requests/tree/master/docs/authentication-custom.md
+[authentication-custom]: authentication-custom.md
 
 In order to register your own hooks, you need to instantiate `Requests_hooks`
 and pass this in via the 'hooks' option.

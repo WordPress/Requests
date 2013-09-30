@@ -10,76 +10,86 @@
  *
  * @package Requests
  */
-class Requests_Response_Headers implements ArrayAccess, IteratorAggregate {
-	/**
-	 * Actual header data
-	 *
-	 * @var array
-	 */
-	protected $data = array();
-
-	/**
-	 * Check if the given header exists
-	 *
-	 * @param string $key
-	 * @return boolean
-	 */
-	public function offsetExists($key) {
-		$key = strtolower($key);
-		return isset($this->data[$key]);
-	}
-
+class Requests_Response_Headers extends Requests_Utility_CaseInsensitiveDictionary {
 	/**
 	 * Get the given header
+	 *
+	 * Unlike {@see self::getValues()}, this returns a string. If there are
+	 * multiple values, it concatenates them with a comma as per RFC2616.
+	 *
+	 * Avoid using this where commas may be used unquoted in values, such as
+	 * Set-Cookie headers.
 	 *
 	 * @param string $key
 	 * @return string Header value
 	 */
 	public function offsetGet($key) {
 		$key = strtolower($key);
-		return isset($this->data[$key]) ? $this->data[$key] : null;
+		if (!isset($this->data[$key]))
+			return null;
+
+		return $this->flatten($this->data[$key]);
 	}
 
 	/**
-	 * Set the given header
+	 * Set the given item
 	 *
-	 * @throws Requests_Exception On attempting to use headers dictionary as list (`invalidset`)
+	 * @throws Requests_Exception On attempting to use dictionary as list (`invalidset`)
 	 *
-	 * @param string $key Header name
-	 * @param string $value Header value
+	 * @param string $key Item name
+	 * @param string $value Item value
 	 */
 	public function offsetSet($key, $value) {
 		if ($key === null) {
-			throw new Requests_Exception('Headers is a dictionary, not a list', 'invalidset');
+			throw new Requests_Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
 		$key = strtolower($key);
 
-		if (isset($this->data[$key])) {
-			// RFC2616 notes that multiple headers must be able to
-			// be combined like this. We should use a smarter way though (arrays
-			// internally, e.g.)
-			$value = $this->data[$key] . ',' . $value;
+		if (!isset($this->data[$key])) {
+			$this->data[$key] = array();
 		}
 
-		$this->data[$key] = $value;
+		$this->data[$key][] = $value;
 	}
 
 	/**
-	 * Unset the given header
+	 * Get all values for a given header
 	 *
 	 * @param string $key
+	 * @return array Header values
 	 */
-	public function offsetUnset($key) {
-		unset($this->data[strtolower($key)]);
+	public function getValues($key) {
+		$key = strtolower($key);
+		if (!isset($this->data[$key]))
+			return null;
+
+		return $this->data[$key];
 	}
 
 	/**
-	 * Get an interator for the data
+	 * Flattens a value into a string
 	 *
+	 * Converts an array into a string by imploding values with a comma, as per
+	 * RFC2616's rules for folding headers.
+	 *
+	 * @param string|array $value Value to flatten
+	 * @return string Flattened value
+	 */
+	public function flatten($value) {
+		if (is_array($value))
+			$value = implode(',', $value);
+
+		return $value;
+	}
+
+	/**
+	 * Get an iterator for the data
+	 *
+	 * Converts the internal
 	 * @return ArrayIterator
 	 */
 	public function getIterator() {
-		return new ArrayIterator($this->data);
+		return new Requests_Utility_FilteredIterator($this->data, array($this, 'flatten'));
 	}
 }

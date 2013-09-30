@@ -69,6 +69,11 @@ class Requests_Response {
 	public $history = array();
 
 	/**
+	 * Cookies from the request
+	 */
+	public $cookies = array();
+
+	/**
 	 * Throws an exception if the request was not successful
 	 *
 	 * @throws Requests_Exception If `$allow_redirects` is false, and code is 3xx (`response.no_redirects`)

@@ -267,6 +267,8 @@ class Requests {
 	 * - `auth`: Authentication handler or array of user/password details to use
 	 *    for Basic authentication
 	 *    (Requests_Auth|array|boolean, default: false)
+	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
+	 *    (Requests_Proxy|array|boolean, default: false)
 	 * - `idn`: Enable IDN parsing
 	 *    (boolean, default: true)
 	 * - `transport`: Custom transport. Either a class name, or a
@@ -344,6 +346,8 @@ class Requests {
 	 * - `data`: Associative array of options. Same as the `$options` parameter
 	 *    to {@see Requests::request}
 	 *    (array, default: see {@see Requests::request})
+	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
+	 *    (array|Requests_Cookie_Jar)
 	 *
 	 * If the `$options` parameter is specified, individual requests will
 	 * inherit options from it. This can be used to use a single hooking system,
@@ -447,6 +451,8 @@ class Requests {
 			'type' => self::GET,
 			'filename' => false,
 			'auth' => false,
+			'proxy' => false,
+			'cookies' => false,
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
@@ -483,6 +489,23 @@ class Requests {
 		}
 		if ($options['auth'] !== false) {
 			$options['auth']->register($options['hooks']);
+		}
+
+		if (!empty($options['proxy'])) {
+			$options['proxy'] = new Requests_Proxy_HTTP($options['proxy']);
+		}
+		if ($options['proxy'] !== false) {
+			$options['proxy']->register($options['hooks']);
+		}
+
+		if (is_array($options['cookies'])) {
+			$options['cookies'] = new Requests_Cookie_Jar($options['cookies']);
+		}
+		elseif (empty($options['cookies'])) {
+			$options['cookies'] = new Requests_Cookie_Jar();
+		}
+		if ($options['cookies'] !== false) {
+			$options['cookies']->register($options['hooks']);
 		}
 
 		if ($options['idn'] !== false) {
@@ -559,6 +582,8 @@ class Requests {
 		if (isset($return->headers['connection'])) {
 			unset($return->headers['connection']);
 		}
+
+		$options['hooks']->dispatch('requests.before_redirect_check', array(&$return, $req_headers, $req_data, $options));
 
 		if ((in_array($return->status_code, array(300, 301, 302, 303, 307)) || $return->status_code > 307 && $return->status_code < 400) && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
@@ -654,12 +679,23 @@ class Requests {
 	 * @param array $array Dictionary of header values
 	 * @return array List of headers
 	 */
-	public static function flattern($array) {
+	public static function flatten($array) {
 		$return = array();
 		foreach ($array as $key => $value) {
 			$return[] = "$key: $value";
 		}
 		return $return;
+	}
+
+	/**
+	 * Convert a key => value array to a 'key: value' array for headers
+	 *
+	 * @deprecated Misspelling of {@see Requests::flatten}
+	 * @param array $array Dictionary of header values
+	 * @return array List of headers
+	 */
+	public static function flattern($array) {
+		return self::flatten($array);
 	}
 
 	/**
@@ -672,13 +708,13 @@ class Requests {
 	 * @param string $data Compressed data in one of the above formats
 	 * @return string Decompressed string
 	 */
-	protected static function decompress($data) {
-		if (substr($data, 0, 2) !== "\x1f\x8b") {
+	public static function decompress($data) {
+		if (substr($data, 0, 2) !== "\x1f\x8b" && substr($data, 0, 2) !== "\x78\x9c") {
 			// Not actually compressed. Probably cURL ruining this for us.
 			return $data;
 		}
 
-		if (function_exists('gzdecode') && ($decoded = gzdecode($data)) !== false) {
+		if (function_exists('gzdecode') && ($decoded = @gzdecode($data)) !== false) {
 			return $decoded;
 		}
 		elseif (function_exists('gzinflate') && ($decoded = @gzinflate($data)) !== false) {
@@ -695,19 +731,28 @@ class Requests {
 	}
 
 	/**
-	 * Decompress deflated string while staying compatible with the majority of servers.
+	 * Decompression of deflated string while staying compatible with the majority of servers.
 	 *
-	 * Certain servers will return deflated data with headers which PHP's gziniflate()
-	 * function cannot handle out of the box. The following function lifted from
-	 * http://au2.php.net/manual/en/function.gzinflate.php#77336 will attempt to deflate
-	 * the various return forms used.
+	 * Certain Servers will return deflated data with headers which PHP's gzinflate()
+	 * function cannot handle out of the box. The following function has been created from
+	 * various snippets on the gzinflate() PHP documentation.
 	 *
+	 * Warning: Magic numbers within. Due to the potential different formats that the compressed
+	 * data may be returned in, some "magic offsets" are needed to ensure proper decompression
+	 * takes place. For a simple progmatic way to determine the magic offset in use, see:
+	 * http://core.trac.wordpress.org/ticket/18273
+	 *
+	 * @since 2.8.1
+	 * @link http://core.trac.wordpress.org/ticket/18273
+	 * @link http://au2.php.net/manual/en/function.gzinflate.php#70875
 	 * @link http://au2.php.net/manual/en/function.gzinflate.php#77336
 	 *
 	 * @param string $gzData String to decompress.
 	 * @return string|bool False on failure.
 	 */
-	protected static function compatible_gzinflate($gzData) {
+	public static function compatible_gzinflate($gzData) {
+		// Compressed data might contain a full zlib header, if so strip it for
+		// gzinflate()
 		if ( substr($gzData, 0, 3) == "\x1f\x8b\x08" ) {
 			$i = 10;
 			$flg = ord( substr($gzData, 3, 1) );
@@ -723,9 +768,75 @@ class Requests {
 				if ( $flg & 2 )
 					$i = $i + 2;
 			}
-			return gzinflate( substr($gzData, $i, -8) );
-		} else {
+			$decompressed = self::compatible_gzinflate( substr( $gzData, $i ) );
+			if ( false !== $decompressed ) {
+				return $decompressed;
+			}
+		}
+
+		// If the data is Huffman Encoded, we must first strip the leading 2
+		// byte Huffman marker for gzinflate()
+		// The response is Huffman coded by many compressors such as
+		// java.util.zip.Deflater, Ruby’s Zlib::Deflate, and .NET's
+		// System.IO.Compression.DeflateStream.
+		//
+		// See http://decompres.blogspot.com/ for a quick explanation of this
+		// data type
+		$huffman_encoded = false;
+
+		// low nibble of first byte should be 0x08
+		list( , $first_nibble )    = unpack( 'h', $gzData );
+
+		// First 2 bytes should be divisible by 0x1F
+		list( , $first_two_bytes ) = unpack( 'n', $gzData );
+
+		if ( 0x08 == $first_nibble && 0 == ( $first_two_bytes % 0x1F ) )
+			$huffman_encoded = true;
+
+		if ( $huffman_encoded ) {
+			if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 2 ) ) ) )
+				return $decompressed;
+		}
+
+		if ( "\x50\x4b\x03\x04" == substr( $gzData, 0, 4 ) ) {
+			// ZIP file format header
+			// Offset 6: 2 bytes, General-purpose field
+			// Offset 26: 2 bytes, filename length
+			// Offset 28: 2 bytes, optional field length
+			// Offset 30: Filename field, followed by optional field, followed
+			// immediately by data
+			list( , $general_purpose_flag ) = unpack( 'v', substr( $gzData, 6, 2 ) );
+
+			// If the file has been compressed on the fly, 0x08 bit is set of
+			// the general purpose field. We can use this to differentiate
+			// between a compressed document, and a ZIP file
+			$zip_compressed_on_the_fly = ( 0x08 == (0x08 & $general_purpose_flag ) );
+
+			if ( ! $zip_compressed_on_the_fly ) {
+				// Don't attempt to decode a compressed zip file
+				return $gzData;
+			}
+
+			// Determine the first byte of data, based on the above ZIP header
+			// offsets:
+			$first_file_start = array_sum( unpack( 'v2', substr( $gzData, 26, 4 ) ) );
+			if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 30 + $first_file_start ) ) ) ) {
+				return $decompressed;
+			}
 			return false;
 		}
+
+		// Finally fall back to straight gzinflate
+		if ( false !== ( $decompressed = @gzinflate( $gzData ) ) ) {
+			return $decompressed;
+		}
+
+		// Fallback for all above failing, not expected, but included for
+		// debugging and preventing regressions and to track stats
+		if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 2 ) ) ) ) {
+			return $decompressed;
+		}
+
+		return false;
 	}
 }
