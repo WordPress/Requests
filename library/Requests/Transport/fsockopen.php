@@ -97,7 +97,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		restore_error_handler();
 
 		if ($verifyname) {
-			$this->verify_certificate_from_context($host, $context);
+			if (!$this->verify_certificate_from_context($host, $context)) {
+				throw new Requests_Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
+			}
 		}
 
 		if (!$fp) {
@@ -349,54 +351,12 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		// If we don't have SSL options, then we couldn't make the connection at
 		// all
 		if (empty($meta) || empty($meta['ssl']) || empty($meta['ssl']['peer_certificate'])) {
-			throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.ssl.connect_error');
+			throw new Requests_Exception(rtrim($this->connect_error), 'ssl.connect_error');
 		}
 
 		$cert = openssl_x509_parse($meta['ssl']['peer_certificate']);
 
-		// Calculate the valid wildcard match if the host is not an IP address
-		$parts = explode('.', $host);
-		if (ip2long($host) === false) {
-			$parts[0] = '*';
-		}
-		$wildcard = implode('.', $parts);
-
-		$has_dns_alt = false;
-
-		// Check the subjectAltName
-		if (!empty($cert['extensions']) && !empty($cert['extensions']['subjectAltName'])) {
-			$altnames = explode(',', $cert['extensions']['subjectAltName']);
-			foreach ($altnames as $altname) {
-				$altname = trim($altname);
-				if (strpos($altname, 'DNS:') !== 0)
-					continue;
-
-				$has_dns_alt = true;
-
-				// Strip the 'DNS:' prefix and trim whitespace
-				$altname = trim(substr($altname, 4));
-
-				if ($host === $altname) {
-					return true;
-				}
-				elseif ($wildcard === $altname) {
-					return true;
-				}
-			}
-		}
-
-		// Fall back to checking the common name if we didn't get any dNSName
-		// alt names, as per RFC2818
-		if (!$has_dns_alt && !empty($cert['subject']['CN'])) {
-			if ($host === $cert['subject']['CN']) {
-				return true;
-			}
-			elseif ($wildcard === $cert['subject']['CN']) {
-				return true;
-			}
-		}
-
-		throw new Requests_Exception('SSL certificate did not match the requested domain name', 'fsockopen.ssl.no_match');
+		return Requests_SSL::verify_certificate($host, $cert);
 	}
 
 	/**
