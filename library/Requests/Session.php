@@ -142,6 +142,7 @@ class Requests_Session {
 	public function delete($url, $headers = array(), $options = array()) {
 		return $this->request($url, $headers, null, Requests::DELETE, $options);
 	}
+	/**#@-*/
 
 	/**#@+
 	 * @see request()
