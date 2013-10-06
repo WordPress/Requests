@@ -56,14 +56,18 @@ Alternatively, if you want to disable verification completely, this is possible
 with `'verify' => false`, but note that this is extremely insecure and should be
 avoided.
 
-## Compatibility Note
+### Security Note
 Requests supports SSL across both cURL and fsockopen in a transparent manner.
-Using fsockopen is slightly less secure, as the common name in certificates is
-not checked. This is due to
-[PHP lacking support for Subject Alternate Name][php-bug-47030]
-(and OpenSSL also [lacking the low-level support][php-bug-55820] in PHP). If
-these bugs are fixed, support for common name checking will be enabled by
-default.
+Unlike other PHP HTTP libraries, support for verifying the certificate name is
+built-in; that is, a request for `https://github.com/` will actually verify the
+certificate's name even with the fsockopen transport. This makes Requests the
+first and currently only PHP HTTP library that supports full SSL verification.
+
+(Note that WordPress now also supports this verification, thanks to efforts by
+the Requests development team.)
+
+(See also the [related PHP][php-bug-47030] and [OpenSSL-related][php-bug-55820]
+bugs in PHP for more information on Subject Alternate Name field.)
 
 [Mozilla certificate authority list]: http://www.mozilla.org/projects/security/certs/
 [php-bug-47030]: https://bugs.php.net/bug.php?id=47030
