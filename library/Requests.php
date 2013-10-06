@@ -67,7 +67,7 @@ class Requests {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.6-dev';
+	const VERSION = '1.6';
 
 	/**
 	 * Registered transport classes
