@@ -5,9 +5,15 @@ title: Download
 Download
 ========
 
-The current version of Requests is 1.5, which you can
-[download from GitHub](https://github.com/rmccue/Requests/zipball/v1.5) as a
-zip.
+The current version of Requests is 1.6, which you can
+download from GitHub as a
+[zip](https://github.com/rmccue/Requests/archive/v1.6.0.zip) or a
+[tarball](https://github.com/rmccue/Requests/archive/v1.6.0.tar.gz).
+
+You can also check out the [releases page][releases] on GitHub for a changelog
+plus more information.
+
+[releases]: https://github.com/rmccue/Requests/releases
 
 
 Alternative Methods
@@ -24,8 +30,7 @@ dependencies, you can add Requests with it.
     },
     "autoload": {
         "psr-0": {"Requests": "library/"}
-    },
-    "minimum-stability": "dev"
+    }
 }
 {% endhighlight %}
 
@@ -47,3 +52,9 @@ You'll probably also want to register an autoloader:
 {% highlight php startinline %}
 Requests::register_autoloader();
 {% endhighlight %}
+
+
+Previous Versions
+-----------------
+* Version 1.5: [Zip](https://github.com/rmccue/Requests/archive/v1.5.zip) or
+  [Tarball](https://github.com/rmccue/Requests/archive/v1.5.tar.gz)
