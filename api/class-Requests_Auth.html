@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="generator" content="ApiGen 2.4.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
 
-	<title>Interface Requests_Auth | Requests Documentation</title>
+	<title>Interface Requests_Auth | Requests 1.6 API Documentation</title>
 
-	<script type="text/javascript" src="resources/combined.js?1841058525"></script>
-	<script type="text/javascript" src="elementlist.js?2320803459"></script>
-	<script type="text/javascript">
-		var ApiGen = ApiGen || {};
-		ApiGen.options = {"elementDetailsCollapsed":true,"elementsOrder":"natural"};
-	</script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3295955786">
+	<script type="text/javascript" src="resources/combined.js?2148508009"></script>
+	<script type="text/javascript" src="elementlist.js?612500304"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
 
@@ -21,24 +17,30 @@
 	<div id="menu">
 		<a href="index.html" title="Overview"><span>Overview</span></a>
 
+
 		<div id="groups">
 			<h3>Packages</h3>
 			<ul>
-				<li class="active"><a href="package-Requests.html">Requests</a>
-						<span></span>
+				<li class="active main"><a href="package-Requests.html">Requests<span></span></a>
 						<ul>
-				<li class="active"><a href="package-Requests.Authentication.html">Authentication</a>
+				<li class="active main"><a href="package-Requests.Authentication.html">Authentication</a>
 						</li>
-				<li><a href="package-Requests.Transport.html">Transport</a>
+				<li class="main"><a href="package-Requests.Cookies.html">Cookies</a>
 						</li>
-				<li><a href="package-Requests.Utilities.html">Utilities</a>
+				<li class="main"><a href="package-Requests.Proxy.html">Proxy</a>
+						</li>
+				<li class="main"><a href="package-Requests.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li class="main"><a href="package-Requests.Utilities.html">Utilities</a>
 						</li>
 							</ul></li>
 			</ul>
-
 		</div>
 
-		<hr>
+		<hr />
+
 
 		<div id="elements">
 			<h3>Classes</h3>
@@ -63,10 +65,10 @@
 <div id="right">
 <div id="rightInner">
 	<form id="search">
-		<input type="hidden" name="cx" value="">
-		<input type="hidden" name="ie" value="UTF-8">
-		<input type="text" name="q" class="text">
-		<input type="submit" value="Search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
 	</form>
 
 	<div id="navigation">
@@ -87,19 +89,14 @@
 			<li>
 				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
 			</li>
-			<li>
-				<a href="todo.html" title="Todo list"><span>Todo</span></a>
-			</li>
 		</ul>
 		<ul>
-			<li>
-				<a href="requests-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
-			</li>
 		</ul>
 	</div>
 
 <div id="content" class="class">
 	<h1>Interface Requests_Auth</h1>
+
 
 	<div class="description">
 	
@@ -111,6 +108,7 @@
 it much easier for users to use your provider.</p>
 
 	</div>
+
 
 
 
@@ -127,15 +125,13 @@ it much easier for users to use your provider.</p>
 		
 		
 		
+		<b>Package:</b> <a href="package-Requests.html">Requests</a>\<a href="package-Requests.Authentication.html">Authentication</a><br />
 
-				<b>Package:</b>
-				<a href="package-Requests.html">Requests</a> <br>
-				<b>Subpackage:</b>
-				<a href="package-Requests.Authentication.html">Authentication</a> <br>
 				<b>See:</b>
-				<code><code><a href="class-Requests_Hooks.html">Requests_Hooks</a></code></code> <br>
-		<b>Located at</b> <a href="source-class-Requests_Auth.html#9" title="Go to source code">library/Requests/Auth.php</a><br>
+				<code><code><a href="class-Requests_Hooks.html">Requests_Hooks</a></code></code><br />
+		<b>Located at</b> <a href="source-class-Requests_Auth.html#9-33" title="Go to source code">Requests/Auth.php</a><br />
 	</div>
+
 
 
 	<table class="summary" id="methods">
@@ -143,7 +139,6 @@ it much easier for users to use your provider.</p>
 	<tr data-order="register" id="_register">
 
 		<td class="attributes"><code>
-			
 			 public 
 			
 			
@@ -152,7 +147,7 @@ it much easier for users to use your provider.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_register">#</a>
-		<code><a href="source-class-Requests_Auth.html#22" title="Go to source code">register</a>( <span><a href="class-Requests_Hooks.html">Requests_Hooks</a> <var>&amp; $hooks</var></span> )</code>
+		<code><a href="source-class-Requests_Auth.html#22-32" title="Go to source code">register</a>( <span><code><a href="class-Requests_Hooks.html">Requests_Hooks</a></code> <var>&amp; $hooks</var></span> )</code>
 
 		<div class="description short">
 			
@@ -173,15 +168,16 @@ you'll need.</p>
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$hooks</var></dt>
-					<dd><code><code><a href="class-Requests_Hooks.html">Requests_Hooks</a></code></code><br> Hook system</dd>
+					<dd><code><code><a href="class-Requests_Hooks.html">Requests_Hooks</a></code></code><br>$hooks Hook system</dd>
 				</dl></div>
 
 
 
 				<h4>See</h4>
 				<div class="list">
-						<code><code><a href="class-Requests_Hooks.html#_register">Requests_Hooks::register()</a></code></code> <br>
+						<code><code><a href="class-Requests_Hooks.html#_register">Requests_Hooks::register()</a></code></code><br />
 				</div>
+
 
 		</div>
 		</div></td>
@@ -196,10 +192,19 @@ you'll need.</p>
 
 
 
+
+
+
+
+
+
+
+
+
 </div>
 
 	<div id="footer">
-		Requests Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.4.0</a>
+		Requests 1.6 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
 	</div>
 </div>
 </div>

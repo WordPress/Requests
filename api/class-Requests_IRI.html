@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="generator" content="ApiGen 2.4.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
 
-	<title>Class Requests_IRI | Requests Documentation</title>
+	<title>Class Requests_IRI | Requests 1.6 API Documentation</title>
 
-	<script type="text/javascript" src="resources/combined.js?1841058525"></script>
-	<script type="text/javascript" src="elementlist.js?2320803459"></script>
-	<script type="text/javascript">
-		var ApiGen = ApiGen || {};
-		ApiGen.options = {"elementDetailsCollapsed":true,"elementsOrder":"natural"};
-	</script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3295955786">
+	<script type="text/javascript" src="resources/combined.js?2148508009"></script>
+	<script type="text/javascript" src="elementlist.js?612500304"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
 
@@ -21,24 +17,30 @@
 	<div id="menu">
 		<a href="index.html" title="Overview"><span>Overview</span></a>
 
+
 		<div id="groups">
 			<h3>Packages</h3>
 			<ul>
-				<li class="active"><a href="package-Requests.html">Requests</a>
-						<span></span>
+				<li class="active main"><a href="package-Requests.html">Requests<span></span></a>
 						<ul>
-				<li><a href="package-Requests.Authentication.html">Authentication</a>
+				<li class="main"><a href="package-Requests.Authentication.html">Authentication</a>
 						</li>
-				<li><a href="package-Requests.Transport.html">Transport</a>
+				<li class="main"><a href="package-Requests.Cookies.html">Cookies</a>
 						</li>
-				<li class="active"><a href="package-Requests.Utilities.html">Utilities</a>
+				<li class="main"><a href="package-Requests.Proxy.html">Proxy</a>
+						</li>
+				<li class="main"><a href="package-Requests.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li class="active main"><a href="package-Requests.Utilities.html">Utilities</a>
 						</li>
 							</ul></li>
 			</ul>
-
 		</div>
 
-		<hr>
+		<hr />
+
 
 		<div id="elements">
 			<h3>Classes</h3>
@@ -47,8 +49,15 @@
 				<li><a href="class-Requests_IDNAEncoder.html">Requests_IDNAEncoder</a></li>
 				<li><a href="class-Requests_IPv6.html">Requests_IPv6</a></li>
 				<li class="active"><a href="class-Requests_IRI.html">Requests_IRI</a></li>
+				<li><a href="class-Requests_SSL.html">Requests_SSL</a></li>
+				<li><a href="class-Requests_Utility_CaseInsensitiveDictionary.html">Requests_Utility_CaseInsensitiveDictionary</a></li>
+				<li><a href="class-Requests_Utility_FilteredIterator.html">Requests_Utility_FilteredIterator</a></li>
 			</ul>
 
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Requests_Hooker.html">Requests_Hooker</a></li>
+			</ul>
 
 
 
@@ -62,10 +71,10 @@
 <div id="right">
 <div id="rightInner">
 	<form id="search">
-		<input type="hidden" name="cx" value="">
-		<input type="hidden" name="ie" value="UTF-8">
-		<input type="text" name="q" class="text">
-		<input type="submit" value="Search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
 	</form>
 
 	<div id="navigation">
@@ -86,19 +95,14 @@
 			<li>
 				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
 			</li>
-			<li>
-				<a href="todo.html" title="Todo list"><span>Todo</span></a>
-			</li>
 		</ul>
 		<ul>
-			<li>
-				<a href="requests-documentation-api-documentation.zip" title="Download documentation as ZIP archive"><span>Download</span></a>
-			</li>
 		</ul>
 	</div>
 
 <div id="content" class="class">
 	<h1>Class Requests_IRI</h1>
+
 
 	<div class="description">
 	
@@ -139,28 +143,26 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 
 
 
+
 	<div class="info">
 		
 		
 		
+		<b>Package:</b> <a href="package-Requests.html">Requests</a>\<a href="package-Requests.Utilities.html">Utilities</a><br />
 
-				<b>Package:</b>
-				<a href="package-Requests.html">Requests</a> <br>
-				<b>Subpackage:</b>
-				<a href="package-Requests.Utilities.html">Utilities</a> <br>
 				<b>Copyright:</b>
-				2007-2009 Geoffrey Sneddon and Steve Minutillo<br>
+				2007-2009 Geoffrey Sneddon and Steve Minutillo<br />
 				<b>License:</b>
-				<a
-href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.org/licenses/bsd-license.php</a><br>
+				<a href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.org/licenses/bsd-license.php</a><br />
 				<b>Author:</b>
-				Geoffrey Sneddon<br>
+				Geoffrey Sneddon<br />
 				<b>Author:</b>
-				Steve Minutillo<br>
+				Steve Minutillo<br />
 				<b>Link:</b>
-				<a href="http://hg.gsnedders.com/iri/">http://hg.gsnedders.com/iri/</a><br>
-		<b>Located at</b> <a href="source-class-Requests_IRI.html#9" title="Go to source code">library/Requests/IRI.php</a><br>
+				<a href="http://hg.gsnedders.com/iri/">http://hg.gsnedders.com/iri/</a><br />
+		<b>Located at</b> <a href="source-class-Requests_IRI.html#9-1220" title="Go to source code">Requests/IRI.php</a><br />
 	</div>
+
 
 
 	<table class="summary" id="methods">
@@ -168,7 +170,6 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 	<tr data-order="__toString" id="___toString">
 
 		<td class="attributes"><code>
-			
 			 public 
 			string
 			
@@ -177,7 +178,7 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 		<td class="name"><div>
 		<a class="anchor" href="#___toString">#</a>
-		<code><a href="source-class-Requests_IRI.html#126" title="Go to source code">__toString</a>( )</code>
+		<code><a href="source-class-Requests_IRI.html#126-134" title="Go to source code">__toString</a>( )</code>
 
 		<div class="description short">
 			
@@ -194,8 +195,9 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>string</code><br>
+					<code>string</code><br />
 				</div>
+
 
 
 
@@ -205,7 +207,6 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 	<tr data-order="__set" id="___set">
 
 		<td class="attributes"><code>
-			
 			 public 
 			
 			
@@ -214,7 +215,7 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 		<td class="name"><div>
 		<a class="anchor" href="#___set">#</a>
-		<code><a href="source-class-Requests_IRI.html#136" title="Go to source code">__set</a>( <span>string <var>$name</var></span>, <span>mixed <var>$value</var></span> )</code>
+		<code><a href="source-class-Requests_IRI.html#136-159" title="Go to source code">__set</a>( <span>string <var>$name</var></span>, <span>mixed <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -231,10 +232,11 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$name</var></dt>
-					<dd><code>string</code><br> Property name</dd>
+					<dd><code>string</code><br>$name Property name</dd>
 					<dt><var>$value</var></dt>
-					<dd><code>mixed</code><br> Property value</dd>
+					<dd><code>mixed</code><br>$value Property value</dd>
 				</dl></div>
+
 
 
 
@@ -245,7 +247,6 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 	<tr data-order="__get" id="___get">
 
 		<td class="attributes"><code>
-			
 			 public 
 			mixed
 			
@@ -254,7 +255,7 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 		<td class="name"><div>
 		<a class="anchor" href="#___get">#</a>
-		<code><a href="source-class-Requests_IRI.html#161" title="Go to source code">__get</a>( <span>string <var>$name</var></span> )</code>
+		<code><a href="source-class-Requests_IRI.html#161-212" title="Go to source code">__get</a>( <span>string <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -271,13 +272,14 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$name</var></dt>
-					<dd><code>string</code><br> Property name</dd>
+					<dd><code>string</code><br>$name Property name</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>mixed</code><br>
+					<code>mixed</code><br />
 				</div>
+
 
 
 
@@ -287,7 +289,6 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 	<tr data-order="__isset" id="___isset">
 
 		<td class="attributes"><code>
-			
 			 public 
 			boolean
 			
@@ -296,7 +297,7 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 		<td class="name"><div>
 		<a class="anchor" href="#___isset">#</a>
-		<code><a href="source-class-Requests_IRI.html#198" title="Go to source code">__isset</a>( <span>string <var>$name</var></span> )</code>
+		<code><a href="source-class-Requests_IRI.html#214-230" title="Go to source code">__isset</a>( <span>string <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -313,13 +314,14 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$name</var></dt>
-					<dd><code>string</code><br> Property name</dd>
+					<dd><code>string</code><br>$name Property name</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>boolean</code><br>
+					<code>boolean</code><br />
 				</div>
+
 
 
 
@@ -329,7 +331,6 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 	<tr data-order="__unset" id="___unset">
 
 		<td class="attributes"><code>
-			
 			 public 
 			
 			
@@ -338,7 +339,7 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 		<td class="name"><div>
 		<a class="anchor" href="#___unset">#</a>
-		<code><a href="source-class-Requests_IRI.html#216" title="Go to source code">__unset</a>( <span>string <var>$name</var></span> )</code>
+		<code><a href="source-class-Requests_IRI.html#232-243" title="Go to source code">__unset</a>( <span>string <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -355,8 +356,9 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$name</var></dt>
-					<dd><code>string</code><br> Property name</dd>
+					<dd><code>string</code><br>$name Property name</dd>
 				</dl></div>
+
 
 
 
@@ -367,7 +369,6 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 	<tr data-order="__construct" id="___construct">
 
 		<td class="attributes"><code>
-			
 			 public 
 			
 			
@@ -376,7 +377,7 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Requests_IRI.html#229" title="Go to source code">__construct</a>( <span>string <var>$iri</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Requests_IRI.html#245-253" title="Go to source code">__construct</a>( <span>string <var>$iri</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -393,8 +394,9 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$iri</var></dt>
-					<dd><code>string</code></dd>
+					<dd><code>string</code><br>$iri</dd>
 				</dl></div>
+
 
 
 
@@ -405,7 +407,6 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 	<tr data-order="absolutize" id="_absolutize">
 
 		<td class="attributes"><code>
-			
 			 public static
 			IRI|false
 			
@@ -414,7 +415,7 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 		<td class="name"><div>
 		<a class="anchor" href="#_absolutize">#</a>
-		<code><a href="source-class-Requests_IRI.html#239" title="Go to source code">absolutize</a>( <span>IRI|string <var>$base</var></span>, <span>IRI|string <var>$relative</var></span> )</code>
+		<code><a href="source-class-Requests_IRI.html#255-349" title="Go to source code">absolutize</a>( <span>IRI|string <var>$base</var></span>, <span>IRI|string <var>$relative</var></span> )</code>
 
 		<div class="description short">
 			
@@ -433,15 +434,221 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$base</var></dt>
-					<dd><code>IRI|string</code><br> (Absolute) Base IRI</dd>
+					<dd><code>IRI|string</code><br>$base (Absolute) Base IRI</dd>
 					<dt><var>$relative</var></dt>
-					<dd><code>IRI|string</code><br> Relative IRI</dd>
+					<dd><code>IRI|string</code><br>$relative Relative IRI</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>IRI|false</code><br>
+					<code>IRI|false</code><br />
 				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="parse_iri" id="_parse_iri">
+
+		<td class="attributes"><code>
+			 protected 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_parse_iri">#</a>
+		<code><a href="source-class-Requests_IRI.html#351-389" title="Go to source code">parse_iri</a>( <span>string <var>$iri</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Parse an IRI into scheme/authority/path/query/fragment segments</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Parse an IRI into scheme/authority/path/query/fragment segments</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$iri</var></dt>
+					<dd><code>string</code><br>$iri</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="remove_dot_segments" id="_remove_dot_segments">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_remove_dot_segments">#</a>
+		<code><a href="source-class-Requests_IRI.html#391-449" title="Go to source code">remove_dot_segments</a>( <span>string <var>$input</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Remove dot segments from a path</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Remove dot segments from a path</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$input</var></dt>
+					<dd><code>string</code><br>$input</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="replace_invalid_with_pct_encoding" id="_replace_invalid_with_pct_encoding">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_replace_invalid_with_pct_encoding">#</a>
+		<code><a href="source-class-Requests_IRI.html#451-585" title="Go to source code">replace_invalid_with_pct_encoding</a>( <span>string <var>$string</var></span>, <span>string <var>$extra_chars</var></span>, <span>boolean <var>$iprivate</var> = <span class="php-keyword1">false</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Replace invalid character with percent encoding</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Replace invalid character with percent encoding</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$string</var></dt>
+					<dd><code>string</code><br>$string Input string</dd>
+					<dt><var>$extra_chars</var></dt>
+					<dd><code>string</code><br>$extra_chars Valid characters not in iunreserved or iprivate (this is
+ASCII-only)</dd>
+					<dt><var>$iprivate</var></dt>
+					<dd><code>boolean</code><br>$iprivate Allow iprivate</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="remove_iunreserved_percent_encoded" id="_remove_iunreserved_percent_encoded">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_remove_iunreserved_percent_encoded">#</a>
+		<code><a href="source-class-Requests_IRI.html#587-726" title="Go to source code">remove_iunreserved_percent_encoded</a>( <span>array <var>$match</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Callback function for preg_replace_callback.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Callback function for preg_replace_callback.</p>
+
+<p>Removes sequences of percent encoded bytes that represent UTF-8 encoded
+characters in iunreserved</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$match</var></dt>
+					<dd><code>array</code><br>$match PCRE match</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Replacement<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="scheme_normalization" id="_scheme_normalization">
+
+		<td class="attributes"><code>
+			 protected 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_scheme_normalization">#</a>
+		<code><a href="source-class-Requests_IRI.html#728-754" title="Go to source code">scheme_normalization</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
 
 
 
@@ -451,7 +658,6 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 	<tr data-order="is_valid" id="_is_valid">
 
 		<td class="attributes"><code>
-			
 			 public 
 			boolean
 			
@@ -460,7 +666,7 @@ href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.
 
 		<td class="name"><div>
 		<a class="anchor" href="#_is_valid">#</a>
-		<code><a href="source-class-Requests_IRI.html#740" title="Go to source code">is_valid</a>( )</code>
+		<code><a href="source-class-Requests_IRI.html#756-784" title="Go to source code">is_valid</a>( )</code>
 
 		<div class="description short">
 			
@@ -479,8 +685,582 @@ call as some things change depending on another part of the IRI.</p>
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>boolean</code><br>
+					<code>boolean</code><br />
 				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_iri" id="_set_iri">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_iri">#</a>
+		<code><a href="source-class-Requests_IRI.html#786-837" title="Go to source code">set_iri</a>( <span>string <var>$iri</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the entire IRI. Returns true on success, false on failure (if there are
+any invalid characters).</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the entire IRI. Returns true on success, false on failure (if there are
+any invalid characters).</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$iri</var></dt>
+					<dd><code>string</code><br>$iri</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_scheme" id="_set_scheme">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_scheme">#</a>
+		<code><a href="source-class-Requests_IRI.html#839-862" title="Go to source code">set_scheme</a>( <span>string <var>$scheme</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the scheme. Returns true on success, false on failure (if there are any
+invalid characters).</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the scheme. Returns true on success, false on failure (if there are any
+invalid characters).</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$scheme</var></dt>
+					<dd><code>string</code><br>$scheme</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_authority" id="_set_authority">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_authority">#</a>
+		<code><a href="source-class-Requests_IRI.html#864-929" title="Go to source code">set_authority</a>( <span>string <var>$authority</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the authority. Returns true on success, false on failure (if there are
+any invalid characters).</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the authority. Returns true on success, false on failure (if there are
+any invalid characters).</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$authority</var></dt>
+					<dd><code>string</code><br>$authority</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_userinfo" id="_set_userinfo">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_userinfo">#</a>
+		<code><a href="source-class-Requests_IRI.html#931-950" title="Go to source code">set_userinfo</a>( <span>string <var>$iuserinfo</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the iuserinfo.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the iuserinfo.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$iuserinfo</var></dt>
+					<dd><code>string</code><br>$iuserinfo</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_host" id="_set_host">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_host">#</a>
+		<code><a href="source-class-Requests_IRI.html#952-1006" title="Go to source code">set_host</a>( <span>string <var>$ihost</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the ihost. Returns true on success, false on failure (if there are any
+invalid characters).</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the ihost. Returns true on success, false on failure (if there are any
+invalid characters).</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$ihost</var></dt>
+					<dd><code>string</code><br>$ihost</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_port" id="_set_port">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_port">#</a>
+		<code><a href="source-class-Requests_IRI.html#1008-1033" title="Go to source code">set_port</a>( <span>string <var>$port</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the port. Returns true on success, false on failure (if there are any
+invalid characters).</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the port. Returns true on success, false on failure (if there are any
+invalid characters).</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$port</var></dt>
+					<dd><code>string</code><br>$port</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_path" id="_set_path">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_path">#</a>
+		<code><a href="source-class-Requests_IRI.html#1035-1066" title="Go to source code">set_path</a>( <span>string <var>$ipath</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the ipath.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the ipath.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$ipath</var></dt>
+					<dd><code>string</code><br>$ipath</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_query" id="_set_query">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_query">#</a>
+		<code><a href="source-class-Requests_IRI.html#1068-1086" title="Go to source code">set_query</a>( <span>string <var>$iquery</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the iquery.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the iquery.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$iquery</var></dt>
+					<dd><code>string</code><br>$iquery</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set_fragment" id="_set_fragment">
+
+		<td class="attributes"><code>
+			 protected 
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set_fragment">#</a>
+		<code><a href="source-class-Requests_IRI.html#1088-1106" title="Go to source code">set_fragment</a>( <span>string <var>$ifragment</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the ifragment.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the ifragment.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$ifragment</var></dt>
+					<dd><code>string</code><br>$ifragment</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="to_uri" id="_to_uri">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_to_uri">#</a>
+		<code><a href="source-class-Requests_IRI.html#1108-1131" title="Go to source code">to_uri</a>( <span>mixed <var>$string</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Convert an IRI to a URI (or parts thereof)</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Convert an IRI to a URI (or parts thereof)</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_iri" id="_get_iri">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_iri">#</a>
+		<code><a href="source-class-Requests_IRI.html#1133-1165" title="Go to source code">get_iri</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the complete IRI</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the complete IRI</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_uri" id="_get_uri">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_uri">#</a>
+		<code><a href="source-class-Requests_IRI.html#1167-1175" title="Go to source code">get_uri</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the complete URI</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the complete URI</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_iauthority" id="_get_iauthority">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_iauthority">#</a>
+		<code><a href="source-class-Requests_IRI.html#1177-1205" title="Go to source code">get_iauthority</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the complete iauthority</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the complete iauthority</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_authority" id="_get_authority">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_authority">#</a>
+		<code><a href="source-class-Requests_IRI.html#1207-1219" title="Go to source code">get_authority</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the complete authority</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the complete authority</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
 
 
 
@@ -497,10 +1277,259 @@ call as some things change depending on another part of the IRI.</p>
 
 
 
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="scheme" id="$scheme">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_IRI.html#51-56" title="Go to source code"><var>$scheme</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">null</span></code></td>
+		<td class="description"><div>
+			<a href="#$scheme" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Scheme</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Scheme</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="iuserinfo" id="$iuserinfo">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_IRI.html#58-63" title="Go to source code"><var>$iuserinfo</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">null</span></code></td>
+		<td class="description"><div>
+			<a href="#$iuserinfo" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>User Information</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>User Information</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="ihost" id="$ihost">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_IRI.html#65-70" title="Go to source code"><var>$ihost</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">null</span></code></td>
+		<td class="description"><div>
+			<a href="#$ihost" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>ihost</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>ihost</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="port" id="$port">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_IRI.html#72-77" title="Go to source code"><var>$port</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">null</span></code></td>
+		<td class="description"><div>
+			<a href="#$port" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Port</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Port</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="ipath" id="$ipath">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_IRI.html#79-84" title="Go to source code"><var>$ipath</var></a>
+		</td>
+		<td class="value"><code><span class="php-quote">''</span></code></td>
+		<td class="description"><div>
+			<a href="#$ipath" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>ipath</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>ipath</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="iquery" id="$iquery">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_IRI.html#86-91" title="Go to source code"><var>$iquery</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">null</span></code></td>
+		<td class="description"><div>
+			<a href="#$iquery" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>iquery</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>iquery</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="ifragment" id="$ifragment">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_IRI.html#93-98" title="Go to source code"><var>$ifragment</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">null</span></code></td>
+		<td class="description"><div>
+			<a href="#$ifragment" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>ifragment</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>ifragment</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="normalization" id="$normalization">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_IRI.html#100-124" title="Go to source code"><var>$normalization</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>(
+    <span class="php-quote">'acap'</span> =&gt; <span class="php-keyword1">array</span>(
+        <span class="php-quote">'port'</span> =&gt; <span class="php-num">674</span>
+    ),
+    <span class="php-quote">'dict'</span> =&gt; <span class="php-keyword1">array</span>(
+        <span class="php-quote">'port'</span> =&gt; <span class="php-num">2628</span>
+    ),
+    <span class="php-quote">'file'</span> =&gt; <span class="php-keyword1">array</span>(
+        <span class="php-quote">'ihost'</span> =&gt; <span class="php-quote">'localhost'</span>
+    ),
+    <span class="php-quote">'http'</span> =&gt; <span class="php-keyword1">array</span>(
+        <span class="php-quote">'port'</span> =&gt; <span class="php-num">80</span>,
+        <span class="php-quote">'ipath'</span> =&gt; <span class="php-quote">'/'</span>
+    ),
+    <span class="php-quote">'https'</span> =&gt; <span class="php-keyword1">array</span>(
+        <span class="php-quote">'port'</span> =&gt; <span class="php-num">443</span>,
+        <span class="php-quote">'ipath'</span> =&gt; <span class="php-quote">'/'</span>
+    ),
+)</code></td>
+		<td class="description"><div>
+			<a href="#$normalization" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Normalization database</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Normalization database</p>
+
+<p>Each key is the scheme, each value is an array with each key as the IRI part
+and value as the default value for that part.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
 </div>
 
 	<div id="footer">
-		Requests Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.4.0</a>
+		Requests 1.6 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
 	</div>
 </div>
 </div>

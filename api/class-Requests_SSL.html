@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class Requests_SSL | Requests 1.6 API Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?2148508009"></script>
+	<script type="text/javascript" src="elementlist.js?612500304"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active main"><a href="package-Requests.html">Requests<span></span></a>
+						<ul>
+				<li class="main"><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li class="main"><a href="package-Requests.Cookies.html">Cookies</a>
+						</li>
+				<li class="main"><a href="package-Requests.Proxy.html">Proxy</a>
+						</li>
+				<li class="main"><a href="package-Requests.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li class="active main"><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Requests_Hooks.html">Requests_Hooks</a></li>
+				<li><a href="class-Requests_IDNAEncoder.html">Requests_IDNAEncoder</a></li>
+				<li><a href="class-Requests_IPv6.html">Requests_IPv6</a></li>
+				<li><a href="class-Requests_IRI.html">Requests_IRI</a></li>
+				<li class="active"><a href="class-Requests_SSL.html">Requests_SSL</a></li>
+				<li><a href="class-Requests_Utility_CaseInsensitiveDictionary.html">Requests_Utility_CaseInsensitiveDictionary</a></li>
+				<li><a href="class-Requests_Utility_FilteredIterator.html">Requests_Utility_FilteredIterator</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Requests_Hooker.html">Requests_Hooker</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.Utilities.html" title="Summary of Requests\Utilities"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Requests_SSL</h1>
+
+
+	<div class="description">
+	
+<p>SSL utilities for Requests</p>
+
+<p>Collection of utilities for working with and verifying SSL certificates.</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-Requests.html">Requests</a>\<a href="package-Requests.Utilities.html">Utilities</a><br />
+
+		<b>Located at</b> <a href="source-class-Requests_SSL.html#9-151" title="Go to source code">Requests/SSL.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="verify_certificate" id="_verify_certificate">
+
+		<td class="attributes"><code>
+			 public static
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_verify_certificate">#</a>
+		<code><a href="source-class-Requests_SSL.html#18-72" title="Go to source code">verify_certificate</a>( <span>string <var>$host</var></span>, <span>resource <var>$cert</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Verify the certificate against common name and subject alternative names</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Verify the certificate against common name and subject alternative names</p>
+
+<p>Unfortunately, PHP doesn't check the certificate against the alternative
+names, leading things like 'https://www.github.com/' to be invalid. Instead</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$host</var></dt>
+					<dd><code>string</code><br>$host Host name to verify against</dd>
+					<dt><var>$cert</var></dt>
+					<dd><code>resource</code><br>$context Stream context</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On not obtaining a match for the host (<code>fsockopen.ssl.no_match</code>)<br />
+				</div>
+
+				<h4>See</h4>
+				<div class="list">
+						<a
+href="http://tools.ietf.org/html/rfc2818#section-3.1">http://tools.ietf.org/html/rfc2818#section-3.1</a>
+RFC2818, Section 3.1<br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="verify_reference_name" id="_verify_reference_name">
+
+		<td class="attributes"><code>
+			 public static
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_verify_reference_name">#</a>
+		<code><a href="source-class-Requests_SSL.html#74-117" title="Go to source code">verify_reference_name</a>( <span>string <var>$reference</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Verify that a reference name is valid</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Verify that a reference name is valid</p>
+
+<p>Verifies a dNSName for HTTPS usage, (almost) as per Firefox's rules:</p>
+
+<ul>
+	<li>Wildcards can only occur in a name with more than 3 components</li>
+
+	<li>Wildcards can only occur as the last character in the first component</li>
+
+	<li>Wildcards may be preceded by additional characters</li>
+</ul>
+
+<p>We modify these rules to be a bit stricter and only allow the wildcard
+character to be the full first component; that is, with the exclusion of the
+third rule.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$reference</var></dt>
+					<dd><code>string</code><br>$reference Reference dNSName</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>Is the name valid?<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="match_domain" id="_match_domain">
+
+		<td class="attributes"><code>
+			 public static
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_match_domain">#</a>
+		<code><a href="source-class-Requests_SSL.html#119-150" title="Go to source code">match_domain</a>( <span>string <var>$host</var></span>, <span>string <var>$reference</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Match a hostname against a dNSName reference</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Match a hostname against a dNSName reference</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$host</var></dt>
+					<dd><code>string</code><br>$host Requested host</dd>
+					<dt><var>$reference</var></dt>
+					<dd><code>string</code><br>$reference dNSName to match against</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>Does the domain match?<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Requests 1.6 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

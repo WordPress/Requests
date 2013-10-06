@@ -1,0 +1,6 @@
+name: Requests for PHP
+markdown: redcarpet
+pygments: true
+
+port: 80
+exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh']

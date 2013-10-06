@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class Requests_Session | Requests 1.6 API Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?2148508009"></script>
+	<script type="text/javascript" src="elementlist.js?612500304"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active main"><a href="package-Requests.html">Requests<span></span></a>
+						<ul>
+				<li class="main"><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li class="main"><a href="package-Requests.Cookies.html">Cookies</a>
+						</li>
+				<li class="main"><a href="package-Requests.Proxy.html">Proxy</a>
+						</li>
+				<li class="active main"><a href="package-Requests.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li class="main"><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Requests_Session.html">Requests_Session</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.Session.html" title="Summary of Requests\Session"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Requests_Session</h1>
+
+
+	<div class="description">
+	
+<p>Session handler for persistent requests and default parameters</p>
+
+<p>Allows various options to be set as default values, and merges both the
+options and URL properties together. A base URL can be set for all requests,
+with all subrequests resolved from this. Base options can be set (including a
+shared cookie jar), then overridden for individual requests.</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-Requests.html">Requests</a>\<a href="package-Requests.Session.html">Session</a><br />
+
+		<b>Located at</b> <a href="source-class-Requests_Session.html#9-253" title="Go to source code">Requests/Session.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Requests_Session.html#58-75" title="Go to source code">__construct</a>( <span>string|null <var>$url</var> = <span class="php-keyword1">null</span></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Create a new session</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Create a new session</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string|null</code><br>$url Base URL for requests</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br>$headers Default headers for requests</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>array</code><br>$data Default data for requests</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options Default options for requests</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__get" id="___get">
+
+		<td class="attributes"><code>
+			 public 
+			mixed|null
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___get">#</a>
+		<code><a href="source-class-Requests_Session.html#77-88" title="Go to source code">__get</a>( <span>string <var>$key</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Get a property's value</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get a property's value</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key Property key</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed|null</code><br>Property value, null if none found<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__set" id="___set">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___set">#</a>
+		<code><a href="source-class-Requests_Session.html#90-98" title="Go to source code">__set</a>( <span>string <var>$key</var></span>, <span>mixed <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set a property's value</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set a property's value</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key Property key</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value Property value</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__isset" id="___isset">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___isset">#</a>
+		<code><a href="source-class-Requests_Session.html#100-107" title="Go to source code">__isset</a>( <span>string <var>$key</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Remove a property's value</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Remove a property's value</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key Property key</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__unset" id="___unset">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___unset">#</a>
+		<code><a href="source-class-Requests_Session.html#109-116" title="Go to source code">__unset</a>( <span>string <var>$key</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Remove a property's value</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Remove a property's value</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>string</code><br>$key Property key</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get" id="_get">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get">#</a>
+		<code><a href="source-class-Requests_Session.html#125-130" title="Go to source code">get</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a GET request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a GET request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br>$url</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br>$headers</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br />
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests_Session.html#_request">Requests_Session::request()</a></code></code><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="head" id="_head">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_head">#</a>
+		<code><a href="source-class-Requests_Session.html#132-137" title="Go to source code">head</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a HEAD request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a HEAD request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br>$url</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br>$headers</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br />
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests_Session.html#_request">Requests_Session::request()</a></code></code><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete" id="_delete">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete">#</a>
+		<code><a href="source-class-Requests_Session.html#139-144" title="Go to source code">delete</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a DELETE request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a DELETE request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br>$url</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br>$headers</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br />
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests_Session.html#_request">Requests_Session::request()</a></code></code><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="post" id="_post">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_post">#</a>
+		<code><a href="source-class-Requests_Session.html#155-160" title="Go to source code">post</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a POST request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a POST request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br>$url</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br>$headers</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>array</code><br>$data</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br />
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests_Session.html#_request">Requests_Session::request()</a></code></code><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="put" id="_put">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_put">#</a>
+		<code><a href="source-class-Requests_Session.html#162-167" title="Go to source code">put</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a PUT request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a PUT request</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br>$url</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br>$headers</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>array</code><br>$data</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br />
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests_Session.html#_request">Requests_Session::request()</a></code></code><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="patch" id="_patch">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_patch">#</a>
+		<code><a href="source-class-Requests_Session.html#169-179" title="Go to source code">patch</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var></span>, <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send a PATCH request</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send a PATCH request</p>
+
+<p>Note: Unlike <code><a href="class-Requests_Session.html#_post">Requests_Session::post()</a></code> and <code><a href="class-Requests_Session.html#_put">Requests_Session::put()</a></code>, <code>$headers</code> is required,
+as the specification recommends that should send an ETag</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br>$url</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br>$headers</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>array</code><br>$data</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br />
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests_Session.html#_request">Requests_Session::request()</a></code></code><br />
+				</div>
+				<h4>Link</h4>
+				<div class="list">
+						<a href="http://tools.ietf.org/html/rfc5789">http://tools.ietf.org/html/rfc5789</a><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="request" id="_request">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Requests_Response.html">Requests_Response</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_request">#</a>
+		<code><a href="source-class-Requests_Session.html#182-203" title="Go to source code">request</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>string <var>$type</var> = <code><a href="class-Requests.html#GET">Requests::<b>GET</b></a></code></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Main interface for HTTP requests</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Main interface for HTTP requests</p>
+
+<p>This method initiates a request and sends it via a transport before
+parsing.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd><code>string</code><br>$url URL to request</dd>
+					<dt><var>$headers</var></dt>
+					<dd><code>array</code><br>$headers Extra headers to send with the request</dd>
+					<dt><var>$data</var></dt>
+					<dd><code>array</code><br>$data Data to send either as a query string for GET/HEAD requests, or in the
+body for POST requests</dd>
+					<dt><var>$type</var></dt>
+					<dd><code>string</code><br>$type HTTP request type (use Requests constants)</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options Options for the request (see <code><a href="class-Requests.html#_request">Requests::request()</a></code>)</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Response.html">Requests_Response</a></code></code><br />
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On invalid URLs (<code>nonhttp</code>)<br />
+				</div>
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests.html#_request">Requests::request()</a></code></code><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="request_multiple" id="_request_multiple">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_request_multiple">#</a>
+		<code><a href="source-class-Requests_Session.html#205-225" title="Go to source code">request_multiple</a>( <span>array <var>$requests</var></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Send multiple HTTP requests simultaneously</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Send multiple HTTP requests simultaneously</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$requests</var></dt>
+					<dd><code>array</code><br>$requests Requests data (see <code><a href="class-Requests.html#_request_multiple">Requests::request_multiple()</a></code>)</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options Global and default options (see <code><a href="class-Requests.html#_request">Requests::request()</a></code>)</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>Responses (either Requests_Response or a Requests_Exception object)<br />
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests.html#_request_multiple">Requests::request_multiple()</a></code></code><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="merge_request" id="_merge_request">
+
+		<td class="attributes"><code>
+			 protected 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_merge_request">#</a>
+		<code><a href="source-class-Requests_Session.html#227-252" title="Go to source code">merge_request</a>( <span>array <var>$request</var></span>, <span>boolean <var>$merge_options</var> = <span class="php-keyword1">true</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Merge a request's data with the default data</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Merge a request's data with the default data</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$request</var></dt>
+					<dd><code>array</code><br>$request Request data (same form as <code><a href="class-Requests_Session.html#_request_multiple">Requests_Session::request_multiple()</a></code>)</dd>
+					<dt><var>$merge_options</var></dt>
+					<dd><code>boolean</code><br>$merge_options Should we merge options as well?</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>Request data<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="url" id="$url">
+		<td class="attributes"><code>
+			public  
+			string|null
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Session.html#21-27" title="Go to source code"><var>$url</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">null</span></code></td>
+		<td class="description"><div>
+			<a href="#$url" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Base URL for requests</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Base URL for requests</p>
+
+<p>URLs will be made absolute using this as the base</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="headers" id="$headers">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Session.html#29-33" title="Go to source code"><var>$headers</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$headers" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Base headers for requests</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Base headers for requests</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="data" id="$data">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Session.html#35-43" title="Go to source code"><var>$data</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$data" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Base data for requests</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Base data for requests</p>
+
+<p>If both the base data and the per-request data are arrays, the data will be
+merged before sending the request.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="options" id="$options">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Session.html#45-56" title="Go to source code"><var>$options</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$options" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Base options for requests</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Base options for requests</p>
+
+<p>The base options are merged with the per-request data for each request. The
+only default option is a shared cookie jar between requests.</p>
+
+<p>Values here can also be set directly via properties on the Session object,
+e.g. <code>$session-&gt;useragent = 'X';</code></p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Requests 1.6 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

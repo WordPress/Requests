@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class Requests_Proxy_HTTP | Requests 1.6 API Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?2148508009"></script>
+	<script type="text/javascript" src="elementlist.js?612500304"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active main"><a href="package-Requests.html">Requests<span></span></a>
+						<ul>
+				<li class="main"><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li class="main"><a href="package-Requests.Cookies.html">Cookies</a>
+						</li>
+				<li class="active main"><a href="package-Requests.Proxy.html">Proxy</a>
+						</li>
+				<li class="main"><a href="package-Requests.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li class="main"><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Requests_Proxy_HTTP.html">Requests_Proxy_HTTP</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Requests_Proxy.html">Requests_Proxy</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.Proxy.html" title="Summary of Requests\Proxy"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Requests_Proxy_HTTP</h1>
+
+
+	<div class="description">
+	
+<p>HTTP Proxy connection interface</p>
+
+<p>Provides a handler for connection via an HTTP proxy</p>
+
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+<b><span>Requests_Proxy_HTTP</span></b>			
+			 implements 
+				<a href="class-Requests_Proxy.html"><span>Requests_Proxy</span></a>
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-Requests.html">Requests</a>\<a href="package-Requests.Proxy.html">Proxy</a><br />
+
+				<b>Since:</b>
+				1.6<br />
+		<b>Located at</b> <a href="source-class-Requests_Proxy_HTTP.html#10-150" title="Go to source code">Requests/Proxy/HTTP.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Requests_Proxy_HTTP.html#50-73" title="Go to source code">__construct</a>( <span>array|null <var>$args</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Constructor</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Constructor</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$args</var></dt>
+					<dd><code>array|null</code><br>$args Array of user and password. Must have exactly two elements</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Exception.html">Requests_Exception</a></code></code><br>On incorrect number of arguments (<code>authbasicbadargs</code>)<br />
+				</div>
+
+				<h4>Since</h4>
+				<div class="list">
+						1.6<br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="register" id="_register">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_register">#</a>
+		<code><a href="source-class-Requests_Proxy_HTTP.html#75-93" title="Go to source code">register</a>( <span><code><a href="class-Requests_Hooks.html">Requests_Hooks</a></code> <var>&amp; $hooks</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Register the necessary callbacks</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Register the necessary callbacks</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$hooks</var></dt>
+					<dd><code><code><a href="class-Requests_Hooks.html">Requests_Hooks</a></code></code><br>$hooks Hook system</dd>
+				</dl></div>
+
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.6<br />
+				</div>
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Requests_Proxy_HTTP.html#_curl_before_send">Requests_Proxy_HTTP::curl_before_send()</a></code></code><br />
+						<code><code><a href="class-Requests_Proxy_HTTP.html#_fsockopen_remote_socket">Requests_Proxy_HTTP::fsockopen_remote_socket()</a></code></code><br />
+						<code><code><a href="class-Requests_Proxy_HTTP.html#_fsockopen_remote_host_path">Requests_Proxy_HTTP::fsockopen_remote_host_path()</a></code></code><br />
+						<code><code><a href="class-Requests_Proxy_HTTP.html#_fsockopen_header">Requests_Proxy_HTTP::fsockopen_header()</a></code></code><br />
+				</div>
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-Requests_Proxy.html#_register">Requests_Proxy::register()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="curl_before_send" id="_curl_before_send">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_curl_before_send">#</a>
+		<code><a href="source-class-Requests_Proxy_HTTP.html#95-109" title="Go to source code">curl_before_send</a>( <span>resource <var>&amp; $handle</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set cURL parameters before the data is sent</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set cURL parameters before the data is sent</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$handle</var></dt>
+					<dd><code>resource</code><br>$handle cURL resource</dd>
+				</dl></div>
+
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.6<br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="fsockopen_remote_socket" id="_fsockopen_remote_socket">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_fsockopen_remote_socket">#</a>
+		<code><a href="source-class-Requests_Proxy_HTTP.html#111-119" title="Go to source code">fsockopen_remote_socket</a>( <span>string <var>&amp; $remote_socket</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Alter remote socket information before opening socket connection</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Alter remote socket information before opening socket connection</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$remote_socket</var></dt>
+					<dd><code>string</code><br>$out HTTP header string</dd>
+				</dl></div>
+
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.6<br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="fsockopen_remote_host_path" id="_fsockopen_remote_host_path">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_fsockopen_remote_host_path">#</a>
+		<code><a href="source-class-Requests_Proxy_HTTP.html#121-129" title="Go to source code">fsockopen_remote_host_path</a>( <span>string <var>&amp; $path</var></span>, <span>mixed <var>$url</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Alter remote path before getting stream data</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Alter remote path before getting stream data</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$path</var></dt>
+					<dd><code>string</code><br>$out HTTP header string</dd>
+					<dt><var>$url</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.6<br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="fsockopen_header" id="_fsockopen_header">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_fsockopen_header">#</a>
+		<code><a href="source-class-Requests_Proxy_HTTP.html#131-139" title="Go to source code">fsockopen_header</a>( <span>string <var>&amp; $out</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Add extra headers to the request before sending</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add extra headers to the request before sending</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$out</var></dt>
+					<dd><code>string</code><br>$out HTTP header string</dd>
+				</dl></div>
+
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.6<br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_auth_string" id="_get_auth_string">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_auth_string">#</a>
+		<code><a href="source-class-Requests_Proxy_HTTP.html#141-149" title="Go to source code">get_auth_string</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the authentication string (user:pass)</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the authentication string (user:pass)</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+				<h4>Since</h4>
+				<div class="list">
+						1.6<br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="proxy" id="$proxy">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Proxy_HTTP.html#20-27" title="Go to source code"><var>$proxy</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$proxy" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Proxy host and port</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Proxy host and port</p>
+
+<p>Notation: "host:port" (eg 127.0.0.1:8080 or someproxy.com:3128)</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="user" id="$user">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Proxy_HTTP.html#29-34" title="Go to source code"><var>$user</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$user" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Username</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Username</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="pass" id="$pass">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Proxy_HTTP.html#36-41" title="Go to source code"><var>$pass</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$pass" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Password</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Password</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="use_authentication" id="$use_authentication">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Proxy_HTTP.html#43-48" title="Go to source code"><var>$use_authentication</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$use_authentication" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Do we need to authenticate? (ie username &amp; password have been
+provided)</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Do we need to authenticate? (ie username &amp; password have been
+provided)</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Requests 1.6 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

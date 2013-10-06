@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class Requests_Cookie | Requests 1.6 API Documentation</title>
+
+	<script type="text/javascript" src="resources/combined.js?2148508009"></script>
+	<script type="text/javascript" src="elementlist.js?612500304"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active main"><a href="package-Requests.html">Requests<span></span></a>
+						<ul>
+				<li class="main"><a href="package-Requests.Authentication.html">Authentication</a>
+						</li>
+				<li class="active main"><a href="package-Requests.Cookies.html">Cookies</a>
+						</li>
+				<li class="main"><a href="package-Requests.Proxy.html">Proxy</a>
+						</li>
+				<li class="main"><a href="package-Requests.Session.html">Session</a>
+						</li>
+				<li class="main"><a href="package-Requests.Transport.html">Transport</a>
+						</li>
+				<li class="main"><a href="package-Requests.Utilities.html">Utilities</a>
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Requests_Cookie.html">Requests_Cookie</a></li>
+				<li><a href="class-Requests_Cookie_Jar.html">Requests_Cookie_Jar</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Requests.Cookies.html" title="Summary of Requests\Cookies"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Requests_Cookie</h1>
+
+
+	<div class="description">
+	
+<p>Cookie storage object</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-Requests.html">Requests</a>\<a href="package-Requests.Cookies.html">Cookies</a><br />
+
+		<b>Located at</b> <a href="source-class-Requests_Cookie.html#9-171" title="Go to source code">Requests/Cookie.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Requests_Cookie.html#37-48" title="Go to source code">__construct</a>( <span>string <var>$name</var></span>, <span>string <var>$value</var></span>, <span>array <var>$attributes</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Create a new cookie object</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Create a new cookie object</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>string</code><br>$value</dd>
+					<dt><var>$attributes</var></dt>
+					<dd><code>array</code><br>$attributes Associative array of attribute data</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="formatForHeader" id="_formatForHeader">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_formatForHeader">#</a>
+		<code><a href="source-class-Requests_Cookie.html#50-59" title="Go to source code">formatForHeader</a>( )</code>
+
+		<div class="description short">
+			
+<p>Format a cookie for a Cookie header</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Format a cookie for a Cookie header</p>
+
+<p>This is used when sending cookies to a server.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Cookie formatted for Cookie header<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="formatForSetCookie" id="_formatForSetCookie">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_formatForSetCookie">#</a>
+		<code><a href="source-class-Requests_Cookie.html#61-86" title="Go to source code">formatForSetCookie</a>( )</code>
+
+		<div class="description short">
+			
+<p>Format a cookie for a Set-Cookie header</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Format a cookie for a Set-Cookie header</p>
+
+<p>This is used when sending cookies to clients. This isn't really applicable to
+client-side usage, but might be handy for debugging.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Cookie formatted for Set-Cookie header<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__toString" id="___toString">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___toString">#</a>
+		<code><a href="source-class-Requests_Cookie.html#88-95" title="Go to source code">__toString</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the cookie value</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the cookie value</p>
+
+<p>Attributes and other data can be accessed via methods.</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="parse" id="_parse">
+
+		<td class="attributes"><code>
+			 public static
+			<code><a href="class-Requests_Cookie.html">Requests_Cookie</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_parse">#</a>
+		<code><a href="source-class-Requests_Cookie.html#97-149" title="Go to source code">parse</a>( <span>string <var>$string</var></span>, <span>mixed <var>$name</var> = <span class="php-quote">''</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Parse a cookie string into a cookie object</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Parse a cookie string into a cookie object</p>
+
+<p>Based on Mozilla's parsing code in Firefox and related projects, which is an
+intentional deviation from RFC 2109 and RFC 2616. RFC 6265 specifies some of
+this handling, but not in a thorough manner.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$string</var></dt>
+					<dd><code>string</code><br>Cookie header value (from a Set-Cookie header)</dd>
+					<dt><var>$name</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Requests_Cookie.html">Requests_Cookie</a></code></code><br>Parsed cookie object<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="parseFromHeaders" id="_parseFromHeaders">
+
+		<td class="attributes"><code>
+			 public static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_parseFromHeaders">#</a>
+		<code><a href="source-class-Requests_Cookie.html#151-170" title="Go to source code">parseFromHeaders</a>( <span><code><a href="class-Requests_Response_Headers.html">Requests_Response_Headers</a></code> <var>$headers</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Parse all Set-Cookie headers from request headers</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Parse all Set-Cookie headers from request headers</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$headers</var></dt>
+					<dd><code><code><a href="class-Requests_Response_Headers.html">Requests_Response_Headers</a></code></code><br>$headers</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="name" id="$name">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Cookie.html#16-20" title="Go to source code"><var>$name</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$name" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="value" id="$value">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Cookie.html#22-25" title="Go to source code"><var>$value</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$value" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="attributes" id="$attributes">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Requests_Cookie.html#27-35" title="Go to source code"><var>$attributes</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$attributes" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Cookie attributes</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Cookie attributes</p>
+
+<p>Valid keys are (currently) path, domain, expires, max-age, secure and
+httponly.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Requests 1.6 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

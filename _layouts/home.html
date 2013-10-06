@@ -1,0 +1,38 @@
+{% include header.html %}
+
+		<div id="masthead" class="container">
+			<h1>Requests for PHP</h1>
+			<p>Requests is a humble HTTP request library. It simplifies how you
+				interact with other sites and takes away all your worries.</p>
+
+			{% highlight php startinline %}Requests::get('http://ryanmccue.info/', array('Accept' => 'text/html'));{% endhighlight %}
+
+			<p>Never touch cURL again.</p>
+
+			<p>
+				<a href="https://github.com/rmccue/Requests/archive/v1.6.0.zip" class="btn btn-large btn-success">Download Now</a>
+			</p>
+			<ul class="aux-links">
+				<li>Version 1.6</li>
+				<li><a href="/download/">Previous Versions</a></li>
+			</ul>
+
+		</div>
+
+		<div class="container home-container">
+			<div class="row">
+				<div class="span8 offset2">
+
+					{{ content }}
+
+					<footer class="footer">
+						<p class="pull-right"><a href="#">Back to top</a></p>
+						<p>Made for you by <a href="http://ryanmccue.info/">Ryan McCue</a>.</p>
+						<p>Code licensed under the <a href="https://github.com/rmccue/Requests/blob/master/LICENSE">ISC License</a>.</p>
+					</footer>
+				</div>
+			</div>
+
+		</div><!-- /container -->
+
+{% include footer.html %}
