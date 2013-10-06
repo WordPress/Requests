@@ -7,6 +7,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 	}
+	protected $skip_https = false;
 
 	protected function getOptions($other = array()) {
 		$options = array(
@@ -409,12 +410,93 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testHTTPS() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
 		$request = Requests::get('https://httpbin.org/get', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
 		$this->assertEquals('http://httpbin.org/get', $result['url']);
 		$this->assertEmpty($result['args']);
+	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testExpiredHTTPS() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
+		$request = Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
+	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testRevokedHTTPS() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
+		$request = Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
+	}
+
+	/**
+	 * Test that SSL fails with a bad certificate
+	 *
+	 * This is defined as invalid by
+	 * https://onlinessl.netlock.hu/en/test-center/invalid-ssl-certificate.html
+	 * and is used in testing in PhantomJS. That said, expect this to break.
+	 *
+	 * @expectedException Requests_Exception
+	 */
+	public function testBadDomain() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
+		$request = Requests::get('https://tv.eurosport.com/', array(), $this->getOptions());
+	}
+
+	/**
+	 * Test that the transport supports Server Name Indication with HTTPS
+	 *
+	 * sni.velox.ch is used for SNI testing, and the common name is set to
+	 * `*.sni.velox.ch` as such. Without alternate name support, this will fail
+	 * as `sni.velox.ch` is only in the alternate name
+	 */
+	public function testAlternateNameSupport() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
+		$request = Requests::get('https://sni.velox.ch/', array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+	}
+
+	/**
+	 * Test that the transport supports Server Name Indication with HTTPS
+	 *
+	 * sni.velox.ch is used for SNI testing, and the common name is set to
+	 * `*.sni.velox.ch` as such. Without SNI support, this will fail. Also tests
+	 * our wildcard support.
+	 */
+	public function testSNISupport() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
+		$request = Requests::get('https://abc.sni.velox.ch/', array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
 	}
 
 	/**

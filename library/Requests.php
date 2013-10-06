@@ -839,4 +839,25 @@ class Requests {
 
 		return false;
 	}
+
+	public static function match_domain($host, $reference) {
+		// Check for a direct match
+		if ($host === $reference) {
+			return true;
+		}
+
+		// Calculate the valid wildcard match if the host is not an IP address
+		// Also validates that the host has 3 parts or more, as per Firefox's
+		// ruleset.
+		$parts = explode('.', $host);
+		if (ip2long($host) === false && count($parts) >= 3) {
+			$parts[0] = '*';
+			$wildcard = implode('.', $parts);
+			if ($wildcard === $reference) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
