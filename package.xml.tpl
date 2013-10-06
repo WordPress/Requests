@@ -43,6 +43,7 @@
 {{ files }}
 				</dir>
 			</dir>
+			<file name="library/Requests/Transport/cacert.pem" install-as="library/Requests/Transport/cacert.pem" role="data" />
 		</dir>
 	</contents>
 	<dependencies>
