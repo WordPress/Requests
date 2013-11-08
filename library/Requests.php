@@ -53,6 +53,19 @@ class Requests {
 	 * @var string
 	 */
 	const DELETE = 'DELETE';
+	
+	/**
+	 * PURGE method
+	 * @var string
+	 */
+	const PURGE = 'PURGE';
+	
+	
+	/**
+	 * BAN method
+	 * @var string
+	 */
+	const BAN = 'BAN';
 
 	/**
 	 * PATCH method
