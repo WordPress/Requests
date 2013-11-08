@@ -1,7 +1,7 @@
 {
-	"name": "rmccue/requests",
+	"name": "wandererr/requests",
 	"description": "A HTTP library written in PHP, for human beings.",
-	"homepage": "http://github.com/rmccue/Requests",
+	"homepage": "http://github.com/wandererr/Requests",
 	"license": "ISC",
 	"keywords": ["http", "idna", "iri", "ipv6", "curl", "sockets", "fsockopen"],
 	"authors": [
