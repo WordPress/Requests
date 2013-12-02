@@ -58,9 +58,6 @@ dependencies, you can add Requests with it.
     {
         "require": {
             "rmccue/requests": ">=1.0"
-        },
-        "autoload": {
-            "psr-0": {"Requests": "library/"}
         }
     }
 
