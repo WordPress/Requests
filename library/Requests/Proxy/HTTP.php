@@ -70,11 +70,11 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 				throw new Requests_Exception( 'Invalid number of arguments', 'proxyhttpbadargs');
 			}
 		}
-        elseif (is_object($args)) {
+		elseif (is_object($args)) {
 			$args = get_object_vars($args);
-            foreach ($args as $key => $value) {
-                $this->$key = $value;
-            }
+			foreach ($args as $key => $value) {
+				$this->$key = $value;
+			}
 		}
 	}
 
