@@ -266,6 +266,9 @@ class Requests {
 	 *    (string|boolean, default: false)
 	 * - `auth`: Authentication handler or array of user/password details to use
 	 *    for Basic authentication
+     *    (Requests_Auth|array|boolean, default: false)*
+     * - `auth_digest`: Authentication handler or array of user/password details to use
+   	 *    for Digest authentication*
 	 *    (Requests_Auth|array|boolean, default: false)
 	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
 	 *    (Requests_Proxy|array|boolean, default: false)
@@ -451,6 +454,7 @@ class Requests {
 			'type' => self::GET,
 			'filename' => false,
 			'auth' => false,
+			'auth_digest' => false,
 			'proxy' => false,
 			'cookies' => false,
 			'idn' => true,
@@ -490,6 +494,13 @@ class Requests {
 		if ($options['auth'] !== false) {
 			$options['auth']->register($options['hooks']);
 		}
+
+        if (is_array($options['auth_digest'])) {
+            $options['auth_digest'] = new Requests_Auth_Digest($options['auth_digest']);
+        }
+        if ($options['auth_digest'] !== false) {
+            $options['auth_digest']->register($options['hooks']);
+        }
 
 		if (!empty($options['proxy'])) {
 			$options['proxy'] = new Requests_Proxy_HTTP($options['proxy']);
