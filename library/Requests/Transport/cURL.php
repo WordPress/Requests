@@ -68,8 +68,11 @@ class Requests_Transport_cURL implements Requests_Transport {
 		if (version_compare($this->version, '7.10.5', '>=')) {
 			curl_setopt($this->fp, CURLOPT_ENCODING, '');
 		}
-		if (version_compare($this->version, '7.19.4', '>=')) {
+		if (defined('CURLOPT_PROTOCOLS')) {
 			curl_setopt($this->fp, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+		}
+		if (defined('CURLOPT_REDIR_PROTOCOLS')) {
+			curl_setopt($this->fp, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 		}
 	}
 
