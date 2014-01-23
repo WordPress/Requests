@@ -249,9 +249,17 @@ class Requests_Transport_cURL implements Requests_Transport {
 				break;
 		}
 
+		if( is_int($options['timeout']) or version_compare($this->version, '7.16.2', '<') ) {
+			curl_setopt($this->fp, CURLOPT_TIMEOUT, ceil($options['timeout']));
+		} else {
+			curl_setopt($this->fp, CURLOPT_TIMEOUT_MS, round($options['timeout'] * 1000) );
+		}
+		if( is_int($options['connect_timeout'])  or version_compare($this->version, '7.16.2', '<') ) {
+			curl_setopt($this->fp, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
+		} else {
+			curl_setopt($this->fp, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
+		}
 		curl_setopt($this->fp, CURLOPT_URL, $url);
-		curl_setopt($this->fp, CURLOPT_TIMEOUT, $options['timeout']);
-		curl_setopt($this->fp, CURLOPT_CONNECTTIMEOUT, $options['timeout']);
 		curl_setopt($this->fp, CURLOPT_REFERER, $url);
 		curl_setopt($this->fp, CURLOPT_USERAGENT, $options['useragent']);
 		curl_setopt($this->fp, CURLOPT_HTTPHEADER, $headers);
