@@ -137,4 +137,12 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(302, $response->status_code);
 		$this->assertEquals(0, $response->redirects);
 	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testTimeoutException() {
+		$options = array('timeout' => 0.5);
+		$response = Requests::get('http://httpbin.org/delay/3', array(), $options);
+	}
 }

@@ -198,8 +198,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$options['hooks']->dispatch('fsockopen.after_request', array(&$fake_headers));
 			return '';
 		}
-        
-        $timeout_sec = (int) floor( $options['timeout'] );
+
+		$timeout_sec = (int) floor( $options['timeout'] );
 		$timeout_msec = $timeout_sec == $options['timeout'] ? 0 : 1000000 * $options['timeout'] % 1000000;
 		stream_set_timeout( $fp, $timeout_sec, $timeout_msec );
 
