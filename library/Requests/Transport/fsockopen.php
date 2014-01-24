@@ -14,6 +14,13 @@
  */
 class Requests_Transport_fsockopen implements Requests_Transport {
 	/**
+	 * Second to microsecond conversion
+	 *
+	 * @var integer
+	 */
+	const SECOND_IN_MICROSECONDS = 1000000;
+
+	/**
 	 * Raw HTTP data
 	 *
 	 * @var string
@@ -199,9 +206,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			return '';
 		}
 
-		$timeout_sec = (int) floor( $options['timeout'] );
-		$timeout_msec = $timeout_sec == $options['timeout'] ? 0 : 1000000 * $options['timeout'] % 1000000;
-		stream_set_timeout( $fp, $timeout_sec, $timeout_msec );
+		$timeout_sec = (int) floor($options['timeout']);
+		$timeout_msec = $timeout_sec == $options['timeout'] ? 0 : self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
+		stream_set_timeout($fp, $timeout_sec, $timeout_msec);
 
 		$this->info = stream_get_meta_data($fp);
 
