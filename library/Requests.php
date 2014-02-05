@@ -81,9 +81,9 @@ class Requests {
 	 *
 	 * Use {@see get_transport()} instead
 	 *
-	 * @var string|null
+	 * @var array
 	 */
-	public static $transport = null;
+	public static $transport = array();
 
 	/**
 	 * This is a static class, do not instantiate it
@@ -147,11 +147,15 @@ class Requests {
 	 * @throws Requests_Exception If no valid transport is found (`notransport`)
 	 * @return Requests_Transport
 	 */
-	protected static function get_transport() {
+	protected static function get_transport($capabilities = array()) {
 		// Caching code, don't bother testing coverage
 		// @codeCoverageIgnoreStart
-		if (self::$transport !== null) {
-			return new self::$transport();
+		// array of capabilities as a string to be used as an array key
+		$cap_string = serialize($capabilities);
+
+		// Don't search for a transport if it's already been done for these $capabilities
+		if (isset(self::$transport[$cap_string]) && self::$transport[$cap_string] !== null) {
+			return new self::$transport[$cap_string]();
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -167,17 +171,17 @@ class Requests {
 			if (!class_exists($class))
 				continue;
 
-			$result = call_user_func(array($class, 'test'));
+			$result = call_user_func(array($class, 'test'), $capabilities);
 			if ($result) {
-				self::$transport = $class;
+				self::$transport[$cap_string] = $class;
 				break;
 			}
 		}
-		if (self::$transport === null) {
+		if (self::$transport[$cap_string] === null) {
 			throw new Requests_Exception('No working transports found', 'notransport', self::$transports);
 		}
-
-		return new self::$transport();
+		
+		return new self::$transport[$cap_string]();
 	}
 
 	/**#@+
@@ -277,6 +281,10 @@ class Requests {
 	 *    transport object. Defaults to the first working transport from
 	 *    {@see getTransport()}
 	 *    (string|Requests_Transport, default: {@see getTransport()})
+	 * - `needs_ssl`: whether the chosen transport will need to be able to perform HTTPS
+	 *    requests. If unset, this option automatically sets to True when the requested
+	 *    URL starts with 'https://'
+	 *    (boolean, default: false if $url is HTTP, true if $url is HTTPS)
 	 * - `hooks`: Hooks handler.
 	 *    (Requests_Hooker, default: new Requests_Hooks())
 	 * - `verify`: Should we verify SSL certificates? Allows passing in a custom
@@ -314,7 +322,8 @@ class Requests {
 			}
 		}
 		else {
-			$transport = self::get_transport();
+			$capabilities = array('ssl' => $options['needs_ssl']);
+			$transport = self::get_transport($capabilities);
 		}
 		$response = $transport->request($url, $headers, $data, $options);
 
@@ -479,8 +488,12 @@ class Requests {
 	 * @return array $options
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
-		if (!preg_match('/^http(s)?:\/\//i', $url)) {
+		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
 			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
+		} else {
+			if (empty($options['needs_ssl'])) {
+				$options['needs_ssl'] = ($matches[0] == 'https://');
+			}
 		}
 
 		if (empty($options['hooks'])) {
