@@ -151,6 +151,7 @@ class Requests {
 		// Caching code, don't bother testing coverage
 		// @codeCoverageIgnoreStart
 		// array of capabilities as a string to be used as an array key
+		ksort($capabilities);
 		$cap_string = serialize($capabilities);
 
 		// Don't search for a transport if it's already been done for these $capabilities
