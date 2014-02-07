@@ -491,10 +491,10 @@ class Requests {
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
 			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
-		} else {
-			if (empty($options['needs_ssl'])) {
-				$options['needs_ssl'] = ($matches[0] == 'https://');
-			}
+		}
+
+		if (empty($options['needs_ssl'])) {
+			$options['needs_ssl'] = ($matches[0] == 'https://');
 		}
 
 		if (empty($options['hooks'])) {
