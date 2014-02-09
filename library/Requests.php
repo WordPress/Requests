@@ -321,9 +321,9 @@ class Requests {
 			if (is_string($options['transport'])) {
 				$transport = new $transport();
 			}
-		}
-		else {
-			$capabilities = array('ssl' => $options['needs_ssl']);
+		} else {
+			$need_ssl = (0 === stripos($url, 'https://'));
+			$capabilities = array('ssl' => $need_ssl);
 			$transport = self::get_transport($capabilities);
 		}
 		$response = $transport->request($url, $headers, $data, $options);
@@ -491,10 +491,6 @@ class Requests {
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
 			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
-		}
-
-		if (empty($options['needs_ssl'])) {
-			$options['needs_ssl'] = ($matches[0] == 'https://');
 		}
 
 		if (empty($options['hooks'])) {
