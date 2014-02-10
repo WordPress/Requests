@@ -282,10 +282,6 @@ class Requests {
 	 *    transport object. Defaults to the first working transport from
 	 *    {@see getTransport()}
 	 *    (string|Requests_Transport, default: {@see getTransport()})
-	 * - `needs_ssl`: whether the chosen transport will need to be able to perform HTTPS
-	 *    requests. If unset, this option automatically sets to True when the requested
-	 *    URL starts with 'https://'
-	 *    (boolean, default: false if $url is HTTP, true if $url is HTTPS)
 	 * - `hooks`: Hooks handler.
 	 *    (Requests_Hooker, default: new Requests_Hooks())
 	 * - `verify`: Should we verify SSL certificates? Allows passing in a custom
