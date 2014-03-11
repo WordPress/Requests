@@ -13,6 +13,9 @@
  * @subpackage Transport
  */
 class Requests_Transport_cURL implements Requests_Transport {
+	const CURL_7_10_5 = 0x070A05;
+	const CURL_7_16_2 = 0x071002;
+
 	/**
 	 * Raw HTTP data
 	 *
@@ -30,7 +33,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	/**
 	 * Version string
 	 *
-	 * @var string
+	 * @var long
 	 */
 	public $version;
 
@@ -60,12 +63,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 */
 	public function __construct() {
 		$curl = curl_version();
-		$this->version = $curl['version'];
+		$this->version = $curl['version_number'];
 		$this->fp = curl_init();
 
 		curl_setopt($this->fp, CURLOPT_HEADER, false);
 		curl_setopt($this->fp, CURLOPT_RETURNTRANSFER, 1);
-		if (version_compare($this->version, '7.10.5', '>=')) {
+		if ($this->version >= self::CURL_7_10_5) {
 			curl_setopt($this->fp, CURLOPT_ENCODING, '');
 		}
 		if (defined('CURLOPT_PROTOCOLS')) {
@@ -249,12 +252,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 				break;
 		}
 
-		if( is_int($options['timeout']) or version_compare($this->version, '7.16.2', '<') ) {
+		if( is_int($options['timeout']) or $this->version < self::CURL_7_16_2 ) {
 			curl_setopt($this->fp, CURLOPT_TIMEOUT, ceil($options['timeout']));
 		} else {
 			curl_setopt($this->fp, CURLOPT_TIMEOUT_MS, round($options['timeout'] * 1000) );
 		}
-		if( is_int($options['connect_timeout'])  or version_compare($this->version, '7.16.2', '<') ) {
+		if( is_int($options['connect_timeout'])  or $this->version < self::CURL_7_16_2 ) {
 			curl_setopt($this->fp, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
 		} else {
 			curl_setopt($this->fp, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
