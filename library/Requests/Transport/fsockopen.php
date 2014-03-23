@@ -375,7 +375,20 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * @codeCoverageIgnore
 	 * @return boolean True if the transport is valid, false otherwise.
 	 */
-	public static function test() {
-		return function_exists('fsockopen');
+	public static function test($capabilities = array()) {
+		if (!function_exists('fsockopen'))
+			return false;
+
+		// If needed, check that streams support SSL
+		if (isset( $capabilities['ssl'] ) && $capabilities['ssl']) {
+			if (!extension_loaded('openssl') || !function_exists('openssl_x509_parse'))
+				return false;
+
+			// Currently broken, thanks to https://github.com/facebook/hhvm/issues/2156
+			if (strpos(PHP_VERSION, 'hiphop') !== false)
+				return false;
+		}
+
+		return true;
 	}
 }
