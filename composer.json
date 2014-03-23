@@ -14,7 +14,8 @@
 		"php": ">=5.2"
 	},
 	"require-dev": {
-		"satooshi/php-coveralls": "dev-master"
+		"satooshi/php-coveralls": "dev-master",
+		"requests/test-server": "dev-master"
 	},
 	"type": "library",
 	"autoload": {
