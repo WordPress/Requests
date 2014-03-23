@@ -2,9 +2,17 @@
 
 abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function setUp() {
-		if (!call_user_func(array($this->transport, 'test'))) {
+		$callback = array($this->transport, 'test');
+		$supported = call_user_func($callback);
+
+		if (!$supported) {
 			$this->markTestSkipped($this->transport . ' is not available');
 			return;
+		}
+
+		$ssl_supported = call_user_func($callback, array('ssl' => true));
+		if (!$ssl_supported) {
+			$this->skip_https = true;
 		}
 	}
 	protected $skip_https = false;
