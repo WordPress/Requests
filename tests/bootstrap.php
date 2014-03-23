@@ -1,12 +1,14 @@
 <?php
 
+date_default_timezone_set('UTC');
+
 $host = getenv('REQUESTS_TEST_HOST');
 if (empty($host)) {
 	$host = 'httpbin.org';
 }
-define('REQUESTS_TEST_HOST',       getenv('REQUESTS_TEST_HOST')       ?: 'httpbin.org');
-define('REQUESTS_TEST_HOST_HTTP',  getenv('REQUESTS_TEST_HOST_HTTP')  ?: REQUESTS_TEST_HOST);
-define('REQUESTS_TEST_HOST_HTTPS', getenv('REQUESTS_TEST_HOST_HTTPS') ?: REQUESTS_TEST_HOST);
+define('REQUESTS_TEST_HOST',       getenv('REQUESTS_TEST_HOST') ? getenv('REQUESTS_TEST_HOST') : 'httpbin.org');
+define('REQUESTS_TEST_HOST_HTTP',  getenv('REQUESTS_TEST_HOST_HTTP') ? getenv('REQUESTS_TEST_HOST_HTTP') : REQUESTS_TEST_HOST);
+define('REQUESTS_TEST_HOST_HTTPS', getenv('REQUESTS_TEST_HOST_HTTPS') ? getenv('REQUESTS_TEST_HOST_HTTPS'): REQUESTS_TEST_HOST);
 
 include(dirname(dirname(__FILE__)) . '/library/Requests.php');
 Requests::register_autoloader();
