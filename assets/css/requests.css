@@ -16,8 +16,11 @@ body {
 		color: #333;
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 	}
+	.navbar .nav {
+		height: 40px;
+	}
 	.navbar .nav > li {
-		margin-bottom: 0;
+		margin: 0;
 	}
 	.navbar .nav > li > a {
 		line-height: 26px;
