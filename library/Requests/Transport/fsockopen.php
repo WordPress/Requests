@@ -385,7 +385,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				return false;
 
 			// Currently broken, thanks to https://github.com/facebook/hhvm/issues/2156
-			if (strpos(PHP_VERSION, 'hiphop') !== false)
+			if (defined('HHVM_VERSION'))
 				return false;
 		}
 
