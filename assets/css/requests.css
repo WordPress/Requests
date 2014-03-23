@@ -1,12 +1,11 @@
 body {
-	background: #eee;
+	background: #fafafa;
 	padding-top: 94px;
 }
 .navbar {
-	box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
 }
 	.navbar-inner {
-		background: #006DCC;
+		background: #fff;
 		padding-top: 18px;
 		padding-bottom: 18px;
 		border: none;
@@ -15,34 +14,29 @@ body {
 		font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
 		font-style: italic;
 		font-size: 30px;
-		color: #fff;
+		color: #333;
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 	}
 	.navbar .nav > li {
 		margin-bottom: 0;
 	}
 	.navbar .nav > li > a {
-		color: #eee;
 		line-height: 26px;
-		padding: 11px 10px 12px;
-		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+		padding: 6px 10px 7px;
+		border-radius: 3px;
 	}
 		.navbar .nav > li > a:hover {
 			background: #08f;
 			color: #fff;
+			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 		}
-	.navbar .divider-vertical {
-		border-left-color:  rgba(255, 255, 255, 0.3);
-		border-right-color: rgba(255, 255, 255, 0.2);
-		height: 56px;
-	}
 body > .container {
 	margin-top: 18px;
 	margin-bottom: 18px;
 	padding: 16px 0;
 	/*padding-top: 36px;*/
 	background: #fff;
-	border: 1px solid #ccc;
+	border: 1px solid #eee;
 }
 #masthead {
 	padding: 60px 0;
