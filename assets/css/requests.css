@@ -110,7 +110,7 @@ body > .container {
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
 	border-bottom: 1px solid #EEEEEE;
-	margin: 18px 0;
+	margin: 36px 0 18px;
 	padding-bottom: 4px;
 }
 
