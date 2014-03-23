@@ -144,6 +144,10 @@ pre {
 	padding: 35px 0 36px;
 	border-top: 1px solid #e5e5e5;
 }
+	.footer.container {
+		background: transparent;
+		border: none;
+	}
 .footer p {
 	margin-bottom: 0;
 	color: #555;
