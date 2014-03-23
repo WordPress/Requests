@@ -1,14 +1,20 @@
 language: php
 before_script:
- - phpenv local 5.4
+ # Setup Coveralls and httpbin-php
+ - phpenv local 5.5
  - composer install --dev --no-interaction
+ - sudo tests/utils/server/start.sh
+ - export REQUESTS_TEST_HOST_HTTPS=localhost
  - phpenv local --unset
+
+ # Work out of the tests directory
  - cd tests
 script:
  - phpunit --coverage-clover clover.xml
 after_script:
  - cd ..
- - phpenv local 5.4
+ - phpenv local 5.5
+ - tests/utils/server/stop.sh
  - php vendor/bin/coveralls -v
  - phpenv local --unset
 php:
