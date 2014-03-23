@@ -9,7 +9,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testDefaultTransport() {
-		$request = Requests::get('http://httpbin.org/get');
+		$request = Requests::get(httpbin('/get'));
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -143,6 +143,6 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 */
 	public function testTimeoutException() {
 		$options = array('timeout' => 0.5);
-		$response = Requests::get('http://httpbin.org/delay/3', array(), $options);
+		$response = Requests::get(httpbin('/delay/3'), array(), $options);
 	}
 }

@@ -26,20 +26,20 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testSimpleGET() {
-		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/get'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEquals(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testGETWithArgs() {
-		$request = Requests::get('http://httpbin.org/get?test=true&test2=test', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/get?test=true&test2=test'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/get?test=true&test2=test', $result['url']);
+		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
@@ -48,11 +48,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::request('http://httpbin.org/get', array(), $data, Requests::GET, $this->getOptions());
+		$request = Requests::request(httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/get?test=true&test2=test', $result['url']);
+		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
@@ -64,11 +64,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'test4' => 'test-too',
 			),
 		);
-		$request = Requests::request('http://httpbin.org/get', array(), $data, Requests::GET, $this->getOptions());
+		$request = Requests::request(httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too', $result['url']);
+		$this->assertEquals(httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['args']);
 	}
 
@@ -76,11 +76,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$data = array(
 			'test2' => 'test',
 		);
-		$request = Requests::request('http://httpbin.org/get?test=true', array(), $data, Requests::GET, $this->getOptions());
+		$request = Requests::request(httpbin('/get?test=true'), array(), $data, Requests::GET, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/get?test=true&test2=test', $result['url']);
+		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
@@ -88,7 +88,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$headers = array(
 			'Requested-At' => time(),
 		);
-		$request = Requests::get('http://httpbin.org/get', $headers, $this->getOptions());
+		$request = Requests::get(httpbin('/get'), $headers, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -96,23 +96,23 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testChunked() {
-		$request = Requests::get('http://httpbin.org/stream/1', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/stream/1'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/stream/1', $result['url']);
+		$this->assertEquals(httpbin('/stream/1'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testHEAD() {
-		$request = Requests::head('http://httpbin.org/get', array(), $this->getOptions());
+		$request = Requests::head(httpbin('/get'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 		$this->assertEquals('', $request->body);
 	}
 
 	public function testRawPOST() {
 		$data = 'test';
-		$request = Requests::post('http://httpbin.org/post', array(), $data, $this->getOptions());
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -121,7 +121,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFormPost() {
 		$data = 'test=true&test2=test';
-		$request = Requests::post('http://httpbin.org/post', array(), $data, $this->getOptions());
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -133,7 +133,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::post('http://httpbin.org/post', array(), $data, $this->getOptions());
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -148,7 +148,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'test4' => 'test-too',
 			),
 		);
-		$request = Requests::post('http://httpbin.org/post', array(), $data, $this->getOptions());
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -157,7 +157,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testRawPUT() {
 		$data = 'test';
-		$request = Requests::put('http://httpbin.org/put', array(), $data, $this->getOptions());
+		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -166,7 +166,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFormPUT() {
 		$data = 'test=true&test2=test';
-		$request = Requests::put('http://httpbin.org/put', array(), $data, $this->getOptions());
+		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -178,7 +178,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::put('http://httpbin.org/put', array(), $data, $this->getOptions());
+		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -187,7 +187,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testRawPATCH() {
 		$data = 'test';
-		$request = Requests::patch('http://httpbin.org/patch', array(), $data, $this->getOptions());
+		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -196,7 +196,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFormPATCH() {
 		$data = 'test=true&test2=test';
-		$request = Requests::patch('http://httpbin.org/patch', array(), $data, $this->getOptions());
+		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code, $request->body);
 
 		$result = json_decode($request->body, true);
@@ -208,7 +208,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::patch('http://httpbin.org/patch', array(), $data, $this->getOptions());
+		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -216,11 +216,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testDELETE() {
-		$request = Requests::delete('http://httpbin.org/delete', array(), $this->getOptions());
+		$request = Requests::delete(httpbin('/delete'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/delete', $result['url']);
+		$this->assertEquals(httpbin('/delete'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -229,23 +229,23 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::request('http://httpbin.org/delete', array(), $data, Requests::DELETE, $this->getOptions());
+		$request = Requests::request(httpbin('/delete'), array(), $data, Requests::DELETE, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/delete?test=true&test2=test', $result['url']);
+		$this->assertEquals(httpbin('/delete?test=true&test2=test'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
 	public function testRedirects() {
-		$request = Requests::get('http://httpbin.org/redirect/6', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/redirect/6'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$this->assertEquals(6, $request->redirects);
 	}
 
 	public function testRelativeRedirects() {
-		$request = Requests::get('http://httpbin.org/relative-redirect/6', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/relative-redirect/6'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$this->assertEquals(6, $request->redirects);
@@ -259,7 +259,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'redirects' => 10, // default, but force just in case
 		);
-		$request = Requests::get('http://httpbin.org/redirect/11', array(), $this->getOptions($options));
+		$request = Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
 	}
 
 	public static function statusCodeSuccessProvider() {
@@ -315,7 +315,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCode($code, $success) {
-		$url = sprintf('http://httpbin.org/status/%d', $code);
+		$url = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
 		);
@@ -328,7 +328,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrow($code, $success) {
-		$url = sprintf('http://httpbin.org/status/%d', $code);
+		$url = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
 		);
@@ -349,7 +349,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrowAllowRedirects($code, $success) {
-		$url = sprintf('http://httpbin.org/status/%d', $code);
+		$url = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
 		);
@@ -364,7 +364,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testStatusCodeUnknown(){
-		$request = Requests::get('http://httpbin.org/status/599', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/status/599'), array(), $this->getOptions());
 		$this->assertEquals(599, $request->status_code);
 		$this->assertEquals(false, $request->success);
 	}
@@ -373,12 +373,12 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception_HTTP_Unknown
 	 */
 	public function testStatusCodeThrowUnknown(){
-		$request = Requests::get('http://httpbin.org/status/599', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/status/599'), array(), $this->getOptions());
 		$request->throw_for_status(true);
 	}
 
 	public function testGzipped() {
-		$request = Requests::get('http://httpbin.org/gzip', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/gzip'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -389,13 +389,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 		);
-		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions($options));
+		$request = Requests::get(httpbin('/get'), array(), $this->getOptions($options));
 		$this->assertEquals(200, $request->status_code);
 		$this->assertEmpty($request->body);
 
 		$contents = file_get_contents($options['filename']);
 		$result = json_decode($contents, true);
-		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEquals(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		unlink($options['filename']);
@@ -405,7 +405,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'blocking' => false
 		);
-		$request = Requests::get('http://httpbin.org/get', array(), $this->getOptions($options));
+		$request = Requests::get(httpbin('/get'), array(), $this->getOptions($options));
 		$empty = new Requests_Response();
 		$this->assertEquals($empty, $request);
 	}
@@ -423,11 +423,12 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://httpbin.org/get', array(), $this->getOptions());
+		$request = Requests::get(httpbin('/get', true), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		// Disable, since httpbin always returns http
+		// $this->assertEquals(httpbin('/get', true), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -514,17 +515,17 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'timeout' => 1,
 		);
-		$request = Requests::get('http://httpbin.org/delay/10', array(), $this->getOptions($options));
+		$request = Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
 		var_dump($request);
 	}
 
 	public function testMultiple() {
 		$requests = array(
 			'test1' => array(
-				'url' => 'http://httpbin.org/get'
+				'url' => httpbin('/get')
 			),
 			'test2' => array(
-				'url' => 'http://httpbin.org/get'
+				'url' => httpbin('/get')
 			),
 		);
 		$responses = Requests::request_multiple($requests, $this->getOptions());
@@ -535,7 +536,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
-		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEquals(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		// test2
@@ -544,17 +545,17 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
-		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEquals(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testMultipleWithDifferingMethods() {
 		$requests = array(
 			'get' => array(
-				'url' => 'http://httpbin.org/get',
+				'url' => httpbin('/get'),
 			),
 			'post' => array(
-				'url' => 'http://httpbin.org/post',
+				'url' => httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 			),
@@ -576,10 +577,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultipleWithFailure() {
 		$requests = array(
 			'success' => array(
-				'url' => 'http://httpbin.org/get',
+				'url' => httpbin('/get'),
 			),
 			'timeout' => array(
-				'url' => 'http://httpbin.org/delay/10',
+				'url' => httpbin('/delay/10'),
 				'options' => array(
 					'timeout' => 1,
 				),
@@ -593,10 +594,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultipleUsingCallback() {
 		$requests = array(
 			'get' => array(
-				'url' => 'http://httpbin.org/get',
+				'url' => httpbin('/get'),
 			),
 			'post' => array(
-				'url' => 'http://httpbin.org/post',
+				'url' => httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 			),
@@ -614,10 +615,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultipleUsingCallbackAndFailure() {
 		$requests = array(
 			'success' => array(
-				'url' => 'http://httpbin.org/get',
+				'url' => httpbin('/get'),
 			),
 			'timeout' => array(
-				'url' => 'http://httpbin.org/delay/10',
+				'url' => httpbin('/delay/10'),
 				'options' => array(
 					'timeout' => 1,
 				),
@@ -640,13 +641,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultipleToFile() {
 		$requests = array(
 			'get' => array(
-				'url' => 'http://httpbin.org/get',
+				'url' => httpbin('/get'),
 				'options' => array(
 					'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 				),
 			),
 			'post' => array(
-				'url' => 'http://httpbin.org/post',
+				'url' => httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 				'options' => array(
@@ -659,14 +660,14 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		// GET request
 		$contents = file_get_contents($requests['get']['options']['filename']);
 		$result = json_decode($contents, true);
-		$this->assertEquals('http://httpbin.org/get', $result['url']);
+		$this->assertEquals(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 		unlink($requests['get']['options']['filename']);
 
 		// POST request
 		$contents = file_get_contents($requests['post']['options']['filename']);
 		$result = json_decode($contents, true);
-		$this->assertEquals('http://httpbin.org/post', $result['url']);
+		$this->assertEquals(httpbin('/post'), $result['url']);
 		$this->assertEquals('test', $result['data']);
 		unlink($requests['post']['options']['filename']);
 	}

@@ -47,21 +47,21 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testURLResolution() {
-		$session = new Requests_Session('http://httpbin.org/');
+		$session = new Requests_Session(httpbin('/'));
 
 		// Set the cookies up
 		$response = $session->get('/get');
 		$this->assertTrue($response->success);
-		$this->assertEquals('http://httpbin.org/get', $response->url);
+		$this->assertEquals(httpbin('/get'), $response->url);
 
 		$data = json_decode($response->body, true);
 		$this->assertNotNull($data);
 		$this->assertArrayHasKey('url', $data);
-		$this->assertEquals('http://httpbin.org/get', $data['url']);
+		$this->assertEquals(httpbin('/get'), $data['url']);
 	}
 
 	public function testSharedCookies() {
-		$session = new Requests_Session('http://httpbin.org/');
+		$session = new Requests_Session(httpbin('/'));
 
 		$options = array(
 			'follow_redirects' => false
