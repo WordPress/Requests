@@ -79,7 +79,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'follow_redirects' => false,
 		);
-		$url = 'http://httpbin.org/cookies/set?requests-testcookie=testvalue';
+		$url = httpbin('/cookies/set?requests-testcookie=testvalue');
 
 		$response = Requests::get($url, array(), $options);
 
@@ -92,7 +92,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'follow_redirects' => true,
 		);
-		$url = 'http://httpbin.org/cookies/set?requests-testcookie=testvalue';
+		$url = httpbin('/cookies/set?requests-testcookie=testvalue');
 
 		$response = Requests::get($url, array(), $options);
 
@@ -105,7 +105,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'cookies' => $cookies,
 		);
-		$response = Requests::get('http://httpbin.org/cookies/set', array(), $options);
+		$response = Requests::get(httpbin('/cookies/set'), array(), $options);
 
 		$data = json_decode($response->body, true);
 		$this->assertInternalType('array', $data);
