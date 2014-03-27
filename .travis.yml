@@ -2,7 +2,7 @@ language: php
 before_script:
  # Setup Coveralls and httpbin-php
  - phpenv local 5.5
- - composer install --dev --no-interaction
+ - composer install --dev --no-interaction --prefer-dist
 
  - TESTPHPBIN=$(phpenv which php)
  - sudo PHPBIN=$TESTPHPBIN vendor/bin/start.sh
