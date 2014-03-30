@@ -500,8 +500,18 @@ class Requests {
 			$options['auth']->register($options['hooks']);
 		}
 
-		if (!empty($options['proxy'])) {
-			$options['proxy'] = new Requests_Proxy_HTTP($options['proxy']);
+		if (!empty($options['proxy']['authentication']) AND
+			!empty($options['proxy']['type'])) {
+
+			switch($options['proxy']['type']) {
+				case 'HTTP':
+				$options['proxy'] = new Requests_Proxy_HTTP($options['proxy']['authentication']);
+				break;
+
+				case 'SOCKS5':
+				$options['proxy'] = new Requests_Proxy_SOCKS($options['proxy']['authentication']);
+				break;
+			}
 		}
 		if ($options['proxy'] !== false) {
 			$options['proxy']->register($options['hooks']);
