@@ -351,9 +351,6 @@ class Requests {
 	 * - `type`: HTTP request type (use Requests constants). Same as the `$type`
 	 *    parameter to {@see Requests::request}
 	 *    (string, default: `Requests::GET`)
-	 * - `data`: Associative array of options. Same as the `$options` parameter
-	 *    to {@see Requests::request}
-	 *    (array, default: see {@see Requests::request})
 	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
 	 *    (array|Requests_Cookie_Jar)
 	 *
