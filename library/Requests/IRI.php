@@ -872,7 +872,9 @@ class Requests_IRI
     {
         static $cache;
         if (!$cache)
+        {
             $cache = array();
+        }
 
         if ($authority === null)
         {
@@ -1212,9 +1214,7 @@ class Requests_IRI
     protected function get_authority()
     {
         $iauthority = $this->get_iauthority();
-        if (is_string($iauthority))
-            return $this->to_uri($iauthority);
-        else
-            return $iauthority;
+        
+        return is_string($iauthority) ? $this->to_uri($iauthority) : $iauthority;
     }
 }
