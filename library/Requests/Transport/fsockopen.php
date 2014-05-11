@@ -59,7 +59,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
 			$remote_socket = 'ssl://' . $host;
-			$url_parts['port'] = 443;
+			if (!isset($url_parts['port'])) {
+				$url_parts['port'] = 443;
+			}
 
 			$context_options = array(
 				'verify_peer' => true,
