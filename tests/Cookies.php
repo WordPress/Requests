@@ -177,6 +177,15 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 			array('example.com', 'example.com',     true,  true),
 			array('example.com', 'www.example.com', false, true),
 			array('example.com', 'example.net',     false, false),
+
+			// Prefix, but not subdomain
+			array('example.com', 'notexample.com',  false, false),
+			array('example.com', 'notexample.net',  false, false),
+
+			// Reject IP address prefixes
+			array('127.0.0.1',   '127.0.0.1',     true, true),
+			array('127.0.0.1',   'abc.127.0.0.1', false, false),
+			array('127.0.0.1',   'example.com',   false, false),
 		);
 	}
 
@@ -206,8 +215,17 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 	public function pathMatchProvider() {
 		return array(
 			array('/',      '/',      true),
+
 			array('/',      '/test',  true),
 			array('/',      '/test/', true),
+
+			array('/test',  '/',          false),
+			array('/test',  '/test',      true),
+			array('/test',  '/testing',   false),
+			array('/test',  '/test/',     true),
+			array('/test',  '/test/ing',  true),
+			array('/test',  '/test/ing/', true),
+
 			array('/test/', '/test/', true),
 			array('/test/', '/',      false),
 		);
