@@ -160,7 +160,7 @@ class Requests_Cookie {
 		}
 
 		if (strlen($request_path) > strlen($cookie_path) && substr($request_path, 0, strlen($cookie_path)) === $cookie_path) {
-			if (substr($request_path, -1) === '/') {
+			if (substr($cookie_path, -1) === '/') {
 				// The cookie-path is a prefix of the request-path, and the last
 				// character of the cookie-path is %x2F ("/").
 				return true;
