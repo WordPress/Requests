@@ -146,6 +146,11 @@ class Requests_Cookie {
 	 * @return boolean Whether the cookie is valid for the given path
 	 */
 	public function pathMatches($request_path) {
+		if (empty($request_path)) {
+			// Normalize empty path to root
+			$request_path = '/';
+		}
+
 		if (!isset($this->attributes['path'])) {
 			// Cookies created manually; cookies created by Requests will set
 			// the path to the requested path
