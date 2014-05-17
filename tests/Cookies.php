@@ -171,4 +171,55 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey('requests-testcookie', $data);
 		$this->assertEquals('testvalue', $data['requests-testcookie']);
 	}
+
+	public function domainMatchProvider() {
+		return array(
+			array('example.com', 'example.com',     true,  true),
+			array('example.com', 'www.example.com', false, true),
+			array('example.com', 'example.net',     false, false),
+		);
+	}
+
+	/**
+	 * @dataProvider domainMatchProvider
+	 */
+	public function testDomainExactMatch($original, $check, $matches, $domain_matches) {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['domain'] = $original;
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$this->assertEquals($matches, $cookie->domainMatches($check));
+	}
+
+	/**
+	 * @dataProvider domainMatchProvider
+	 */
+	public function testDomainMatch($original, $check, $matches, $domain_matches) {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['domain'] = $original;
+		$flags = array(
+			'host-only' => false
+		);
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+		$this->assertEquals($domain_matches, $cookie->domainMatches($check));
+	}
+
+	public function pathMatchProvider() {
+		return array(
+			array('/',      '/',      true),
+			array('/',      '/test',  true),
+			array('/',      '/test/', true),
+			array('/test/', '/test/', true),
+			array('/test/', '/',      false),
+		);
+	}
+
+	/**
+	 * @dataProvider pathMatchProvider
+	 */
+	public function testPathMatch($original, $check, $matches) {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['path'] = $original;
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$this->assertEquals($matches, $cookie->pathMatches($check));
+	}
 }
