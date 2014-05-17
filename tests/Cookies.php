@@ -279,7 +279,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$attributes['path']   = $path;
 		$check = new Requests_IRI($check);
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
-		$this->assertEquals($matches, $cookie->iriMatches($check));
+		$this->assertEquals($matches, $cookie->uriMatches($check));
 	}
 
 	/**
@@ -296,7 +296,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		);
 		$check = new Requests_IRI($check);
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
-		$this->assertEquals($domain_matches, $cookie->iriMatches($check));
+		$this->assertEquals($domain_matches, $cookie->uriMatches($check));
 	}
 
 	public function testUrlMatchSecure() {
@@ -309,12 +309,12 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		);
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
 
-		$this->assertTrue($cookie->iriMatches(new Requests_IRI('https://example.com/')));
-		$this->assertFalse($cookie->iriMatches(new Requests_IRI('http://example.com/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('https://example.com/')));
+		$this->assertFalse($cookie->uriMatches(new Requests_IRI('http://example.com/')));
 
 		// Double-check host-only
-		$this->assertTrue($cookie->iriMatches(new Requests_IRI('https://www.example.com/')));
-		$this->assertFalse($cookie->iriMatches(new Requests_IRI('http://www.example.com/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('https://www.example.com/')));
+		$this->assertFalse($cookie->uriMatches(new Requests_IRI('http://www.example.com/')));
 	}
 
 	/**
@@ -331,11 +331,11 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($cookie->pathMatches('/'));
 		$this->assertTrue($cookie->pathMatches('/test'));
 		$this->assertTrue($cookie->pathMatches('/test/'));
-		$this->assertTrue($cookie->iriMatches(new Requests_IRI('http://example.com/')));
-		$this->assertTrue($cookie->iriMatches(new Requests_IRI('http://example.com/test')));
-		$this->assertTrue($cookie->iriMatches(new Requests_IRI('http://example.com/test/')));
-		$this->assertTrue($cookie->iriMatches(new Requests_IRI('http://example.net/')));
-		$this->assertTrue($cookie->iriMatches(new Requests_IRI('http://example.net/test')));
-		$this->assertTrue($cookie->iriMatches(new Requests_IRI('http://example.net/test/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.com/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.com/test')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.com/test/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/test')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/test/')));
 	}
 }
