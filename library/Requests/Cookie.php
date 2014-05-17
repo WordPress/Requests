@@ -279,7 +279,7 @@ class Requests_Cookie {
 
 				// Domain normalization, as per RFC 6265 section 5.2.3
 				if (strtolower($part_key) === 'domain') {
-					if ($part_key[0] === '.') {
+					if ($part_value[0] === '.') {
 						$part_value = substr($part_value, 1);
 					}
 				}
