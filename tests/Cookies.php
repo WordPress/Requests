@@ -178,6 +178,11 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 			array('example.com', 'www.example.com', false, true),
 			array('example.com', 'example.net',     false, false),
 
+			// Leading period
+			array('.example.com', 'example.com',     true,  true),
+			array('.example.com', 'www.example.com', false, true),
+			array('.example.com', 'example.net',     false, false),
+
 			// Prefix, but not subdomain
 			array('example.com', 'notexample.com',  false, false),
 			array('example.com', 'notexample.net',  false, false),
