@@ -313,7 +313,7 @@ class Requests_Cookie {
 	 * @param Requests_Response_Headers $headers
 	 * @return array
 	 */
-	public static function parseFromHeaders(Requests_Response_Headers $headers) {
+	public static function parseFromHeaders(Requests_Response_Headers $headers, Requests_IRI $origin = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
 			return array();
@@ -322,6 +322,25 @@ class Requests_Cookie {
 		$cookies = array();
 		foreach ($cookie_headers as $header) {
 			$parsed = self::parse($header);
+
+			// Default domain/path attributes
+			if (empty($parsed->attributes['domain']) && !empty($origin)) {
+				$parsed->attributes['domain'] = $origin->host;
+				$parsed->flags['host-only'] = false;
+			}
+			else {
+				$parsed->flags['host-only'] = true;
+			}
+
+			if (empty($parsed->attributes['path']) && !empty($origin)) {
+				$parsed->attributes['path'] = $origin->path;
+			}
+
+			// Reject invalid cookie domains
+			if (!$parsed->domainMatches($origin->host)) {
+				continue;
+			}
+
 			$cookies[$parsed->name] = $parsed;
 		}
 
