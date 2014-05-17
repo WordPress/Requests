@@ -62,6 +62,8 @@ class Requests_Cookie {
 			'host-only' => true,
 		);
 		$this->flags = array_merge($default_flags, $flags);
+
+		$this->normalize();
 	}
 
 	/**
@@ -183,6 +185,53 @@ class Requests_Cookie {
 	}
 
 	/**
+	 * Normalize cookie and attributes
+	 *
+	 * @return boolean Whether the cookie was successfully normalized
+	 */
+	public function normalize() {
+		foreach ($this->attributes as $key => $value) {
+			$orig_value = $value;
+			switch ($key) {
+				case 'domain':
+					// Domain normalization, as per RFC 6265 section 5.2.3
+					if ($value[0] === '.') {
+						$value = substr($value, 1);
+					}
+					break;
+
+				case 'path':
+					// Path normalization as per RFC 6265 section 5.2.4
+					if (substr($value, 0, 1) !== '/') {
+						// If the uri-path is empty or if the first character of
+						// the uri-path is not a %x2F ("/") character, output
+						// %x2F ("/") and skip the remaining steps.
+						$value = '/';
+					}
+					if (substr_count($value, '/') === 1) {
+						// If the uri-path contains no more than one %x2F ("/")
+						// character, output %x2F ("/") and skip the remaining
+						// step.
+						$value = '/';
+					}
+					else {
+						// Output the characters of the uri-path from the first
+						// character up to, but not including, the right-most
+						// %x2F ("/").
+						$value = substr($value, 0, strrpos($value, '/'));
+					}
+					break;
+			}
+
+			if ($value !== $orig_value) {
+				$this->attributes[$key] = $value;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Format a cookie for a Cookie header
 	 *
 	 * This is used when sending cookies to a server.
@@ -276,35 +325,6 @@ class Requests_Cookie {
 				}
 
 				$part_key = trim($part_key);
-
-				// Domain normalization, as per RFC 6265 section 5.2.3
-				if (strtolower($part_key) === 'domain') {
-					if ($part_value[0] === '.') {
-						$part_value = substr($part_value, 1);
-					}
-				}
-
-				// Path normalization as per RFC 6265 section 5.2.4
-				if (strtolower($part_key) === 'path') {
-					if (substr($part_value, 0, 1) !== '/') {
-						// If the uri-path is empty or if the first character of
-						// the uri-path is not a %x2F ("/") character, output
-						// %x2F ("/") and skip the remaining steps.
-						$part_value = '/';
-					}
-					if (substr_count($part_value, '/') === 1) {
-						// If the uri-path contains no more than one %x2F ("/")
-						// character, output %x2F ("/") and skip the remaining
-						// step.
-						$part_value = '/';
-					}
-					else {
-						// Output the characters of the uri-path from the first
-						// character up to, but not including, the right-most
-						// %x2F ("/").
-						$part_value = substr($part_value, 0, strrpos($part_value, '/'));
-					}
-				}
 				$attributes[$part_key] = $part_value;
 			}
 		}
