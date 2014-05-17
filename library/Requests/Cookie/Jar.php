@@ -121,12 +121,19 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 * @param string $type
 	 * @param array $options
 	 */
-	public function before_request(&$url, &$headers, &$data, &$type, &$options) {
+	public function before_request($url, &$headers, &$data, &$type, &$options) {
+		if ( ! $url instanceof Requests_IRI ) {
+			$url = new Requests_IRI($url);
+		}
+
 		if (!empty($this->cookies)) {
 			$cookies = array();
 			foreach ($this->cookies as $key => $cookie) {
 				$cookie = $this->normalizeCookie($cookie, $key);
-				$cookies[] = $cookie->formatForHeader();
+
+				if ( $cookie->domainMatches( $url->host ) ) {
+					$cookies[] = $cookie->formatForHeader();
+				}
 			}
 
 			$headers['Cookie'] = implode('; ', $cookies);
