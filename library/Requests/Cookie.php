@@ -199,28 +199,6 @@ class Requests_Cookie {
 						$value = substr($value, 1);
 					}
 					break;
-
-				case 'path':
-					// Path normalization as per RFC 6265 section 5.2.4
-					if (substr($value, 0, 1) !== '/') {
-						// If the uri-path is empty or if the first character of
-						// the uri-path is not a %x2F ("/") character, output
-						// %x2F ("/") and skip the remaining steps.
-						$value = '/';
-					}
-					if (substr_count($value, '/') === 1) {
-						// If the uri-path contains no more than one %x2F ("/")
-						// character, output %x2F ("/") and skip the remaining
-						// step.
-						$value = '/';
-					}
-					else {
-						// Output the characters of the uri-path from the first
-						// character up to, but not including, the right-most
-						// %x2F ("/").
-						$value = substr($value, 0, strrpos($value, '/'));
-					}
-					break;
 			}
 
 			if ($value !== $orig_value) {
@@ -357,8 +335,30 @@ class Requests_Cookie {
 				$parsed->flags['host-only'] = true;
 			}
 
-			if (empty($parsed->attributes['path']) && !empty($origin)) {
-				$parsed->attributes['path'] = $origin->path;
+			$path_is_valid = (!empty($parsed->attributes['path']) && $parsed->attributes['path'][0] === '/');
+			if (!$path_is_valid && !empty($origin)) {
+				$path = $origin->path;
+
+				// Default path normalization as per RFC 6265 section 5.1.4
+				if (substr($path, 0, 1) !== '/') {
+					// If the uri-path is empty or if the first character of
+					// the uri-path is not a %x2F ("/") character, output
+					// %x2F ("/") and skip the remaining steps.
+					$path = '/';
+				}
+				elseif (substr_count($path, '/') === 1) {
+					// If the uri-path contains no more than one %x2F ("/")
+					// character, output %x2F ("/") and skip the remaining
+					// step.
+					$path = '/';
+				}
+				else {
+					// Output the characters of the uri-path from the first
+					// character up to, but not including, the right-most
+					// %x2F ("/").
+					$path = substr($path, 0, strrpos($path, '/'));
+				}
+				$parsed->attributes['path'] = $path;
 			}
 
 			// Reject invalid cookie domains
