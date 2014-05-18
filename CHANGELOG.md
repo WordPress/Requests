@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.6.1
+-----
+- [Fix compatibility with HHVM][#121] - Using HHVM with Requests would
+  previously cause either exceptions with SSL or segfaults with the cURL
+  handler. Props Ozh for his work here.
+
+[#121]: https://github.com/rmccue/Requests/issues/121
+
 1.6.0
 -----
 - [Add multiple request support][#23] - Send multiple HTTP requests with both
