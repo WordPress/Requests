@@ -12,10 +12,12 @@
 		</testsuite>
 		<testsuite name="General">
 			<file>ChunkedEncoding.php</file>
+			<file>Cookies.php</file>
 			<file>IDNAEncoder.php</file>
 			<file>IRI.php</file>
 			<file>Requests.php</file>
 			<file>Response/Headers.php</file>
+			<file>SSL.php</file>
 		</testsuite>
 	</testsuites>
 

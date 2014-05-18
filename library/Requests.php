@@ -67,7 +67,7 @@ class Requests {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.6-dev';
+	const VERSION = '1.6';
 
 	/**
 	 * Registered transport classes
@@ -81,9 +81,9 @@ class Requests {
 	 *
 	 * Use {@see get_transport()} instead
 	 *
-	 * @var string|null
+	 * @var array
 	 */
-	public static $transport = null;
+	public static $transport = array();
 
 	/**
 	 * This is a static class, do not instantiate it
@@ -147,11 +147,16 @@ class Requests {
 	 * @throws Requests_Exception If no valid transport is found (`notransport`)
 	 * @return Requests_Transport
 	 */
-	protected static function get_transport() {
+	protected static function get_transport($capabilities = array()) {
 		// Caching code, don't bother testing coverage
 		// @codeCoverageIgnoreStart
-		if (self::$transport !== null) {
-			return new self::$transport();
+		// array of capabilities as a string to be used as an array key
+		ksort($capabilities);
+		$cap_string = serialize($capabilities);
+
+		// Don't search for a transport if it's already been done for these $capabilities
+		if (isset(self::$transport[$cap_string]) && self::$transport[$cap_string] !== null) {
+			return new self::$transport[$cap_string]();
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -167,17 +172,17 @@ class Requests {
 			if (!class_exists($class))
 				continue;
 
-			$result = call_user_func(array($class, 'test'));
+			$result = call_user_func(array($class, 'test'), $capabilities);
 			if ($result) {
-				self::$transport = $class;
+				self::$transport[$cap_string] = $class;
 				break;
 			}
 		}
-		if (self::$transport === null) {
+		if (self::$transport[$cap_string] === null) {
 			throw new Requests_Exception('No working transports found', 'notransport', self::$transports);
 		}
-
-		return new self::$transport();
+		
+		return new self::$transport[$cap_string]();
 	}
 
 	/**#@+
@@ -253,7 +258,9 @@ class Requests {
 	 * options:
 	 *
 	 * - `timeout`: How long should we wait for a response?
-	 *    (integer, seconds, default: 10)
+	 *    (float, seconds with a millisecond precision, default: 10, example: 0.01)
+	 * - `connect_timeout`: How long should we wait while trying to connect?
+	 *    (float, seconds with a millisecond precision, default: 10, example: 0.01)
 	 * - `useragent`: Useragent to send to the server
 	 *    (string, default: php-requests/$version)
 	 * - `follow_redirects`: Should we follow 3xx redirects?
@@ -310,9 +317,10 @@ class Requests {
 			if (is_string($options['transport'])) {
 				$transport = new $transport();
 			}
-		}
-		else {
-			$transport = self::get_transport();
+		} else {
+			$need_ssl = (0 === stripos($url, 'https://'));
+			$capabilities = array('ssl' => $need_ssl);
+			$transport = self::get_transport($capabilities);
 		}
 		$response = $transport->request($url, $headers, $data, $options);
 
@@ -343,9 +351,8 @@ class Requests {
 	 * - `type`: HTTP request type (use Requests constants). Same as the `$type`
 	 *    parameter to {@see Requests::request}
 	 *    (string, default: `Requests::GET`)
-	 * - `data`: Associative array of options. Same as the `$options` parameter
-	 *    to {@see Requests::request}
-	 *    (array, default: see {@see Requests::request})
+	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
+	 *    (array|Requests_Cookie_Jar)
 	 *
 	 * If the `$options` parameter is specified, individual requests will
 	 * inherit options from it. This can be used to use a single hooking system,
@@ -441,6 +448,7 @@ class Requests {
 	protected static function get_default_options($multirequest = false) {
 		$defaults = array(
 			'timeout' => 10,
+			'connect_timeout' => 10,
 			'useragent' => 'php-requests/' . self::VERSION,
 			'redirected' => 0,
 			'redirects' => 10,
@@ -450,6 +458,7 @@ class Requests {
 			'filename' => false,
 			'auth' => false,
 			'proxy' => false,
+			'cookies' => false,
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
@@ -473,7 +482,7 @@ class Requests {
 	 * @return array $options
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
-		if (!preg_match('/^http(s)?:\/\//i', $url)) {
+		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
 			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
 		}
 
@@ -493,6 +502,16 @@ class Requests {
 		}
 		if ($options['proxy'] !== false) {
 			$options['proxy']->register($options['hooks']);
+		}
+
+		if (is_array($options['cookies'])) {
+			$options['cookies'] = new Requests_Cookie_Jar($options['cookies']);
+		}
+		elseif (empty($options['cookies'])) {
+			$options['cookies'] = new Requests_Cookie_Jar();
+		}
+		if ($options['cookies'] !== false) {
+			$options['cookies']->register($options['hooks']);
 		}
 
 		if ($options['idn'] !== false) {
@@ -570,6 +589,8 @@ class Requests {
 			unset($return->headers['connection']);
 		}
 
+		$options['hooks']->dispatch('requests.before_redirect_check', array(&$return, $req_headers, $req_data, $options));
+
 		if ((in_array($return->status_code, array(300, 301, 302, 303, 307)) || $return->status_code > 307 && $return->status_code < 400) && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
 				if ($return->status_code === 303) {
@@ -577,7 +598,7 @@ class Requests {
 				}
 				$options['redirected']++;
 				$location = $return->headers['location'];
-				if (strpos ($location, '/') === 0) {
+				if (strpos ($location, 'http://') !== 0 && strpos ($location, 'https://') !== 0) {
 					// relative redirect, for compatibility make it absolute
 					$location = Requests_IRI::absolutize($url, $location);
 					$location = $location->uri;
@@ -820,6 +841,27 @@ class Requests {
 		// debugging and preventing regressions and to track stats
 		if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 2 ) ) ) ) {
 			return $decompressed;
+		}
+
+		return false;
+	}
+
+	public static function match_domain($host, $reference) {
+		// Check for a direct match
+		if ($host === $reference) {
+			return true;
+		}
+
+		// Calculate the valid wildcard match if the host is not an IP address
+		// Also validates that the host has 3 parts or more, as per Firefox's
+		// ruleset.
+		$parts = explode('.', $host);
+		if (ip2long($host) === false && count($parts) >= 3) {
+			$parts[0] = '*';
+			$wildcard = implode('.', $parts);
+			if ($wildcard === $reference) {
+				return true;
+			}
 		}
 
 		return false;

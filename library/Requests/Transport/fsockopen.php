@@ -14,6 +14,13 @@
  */
 class Requests_Transport_fsockopen implements Requests_Transport {
 	/**
+	 * Second to microsecond conversion
+	 *
+	 * @var integer
+	 */
+	const SECOND_IN_MICROSECONDS = 1000000;
+
+	/**
 	 * Raw HTTP data
 	 *
 	 * @var string
@@ -47,6 +54,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$url_parts = parse_url($url);
 		$host = $url_parts['host'];
 		$context = stream_context_create();
+		$verifyname = false;
 
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
@@ -55,7 +63,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 			$context_options = array(
 				'verify_peer' => true,
+				// 'CN_match' => $host,
+				'capture_peer_cert' => true
 			);
+			$verifyname = true;
 
 			// SNI, if enabled (OpenSSL >=0.9.8j)
 			if (defined('OPENSSL_TLSEXT_SERVER_NAME') && OPENSSL_TLSEXT_SERVER_NAME) {
@@ -71,6 +82,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				} elseif (is_string($options['verify'])) {
 					$context_options['cafile'] = $options['verify'];
 				}
+			}
+
+			if (isset($options['verifyname']) && $options['verifyname'] === false) {
+				$verifyname = false;
 			}
 
 			stream_context_set_option($context, array('ssl' => $context_options));
@@ -91,9 +106,15 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$options['hooks']->dispatch('fsockopen.remote_socket', array(&$remote_socket));
 
-		$fp = stream_socket_client($remote_socket, $errno, $errstr, $options['timeout'], STREAM_CLIENT_CONNECT, $context);
+		$fp = stream_socket_client($remote_socket, $errno, $errstr, ceil($options['connect_timeout']), STREAM_CLIENT_CONNECT, $context);
 
 		restore_error_handler();
+
+		if ($verifyname) {
+			if (!$this->verify_certificate_from_context($host, $context)) {
+				throw new Requests_Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
+			}
+		}
 
 		if (!$fp) {
 			if ($errno === 0) {
@@ -184,7 +205,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$options['hooks']->dispatch('fsockopen.after_request', array(&$fake_headers));
 			return '';
 		}
-		stream_set_timeout($fp, $options['timeout']);
+
+		$timeout_sec = (int) floor($options['timeout']);
+		$timeout_msec = $timeout_sec == $options['timeout'] ? 0 : self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
+		stream_set_timeout($fp, $timeout_sec, $timeout_msec);
 
 		$this->info = stream_get_meta_data($fp);
 
@@ -327,12 +351,54 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	}
 
 	/**
+	 * Verify the certificate against common name and subject alternative names
+	 *
+	 * Unfortunately, PHP doesn't check the certificate against the alternative
+	 * names, leading things like 'https://www.github.com/' to be invalid.
+	 * Instead
+	 *
+	 * @see http://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
+	 *
+	 * @throws Requests_Exception On failure to connect via TLS (`fsockopen.ssl.connect_error`)
+	 * @throws Requests_Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
+	 * @param string $host Host name to verify against
+	 * @param resource $context Stream context
+	 * @return bool
+	 */
+	public function verify_certificate_from_context($host, $context) {
+		$meta = stream_context_get_options($context);
+
+		// If we don't have SSL options, then we couldn't make the connection at
+		// all
+		if (empty($meta) || empty($meta['ssl']) || empty($meta['ssl']['peer_certificate'])) {
+			throw new Requests_Exception(rtrim($this->connect_error), 'ssl.connect_error');
+		}
+
+		$cert = openssl_x509_parse($meta['ssl']['peer_certificate']);
+
+		return Requests_SSL::verify_certificate($host, $cert);
+	}
+
+	/**
 	 * Whether this transport is valid
 	 *
 	 * @codeCoverageIgnore
 	 * @return boolean True if the transport is valid, false otherwise.
 	 */
-	public static function test() {
-		return function_exists('fsockopen');
+	public static function test($capabilities = array()) {
+		if (!function_exists('fsockopen'))
+			return false;
+
+		// If needed, check that streams support SSL
+		if (isset( $capabilities['ssl'] ) && $capabilities['ssl']) {
+			if (!extension_loaded('openssl') || !function_exists('openssl_x509_parse'))
+				return false;
+
+			// Currently broken, thanks to https://github.com/facebook/hhvm/issues/2156
+			if (defined('HHVM_VERSION'))
+				return false;
+		}
+
+		return true;
 	}
 }

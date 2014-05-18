@@ -110,6 +110,11 @@ $data = array('some' => 'data');
 $response = Requests::post($url, $headers, json_encode($data));
 ```
 
+Note that if you don't manually specify a Content-Type header, Requests has
+undefined behaviour for the header. It may be set to various values depending
+on the internal execution path, so it's recommended to set this explicitly if
+you need to.
+
 
 Status Codes
 ------------
