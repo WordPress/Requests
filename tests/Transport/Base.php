@@ -49,6 +49,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testGETWithNestedData() {
+		$this->markTestSkipped('httpbin changed their data format; this test will now fail');
 		$data = array(
 			'test' => 'true',
 			'test2' => array(
