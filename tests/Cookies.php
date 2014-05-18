@@ -171,4 +171,176 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey('requests-testcookie', $data);
 		$this->assertEquals('testvalue', $data['requests-testcookie']);
 	}
+
+	public function domainMatchProvider() {
+		return array(
+			array('example.com', 'example.com',     true,  true),
+			array('example.com', 'www.example.com', false, true),
+			array('example.com', 'example.net',     false, false),
+
+			// Leading period
+			array('.example.com', 'example.com',     true,  true),
+			array('.example.com', 'www.example.com', false, true),
+			array('.example.com', 'example.net',     false, false),
+
+			// Prefix, but not subdomain
+			array('example.com', 'notexample.com',  false, false),
+			array('example.com', 'notexample.net',  false, false),
+
+			// Reject IP address prefixes
+			array('127.0.0.1',   '127.0.0.1',     true, true),
+			array('127.0.0.1',   'abc.127.0.0.1', false, false),
+			array('127.0.0.1',   'example.com',   false, false),
+		);
+	}
+
+	/**
+	 * @dataProvider domainMatchProvider
+	 */
+	public function testDomainExactMatch($original, $check, $matches, $domain_matches) {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['domain'] = $original;
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$this->assertEquals($matches, $cookie->domainMatches($check));
+	}
+
+	/**
+	 * @dataProvider domainMatchProvider
+	 */
+	public function testDomainMatch($original, $check, $matches, $domain_matches) {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['domain'] = $original;
+		$flags = array(
+			'host-only' => false
+		);
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+		$this->assertEquals($domain_matches, $cookie->domainMatches($check));
+	}
+
+	public function pathMatchProvider() {
+		return array(
+			array('/',      '/',      true),
+
+			array('/',      '/test',  true),
+			array('/',      '/test/', true),
+
+			array('/test',  '/',          false),
+			array('/test',  '/test',      true),
+			array('/test',  '/testing',   false),
+			array('/test',  '/test/',     true),
+			array('/test',  '/test/ing',  true),
+			array('/test',  '/test/ing/', true),
+
+			array('/test/', '/test/', true),
+			array('/test/', '/',      false),
+		);
+	}
+
+	/**
+	 * @dataProvider pathMatchProvider
+	 */
+	public function testPathMatch($original, $check, $matches) {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['path'] = $original;
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$this->assertEquals($matches, $cookie->pathMatches($check));
+	}
+
+	public function urlMatchProvider() {
+		return array(
+			// Domain handling
+			array( 'example.com', '/', 'http://example.com/',     true,  true ),
+			array( 'example.com', '/', 'http://www.example.com/', false, true ),
+			array( 'example.com', '/', 'http://example.net/',     false, false ),
+			array( 'example.com', '/', 'http://www.example.net/', false, false ),
+
+			// /test
+			array( 'example.com', '/test', 'http://example.com/',            false, false ),
+			array( 'example.com', '/test', 'http://www.example.com/',        false, false ),
+
+			array( 'example.com', '/test', 'http://example.com/test',        true,  true ),
+			array( 'example.com', '/test', 'http://www.example.com/test',    false, true ),
+
+			array( 'example.com', '/test', 'http://example.com/testing',     false, false ),
+			array( 'example.com', '/test', 'http://www.example.com/testing', false, false ),
+
+			array( 'example.com', '/test', 'http://example.com/test/',       true,  true ),
+			array( 'example.com', '/test', 'http://www.example.com/test/',   false, true ),
+
+			// /test/
+			array( 'example.com', '/test/', 'http://example.com/',     false, false ),
+			array( 'example.com', '/test/', 'http://www.example.com/', false, false ),
+		);
+	}
+
+	/**
+	 * @depends testDomainExactMatch
+	 * @depends testPathMatch
+	 * @dataProvider urlMatchProvider
+	 */
+	public function testUrlExactMatch($domain, $path, $check, $matches, $domain_matches) {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['domain'] = $domain;
+		$attributes['path']   = $path;
+		$check = new Requests_IRI($check);
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$this->assertEquals($matches, $cookie->uriMatches($check));
+	}
+
+	/**
+	 * @depends testDomainMatch
+	 * @depends testPathMatch
+	 * @dataProvider urlMatchProvider
+	 */
+	public function testUrlMatch($domain, $path, $check, $matches, $domain_matches) {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['domain'] = $domain;
+		$attributes['path']   = $path;
+		$flags = array(
+			'host-only' => false
+		);
+		$check = new Requests_IRI($check);
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+		$this->assertEquals($domain_matches, $cookie->uriMatches($check));
+	}
+
+	public function testUrlMatchSecure() {
+		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes['domain'] = 'example.com';
+		$attributes['path']   = '/';
+		$attributes['secure'] = true;
+		$flags = array(
+			'host-only' => false,
+		);
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('https://example.com/')));
+		$this->assertFalse($cookie->uriMatches(new Requests_IRI('http://example.com/')));
+
+		// Double-check host-only
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('https://www.example.com/')));
+		$this->assertFalse($cookie->uriMatches(new Requests_IRI('http://www.example.com/')));
+	}
+
+	/**
+	 * Manually set cookies without a domain/path set should always be valid
+	 *
+	 * Cookies parsed from headers internally in Requests will always have a
+	 * domain/path set, but those created manually will not. Manual cookies
+	 * should be regarded as "global" cookies (that is, set for `.`)
+	 */
+	public function testUrlMatchManuallySet() {
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue');
+		$this->assertTrue($cookie->domainMatches('example.com'));
+		$this->assertTrue($cookie->domainMatches('example.net'));
+		$this->assertTrue($cookie->pathMatches('/'));
+		$this->assertTrue($cookie->pathMatches('/test'));
+		$this->assertTrue($cookie->pathMatches('/test/'));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.com/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.com/test')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.com/test/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/test')));
+		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/test/')));
+	}
 }
