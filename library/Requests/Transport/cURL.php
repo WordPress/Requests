@@ -114,6 +114,10 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->fp, CURLOPT_SSL_VERIFYHOST, 0);
 		}
 
+		if (isset($options['cacert']) && $options['cacert'] === false) {
+			curl_setopt($this->fp, CURLOPT_CAINFO, $options['cacert']);
+		}
+
 		$response = curl_exec($this->fp);
 
 		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
