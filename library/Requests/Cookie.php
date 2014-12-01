@@ -113,7 +113,7 @@ class Requests_Cookie {
 			return false;
 		}
 
-		if (strlen($string) <= $domain_string) {
+		if (strlen($string) <= strlen($domain_string)) {
 			// For obvious reasons, the string cannot be a suffix if the domain
 			// is shorter than the domain string
 			return false;
