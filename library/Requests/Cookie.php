@@ -45,13 +45,23 @@ class Requests_Cookie {
 	public $flags = array();
 
 	/**
+	 * Reference time for relative calculations
+	 *
+	 * This is used in place of `time()` when calculating Max-Age expiration and
+	 * checking time validity.
+	 *
+	 * @var int
+	 */
+	public $reference_time = 0;
+
+	/**
 	 * Create a new cookie object
 	 *
 	 * @param string $name
 	 * @param string $value
 	 * @param array $attributes Associative array of attribute data
 	 */
-	public function __construct($name, $value, $attributes = array(), $flags = array()) {
+	public function __construct($name, $value, $attributes = array(), $flags = array(), $reference_time = null) {
 		$this->name = $name;
 		$this->value = $value;
 		$this->attributes = $attributes;
@@ -62,6 +72,11 @@ class Requests_Cookie {
 			'host-only' => true,
 		);
 		$this->flags = array_merge($default_flags, $flags);
+
+		$this->reference_time = time();
+		if ($reference_time !== null) {
+			$this->reference_time = $reference_time;
+		}
 
 		$this->normalize();
 	}
@@ -246,7 +261,7 @@ class Requests_Cookie {
 					$expiry_time = 0;
 				}
 				else {
-					$expiry_time = time() + $delta_seconds;
+					$expiry_time = $this->reference_time + $delta_seconds;
 				}
 
 				return $expiry_time;
@@ -321,7 +336,7 @@ class Requests_Cookie {
 	 * @param string Cookie header value (from a Set-Cookie header)
 	 * @return Requests_Cookie Parsed cookie object
 	 */
-	public static function parse($string, $name = '') {
+	public static function parse($string, $name = '', $reference_time = null) {
 		$parts = explode(';', $string);
 		$kvparts = array_shift($parts);
 
@@ -362,7 +377,7 @@ class Requests_Cookie {
 			}
 		}
 
-		return new Requests_Cookie($name, $value, $attributes);
+		return new Requests_Cookie($name, $value, $attributes, array(), $reference_time);
 	}
 
 	/**
