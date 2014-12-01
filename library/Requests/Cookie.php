@@ -131,7 +131,7 @@ class Requests_Cookie {
 			return false;
 		}
 
-		if (preg_match('#^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$#', $string)) {
+		if (preg_match('#^(.+\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$#', $string)) {
 			// The string should be a host name (i.e., not an IP address).
 			return false;
 		}
