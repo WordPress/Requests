@@ -192,13 +192,10 @@ class Requests_Cookie {
 	public function normalize() {
 		foreach ($this->attributes as $key => $value) {
 			$orig_value = $value;
-			switch ($key) {
-				case 'domain':
-					// Domain normalization, as per RFC 6265 section 5.2.3
-					if ($value[0] === '.') {
-						$value = substr($value, 1);
-					}
-					break;
+			$value = $this->normalizeAttribute($key, $value);
+			if ($value === null) {
+				unset($this->attributes[$key]);
+				continue;
 			}
 
 			if ($value !== $orig_value) {
@@ -207,6 +204,64 @@ class Requests_Cookie {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Parse an individual cookie attribute
+	 *
+	 * Handles parsing individual attributes from the cookie values.
+	 *
+	 * @param string $name Attribute name
+	 * @param string|boolean $value Attribute value (string value, or true if empty/flag)
+	 * @return mixed Value if available, or null if the attribute value is invalid (and should be skipped)
+	 */
+	protected function normalizeAttribute($name, $value) {
+		switch (strtolower($name)) {
+			case 'expires':
+				// Expiration parsing, as per RFC 6265 section 5.2.1
+				if (is_int($value)) {
+					return $value;
+				}
+
+				$expiry_time = strtotime($value);
+				if ($expiry_time === false) {
+					return null;
+				}
+
+				return $expiry_time;
+
+			case 'max-age':
+				// Expiration parsing, as per RFC 6265 section 5.2.2
+				if (is_int($value)) {
+					return $value;
+				}
+
+				// Check that we have a valid age
+				if (!preg_match('/^-?\d+$/', $value)) {
+					return null;
+				}
+
+				$delta_seconds = (int) $value;
+				if ($delta_seconds <= 0) {
+					$expiry_time = 0;
+				}
+				else {
+					$expiry_time = time() + $delta_seconds;
+				}
+
+				return $expiry_time;
+
+			case 'domain':
+				// Domain normalization, as per RFC 6265 section 5.2.3
+				if ($value[0] === '.') {
+					$value = substr($value, 1);
+				}
+
+				return $value;
+
+			default:
+				return $value;
+		}
 	}
 
 	/**
