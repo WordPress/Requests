@@ -122,7 +122,9 @@ set of tests. We're not quite there yet, but [we're getting close][coveralls].
 
 [coveralls]: https://coveralls.io/r/rmccue/Requests?branch=master
 
-To run the test suite, simply:
+To run the test suite, first check that you have the [PHP
+JSON extension ](http://php.net/manual/en/book.json.php) enabled. Then
+simply:
 
     $ cd tests
     $ phpunit
