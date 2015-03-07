@@ -55,6 +55,20 @@ class Requests {
 	const DELETE = 'DELETE';
 
 	/**
+	 * OPTIONS method
+	 *
+	 * @var string
+	 */
+	const OPTIONS = 'OPTIONS';
+
+	/**
+	 * TRACE method
+	 *
+	 * @var string
+	 */
+	const TRACE = 'TRACE';
+
+	/**
 	 * PATCH method
 	 *
 	 * @link http://tools.ietf.org/html/rfc5789
@@ -181,7 +195,7 @@ class Requests {
 		if (self::$transport[$cap_string] === null) {
 			throw new Requests_Exception('No working transports found', 'notransport', self::$transports);
 		}
-		
+
 		return new self::$transport[$cap_string]();
 	}
 
@@ -233,6 +247,20 @@ class Requests {
 	 */
 	public static function put($url, $headers = array(), $data = array(), $options = array()) {
 		return self::request($url, $headers, $data, self::PUT, $options);
+	}
+
+	/**
+	 * Send an OPTIONS request
+	 */
+	public static function options($url, $headers = array(), $data = array(), $options = array()) {
+		return self::request($url, $headers, $data, self::OPTIONS, $options);
+	}
+
+	/**
+	 * Send a TRACE request
+	 */
+	public static function trace($url, $headers = array(), $data = array(), $options = array()) {
+		return self::request($url, $headers, $data, self::TRACE, $options);
 	}
 
 	/**
@@ -450,6 +478,7 @@ class Requests {
 			'timeout' => 10,
 			'connect_timeout' => 10,
 			'useragent' => 'php-requests/' . self::VERSION,
+			'protocol_version' => 1.1,
 			'redirected' => 0,
 			'redirects' => 10,
 			'follow_redirects' => true,
@@ -518,6 +547,10 @@ class Requests {
 			$iri = new Requests_IRI($url);
 			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
 			$url = $iri->uri;
+		}
+
+		if (!isset($options['data_as_query'])) {
+			$options['data_as_query'] = in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE));
 		}
 	}
 

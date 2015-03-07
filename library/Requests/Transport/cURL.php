@@ -64,19 +64,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 	public function __construct() {
 		$curl = curl_version();
 		$this->version = $curl['version_number'];
-		$this->fp = curl_init();
-
-		curl_setopt($this->fp, CURLOPT_HEADER, false);
-		curl_setopt($this->fp, CURLOPT_RETURNTRANSFER, 1);
-		if ($this->version >= self::CURL_7_10_5) {
-			curl_setopt($this->fp, CURLOPT_ENCODING, '');
-		}
-		if (defined('CURLOPT_PROTOCOLS')) {
-			curl_setopt($this->fp, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-		}
-		if (defined('CURLOPT_REDIR_PROTOCOLS')) {
-			curl_setopt($this->fp, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-		}
 	}
 
 	/**
@@ -225,14 +212,31 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
 	 */
 	protected function setup_handle($url, $headers, $data, $options) {
+		$this->fp = curl_init();
+
+		curl_setopt($this->fp, CURLOPT_HEADER, false);
+		curl_setopt($this->fp, CURLOPT_RETURNTRANSFER, 1);
+		if ($this->version >= self::CURL_7_10_5) {
+			curl_setopt($this->fp, CURLOPT_ENCODING, '');
+		}
+		if (defined('CURLOPT_PROTOCOLS')) {
+			curl_setopt($this->fp, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+		}
+		if (defined('CURLOPT_REDIR_PROTOCOLS')) {
+			curl_setopt($this->fp, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+		}
+
 		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
 
 		$headers = Requests::flatten($headers);
-		if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE)) & !empty($data)) {
-			$url = self::format_get($url, $data);
-		}
-		elseif (!empty($data) && !is_string($data)) {
-			$data = http_build_query($data, null, '&');
+
+		if (!empty($data)) {
+			if ($options['data_as_query']) {
+				$url = self::format_get($url, $data);
+				$data = '';
+			} elseif (!is_string($data)) {
+				$data = http_build_query($data, null, '&');
+			}
 		}
 
 		switch ($options['type']) {
@@ -242,14 +246,17 @@ class Requests_Transport_cURL implements Requests_Transport {
 				break;
 			case Requests::PATCH:
 			case Requests::PUT:
+			case Requests::DELETE:
+			case Requests::OPTIONS:
 				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, $options['type']);
 				curl_setopt($this->fp, CURLOPT_POSTFIELDS, $data);
 				break;
-			case Requests::DELETE:
-				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, 'DELETE');
-				break;
 			case Requests::HEAD:
+				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, $options['type']);
 				curl_setopt($this->fp, CURLOPT_NOBODY, true);
+				break;
+			case Requests::TRACE:
+				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, $options['type']);
 				break;
 		}
 
@@ -267,6 +274,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		curl_setopt($this->fp, CURLOPT_REFERER, $url);
 		curl_setopt($this->fp, CURLOPT_USERAGENT, $options['useragent']);
 		curl_setopt($this->fp, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($this->fp, CURLOPT_HTTP_VERSION, $options['protocol_version'] == 1.1 ? CURL_HTTP_VERSION_1_1 : CURL_HTTP_VERSION_1_0);
 
 		if (true === $options['blocking']) {
 			curl_setopt($this->fp, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
