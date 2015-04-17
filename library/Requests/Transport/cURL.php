@@ -327,7 +327,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		// Throw an exception if curl returned an error, unless that error was intentional because of a partial download
-		if (curl_errno($this->fp) && !$this->response_bytes) {
+		if (curl_errno($this->fp) && !isset($this->response_bytes)) {
 			throw new Requests_Exception('cURL error ' . curl_errno($this->fp) . ': ' . curl_error($this->fp), 'curlerror', $this->fp);
 			return;
 		}
