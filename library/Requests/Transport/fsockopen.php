@@ -94,6 +94,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$remote_socket = 'tcp://' . $host;
 		}
 
+		$this->response_byte_limit = $options['response_byte_limit'];
+
 		$proxy = isset( $options['proxy'] );
 		$proxy_auth = $proxy && isset( $options['proxy_username'] ) && isset( $options['proxy_password'] );
 
@@ -215,26 +217,26 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$this->headers = '';
 		$this->info = stream_get_meta_data($fp);
 		if (!$options['filename']) {
-			while (!feof($fp)) {
+			while (!$this->feof_or_response_byte_limit($fp, $this->headers)) {
 				$this->info = stream_get_meta_data($fp);
 				if ($this->info['timed_out']) {
 					throw new Requests_Exception('fsocket timed out', 'timeout');
 				}
 
-				$this->headers .= fread($fp, 1160);
+				$this->headers .= fread($fp, Requests::CHUNK);
 			}
 		}
 		else {
 			$download = fopen($options['filename'], 'wb');
 			$doingbody = false;
 			$response = '';
-			while (!feof($fp)) {
+			while (!$this->feof_or_response_byte_limit($fp, $response)) {
 				$this->info = stream_get_meta_data($fp);
 				if ($this->info['timed_out']) {
 					throw new Requests_Exception('fsocket timed out', 'timeout');
 				}
 
-				$block = fread($fp, 1160);
+				$block = fread($fp, Requests::CHUNK);
 				if ($doingbody) {
 					fwrite($download, $block);
 				}
@@ -253,6 +255,25 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$options['hooks']->dispatch('fsockopen.after_request', array(&$this->headers));
 		return $this->headers;
+	}
+	
+	/**
+	 * Mock feof() to check if a file pointer has reached its end or the expected response limit
+	 *
+	 * If no response_byte_limit is set, this helper function acts just as feof().
+	 * If a response_byte_limit is set, it mocks feof() to return true when exactly or more than response_byte_limit bytes have been read
+	 *
+	 * @since 1.6.1
+	 * @param resource $fp file pointer
+	 * @param string $downloaded data that have been downloaded so far
+	 * @return bool true if EOF or downloaded enough as per response_byte_limit, false otherwise
+	 */
+	public function feof_or_response_byte_limit($fp, $downloaded) {
+		if($this->response_byte_limit === false) {
+			return feof($fp);
+		} else {
+			return (strlen($downloaded) >= $this->response_byte_limit);
+		}
 	}
 
 	/**

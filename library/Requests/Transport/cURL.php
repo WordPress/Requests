@@ -100,6 +100,15 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->fp, CURLOPT_FILE, $this->stream_handle);
 		}
 
+		$this->response_byte_limit = false;
+		if ($options['response_byte_limit'] !== false) {
+			$this->response_byte_limit = $options['response_byte_limit'];
+			$this->response_bytes = '';
+			curl_setopt($this->fp, CURLOPT_BUFFERSIZE, Requests::CHUNK);
+			curl_setopt($this->fp, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($this->fp, CURLOPT_WRITEFUNCTION, array($this,'response_limit_cb'));
+		}
+
 		if (isset($options['verify'])) {
 			if ($options['verify'] === false) {
 				curl_setopt($this->fp, CURLOPT_SSL_VERIFYHOST, 0);
@@ -115,17 +124,47 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		$response = curl_exec($this->fp);
+		
+		if ($this->response_byte_limit) {
+			if($this->response_bytes) {
+				$response = $this->response_bytes;
+			}
+		}
 
 		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
 
+		// If curl returned an error, check if that error was intentional because of a partial download
 		if (curl_errno($this->fp) === 23 || curl_errno($this->fp) === 61) {
-			curl_setopt($this->fp, CURLOPT_ENCODING, 'none');
-			$response = curl_exec($this->fp);
+			if(!$this->response_bytes) {
+				curl_setopt($this->fp, CURLOPT_ENCODING, 'none');
+				$response = curl_exec($this->fp);
+			}
 		}
 
 		$this->process_response($response, $options);
 		curl_close($this->fp);
 		return $this->headers;
+	}
+	
+	/**
+	 * Write function callback used to limit the size of downloaded data
+	 *
+	 * This callback (see CURLOPT_WRITEFUNCTION in method request() here) is called every CURLOPT_BUFFERSIZE. If the return value is the length
+	 * of downloaded data, the reading continues. If it's zero, the callback sends an error to the curl execution which then halts. As a result,
+	 * curl_exec($this->fp) will be false, but we'll have collected actual body response in $this->response_bytes
+	 *
+	 * @since 1.6.1
+	 * @param resource $handle cURL resource
+	 * @param string $data data read
+	 * @return integer
+	 */
+	protected function response_limit_cb($handle, $data) {
+		$this->response_bytes .= $data;
+		if (strlen($this->response_bytes) > $this->response_byte_limit) { // max size we want + one buffer size
+			return 0;
+		} else {
+			return strlen($data);
+		}
 	}
 
 	/**
@@ -287,7 +326,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$this->headers .= $response;
 		}
 
-		if (curl_errno($this->fp)) {
+		// Throw an exception if curl returned an error, unless that error was intentional because of a partial download
+		if (curl_errno($this->fp) && !$this->response_bytes) {
 			throw new Requests_Exception('cURL error ' . curl_errno($this->fp) . ': ' . curl_error($this->fp), 'curlerror', $this->fp);
 			return;
 		}
@@ -316,6 +356,10 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if ($headers === "\r\n") {
 			$this->done_headers = true;
+			if ($this->response_byte_limit) {
+				// Don't count the headers length in the overall response limit
+				$this->response_byte_limit += strlen($this->headers);
+			}
 		}
 		return strlen($headers);
 	}

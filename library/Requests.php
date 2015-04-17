@@ -63,6 +63,13 @@ class Requests {
 	const PATCH = 'PATCH';
 
 	/**
+	 * Default size of buffer chunk size to read streams
+	 *
+	 * @var integer
+	 */
+	const CHUNK = 1160;
+
+	/**
 	 * Current version of Requests
 	 *
 	 * @var string
@@ -276,6 +283,8 @@ class Requests {
 	 *    (Requests_Auth|array|boolean, default: false)
 	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
 	 *    (Requests_Proxy|array|boolean, default: false)
+	 * - `response_byte_limit`: limit response body to first XXX bytes if set.
+	 *    (integer|boolean, default: false)
 	 * - `idn`: Enable IDN parsing
 	 *    (boolean, default: true)
 	 * - `transport`: Custom transport. Either a class name, or a
@@ -459,6 +468,7 @@ class Requests {
 			'auth' => false,
 			'proxy' => false,
 			'cookies' => false,
+			'response_byte_limit' => false,
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
@@ -587,6 +597,11 @@ class Requests {
 		//fsockopen and cURL compatibility
 		if (isset($return->headers['connection'])) {
 			unset($return->headers['connection']);
+		}
+		
+		// Received response length will be the response_byte_limit, modulo CHUNK : trim it
+		if ($options['response_byte_limit'] !== false) {
+			$return->body = substr($return->body,0,$options['response_byte_limit']);
 		}
 
 		$options['hooks']->dispatch('requests.before_redirect_check', array(&$return, $req_headers, $req_data, $options));
