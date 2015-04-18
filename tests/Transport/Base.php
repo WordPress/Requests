@@ -110,6 +110,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('', $request->body);
 	}
 
+	public function testTRACE() {
+		$request = Requests::trace(httpbin('/get'), array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+	}
+
 	public function testRawPOST() {
 		$data = 'test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
@@ -213,6 +218,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		$result = json_decode($request->body, true);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+	}
+
+	public function testOPTIONS() {
+		$request = Requests::options(httpbin('/post'), array(), array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
 	}
 
 	public function testDELETE() {
@@ -679,5 +689,34 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$portXpath = new DOMXPath($responseDoc);
 		$portXpathMatches = $portXpath->query('//p/b');
 		$this->assertEquals(8080, $portXpathMatches->item(0)->nodeValue);
+	}
+
+	public function testReusableTransport() {
+		$options = $this->getOptions(array('transport' => new $this->transport()));
+
+		$request1 = Requests::get(httpbin('/get'), array(), $options);
+		$request2 = Requests::get(httpbin('/get'), array(), $options);
+
+		$this->assertEquals(200, $request1->status_code);
+		$this->assertEquals(200, $request2->status_code);
+
+		$result1 = json_decode($request1->body, true);
+		$result2 = json_decode($request2->body, true);
+
+		$this->assertEquals(httpbin('/get'), $result1['url']);
+		$this->assertEquals(httpbin('/get'), $result2['url']);
+
+		$this->assertEmpty($result1['args']);
+		$this->assertEmpty($result2['args']);
+	}
+
+	public function testDataAsQuery() {
+		$data = array('test' => 'true', 'test2' => 'test');
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_as_query' => true)));
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals(httpbin('/post').'?test=true&test2=test', $result['url']);
+		$this->assertEquals('', $result['data']);
 	}
 }
