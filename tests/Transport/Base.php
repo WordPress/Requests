@@ -110,7 +110,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertEquals('', $result['form']['test']);
 	}
 
 	public function testFormPost() {
@@ -155,7 +155,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertEquals('', $result['form']['test']);
 	}
 
 	public function testFormPUT() {
@@ -185,7 +185,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertEquals('', $result['form']['test']);
 	}
 
 	public function testFormPATCH() {
@@ -555,7 +555,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		// post
 		$this->assertEquals(200, $responses['post']->status_code);
 		$result = json_decode($responses['post']->body, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertEquals('', $result['form']['test']);
 	}
 
 	/**
@@ -653,7 +653,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		// POST request
 		$contents = file_get_contents($requests['post']['options']['filename']);
 		$result = json_decode($contents, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertEquals('', $result['form']['test']);
 		unlink($requests['post']['options']['filename']);
 	}
 
