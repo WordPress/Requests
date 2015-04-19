@@ -74,7 +74,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		$auth = explode(' ', $auth);
 
 		$this->assertEquals(base64_encode('user:passwd'), $auth[1]);
-        $this->assertEquals('test', $result->data);
+		$this->assertEquals('', $result->form->test);
 	}
 
 	/**
