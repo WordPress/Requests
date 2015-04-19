@@ -672,8 +672,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		unlink($requests['post']['options']['filename']);
 	}
 
-	public function testHostHeader() {
-		$request = Requests::get('http://portquiz.positon.org:8080/', array(), $this->getOptions());
+	public function testAlternatePort() {
+		$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
 		$responseDoc = new DOMDocument;
 		$responseDoc->loadHTML($request->body);
 		$portXpath = new DOMXPath($responseDoc);
