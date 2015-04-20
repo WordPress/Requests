@@ -315,11 +315,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCode($code, $success) {
+		$transport = new MockTransport();
+		$transport->code = $code;
+		
 		$url = sprintf(httpbin('/status/%d'), $code);
+
 		$options = array(
 			'follow_redirects' => false,
+			'transport' => $transport,
 		);
-		$request = Requests::get($url, array(), $this->getOptions($options));
+		$request = Requests::get($url, array(), $options);
 		$this->assertEquals($code, $request->status_code);
 		$this->assertEquals($success, $request->success);
 	}
@@ -328,9 +333,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrow($code, $success) {
+		$transport = new MockTransport();
+		$transport->code = $code;
+
 		$url = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
+			'transport' => $transport,
 		);
 
 		if (!$success) {
@@ -341,7 +350,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->setExpectedException('Requests_Exception');
 			}
 		}
-		$request = Requests::get($url, array(), $this->getOptions($options));
+		$request = Requests::get($url, array(), $options);
 		$request->throw_for_status(false);
 	}
 
@@ -349,9 +358,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrowAllowRedirects($code, $success) {
+		$transport = new MockTransport();
+		$transport->code = $code;
+
 		$url = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
+			'transport' => $transport,
 		);
 
 		if (!$success) {
@@ -359,12 +372,19 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->setExpectedException('Requests_Exception_HTTP_' . $code, $code);
 			}
 		}
-		$request = Requests::get($url, array(), $this->getOptions($options));
+		$request = Requests::get($url, array(), $options);
 		$request->throw_for_status(true);
 	}
 
 	public function testStatusCodeUnknown(){
-		$request = Requests::get(httpbin('/status/599'), array(), $this->getOptions());
+		$transport = new MockTransport();
+		$transport->code = 599;
+
+		$options = array(
+			'transport' => $transport,
+		);
+
+		$request = Requests::get(httpbin('/status/599'), array(), $options);
 		$this->assertEquals(599, $request->status_code);
 		$this->assertEquals(false, $request->success);
 	}
@@ -373,7 +393,14 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception_HTTP_Unknown
 	 */
 	public function testStatusCodeThrowUnknown(){
-		$request = Requests::get(httpbin('/status/599'), array(), $this->getOptions());
+		$transport = new MockTransport();
+		$transport->code = 599;
+
+		$options = array(
+			'transport' => $transport,
+		);
+
+		$request = Requests::get(httpbin('/status/599'), array(), $options);
 		$request->throw_for_status(true);
 	}
 
