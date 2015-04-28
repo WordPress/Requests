@@ -104,7 +104,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		if ($options['response_byte_limit'] !== false) {
 			$this->response_byte_limit = $options['response_byte_limit'];
 			$this->partial_response = '';
-			curl_setopt($this->fp, CURLOPT_BUFFERSIZE, Requests::CHUNK);
+			curl_setopt($this->fp, CURLOPT_BUFFERSIZE, Requests::BUFFER_SIZE);
 			curl_setopt($this->fp, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($this->fp, CURLOPT_WRITEFUNCTION, array($this,'response_limit_cb'));
 		}

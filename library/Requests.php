@@ -63,11 +63,11 @@ class Requests {
 	const PATCH = 'PATCH';
 
 	/**
-	 * Default size of buffer chunk size to read streams
+	 * Default size of buffer size to read streams
 	 *
 	 * @var integer
 	 */
-	const CHUNK = 1160;
+	const BUFFER_SIZE = 1160;
 
 	/**
 	 * Current version of Requests

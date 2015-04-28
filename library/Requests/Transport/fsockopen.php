@@ -223,7 +223,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 					throw new Requests_Exception('fsocket timed out', 'timeout');
 				}
 
-				$this->headers .= fread($fp, Requests::CHUNK);
+				$this->headers .= fread($fp, Requests::BUFFER_SIZE);
 			}
 		}
 		else {
@@ -236,7 +236,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 					throw new Requests_Exception('fsocket timed out', 'timeout');
 				}
 
-				$block = fread($fp, Requests::CHUNK);
+				$block = fread($fp, Requests::BUFFER_SIZE);
 				if ($doingbody) {
 					fwrite($download, $block);
 				}
