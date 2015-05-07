@@ -234,7 +234,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 			if ($options['data_as_query']) {
 				$url = self::format_get($url, $data);
 				$data = '';
-			} elseif (!is_string($data)) {
+			}
+			elseif (!is_string($data)) {
 				$data = http_build_query($data, null, '&');
 			}
 		}
@@ -274,7 +275,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 		curl_setopt($this->fp, CURLOPT_REFERER, $url);
 		curl_setopt($this->fp, CURLOPT_USERAGENT, $options['useragent']);
 		curl_setopt($this->fp, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($this->fp, CURLOPT_HTTP_VERSION, $options['protocol_version'] == 1.1 ? CURL_HTTP_VERSION_1_1 : CURL_HTTP_VERSION_1_0);
+
+		if ($options['protocol_version'] === 1.1) {
+			curl_setopt($this->fp, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+		}
+		else {
+			curl_setopt($this->fp, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+		}
 
 		if (true === $options['blocking']) {
 			curl_setopt($this->fp, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));

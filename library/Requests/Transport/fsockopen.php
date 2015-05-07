@@ -48,14 +48,14 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
 	 * @return string Raw HTTP result
 	 */
-	public function request($url, $headers = array(), $data = array(), $options = array())
-	{
+	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$options['hooks']->dispatch('fsockopen.before_request');
 
 		$url_parts = parse_url($url);
 		$host = $url_parts['host'];
 		$context = stream_context_create();
 		$verifyname = false;
+		$case_insensitive_headers = new Requests_Utility_CaseInsensitiveDictionary($headers);
 
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
@@ -80,7 +80,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			if (isset($options['verify'])) {
 				if ($options['verify'] === false) {
 					$context_options['verify_peer'] = false;
-				} elseif (is_string($options['verify'])) {
+				}
+				elseif (is_string($options['verify'])) {
 					$context_options['cafile'] = $options['verify'];
 				}
 			}
@@ -90,7 +91,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			}
 
 			stream_context_set_option($context, array('ssl' => $context_options));
-		} else {
+		}
+		else {
 			$remote_socket = 'tcp://' . $host;
 		}
 
@@ -123,51 +125,54 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			throw new Requests_Exception($errstr, 'fsockopenerror');
 		}
 
-		$request_body = '';
-		$out = '';
 
 		if ($options['data_as_query']) {
 			$path = self::format_get($url_parts, $data);
 			$data = '';
-		} else {
+		}
+		else {
 			$path = self::format_get($url_parts, array());
 		}
 
 		$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
+
+		$request_body = '';
 		$out = $options['type'] . " $path HTTP/" . $options['protocol_version'] . "\r\n";
 
 		if ($options['type'] !== Requests::TRACE) {
 			if (is_array($data)) {
 				$request_body = http_build_query($data, null, '&');
-			} else {
+			}
+			else {
 				$request_body = $data;
 			}
 
 			if (!empty($data)) {
-				if (empty($headers['Content-Length'])) {
+				if (!isset($case_insensitive_headers['Content-Length'])) {
 					$headers['Content-Length'] = strlen($request_body);
 				}
 
-				if (empty($headers['Content-Type'])) {
+				if (!isset($case_insensitive_headers['Content-Type'])) {
 					$headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 				}
 			}
 		}
-		$out .= "Host: {$url_parts['host']}";
 
-		if ($url_parts['port'] !== 80) {
-			$out .= ":{$url_parts['port']}";
+		if (!isset($case_insensitive_headers['Host'])) {
+			$out .= "Host: {$url_parts['host']}";
+
+			if ($url_parts['port'] !== 80) {
+				$out .= ":{$url_parts['port']}";
+			}
+			$out .= "\r\n";
 		}
-		$out .= "\r\n";
 
-		$lowerHeaders = array_change_key_case($headers);
-
-		if (!isset($lowerHeaders['user-agent'])) {
+		if (!isset($case_insensitive_headers['User-Agent'])) {
 			$out .= "User-Agent: {$options['useragent']}\r\n";
 		}
 
 		$accept_encoding = $this->accept_encoding();
-		if (!empty($accept_encoding)) {
+		if (!isset($case_insensitive_headers['Accept-Encoding']) && !empty($accept_encoding)) {
 			$out .= "Accept-Encoding: $accept_encoding\r\n";
 		}
 
@@ -183,7 +188,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$out .= "\r\n";
 		}
 
-		if (!isset($lowerHeaders['connection'])) {
+		if (!isset($case_insensitive_headers['Connection'])) {
 			$out .= "Connection: Close\r\n";
 		}
 
