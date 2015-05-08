@@ -710,13 +710,23 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEmpty($result2['args']);
 	}
 
-	public function testDataAsQuery() {
+	public function testQueryDataFormat() {
 		$data = array('test' => 'true', 'test2' => 'test');
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_as_query' => true)));
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'query')));
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
 		$this->assertEquals(httpbin('/post').'?test=true&test2=test', $result['url']);
 		$this->assertEquals('', $result['data']);
+	}
+
+	public function testBodyDataFormat() {
+		$data = array('test' => 'true', 'test2' => 'test');
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'body')));
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals(httpbin('/post'), $result['url']);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 }

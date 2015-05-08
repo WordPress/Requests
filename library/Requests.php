@@ -549,8 +549,8 @@ class Requests {
 			$url = $iri->uri;
 		}
 
-		if (!isset($options['data_as_query'])) {
-			$options['data_as_query'] = in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE));
+		if (!isset($options['data_format'])) {
+			$options['data_format'] = 'default';
 		}
 	}
 

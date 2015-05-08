@@ -231,7 +231,18 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$headers = Requests::flatten($headers);
 
 		if (!empty($data)) {
-			if ($options['data_as_query']) {
+			$data_format = $options['data_format'];
+
+			if ($data_format === 'default') {
+				if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE))) {
+					$data_format = 'query';
+				}
+				else {
+					$data_format = 'body';
+				}
+			}
+
+			if ($data_format === 'query') {
 				$url = self::format_get($url, $data);
 				$data = '';
 			}
