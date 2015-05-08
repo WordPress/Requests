@@ -64,6 +64,28 @@ class Requests_Transport_cURL implements Requests_Transport {
 	public function __construct() {
 		$curl = curl_version();
 		$this->version = $curl['version_number'];
+		$this->fp = curl_init();
+
+		curl_setopt($this->fp, CURLOPT_HEADER, false);
+		curl_setopt($this->fp, CURLOPT_RETURNTRANSFER, 1);
+		if ($this->version >= self::CURL_7_10_5) {
+			curl_setopt($this->fp, CURLOPT_ENCODING, '');
+		}
+		if (defined('CURLOPT_PROTOCOLS')) {
+			curl_setopt($this->fp, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+		}
+		if (defined('CURLOPT_REDIR_PROTOCOLS')) {
+			curl_setopt($this->fp, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+		}
+	}
+
+	/**
+	 * Destructor
+	 */
+	public function __destruct() {
+		if (is_resource($this->fp)) {
+			curl_close($this->fp);
+		}
 	}
 
 	/**
@@ -111,7 +133,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		$this->process_response($response, $options);
-		curl_close($this->fp);
+
 		return $this->headers;
 	}
 
@@ -212,20 +234,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
 	 */
 	protected function setup_handle($url, $headers, $data, $options) {
-		$this->fp = curl_init();
-
-		curl_setopt($this->fp, CURLOPT_HEADER, false);
-		curl_setopt($this->fp, CURLOPT_RETURNTRANSFER, 1);
-		if ($this->version >= self::CURL_7_10_5) {
-			curl_setopt($this->fp, CURLOPT_ENCODING, '');
-		}
-		if (defined('CURLOPT_PROTOCOLS')) {
-			curl_setopt($this->fp, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-		}
-		if (defined('CURLOPT_REDIR_PROTOCOLS')) {
-			curl_setopt($this->fp, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-		}
-
 		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
 
 		$headers = Requests::flatten($headers);
