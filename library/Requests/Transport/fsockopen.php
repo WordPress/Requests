@@ -147,7 +147,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
 
 		$request_body = '';
-		$out = $options['type'] . " $path HTTP/" . $options['protocol_version'] . "\r\n";
+		$out = $options['type'] . " $path HTTP/" . sprintf('%.1f', $options['protocol_version']) . "\r\n";
 
 		if ($options['type'] !== Requests::TRACE) {
 			if (is_array($data)) {
