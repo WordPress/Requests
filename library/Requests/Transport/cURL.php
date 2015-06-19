@@ -303,7 +303,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param string $headers Header string
 	 * @return integer Length of provided header
 	 */
-	protected function stream_headers($handle, $headers) {
+	public function stream_headers($handle, $headers) {
 		// Why do we do this? cURL will send both the final response and any
 		// interim responses, such as a 100 Continue. We don't need that.
 		// (We may want to keep this somewhere just in case)
