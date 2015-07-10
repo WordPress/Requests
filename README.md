@@ -55,6 +55,12 @@ Installation
 If you're using [Composer](https://github.com/composer/composer) to manage
 dependencies, you can add Requests with it.
 
+```sh
+composer require rmccue/requests
+```
+
+or
+
     {
         "require": {
             "rmccue/requests": ">=1.0"
