@@ -232,7 +232,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$url = self::format_get($url, $data);
 		}
 		elseif (!empty($data) && !is_string($data)) {
-			$data = http_build_query($data, null, '&');
+			// $data = http_build_query($data, null, '&');
 		}
 
 		switch ($options['type']) {
