@@ -26,12 +26,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponseByteLimit() {
-		$total = mt_rand( 1000, 8000);
-		$limit = mt_rand( 100, $total);
+		$limit = 104;
 		$options = array(
 			'response_byte_limit' => $limit,
 		);
-		$response = Requests::get(httpbin('/bytes/'.$total), array(), $this->getOptions($options));
+		$response = Requests::get(httpbin('/bytes/325'), array(), $this->getOptions($options));
 		$this->assertEquals($limit, strlen($response->body));
 	}
 
