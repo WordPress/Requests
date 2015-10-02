@@ -214,66 +214,66 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$this->info = stream_get_meta_data($fp);
 
-		$this->headers = '';
+		$response = $body = $headers = '';
 		$this->info = stream_get_meta_data($fp);
-		if (!$options['filename']) {
-			while (!$this->feof_or_response_byte_limit($fp, $this->headers)) {
-				$this->info = stream_get_meta_data($fp);
-				if ($this->info['timed_out']) {
-					throw new Requests_Exception('fsocket timed out', 'timeout');
-				}
-
-				$this->headers .= fread($fp, Requests::BUFFER_SIZE);
-			}
-		}
-		else {
+		$size = 0;
+		$doingbody = false;
+		$download = false;
+		if ($options['filename']) {
 			$download = fopen($options['filename'], 'wb');
-			$doingbody = false;
-			$response = '';
-			while (!$this->feof_or_response_byte_limit($fp, $response)) {
-				$this->info = stream_get_meta_data($fp);
-				if ($this->info['timed_out']) {
-					throw new Requests_Exception('fsocket timed out', 'timeout');
+		}
+
+		while (!feof($fp)) {
+			$this->info = stream_get_meta_data($fp);
+			if ($this->info['timed_out']) {
+				throw new Requests_Exception('fsocket timed out', 'timeout');
+			}
+
+			$block = fread($fp, Requests::BUFFER_SIZE);
+			if (!$doingbody) {
+				$response .= $block;
+				if (strpos($response, "\r\n\r\n")) {
+					list($headers, $block) = explode("\r\n\r\n", $response, 2);
+					$doingbody = true;
+				}
+			}
+
+			// Are we in body mode now?
+			if ($doingbody) {
+				$data_length = strlen($block);
+				if ($this->response_byte_limit) {
+					// Have we already hit a limit?
+					if ($size === $this->response_byte_limit) {
+						continue;
+					}
+					if (($size + $data_length) > $this->response_byte_limit) {
+						// Limit the length
+						$limited_length = ($this->response_byte_limit - $size);
+						$block = substr($block, 0, $limited_length);
+					}
 				}
 
-				$block = fread($fp, Requests::BUFFER_SIZE);
-				if ($doingbody) {
+				$size += strlen($block);
+				if ($download) {
 					fwrite($download, $block);
 				}
 				else {
-					$response .= $block;
-					if (strpos($response, "\r\n\r\n")) {
-						list($this->headers, $block) = explode("\r\n\r\n", $response, 2);
-						$doingbody = true;
-						fwrite($download, $block);
-					}
+					$body .= $block;
 				}
 			}
+		}
+		$this->headers = $headers;
+
+		if ($download) {
 			fclose($download);
+		}
+		else {
+			$this->headers .= "\r\n\r\n" . $body;
 		}
 		fclose($fp);
 
 		$options['hooks']->dispatch('fsockopen.after_request', array(&$this->headers));
 		return $this->headers;
-	}
-	
-	/**
-	 * Mock feof() to check if a file pointer has reached its end or the expected response limit
-	 *
-	 * If no response_byte_limit is set, this helper function acts just as feof().
-	 * If a response_byte_limit is set, it mocks feof() to return true when exactly or more than response_byte_limit bytes have been read
-	 *
-	 * @since 1.6.1
-	 * @param resource $fp file pointer
-	 * @param string $downloaded data that have been downloaded so far
-	 * @return bool true if EOF or downloaded enough as per response_byte_limit, false otherwise
-	 */
-	public function feof_or_response_byte_limit($fp, $downloaded) {
-		if($this->response_byte_limit === false) {
-			return feof($fp);
-		} else {
-			return (strlen($downloaded) >= $this->response_byte_limit);
-		}
 	}
 
 	/**

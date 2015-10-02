@@ -598,11 +598,6 @@ class Requests {
 		if (isset($return->headers['connection'])) {
 			unset($return->headers['connection']);
 		}
-		
-		// Received response length will be the response_byte_limit, modulo CHUNK : trim it
-		if ($options['response_byte_limit'] !== false) {
-			$return->body = substr($return->body,0,$options['response_byte_limit']);
-		}
 
 		$options['hooks']->dispatch('requests.before_redirect_check', array(&$return, $req_headers, $req_data, $options));
 
