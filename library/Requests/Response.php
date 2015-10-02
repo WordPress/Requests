@@ -45,6 +45,12 @@ class Requests_Response {
 	public $status_code = false;
 
 	/**
+	 * Protocol version, false if non-blocking
+	 * @var float|boolean
+	 */
+	public $protocol_version = false;
+
+	/**
 	 * Whether the request succeeded or not
 	 * @var boolean
 	 */

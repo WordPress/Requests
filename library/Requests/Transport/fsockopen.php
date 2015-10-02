@@ -55,6 +55,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$host = $url_parts['host'];
 		$context = stream_context_create();
 		$verifyname = false;
+		$case_insensitive_headers = new Requests_Utility_CaseInsensitiveDictionary($headers);
 
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
@@ -79,7 +80,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			if (isset($options['verify'])) {
 				if ($options['verify'] === false) {
 					$context_options['verify_peer'] = false;
-				} elseif (is_string($options['verify'])) {
+				}
+				elseif (is_string($options['verify'])) {
 					$context_options['cafile'] = $options['verify'];
 				}
 			}
@@ -94,8 +96,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$remote_socket = 'tcp://' . $host;
 		}
 
-		$proxy = isset( $options['proxy'] );
-		$proxy_auth = $proxy && isset( $options['proxy_username'] ) && isset( $options['proxy_password'] );
+		$proxy = isset($options['proxy']);
+		$proxy_auth = $proxy && isset($options['proxy_username']) && isset($options['proxy_password']);
 
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = 80;
@@ -110,10 +112,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		restore_error_handler();
 
-		if ($verifyname) {
-			if (!$this->verify_certificate_from_context($host, $context)) {
-				throw new Requests_Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
-			}
+		if ($verifyname && !$this->verify_certificate_from_context($host, $context)) {
+			throw new Requests_Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
 		}
 
 		if (!$fp) {
@@ -121,62 +121,68 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				// Connection issue
 				throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
 			}
+
+			throw new Requests_Exception($errstr, 'fsockopenerror');
+		}
+
+		$data_format = $options['data_format'];
+
+		if ($data_format === 'default') {
+			if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE))) {
+				$data_format = 'query';
+			}
 			else {
-				throw new Requests_Exception($errstr, 'fsockopenerror');
-				return;
+				$data_format = 'body';
 			}
 		}
 
+		if ($data_format === 'query') {
+			$path = self::format_get($url_parts, $data);
+			$data = '';
+		}
+		else {
+			$path = self::format_get($url_parts, array());
+		}
+
+		$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
+
 		$request_body = '';
-		$out = '';
-		switch ($options['type']) {
-			case Requests::POST:
-			case Requests::PUT:
-			case Requests::PATCH:
-				if (isset($url_parts['path'])) {
-					$path = $url_parts['path'];
-					if (isset($url_parts['query'])) {
-						$path .= '?' . $url_parts['query'];
-					}
-				}
-				else {
-					$path = '/';
-				}
+		$out = $options['type'] . " $path HTTP/" . sprintf('%.1f', $options['protocol_version']) . "\r\n";
 
-				$options['hooks']->dispatch( 'fsockopen.remote_host_path', array( &$path, $url ) );
-				$out = $options['type'] . " $path HTTP/1.0\r\n";
+		if ($options['type'] !== Requests::TRACE) {
+			if (is_array($data)) {
+				$request_body = http_build_query($data, null, '&');
+			}
+			else {
+				$request_body = $data;
+			}
 
-				if (is_array($data)) {
-					$request_body = http_build_query($data, null, '&');
-				}
-				else {
-					$request_body = $data;
-				}
-				if (empty($headers['Content-Length'])) {
+			if (!empty($data)) {
+				if (!isset($case_insensitive_headers['Content-Length'])) {
 					$headers['Content-Length'] = strlen($request_body);
 				}
-				if (empty($headers['Content-Type'])) {
+
+				if (!isset($case_insensitive_headers['Content-Type'])) {
 					$headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 				}
-				break;
-			case Requests::HEAD:
-			case Requests::GET:
-			case Requests::DELETE:
-				$path = self::format_get($url_parts, $data);
-				$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
-				$out = $options['type'] . " $path HTTP/1.0\r\n";
-				break;
+			}
 		}
-		$out .= "Host: {$url_parts['host']}";
 
-		if ($url_parts['port'] !== 80) {
-			$out .= ":{$url_parts['port']}";
+		if (!isset($case_insensitive_headers['Host'])) {
+			$out .= "Host: {$url_parts['host']}";
+
+			if ($url_parts['port'] !== 80) {
+				$out .= ":{$url_parts['port']}";
+			}
+			$out .= "\r\n";
 		}
-		$out .= "\r\n";
 
-		$out .= "User-Agent: {$options['useragent']}\r\n";
+		if (!isset($case_insensitive_headers['User-Agent'])) {
+			$out .= "User-Agent: {$options['useragent']}\r\n";
+		}
+
 		$accept_encoding = $this->accept_encoding();
-		if (!empty($accept_encoding)) {
+		if (!isset($case_insensitive_headers['Accept-Encoding']) && !empty($accept_encoding)) {
 			$out .= "Accept-Encoding: $accept_encoding\r\n";
 		}
 
@@ -192,7 +198,11 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$out .= "\r\n";
 		}
 
-		$out .= "Connection: Close\r\n\r\n" . $request_body;
+		if (!isset($case_insensitive_headers['Connection'])) {
+			$out .= "Connection: Close\r\n";
+		}
+
+		$out .= "\r\n" . $request_body;
 
 		$options['hooks']->dispatch('fsockopen.before_send', array(&$out));
 

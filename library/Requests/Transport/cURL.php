@@ -80,6 +80,15 @@ class Requests_Transport_cURL implements Requests_Transport {
 	}
 
 	/**
+	 * Destructor
+	 */
+	public function __destruct() {
+		if (is_resource($this->fp)) {
+			curl_close($this->fp);
+		}
+	}
+
+	/**
 	 * Perform a request
 	 *
 	 * @throws Requests_Exception On a cURL error (`curlerror`)
@@ -124,7 +133,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		$this->process_response($response, $options);
-		curl_close($this->fp);
+
 		return $this->headers;
 	}
 
@@ -228,11 +237,26 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
 
 		$headers = Requests::flatten($headers);
-		if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE)) & !empty($data)) {
-			$url = self::format_get($url, $data);
-		}
-		elseif (!empty($data) && !is_string($data)) {
-			$data = http_build_query($data, null, '&');
+
+		if (!empty($data)) {
+			$data_format = $options['data_format'];
+
+			if ($data_format === 'default') {
+				if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE))) {
+					$data_format = 'query';
+				}
+				else {
+					$data_format = 'body';
+				}
+			}
+
+			if ($data_format === 'query') {
+				$url = self::format_get($url, $data);
+				$data = '';
+			}
+			elseif (!is_string($data)) {
+				$data = http_build_query($data, null, '&');
+			}
 		}
 
 		switch ($options['type']) {
@@ -242,14 +266,17 @@ class Requests_Transport_cURL implements Requests_Transport {
 				break;
 			case Requests::PATCH:
 			case Requests::PUT:
+			case Requests::DELETE:
+			case Requests::OPTIONS:
 				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, $options['type']);
 				curl_setopt($this->fp, CURLOPT_POSTFIELDS, $data);
 				break;
-			case Requests::DELETE:
-				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, 'DELETE');
-				break;
 			case Requests::HEAD:
+				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, $options['type']);
 				curl_setopt($this->fp, CURLOPT_NOBODY, true);
+				break;
+			case Requests::TRACE:
+				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, $options['type']);
 				break;
 		}
 
@@ -267,6 +294,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 		curl_setopt($this->fp, CURLOPT_REFERER, $url);
 		curl_setopt($this->fp, CURLOPT_USERAGENT, $options['useragent']);
 		curl_setopt($this->fp, CURLOPT_HTTPHEADER, $headers);
+
+		if ($options['protocol_version'] === 1.1) {
+			curl_setopt($this->fp, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+		}
+		else {
+			curl_setopt($this->fp, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+		}
 
 		if (true === $options['blocking']) {
 			curl_setopt($this->fp, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
