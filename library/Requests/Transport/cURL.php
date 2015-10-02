@@ -329,7 +329,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 		// Throw an exception if curl returned an error, unless that error was intentional because of a partial download
 		if (curl_errno($this->fp) && !isset($this->partial_response)) {
 			throw new Requests_Exception('cURL error ' . curl_errno($this->fp) . ': ' . curl_error($this->fp), 'curlerror', $this->fp);
-			return;
 		}
 		$this->info = curl_getinfo($this->fp);
 
@@ -344,7 +343,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param string $headers Header string
 	 * @return integer Length of provided header
 	 */
-	protected function stream_headers($handle, $headers) {
+	public function stream_headers($handle, $headers) {
 		// Why do we do this? cURL will send both the final response and any
 		// interim responses, such as a 100 Continue. We don't need that.
 		// (We may want to keep this somewhere just in case)

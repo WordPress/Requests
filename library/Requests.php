@@ -493,7 +493,7 @@ class Requests {
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
-			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
+			throw new Requests_Exception('Only HTTP(S) requests are handled.', 'nonhttp', $url);
 		}
 
 		if (empty($options['hooks'])) {
