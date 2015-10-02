@@ -1,8 +1,6 @@
 language: php
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: 7.0
   include:
     - php: 5.2
     - php: 5.3
@@ -12,6 +10,8 @@ matrix:
       env: TEST_COVERAGE=1
     - php: 7.0
     - php: hhvm
+  allow_failures:
+    - php: 7.0
 
 before_script:
  # Setup the test server
@@ -25,8 +25,10 @@ before_script:
 
  # Work out of the tests directory
  - cd tests
+
 script:
  - phpunit --coverage-clover clover.xml
+
 after_script:
  - cd ..
  - phpenv local 5.5
