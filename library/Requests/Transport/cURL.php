@@ -123,8 +123,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$this->response_data = '';
 		$this->response_bytes = 0;
 		$this->response_byte_limit = false;
-		if ($options['response_byte_limit'] !== false) {
-			$this->response_byte_limit = $options['response_byte_limit'];
+		if ($options['max_bytes'] !== false) {
+			$this->response_byte_limit = $options['max_bytes'];
 		}
 
 		if (isset($options['verify'])) {
@@ -249,8 +249,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$this->response_data = '';
 		$this->response_bytes = 0;
 		$this->response_byte_limit = false;
-		if ($options['response_byte_limit'] !== false) {
-			$this->response_byte_limit = $options['response_byte_limit'];
+		if ($options['max_bytes'] !== false) {
+			$this->response_byte_limit = $options['max_bytes'];
 		}
 
 		return $this->fp;

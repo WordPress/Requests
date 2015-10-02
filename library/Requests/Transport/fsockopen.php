@@ -94,7 +94,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$remote_socket = 'tcp://' . $host;
 		}
 
-		$this->response_byte_limit = $options['response_byte_limit'];
+		$this->max_bytes = $options['max_bytes'];
 
 		$proxy = isset( $options['proxy'] );
 		$proxy_auth = $proxy && isset( $options['proxy_username'] ) && isset( $options['proxy_password'] );
@@ -241,14 +241,14 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			// Are we in body mode now?
 			if ($doingbody) {
 				$data_length = strlen($block);
-				if ($this->response_byte_limit) {
+				if ($this->max_bytes) {
 					// Have we already hit a limit?
-					if ($size === $this->response_byte_limit) {
+					if ($size === $this->max_bytes) {
 						continue;
 					}
-					if (($size + $data_length) > $this->response_byte_limit) {
+					if (($size + $data_length) > $this->max_bytes) {
 						// Limit the length
-						$limited_length = ($this->response_byte_limit - $size);
+						$limited_length = ($this->max_bytes - $size);
 						$block = substr($block, 0, $limited_length);
 					}
 				}

@@ -28,7 +28,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testResponseByteLimit() {
 		$limit = 104;
 		$options = array(
-			'response_byte_limit' => $limit,
+			'max_bytes' => $limit,
 		);
 		$response = Requests::get(httpbin('/bytes/325'), array(), $this->getOptions($options));
 		$this->assertEquals($limit, strlen($response->body));
@@ -37,7 +37,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testResponseByteLimitWithFile() {
 		$limit = 300;
 		$options = array(
-			'response_byte_limit' => $limit,
+			'max_bytes' => $limit,
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 		);
 		$response = Requests::get(httpbin('/bytes/482'), array(), $this->getOptions($options));

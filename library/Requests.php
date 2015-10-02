@@ -283,7 +283,7 @@ class Requests {
 	 *    (Requests_Auth|array|boolean, default: false)
 	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
 	 *    (Requests_Proxy|array|boolean, default: false)
-	 * - `response_byte_limit`: limit response body to first XXX bytes if set.
+	 * - `max_bytes`: Limit for the response body size.
 	 *    (integer|boolean, default: false)
 	 * - `idn`: Enable IDN parsing
 	 *    (boolean, default: true)
@@ -468,7 +468,7 @@ class Requests {
 			'auth' => false,
 			'proxy' => false,
 			'cookies' => false,
-			'response_byte_limit' => false,
+			'max_bytes' => false,
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
