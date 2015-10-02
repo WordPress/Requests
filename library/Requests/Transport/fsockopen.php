@@ -34,6 +34,13 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 */
 	public $info;
 
+	/**
+	 * What's the maximum number of bytes we should keep?
+	 *
+	 * @var int|bool Byte count, or false if no limit.
+	 */
+	protected $max_bytes = false;
+
 	protected $connect_error = '';
 
 	/**

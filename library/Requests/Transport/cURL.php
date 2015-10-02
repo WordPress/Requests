@@ -75,7 +75,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	/**
 	 * What's the maximum number of bytes we should keep?
 	 *
-	 * @var int
+	 * @var int|bool Byte count, or false if no limit.
 	 */
 	protected $response_byte_limit;
 
