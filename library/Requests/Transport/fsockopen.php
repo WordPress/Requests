@@ -122,7 +122,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
 			}
 			else {
-				throw new Requests_Exception($errstr, 'fsockopenerror');
+				throw new Requests_Exception($errstr, 'fsockopenerror', NULL, $errno);
 				return;
 			}
 		}
