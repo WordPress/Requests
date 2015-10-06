@@ -15,8 +15,8 @@ matrix:
 sudo: false
 
 cache:
-  pip: true
   directories:
+    - $HOME/.cache/pip
     - $HOME/.composer/cache
     - vendor
 
