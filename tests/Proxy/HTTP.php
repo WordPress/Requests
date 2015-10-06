@@ -16,7 +16,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['X-Requests-Proxy']);
+		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
 	}
 
 	public function testConnectWithArray() {
@@ -27,7 +27,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['X-Requests-Proxy']);
+		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
@@ -48,6 +48,6 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['X-Requests-Proxy']);
+		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
 	}
 }
