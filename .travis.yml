@@ -27,7 +27,7 @@ before_script:
  # Work out of the tests directory
  - cd tests
  - pip install --user mitmproxy
- - utils/proxy/start.sh
+ - PROXYBIN="~/.local/bin/mitmdump" utils/proxy/start.sh
 
 script:
  - phpunit --coverage-clover clover.xml
