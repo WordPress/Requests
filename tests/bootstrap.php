@@ -10,6 +10,8 @@ define('REQUESTS_TEST_HOST',       getenv('REQUESTS_TEST_HOST') ? getenv('REQUES
 define('REQUESTS_TEST_HOST_HTTP',  getenv('REQUESTS_TEST_HOST_HTTP') ? getenv('REQUESTS_TEST_HOST_HTTP') : REQUESTS_TEST_HOST);
 define('REQUESTS_TEST_HOST_HTTPS', getenv('REQUESTS_TEST_HOST_HTTPS') ? getenv('REQUESTS_TEST_HOST_HTTPS'): REQUESTS_TEST_HOST);
 
+define('REQUESTS_HTTP_PROXY', getenv('REQUESTS_HTTP_PROXY') ? getenv('REQUESTS_HTTP_PROXY') : false);
+
 include(dirname(dirname(__FILE__)) . '/library/Requests.php');
 Requests::register_autoloader();
 
