@@ -29,6 +29,9 @@ install:
 
  # Setup the proxy
  - pip install --user mitmproxy
+ - ls
+ - ls $HOME
+ - ls $HOME/.cache
 
 before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
