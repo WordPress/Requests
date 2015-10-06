@@ -14,19 +14,28 @@ matrix:
 # Use new container infrastructure
 sudo: false
 
-before_script:
+cache:
+  pip: true
+  directories:
+    - $HOME/.composer/cache
+    - vendor
+
+install:
  # Setup the test server
  - phpenv local 5.5
  - composer install --dev --no-interaction
-
  - TESTPHPBIN=$(phpenv which php)
+ - phpenv local --unset
+
+ # Setup the proxy
+ - pip install --user mitmproxy
+
+before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
  - export REQUESTS_TEST_HOST_HTTP="localhost:8080"
- - phpenv local --unset
 
  # Work out of the tests directory
  - cd tests
- - pip install --user mitmproxy
  - PROXYBIN="$HOME/.local/bin/mitmdump" utils/proxy/start.sh
 
 script:
