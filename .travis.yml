@@ -10,8 +10,6 @@ matrix:
       env: TEST_COVERAGE=1
     - php: 7.0
     - php: hhvm
-  allow_failures:
-    - php: 7.0
 
 before_script:
  # Setup the test server

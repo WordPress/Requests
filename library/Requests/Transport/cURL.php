@@ -243,7 +243,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if ($options['filename'] !== false) {
 			$this->stream_handle = fopen($options['filename'], 'wb');
-			curl_setopt($this->fp, CURLOPT_FILE, $this->stream_handle);
 		}
 
 		$this->response_data = '';
