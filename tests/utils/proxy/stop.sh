@@ -1,4 +1,5 @@
-PROXYDIR=$(dirname $0)
+PROXYDIR="$PWD/$(dirname $0)"
 
-cat $PROXYDIR/http.pid | xargs kill
-rm $PROXYDIR/http.pid
+PIDFILE="$SERVERDIR/proxy.pid"
+
+start-stop-daemon --stop --pidfile $PIDFILE --make-pidfile && rm $SERVERDIR/proxy.pid

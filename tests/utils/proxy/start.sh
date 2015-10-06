@@ -1,6 +1,8 @@
-PROXYDIR=$(dirname $0)
+PROXYDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PORT=${PORT:-9000}
 
-mitmdump -s proxy.py > $PROXYDIR/http.log &
-HTTP_PID=$!
+PROXYBIN=${PROXYBIN:-"$(which mitmdump)"}
+ARGS="-s '$PROXYDIR/proxy.py' -p $PORT > $PROXYDIR/proxy.log"
+PIDFILE="$PROXYDIR/proxy.pid"
 
-echo $HTTP_PID > $PROXYDIR/http.pid
+start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --exec $PROXYBIN -- $ARGS
