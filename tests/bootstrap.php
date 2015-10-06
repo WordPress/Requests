@@ -74,16 +74,21 @@ class MockTransport implements Requests_Transport {
 		415 => '415 Unsupported Media Type',
 		416 => '416 Requested Range Not Satisfiable',
 		417 => '417 Expectation Failed',
+		418 => '418 I\'m a teapot',
+		428 => '428 Precondition Required',
+		429 => '429 Too Many Requests',
+		431 => '431 Request Header Fields Too Large',
 		500 => '500 Internal Server Error',
 		501 => '501 Not Implemented',
 		502 => '502 Bad Gateway',
 		503 => '503 Service Unavailable',
 		504 => '504 Gateway Timeout',
 		505 => '505 HTTP Version Not Supported',
+		511 => '511 Network Authentication Required',
 	);
 
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
-		$status = self::$messages[$this->code];
+		$status = isset(self::$messages[$this->code]) ? self::$messages[$this->code] : $this->code . ' unknown';
 		$response = "HTTP/1.0 $status\r\n";
 		$response .= "Content-Type: text/plain\r\n";
 		if ($this->chunked) {

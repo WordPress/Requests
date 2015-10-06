@@ -191,6 +191,9 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 			array('127.0.0.1',   '127.0.0.1',     true, true),
 			array('127.0.0.1',   'abc.127.0.0.1', false, false),
 			array('127.0.0.1',   'example.com',   false, false),
+
+			// Check that we're checking the actual length
+			array('127.com', 'test.127.com', false, true),
 		);
 	}
 

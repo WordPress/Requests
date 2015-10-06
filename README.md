@@ -115,14 +115,16 @@ issue](https://github.com/rmccue/Requests/issues/new)!
 Testing
 -------
 [![Build Status](https://secure.travis-ci.org/rmccue/Requests.png?branch=master)](http://travis-ci.org/rmccue/Requests)
-[![Coverage Status](https://coveralls.io/repos/rmccue/Requests/badge.png?branch=master)][coveralls]
+[![codecov.io](http://codecov.io/github/rmccue/Requests/coverage.svg?branch=master)](http://codecov.io/github/rmccue/Requests?branch=master)
 
 Requests strives to have 100% code-coverage of the library with an extensive
-set of tests. We're not quite there yet, but [we're getting close][coveralls].
+set of tests. We're not quite there yet, but [we're getting close][codecov].
 
-[coveralls]: https://coveralls.io/r/rmccue/Requests?branch=master
+[codecov]: http://codecov.io/github/rmccue/Requests
 
-To run the test suite, simply:
+To run the test suite, first check that you have the [PHP
+JSON extension ](http://php.net/manual/en/book.json.php) enabled. Then
+simply:
 
     $ cd tests
     $ phpunit

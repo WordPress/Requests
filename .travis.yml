@@ -1,30 +1,41 @@
 language: php
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.2
+    - php: 5.3
+    - php: 5.4
+    - php: 5.5
+    - php: 5.6
+      env: TEST_COVERAGE=1
+    - php: 7.0
+    - php: hhvm
+
+# Use new container infrastructure
+sudo: false
+
 before_script:
- # Setup Coveralls and httpbin-php
+ # Setup the test server
  - phpenv local 5.5
  - composer install --dev --no-interaction
 
  - TESTPHPBIN=$(phpenv which php)
- - sudo PHPBIN=$TESTPHPBIN vendor/bin/start.sh
- - export REQUESTS_TEST_HOST_HTTP=localhost
+ - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
+ - export REQUESTS_TEST_HOST_HTTP="localhost:8080"
  - phpenv local --unset
 
  # Work out of the tests directory
  - cd tests
  - pip install --user mitmproxy
  - utils/proxy/start.sh
+
 script:
  - phpunit --coverage-clover clover.xml
+
 after_script:
  - utils/proxy/stop.sh
  - cd ..
  - phpenv local 5.5
- - sudo PATH=$PATH vendor/bin/stop.sh
- - php vendor/bin/coveralls -v
+ - PATH=$PATH vendor/bin/stop.sh
+ - test $TEST_COVERAGE && bash <(curl -s https://codecov.io/bash)
  - phpenv local --unset
-php:
-  - 5.2
-  - 5.3
-  - 5.4
-  - 5.5
-  - hhvm
