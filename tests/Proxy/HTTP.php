@@ -3,7 +3,7 @@
 class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		parent::setUp();
-		if (!defined('REQUESTS_HTTP_PROXY') || empty(REQUESTS_HTTP_PROXY)) {
+		if (!defined('REQUESTS_HTTP_PROXY') || !REQUESTS_HTTP_PROXY) {
 			$this->markTestSkipped('Proxy not available');
 		}
 	}
