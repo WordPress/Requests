@@ -11,6 +11,9 @@ matrix:
     - php: 7.0
     - php: hhvm
 
+# Use new container infrastructure
+sudo: false
+
 before_script:
  # Setup the test server
  - phpenv local 5.5
