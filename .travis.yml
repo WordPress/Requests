@@ -36,8 +36,8 @@ before_script:
 
  # Work out of the tests directory
  - cd tests
- - PROXYBIN="$HOME/.local/bin/mitmdump" PORT=9000 utils/proxy/start.sh
- - export REQUESTS_HTTP_PROXY="localhost:9000"
+ - PROXYBIN="$HOME/.local/bin/mitmdump" PORT=9002 utils/proxy/start.sh
+ - export REQUESTS_HTTP_PROXY="localhost:9002"
 
 script:
  - phpunit --coverage-clover clover.xml
