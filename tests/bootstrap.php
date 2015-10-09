@@ -2,15 +2,28 @@
 
 date_default_timezone_set('UTC');
 
+function define_from_env($name, $default = false) {
+	$env = getenv($name);
+	if ($env) {
+		define($name, $env);
+	}
+	else {
+		define($name, $default);
+	}
+}
+
 $host = getenv('REQUESTS_TEST_HOST');
 if (empty($host)) {
 	$host = 'httpbin.org';
 }
-define('REQUESTS_TEST_HOST',       getenv('REQUESTS_TEST_HOST') ? getenv('REQUESTS_TEST_HOST') : 'httpbin.org');
-define('REQUESTS_TEST_HOST_HTTP',  getenv('REQUESTS_TEST_HOST_HTTP') ? getenv('REQUESTS_TEST_HOST_HTTP') : REQUESTS_TEST_HOST);
-define('REQUESTS_TEST_HOST_HTTPS', getenv('REQUESTS_TEST_HOST_HTTPS') ? getenv('REQUESTS_TEST_HOST_HTTPS'): REQUESTS_TEST_HOST);
+define_from_env('REQUESTS_TEST_HOST', 'httpbin.org');
+define_from_env('REQUESTS_TEST_HOST_HTTP', REQUESTS_TEST_HOST);
+define_from_env('REQUESTS_TEST_HOST_HTTPS', REQUESTS_TEST_HOST);
 
-define('REQUESTS_HTTP_PROXY', getenv('REQUESTS_HTTP_PROXY') ? getenv('REQUESTS_HTTP_PROXY') : false);
+define_from_env('REQUESTS_HTTP_PROXY');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
 include(dirname(dirname(__FILE__)) . '/library/Requests.php');
 Requests::register_autoloader();
