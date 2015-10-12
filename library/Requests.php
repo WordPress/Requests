@@ -697,7 +697,7 @@ class Requests {
 	 */
 	public static function flatten($array) {
 		$return = array();
-		foreach ($array as $key => $value) {
+		foreach ((array)$array as $key => $value) {
 			$return[] = "$key: $value";
 		}
 		return $return;
