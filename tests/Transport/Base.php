@@ -727,4 +727,17 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(1, $num, 'Response should contain the port number');
 		$this->assertEquals(8080, $matches[1]);
 	}
+
+	public function testProgressCallback() {
+		$mock = $this->getMockBuilder('stdClass')->setMethods(array('progress'))->getMock();
+		$mock->expects($this->atLeastOnce())->method('progress');
+		$hooks = new Requests_Hooks();
+		$hooks->register('request.progress', array($mock, 'progress'));
+		$options = array(
+			'hooks' => $hooks,
+		);
+		$options = $this->getOptions($options);
+
+		$response = Requests::get(httpbin('/get'), array(), $options);
+	}
 }
