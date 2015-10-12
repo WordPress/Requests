@@ -2,13 +2,24 @@
 
 date_default_timezone_set('UTC');
 
-$host = getenv('REQUESTS_TEST_HOST');
-if (empty($host)) {
-	$host = 'httpbin.org';
+function define_from_env($name, $default = false) {
+	$env = getenv($name);
+	if ($env) {
+		define($name, $env);
+	}
+	else {
+		define($name, $default);
+	}
 }
-define('REQUESTS_TEST_HOST',       getenv('REQUESTS_TEST_HOST') ? getenv('REQUESTS_TEST_HOST') : 'httpbin.org');
-define('REQUESTS_TEST_HOST_HTTP',  getenv('REQUESTS_TEST_HOST_HTTP') ? getenv('REQUESTS_TEST_HOST_HTTP') : REQUESTS_TEST_HOST);
-define('REQUESTS_TEST_HOST_HTTPS', getenv('REQUESTS_TEST_HOST_HTTPS') ? getenv('REQUESTS_TEST_HOST_HTTPS'): REQUESTS_TEST_HOST);
+
+define_from_env('REQUESTS_TEST_HOST', 'requests-php-tests.herokuapp.com');
+define_from_env('REQUESTS_TEST_HOST_HTTP', REQUESTS_TEST_HOST);
+define_from_env('REQUESTS_TEST_HOST_HTTPS', REQUESTS_TEST_HOST);
+
+define_from_env('REQUESTS_HTTP_PROXY');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
 include(dirname(dirname(__FILE__)) . '/library/Requests.php');
 Requests::register_autoloader();

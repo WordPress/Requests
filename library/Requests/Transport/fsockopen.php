@@ -34,6 +34,13 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 */
 	public $info;
 
+	/**
+	 * What's the maximum number of bytes we should keep?
+	 *
+	 * @var int|bool Byte count, or false if no limit.
+	 */
+	protected $max_bytes = false;
+
 	protected $connect_error = '';
 
 	/**
@@ -93,6 +100,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		else {
 			$remote_socket = 'tcp://' . $host;
 		}
+
+		$this->max_bytes = $options['max_bytes'];
 
 		$proxy = isset( $options['proxy'] );
 		$proxy_auth = $proxy && isset( $options['proxy_username'] ) && isset( $options['proxy_password'] );
@@ -210,44 +219,62 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$timeout_msec = $timeout_sec == $options['timeout'] ? 0 : self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
 		stream_set_timeout($fp, $timeout_sec, $timeout_msec);
 
+		$response = $body = $headers = '';
 		$this->info = stream_get_meta_data($fp);
-
-		$this->headers = '';
-		$this->info = stream_get_meta_data($fp);
-		if (!$options['filename']) {
-			while (!feof($fp)) {
-				$this->info = stream_get_meta_data($fp);
-				if ($this->info['timed_out']) {
-					throw new Requests_Exception('fsocket timed out', 'timeout');
-				}
-
-				$this->headers .= fread($fp, 1160);
-			}
-		}
-		else {
+		$size = 0;
+		$doingbody = false;
+		$download = false;
+		if ($options['filename']) {
 			$download = fopen($options['filename'], 'wb');
-			$doingbody = false;
-			$response = '';
-			while (!feof($fp)) {
-				$this->info = stream_get_meta_data($fp);
-				if ($this->info['timed_out']) {
-					throw new Requests_Exception('fsocket timed out', 'timeout');
+		}
+
+		while (!feof($fp)) {
+			$this->info = stream_get_meta_data($fp);
+			if ($this->info['timed_out']) {
+				throw new Requests_Exception('fsocket timed out', 'timeout');
+			}
+
+			$block = fread($fp, Requests::BUFFER_SIZE);
+			if (!$doingbody) {
+				$response .= $block;
+				if (strpos($response, "\r\n\r\n")) {
+					list($headers, $block) = explode("\r\n\r\n", $response, 2);
+					$doingbody = true;
+				}
+			}
+
+			// Are we in body mode now?
+			if ($doingbody) {
+				$options['hooks']->dispatch('request.progress', array($block, $size, $this->max_bytes));
+				$data_length = strlen($block);
+				if ($this->max_bytes) {
+					// Have we already hit a limit?
+					if ($size === $this->max_bytes) {
+						continue;
+					}
+					if (($size + $data_length) > $this->max_bytes) {
+						// Limit the length
+						$limited_length = ($this->max_bytes - $size);
+						$block = substr($block, 0, $limited_length);
+					}
 				}
 
-				$block = fread($fp, 1160);
-				if ($doingbody) {
+				$size += strlen($block);
+				if ($download) {
 					fwrite($download, $block);
 				}
 				else {
-					$response .= $block;
-					if (strpos($response, "\r\n\r\n")) {
-						list($this->headers, $block) = explode("\r\n\r\n", $response, 2);
-						$doingbody = true;
-						fwrite($download, $block);
-					}
+					$body .= $block;
 				}
 			}
+		}
+		$this->headers = $headers;
+
+		if ($download) {
 			fclose($download);
+		}
+		else {
+			$this->headers .= "\r\n\r\n" . $body;
 		}
 		fclose($fp);
 

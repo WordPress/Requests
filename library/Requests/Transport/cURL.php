@@ -24,6 +24,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 	public $headers = '';
 
 	/**
+	 * Raw body data
+	 *
+	 * @var string
+	 */
+	public $response_data = '';
+
+	/**
 	 * Information on the current request
 	 *
 	 * @var array cURL information array, see {@see http://php.net/curl_getinfo}
@@ -45,6 +52,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 	protected $fp;
 
 	/**
+	 * Hook dispatcher instance
+	 *
+	 * @var Requests_Hooks
+	 */
+	protected $hooks;
+
+	/**
 	 * Have we finished the headers yet?
 	 *
 	 * @var boolean
@@ -57,6 +71,20 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @var resource
 	 */
 	protected $stream_handle;
+
+	/**
+	 * How many bytes are in the response body?
+	 *
+	 * @var int
+	 */
+	protected $response_bytes;
+
+	/**
+	 * What's the maximum number of bytes we should keep?
+	 *
+	 * @var int|bool Byte count, or false if no limit.
+	 */
+	protected $response_byte_limit;
 
 	/**
 	 * Constructor
@@ -91,13 +119,21 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @return string Raw HTTP result
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
+		$this->hooks = $options['hooks'];
+
 		$this->setup_handle($url, $headers, $data, $options);
 
 		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
 
 		if ($options['filename'] !== false) {
 			$this->stream_handle = fopen($options['filename'], 'wb');
-			curl_setopt($this->fp, CURLOPT_FILE, $this->stream_handle);
+		}
+
+		$this->response_data = '';
+		$this->response_bytes = 0;
+		$this->response_byte_limit = false;
+		if ($options['max_bytes'] !== false) {
+			$this->response_byte_limit = $options['max_bytes'];
 		}
 
 		if (isset($options['verify'])) {
@@ -114,13 +150,19 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->fp, CURLOPT_SSL_VERIFYHOST, 0);
 		}
 
-		$response = curl_exec($this->fp);
+		curl_exec($this->fp);
+		$response = $this->response_data;
 
 		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
 
 		if (curl_errno($this->fp) === 23 || curl_errno($this->fp) === 61) {
+			// Reset encoding and try again
 			curl_setopt($this->fp, CURLOPT_ENCODING, 'none');
-			$response = curl_exec($this->fp);
+
+			$this->response_data = '';
+			$this->response_bytes = 0;
+			curl_exec($this->fp);
+			$response = $this->response_data;
 		}
 
 		$this->process_response($response, $options);
@@ -174,7 +216,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			// Parse the finished requests before we start getting the new ones
 			foreach ($to_process as $key => $done) {
 				$options = $requests[$key]['options'];
-				$responses[$key] = $subrequests[$key]->process_response(curl_multi_getcontent($done['handle']), $options);
+				$responses[$key] = $subrequests[$key]->process_response($subrequests[$key]->response_data, $options);
 
 				$options['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$key], $requests[$key]));
 
@@ -210,8 +252,15 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if ($options['filename'] !== false) {
 			$this->stream_handle = fopen($options['filename'], 'wb');
-			curl_setopt($this->fp, CURLOPT_FILE, $this->stream_handle);
 		}
+
+		$this->response_data = '';
+		$this->response_bytes = 0;
+		$this->response_byte_limit = false;
+		if ($options['max_bytes'] !== false) {
+			$this->response_byte_limit = $options['max_bytes'];
+		}
+		$this->hooks = $options['hooks'];
 
 		return $this->fp;
 	}
@@ -270,6 +319,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if (true === $options['blocking']) {
 			curl_setopt($this->fp, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
+			curl_setopt($this->fp, CURLOPT_WRITEFUNCTION, array(&$this, 'stream_body'));
+			curl_setopt($this->fp, CURLOPT_BUFFERSIZE, Requests::BUFFER_SIZE);
 		}
 	}
 
@@ -317,6 +368,44 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$this->done_headers = true;
 		}
 		return strlen($headers);
+	}
+
+	/**
+	 * Collect data as it's received
+	 *
+	 * @since 1.6.1
+	 *
+	 * @param resource $handle cURL resource
+	 * @param string $data Body data
+	 * @return integer Length of provided data
+	 */
+	protected function stream_body($handle, $data) {
+		$this->hooks->dispatch('request.progress', array($data, $this->response_bytes, $this->response_byte_limit));
+		$data_length = strlen($data);
+
+		// Are we limiting the response size?
+		if ($this->response_byte_limit) {
+			if ($this->response_bytes === $this->response_byte_limit) {
+				// Already at maximum, move on
+				return $data_length;
+			}
+
+			if (($this->response_bytes + $data_length) > $this->response_byte_limit) {
+				// Limit the length
+				$limited_length = ($this->response_byte_limit - $this->response_bytes);
+				$data = substr($data, 0, $limited_length);
+			}
+		}
+
+		if ($this->stream_handle) {
+			fwrite($this->stream_handle, $data);
+		}
+		else {
+			$this->response_data .= $data;
+		}
+
+		$this->response_bytes += strlen($data);
+		return $data_length;
 	}
 
 	/**

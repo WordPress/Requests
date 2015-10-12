@@ -906,7 +906,8 @@ class Requests_IRI
             }
             if (($port_start = strpos($remaining, ':', strpos($remaining, ']'))) !== false)
             {
-                if (($port = substr($remaining, $port_start + 1)) === false)
+                $port = substr($remaining, $port_start + 1);
+                if ($port === false || $port === '')
                 {
                     $port = null;
                 }

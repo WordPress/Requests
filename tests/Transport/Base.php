@@ -25,6 +25,27 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		return $options;
 	}
 
+	public function testResponseByteLimit() {
+		$limit = 104;
+		$options = array(
+			'max_bytes' => $limit,
+		);
+		$response = Requests::get(httpbin('/bytes/325'), array(), $this->getOptions($options));
+		$this->assertEquals($limit, strlen($response->body));
+	}
+
+	public function testResponseByteLimitWithFile() {
+		$limit = 300;
+		$options = array(
+			'max_bytes' => $limit,
+			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+		);
+		$response = Requests::get(httpbin('/bytes/482'), array(), $this->getOptions($options));
+		$this->assertEmpty($response->body);
+		$this->assertEquals($limit, filesize($options['filename']));
+		unlink($options['filename']);
+	}
+
 	public function testSimpleGET() {
 		$request = Requests::get(httpbin('/get'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
@@ -705,5 +726,18 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$num = preg_match('#You have reached this page on port <b>(\d+)</b>#i', $request->body, $matches);
 		$this->assertEquals(1, $num, 'Response should contain the port number');
 		$this->assertEquals(8080, $matches[1]);
+	}
+
+	public function testProgressCallback() {
+		$mock = $this->getMockBuilder('stdClass')->setMethods(array('progress'))->getMock();
+		$mock->expects($this->atLeastOnce())->method('progress');
+		$hooks = new Requests_Hooks();
+		$hooks->register('request.progress', array($mock, 'progress'));
+		$options = array(
+			'hooks' => $hooks,
+		);
+		$options = $this->getOptions($options);
+
+		$response = Requests::get(httpbin('/get'), array(), $options);
 	}
 }
