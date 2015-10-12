@@ -219,8 +219,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$timeout_msec = $timeout_sec == $options['timeout'] ? 0 : self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
 		stream_set_timeout($fp, $timeout_sec, $timeout_msec);
 
-		$this->info = stream_get_meta_data($fp);
-
 		$response = $body = $headers = '';
 		$this->info = stream_get_meta_data($fp);
 		$size = 0;
