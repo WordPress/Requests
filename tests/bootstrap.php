@@ -12,11 +12,7 @@ function define_from_env($name, $default = false) {
 	}
 }
 
-$host = getenv('REQUESTS_TEST_HOST');
-if (empty($host)) {
-	$host = 'httpbin.org';
-}
-define_from_env('REQUESTS_TEST_HOST', 'httpbin.org');
+define_from_env('REQUESTS_TEST_HOST', 'requests-php-tests.herokuapp.com');
 define_from_env('REQUESTS_TEST_HOST_HTTP', REQUESTS_TEST_HOST);
 define_from_env('REQUESTS_TEST_HOST_HTTPS', REQUESTS_TEST_HOST);
 
