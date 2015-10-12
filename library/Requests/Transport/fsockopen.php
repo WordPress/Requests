@@ -245,6 +245,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 			// Are we in body mode now?
 			if ($doingbody) {
+				$options['hooks']->dispatch('request.progress', array($block, $size, $this->max_bytes));
 				$data_length = strlen($block);
 				if ($this->max_bytes) {
 					// Have we already hit a limit?

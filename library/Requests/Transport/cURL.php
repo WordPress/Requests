@@ -52,6 +52,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 	protected $fp;
 
 	/**
+	 * Hook dispatcher instance
+	 *
+	 * @var Requests_Hooks
+	 */
+	protected $hooks;
+
+	/**
 	 * Have we finished the headers yet?
 	 *
 	 * @var boolean
@@ -112,6 +119,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @return string Raw HTTP result
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
+		$this->hooks = $options['hooks'];
+
 		$this->setup_handle($url, $headers, $data, $options);
 
 		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
@@ -251,6 +260,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		if ($options['max_bytes'] !== false) {
 			$this->response_byte_limit = $options['max_bytes'];
 		}
+		$this->hooks = $options['hooks'];
 
 		return $this->fp;
 	}
@@ -370,6 +380,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @return integer Length of provided data
 	 */
 	protected function stream_body($handle, $data) {
+		$this->hooks->dispatch('request.progress', array($data, $this->response_bytes, $this->response_byte_limit));
 		$data_length = strlen($data);
 
 		// Are we limiting the response size?
