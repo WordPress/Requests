@@ -458,7 +458,7 @@ class Requests_Cookie {
 			}
 
 			// Reject invalid cookie domains
-			if (!$parsed->domainMatches($origin->host)) {
+			if (!empty($origin) && !$parsed->domainMatches($origin->host)) {
 				continue;
 			}
 
