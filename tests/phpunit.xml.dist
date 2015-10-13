@@ -7,6 +7,9 @@
 		<testsuite name="Transports">
 			<directory suffix=".php">Transport</directory>
 		</testsuite>
+		<testsuite name="Proxies">
+			<directory suffix=".php">Proxy</directory>
+		</testsuite>
 		<testsuite name="General">
 			<file>ChunkedEncoding.php</file>
 			<file>Cookies.php</file>

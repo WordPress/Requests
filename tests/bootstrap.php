@@ -2,13 +2,24 @@
 
 date_default_timezone_set('UTC');
 
-$host = getenv('REQUESTS_TEST_HOST');
-if (empty($host)) {
-	$host = 'httpbin.org';
+function define_from_env($name, $default = false) {
+	$env = getenv($name);
+	if ($env) {
+		define($name, $env);
+	}
+	else {
+		define($name, $default);
+	}
 }
-define('REQUESTS_TEST_HOST',       getenv('REQUESTS_TEST_HOST') ? getenv('REQUESTS_TEST_HOST') : 'httpbin.org');
-define('REQUESTS_TEST_HOST_HTTP',  getenv('REQUESTS_TEST_HOST_HTTP') ? getenv('REQUESTS_TEST_HOST_HTTP') : REQUESTS_TEST_HOST);
-define('REQUESTS_TEST_HOST_HTTPS', getenv('REQUESTS_TEST_HOST_HTTPS') ? getenv('REQUESTS_TEST_HOST_HTTPS'): REQUESTS_TEST_HOST);
+
+define_from_env('REQUESTS_TEST_HOST', 'requests-php-tests.herokuapp.com');
+define_from_env('REQUESTS_TEST_HOST_HTTP', REQUESTS_TEST_HOST);
+define_from_env('REQUESTS_TEST_HOST_HTTPS', REQUESTS_TEST_HOST);
+
+define_from_env('REQUESTS_HTTP_PROXY');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
+define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
 include(dirname(dirname(__FILE__)) . '/library/Requests.php');
 Requests::register_autoloader();
@@ -74,16 +85,21 @@ class MockTransport implements Requests_Transport {
 		415 => '415 Unsupported Media Type',
 		416 => '416 Requested Range Not Satisfiable',
 		417 => '417 Expectation Failed',
+		418 => '418 I\'m a teapot',
+		428 => '428 Precondition Required',
+		429 => '429 Too Many Requests',
+		431 => '431 Request Header Fields Too Large',
 		500 => '500 Internal Server Error',
 		501 => '501 Not Implemented',
 		502 => '502 Bad Gateway',
 		503 => '503 Service Unavailable',
 		504 => '504 Gateway Timeout',
 		505 => '505 HTTP Version Not Supported',
+		511 => '511 Network Authentication Required',
 	);
 
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
-		$status = self::$messages[$this->code];
+		$status = isset(self::$messages[$this->code]) ? self::$messages[$this->code] : $this->code . ' unknown';
 		$response = "HTTP/1.0 $status\r\n";
 		$response .= "Content-Type: text/plain\r\n";
 		if ($this->chunked) {
