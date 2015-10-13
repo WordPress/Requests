@@ -222,6 +222,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 
 	public function pathMatchProvider() {
 		return array(
+			array('/',      '',       true),
 			array('/',      '/',      true),
 
 			array('/',      '/test',  true),
