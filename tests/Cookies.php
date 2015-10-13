@@ -360,20 +360,35 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 			),
 
 			// Expiration
+			// RFC 822, updated by RFC 1123
 			array(
-				// RFC 822, updated by RFC 1123
+				'foo=bar; Expires=Thu, 5-Dec-2013 04:50:12 GMT',
+				array( 'expired' => true ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2013 ) ),
+			),
+			array(
 				'foo=bar; Expires=Fri, 5-Dec-2014 04:50:12 GMT',
 				array( 'expired' => false ),
 				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2014 ) ),
 			),
+			// RFC 850, obsoleted by RFC 1036
 			array(
-				// RFC 850, obsoleted by RFC 1036
+				'foo=bar; Expires=Thursday, 5-Dec-2013 04:50:12 GMT',
+				array( 'expired' => true ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2013 ) ),
+			),
+			array(
 				'foo=bar; Expires=Friday, 5-Dec-2014 04:50:12 GMT',
 				array( 'expired' => false ),
 				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2014 ) ),
 			),
+			// asctime()
 			array(
-				// asctime()
+				'foo=bar; Expires=Thu Dec  5 04:50:12 2013',
+				array( 'expired' => true ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2013 ) ),
+			),
+			array(
 				'foo=bar; Expires=Fri Dec  5 04:50:12 2014',
 				array( 'expired' => false ),
 				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2014 ) ),
