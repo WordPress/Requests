@@ -495,4 +495,40 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 			}
 		}
 	}
+
+	/**
+	 * @dataProvider parseResultProvider
+	 */
+	public function testParsingHeaderObject($header, $expected, $expected_attributes = array(), $expected_flags = array()) {
+		$headers = new Requests_Response_Headers();
+		$headers['Set-Cookie'] = $header;
+
+		// Set the reference time to 2014-01-01 00:00:00
+		$reference_time = gmmktime( 0, 0, 0, 1, 1, 2014 );
+
+		$parsed = Requests_Cookie::parseFromHeaders($headers, null, $reference_time);
+		$this->assertCount(1, $parsed);
+
+		$cookie = reset($parsed);
+		if (isset($expected['name'])) {
+			$this->assertArrayHasKey($expected['name'], $parsed);
+			$this->assertEquals($expected['name'], $cookie->name);
+		}
+		if (isset($expected['value'])) {
+			$this->assertEquals($expected['value'], $cookie->value);
+		}
+		if (isset($expected['expired'])) {
+			$this->assertEquals($expected['expired'], $cookie->is_expired());
+		}
+		if (isset($expected_attributes)) {
+			foreach ($expected_attributes as $attr_key => $attr_val) {
+				$this->assertEquals($attr_val, $cookie->attributes[$attr_key]);
+			}
+		}
+		if (isset($expected_flags)) {
+			foreach ($expected_flags as $flag_key => $flag_val) {
+				$this->assertEquals($flag_val, $cookie->attributes[$flag_key]);
+			}
+		}
+	}
 }
