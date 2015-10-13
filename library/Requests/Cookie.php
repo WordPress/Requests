@@ -412,7 +412,7 @@ class Requests_Cookie {
 	 * @param Requests_Response_Headers $headers
 	 * @return array
 	 */
-	public static function parseFromHeaders(Requests_Response_Headers $headers, Requests_IRI $origin = null) {
+	public static function parseFromHeaders(Requests_Response_Headers $headers, Requests_IRI $origin = null, $reference_time = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
 			return array();
@@ -420,7 +420,7 @@ class Requests_Cookie {
 
 		$cookies = array();
 		foreach ($cookie_headers as $header) {
-			$parsed = self::parse($header);
+			$parsed = self::parse($header, '', $reference_time);
 
 			// Default domain/path attributes
 			if (empty($parsed->attributes['domain']) && !empty($origin)) {
