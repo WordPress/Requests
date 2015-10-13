@@ -131,6 +131,11 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 			foreach ($this->cookies as $key => $cookie) {
 				$cookie = $this->normalizeCookie($cookie, $key);
 
+				// Skip expired cookies
+				if ($cookie->is_expired()) {
+					continue;
+				}
+
 				if ( $cookie->domainMatches( $url->host ) ) {
 					$cookies[] = $cookie->formatForHeader();
 				}
