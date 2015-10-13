@@ -425,10 +425,10 @@ class Requests_Cookie {
 			// Default domain/path attributes
 			if (empty($parsed->attributes['domain']) && !empty($origin)) {
 				$parsed->attributes['domain'] = $origin->host;
-				$parsed->flags['host-only'] = false;
+				$parsed->flags['host-only'] = true;
 			}
 			else {
-				$parsed->flags['host-only'] = true;
+				$parsed->flags['host-only'] = false;
 			}
 
 			$path_is_valid = (!empty($parsed->attributes['path']) && $parsed->attributes['path'][0] === '/');
