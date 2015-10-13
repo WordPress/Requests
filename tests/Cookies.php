@@ -495,6 +495,131 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertCount(1, $parsed);
 
 		$cookie = reset($parsed);
+		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
+	}
+
+	public function parseFromHeadersProvider() {
+		return array(
+			# Varying origin path
+			array(
+				'name=value',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value',
+				'http://example.com/test',
+				array(),
+				array( 'path' => '/' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value',
+				'http://example.com/test/',
+				array(),
+				array( 'path' => '/test' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value',
+				'http://example.com/test/abc',
+				array(),
+				array( 'path' => '/test' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value',
+				'http://example.com/test/abc/',
+				array(),
+				array( 'path' => '/test/abc' ),
+				array( 'host-only' => true ),
+			),
+
+			# With specified path
+			array(
+				'name=value; path=/',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value; path=/test',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/test' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value; path=/test/',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/test/' ),
+				array( 'host-only' => true ),
+			),
+
+			# Invalid path
+			array(
+				'name=value; path=yolo',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value; path=yolo',
+				'http://example.com/test/',
+				array(),
+				array( 'path' => '/test' ),
+				array( 'host-only' => true ),
+			),
+
+			# Cross-origin cookies, reject!
+			array(
+				'name=value; domain=example.org',
+				'http://example.com/',
+				array( 'invalid' => false ),
+			),
+
+			# Subdomain cookies
+			array(
+				'name=value; domain=test.example.com',
+				'http://test.example.com/',
+				array(),
+				array( 'domain' => 'test.example.com' ),
+				array( 'host-only' => false )
+			),
+			array(
+				'name=value; domain=example.com',
+				'http://test.example.com/',
+				array(),
+				array( 'domain' => 'example.com' ),
+				array( 'host-only' => false )
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider parseFromHeadersProvider
+	 */
+	public function testParsingHeaderWithOrigin($header, $origin, $expected, $expected_attributes = array(), $expected_flags = array()) {
+		$origin = new Requests_IRI($origin);
+		$headers = new Requests_Response_Headers();
+		$headers['Set-Cookie'] = $header;
+
+		// Set the reference time to 2014-01-01 00:00:00
+		$reference_time = gmmktime( 0, 0, 0, 1, 1, 2014 );
+
+		$parsed = Requests_Cookie::parseFromHeaders($headers, $origin, $reference_time);
+		if (isset($expected['invalid'])) {
+			$this->assertCount(0, $parsed);
+			return;
+		}
+		$this->assertCount(1, $parsed);
+
+		$cookie = reset($parsed);
 		$this->check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags);
 	}
 }
