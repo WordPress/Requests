@@ -389,7 +389,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 
 		if (!$success) {
-			if ($code >= 400) {
+			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
 				$this->setExpectedException('Requests_Exception_HTTP_' . $code, $code);
 			}
 		}

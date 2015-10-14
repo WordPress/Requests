@@ -74,6 +74,16 @@ class Requests_Response {
 	public $cookies = array();
 
 	/**
+	 * Is the response a redirect?
+	 *
+	 * @return boolean True if redirect (3xx status), false if not.
+	 */
+	public function is_redirect() {
+		$code = $this->status_code;
+		return in_array($code, array(300, 301, 302, 303, 307)) || $code > 307 && $code < 400;
+	}
+
+	/**
 	 * Throws an exception if the request was not successful
 	 *
 	 * @throws Requests_Exception If `$allow_redirects` is false, and code is 3xx (`response.no_redirects`)
@@ -81,12 +91,11 @@ class Requests_Response {
 	 * @param boolean $allow_redirects Set to false to throw on a 3xx as well
 	 */
 	public function throw_for_status($allow_redirects = true) {
-		if ($this->status_code >= 300 && $this->status_code < 400) {
+		if ($this->is_redirect()) {
 			if (!$allow_redirects) {
 				throw new Requests_Exception('Redirection not allowed', 'response.no_redirects', $this);
 			}
 		}
-
 		elseif (!$this->success) {
 			$exception = Requests_Exception_HTTP::get_class($this->status_code);
 			throw new $exception(null, $this);
