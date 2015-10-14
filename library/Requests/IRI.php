@@ -314,28 +314,27 @@ class Requests_IRI {
      */
     protected function parse_iri($iri) {
         $iri = trim($iri, "\x20\x09\x0A\x0C\x0D");
-        if (preg_match('/^((?P<scheme>[^:\/?#]+):)?(\/\/(?P<authority>[^\/?#]*))?(?P<path>[^?#]*)(\?(?P<query>[^#]*))?(#(?P<fragment>.*))?$/', $iri, $match)) {
-            if ($match[1] === '') {
-                $match['scheme'] = null;
-            }
-            if (!isset($match[3]) || $match[3] === '') {
-                $match['authority'] = null;
-            }
-            if (!isset($match[5])) {
-                $match['path'] = '';
-            }
-            if (!isset($match[6]) || $match[6] === '') {
-                $match['query'] = null;
-            }
-            if (!isset($match[8]) || $match[8] === '') {
-                $match['fragment'] = null;
-            }
-            return $match;
+        $has_match = preg_match('/^((?P<scheme>[^:\/?#]+):)?(\/\/(?P<authority>[^\/?#]*))?(?P<path>[^?#]*)(\?(?P<query>[^#]*))?(#(?P<fragment>.*))?$/', $iri, $match);
+        if (!$has_match) {
+            throw new Requests_Exception('Cannot parse supplied IRI', 'iri.cannot_parse', $iri);
         }
-        else {
-            trigger_error('This should never happen', E_USER_ERROR);
-            die;
+
+        if ($match[1] === '') {
+            $match['scheme'] = null;
         }
+        if (!isset($match[3]) || $match[3] === '') {
+            $match['authority'] = null;
+        }
+        if (!isset($match[5])) {
+            $match['path'] = '';
+        }
+        if (!isset($match[6]) || $match[6] === '') {
+            $match['query'] = null;
+        }
+        if (!isset($match[8]) || $match[8] === '') {
+            $match['fragment'] = null;
+        }
+        return $match;
     }
 
     /**
