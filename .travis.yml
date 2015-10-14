@@ -43,6 +43,9 @@ before_script:
  - export REQUESTS_HTTP_PROXY_AUTH_USER="test"
  - export REQUESTS_HTTP_PROXY_AUTH_PASS="pass"
 
+ # Ensure the HTTPS test instance on Heroku is spun up
+ - curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
+
 script:
  - phpunit --coverage-clover clover.xml
 
