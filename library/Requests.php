@@ -640,7 +640,11 @@ class Requests {
 	 */
 	public static function parse_multiple(&$response, $request) {
 		try {
-			$response = self::parse_response($response, $request['url'], $request['headers'], $request['data'], $request['options']);
+			$url = $request['url'];
+			$headers = $request['headers'];
+			$data = $request['data'];
+			$options = $request['options'];
+			$response = self::parse_response($response, $url, $headers, $data, $options);
 		}
 		catch (Requests_Exception $e) {
 			$response = $e;
