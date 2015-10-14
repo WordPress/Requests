@@ -680,7 +680,7 @@ class Requests {
 			}
 
 			$chunk_length = strlen($matches[0]);
-			$decoded .= $part = substr($encoded, $chunk_length, $length);
+			$decoded .= substr($encoded, $chunk_length, $length);
 			$encoded = substr($encoded, $chunk_length + $length + 2);
 
 			if (trim($encoded) === '0' || empty($encoded)) {
