@@ -124,6 +124,23 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('testvalue1', $data['requests-testcookie1']);
 	}
 
+	/**
+	 * @depends testSendingCookie
+	 */
+	public function testCookieExpiration() {
+		$options = array(
+			'follow_redirects' => true,
+		);
+		$url = httpbin('/cookies/set/testcookie/testvalue');
+		$url .= '?expiry=1';
+
+		$response = Requests::get($url, array(), $options);
+		$response->throw_for_status();
+
+		$data = json_decode($response->body, true);
+		$this->assertEmpty($data['cookies']);
+	}
+
 	public function testSendingCookieWithJar() {
 		$cookies = new Requests_Cookie_Jar(array(
 			'requests-testcookie1' => 'testvalue1',
