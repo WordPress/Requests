@@ -124,6 +124,23 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('testvalue1', $data['requests-testcookie1']);
 	}
 
+	/**
+	 * @depends testSendingCookie
+	 */
+	public function testCookieExpiration() {
+		$options = array(
+			'follow_redirects' => true,
+		);
+		$url = httpbin('/cookies/set/testcookie/testvalue');
+		$url .= '?expiry=1';
+
+		$response = Requests::get($url, array(), $options);
+		$response->throw_for_status();
+
+		$data = json_decode($response->body, true);
+		$this->assertEmpty($data['cookies']);
+	}
+
 	public function testSendingCookieWithJar() {
 		$cookies = new Requests_Cookie_Jar(array(
 			'requests-testcookie1' => 'testvalue1',
@@ -222,6 +239,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 
 	public function pathMatchProvider() {
 		return array(
+			array('/',      '',       true),
 			array('/',      '/',      true),
 
 			array('/',      '/test',  true),
@@ -345,5 +363,280 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/')));
 		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/test')));
 		$this->assertTrue($cookie->uriMatches(new Requests_IRI('http://example.net/test/')));
+	}
+
+	public static function parseResultProvider() {
+		return array(
+			// Basic parsing
+			array(
+				'foo=bar',
+				array( 'name' => 'foo', 'value' => 'bar' ),
+			),
+			array(
+				'bar',
+				array( 'name' => '', 'value' => 'bar' ),
+			),
+
+			// Expiration
+			// RFC 822, updated by RFC 1123
+			array(
+				'foo=bar; Expires=Thu, 5-Dec-2013 04:50:12 GMT',
+				array( 'expired' => true ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2013 ) ),
+			),
+			array(
+				'foo=bar; Expires=Fri, 5-Dec-2014 04:50:12 GMT',
+				array( 'expired' => false ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2014 ) ),
+			),
+			// RFC 850, obsoleted by RFC 1036
+			array(
+				'foo=bar; Expires=Thursday, 5-Dec-2013 04:50:12 GMT',
+				array( 'expired' => true ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2013 ) ),
+			),
+			array(
+				'foo=bar; Expires=Friday, 5-Dec-2014 04:50:12 GMT',
+				array( 'expired' => false ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2014 ) ),
+			),
+			// asctime()
+			array(
+				'foo=bar; Expires=Thu Dec  5 04:50:12 2013',
+				array( 'expired' => true ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2013 ) ),
+			),
+			array(
+				'foo=bar; Expires=Fri Dec  5 04:50:12 2014',
+				array( 'expired' => false ),
+				array( 'expires' => gmmktime( 4, 50, 12, 12, 5, 2014 ) ),
+			),
+			array(
+				// Invalid
+				'foo=bar; Expires=never',
+				array(),
+				array( 'expires' => null ),
+			),
+
+			// Max-Age
+			array(
+				'foo=bar; Max-Age=10',
+				array( 'expired' => false ),
+				array( 'max-age' => gmmktime( 0, 0, 10, 1, 1, 2014 ) ),
+			),
+			array(
+				'foo=bar; Max-Age=3660',
+				array( 'expired' => false ),
+				array( 'max-age' => gmmktime( 1, 1, 0, 1, 1, 2014 ) ),
+			),
+			array(
+				'foo=bar; Max-Age=0',
+				array( 'expired' => true ),
+				array( 'max-age' => 0 ),
+			),
+			array(
+				'foo=bar; Max-Age=-1000',
+				array( 'expired' => true ),
+				array( 'max-age' => 0 ),
+			),
+			array(
+				// Invalid (non-digit character)
+				'foo=bar; Max-Age=1e6',
+				array( 'expired' => false ),
+				array( 'max-age' => null ),
+			)
+		);
+	}
+
+	protected function check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags = array()) {
+		if (isset($expected['name'])) {
+			$this->assertEquals($expected['name'], $cookie->name);
+		}
+		if (isset($expected['value'])) {
+			$this->assertEquals($expected['value'], $cookie->value);
+		}
+		if (isset($expected['expired'])) {
+			$this->assertEquals($expected['expired'], $cookie->is_expired());
+		}
+		if (isset($expected_attributes)) {
+			foreach ($expected_attributes as $attr_key => $attr_val) {
+				$this->assertEquals($attr_val, $cookie->attributes[$attr_key], "$attr_key should match supplied");
+			}
+		}
+		if (isset($expected_flags)) {
+			foreach ($expected_flags as $flag_key => $flag_val) {
+				$this->assertEquals($flag_val, $cookie->flags[$flag_key], "$flag_key should match supplied");
+			}
+		}
+	}
+
+	/**
+	 * @dataProvider parseResultProvider
+	 */
+	public function testParsingHeader($header, $expected, $expected_attributes = array(), $expected_flags = array()) {
+		// Set the reference time to 2014-01-01 00:00:00
+		$reference_time = gmmktime( 0, 0, 0, 1, 1, 2014 );
+
+		$cookie = Requests_Cookie::parse($header, null, $reference_time);
+		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
+	}
+
+	/**
+	 * Double-normalizes the cookie data to ensure we catch any issues there
+	 *
+	 * @dataProvider parseResultProvider
+	 */
+	public function testParsingHeaderDouble($header, $expected, $expected_attributes = array(), $expected_flags = array()) {
+		// Set the reference time to 2014-01-01 00:00:00
+		$reference_time = gmmktime( 0, 0, 0, 1, 1, 2014 );
+
+		$cookie = Requests_Cookie::parse($header, null, $reference_time);
+
+		// Normalize the value again
+		$cookie->normalize();
+
+		$this->check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags);
+	}
+
+	/**
+	 * @dataProvider parseResultProvider
+	 */
+	public function testParsingHeaderObject($header, $expected, $expected_attributes = array(), $expected_flags = array()) {
+		$headers = new Requests_Response_Headers();
+		$headers['Set-Cookie'] = $header;
+
+		// Set the reference time to 2014-01-01 00:00:00
+		$reference_time = gmmktime( 0, 0, 0, 1, 1, 2014 );
+
+		$parsed = Requests_Cookie::parseFromHeaders($headers, null, $reference_time);
+		$this->assertCount(1, $parsed);
+
+		$cookie = reset($parsed);
+		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
+	}
+
+	public function parseFromHeadersProvider() {
+		return array(
+			# Varying origin path
+			array(
+				'name=value',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value',
+				'http://example.com/test',
+				array(),
+				array( 'path' => '/' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value',
+				'http://example.com/test/',
+				array(),
+				array( 'path' => '/test' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value',
+				'http://example.com/test/abc',
+				array(),
+				array( 'path' => '/test' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value',
+				'http://example.com/test/abc/',
+				array(),
+				array( 'path' => '/test/abc' ),
+				array( 'host-only' => true ),
+			),
+
+			# With specified path
+			array(
+				'name=value; path=/',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value; path=/test',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/test' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value; path=/test/',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/test/' ),
+				array( 'host-only' => true ),
+			),
+
+			# Invalid path
+			array(
+				'name=value; path=yolo',
+				'http://example.com/',
+				array(),
+				array( 'path' => '/' ),
+				array( 'host-only' => true ),
+			),
+			array(
+				'name=value; path=yolo',
+				'http://example.com/test/',
+				array(),
+				array( 'path' => '/test' ),
+				array( 'host-only' => true ),
+			),
+
+			# Cross-origin cookies, reject!
+			array(
+				'name=value; domain=example.org',
+				'http://example.com/',
+				array( 'invalid' => false ),
+			),
+
+			# Subdomain cookies
+			array(
+				'name=value; domain=test.example.com',
+				'http://test.example.com/',
+				array(),
+				array( 'domain' => 'test.example.com' ),
+				array( 'host-only' => false )
+			),
+			array(
+				'name=value; domain=example.com',
+				'http://test.example.com/',
+				array(),
+				array( 'domain' => 'example.com' ),
+				array( 'host-only' => false )
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider parseFromHeadersProvider
+	 */
+	public function testParsingHeaderWithOrigin($header, $origin, $expected, $expected_attributes = array(), $expected_flags = array()) {
+		$origin = new Requests_IRI($origin);
+		$headers = new Requests_Response_Headers();
+		$headers['Set-Cookie'] = $header;
+
+		// Set the reference time to 2014-01-01 00:00:00
+		$reference_time = gmmktime( 0, 0, 0, 1, 1, 2014 );
+
+		$parsed = Requests_Cookie::parseFromHeaders($headers, $origin, $reference_time);
+		if (isset($expected['invalid'])) {
+			$this->assertCount(0, $parsed);
+			return;
+		}
+		$this->assertCount(1, $parsed);
+
+		$cookie = reset($parsed);
+		$this->check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags);
 	}
 }

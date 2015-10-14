@@ -45,13 +45,23 @@ class Requests_Cookie {
 	public $flags = array();
 
 	/**
+	 * Reference time for relative calculations
+	 *
+	 * This is used in place of `time()` when calculating Max-Age expiration and
+	 * checking time validity.
+	 *
+	 * @var int
+	 */
+	public $reference_time = 0;
+
+	/**
 	 * Create a new cookie object
 	 *
 	 * @param string $name
 	 * @param string $value
 	 * @param array $attributes Associative array of attribute data
 	 */
-	public function __construct($name, $value, $attributes = array(), $flags = array()) {
+	public function __construct($name, $value, $attributes = array(), $flags = array(), $reference_time = null) {
 		$this->name = $name;
 		$this->value = $value;
 		$this->attributes = $attributes;
@@ -63,7 +73,38 @@ class Requests_Cookie {
 		);
 		$this->flags = array_merge($default_flags, $flags);
 
+		$this->reference_time = time();
+		if ($reference_time !== null) {
+			$this->reference_time = $reference_time;
+		}
+
 		$this->normalize();
+	}
+
+	/**
+	 * Check if a cookie is expired.
+	 *
+	 * Checks the age against $this->reference_time to determine if the cookie
+	 * is expired.
+	 *
+	 * @return boolean True if expired, false if time is valid.
+	 */
+	public function is_expired() {
+		// RFC6265, s. 4.1.2.2:
+		// If a cookie has both the Max-Age and the Expires attribute, the Max-
+		// Age attribute has precedence and controls the expiration date of the
+		// cookie.
+		if (isset($this->attributes['max-age'])) {
+			$max_age = $this->attributes['max-age'];
+			return $max_age < $this->reference_time;
+		}
+
+		if (isset($this->attributes['expires'])) {
+			$expires = $this->attributes['expires'];
+			return $expires < $this->reference_time;
+		}
+
+		return false;
 	}
 
 	/**
@@ -192,13 +233,10 @@ class Requests_Cookie {
 	public function normalize() {
 		foreach ($this->attributes as $key => $value) {
 			$orig_value = $value;
-			switch ($key) {
-				case 'domain':
-					// Domain normalization, as per RFC 6265 section 5.2.3
-					if ($value[0] === '.') {
-						$value = substr($value, 1);
-					}
-					break;
+			$value = $this->normalizeAttribute($key, $value);
+			if ($value === null) {
+				unset($this->attributes[$key]);
+				continue;
 			}
 
 			if ($value !== $orig_value) {
@@ -207,6 +245,64 @@ class Requests_Cookie {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Parse an individual cookie attribute
+	 *
+	 * Handles parsing individual attributes from the cookie values.
+	 *
+	 * @param string $name Attribute name
+	 * @param string|boolean $value Attribute value (string value, or true if empty/flag)
+	 * @return mixed Value if available, or null if the attribute value is invalid (and should be skipped)
+	 */
+	protected function normalizeAttribute($name, $value) {
+		switch (strtolower($name)) {
+			case 'expires':
+				// Expiration parsing, as per RFC 6265 section 5.2.1
+				if (is_int($value)) {
+					return $value;
+				}
+
+				$expiry_time = strtotime($value);
+				if ($expiry_time === false) {
+					return null;
+				}
+
+				return $expiry_time;
+
+			case 'max-age':
+				// Expiration parsing, as per RFC 6265 section 5.2.2
+				if (is_int($value)) {
+					return $value;
+				}
+
+				// Check that we have a valid age
+				if (!preg_match('/^-?\d+$/', $value)) {
+					return null;
+				}
+
+				$delta_seconds = (int) $value;
+				if ($delta_seconds <= 0) {
+					$expiry_time = 0;
+				}
+				else {
+					$expiry_time = $this->reference_time + $delta_seconds;
+				}
+
+				return $expiry_time;
+
+			case 'domain':
+				// Domain normalization, as per RFC 6265 section 5.2.3
+				if ($value[0] === '.') {
+					$value = substr($value, 1);
+				}
+
+				return $value;
+
+			default:
+				return $value;
+		}
 	}
 
 	/**
@@ -266,7 +362,7 @@ class Requests_Cookie {
 	 * @param string Cookie header value (from a Set-Cookie header)
 	 * @return Requests_Cookie Parsed cookie object
 	 */
-	public static function parse($string, $name = '') {
+	public static function parse($string, $name = '', $reference_time = null) {
 		$parts = explode(';', $string);
 		$kvparts = array_shift($parts);
 
@@ -307,7 +403,7 @@ class Requests_Cookie {
 			}
 		}
 
-		return new Requests_Cookie($name, $value, $attributes);
+		return new Requests_Cookie($name, $value, $attributes, array(), $reference_time);
 	}
 
 	/**
@@ -316,7 +412,7 @@ class Requests_Cookie {
 	 * @param Requests_Response_Headers $headers
 	 * @return array
 	 */
-	public static function parseFromHeaders(Requests_Response_Headers $headers, Requests_IRI $origin = null) {
+	public static function parseFromHeaders(Requests_Response_Headers $headers, Requests_IRI $origin = null, $reference_time = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
 			return array();
@@ -324,15 +420,15 @@ class Requests_Cookie {
 
 		$cookies = array();
 		foreach ($cookie_headers as $header) {
-			$parsed = self::parse($header);
+			$parsed = self::parse($header, '', $reference_time);
 
 			// Default domain/path attributes
 			if (empty($parsed->attributes['domain']) && !empty($origin)) {
 				$parsed->attributes['domain'] = $origin->host;
-				$parsed->flags['host-only'] = false;
+				$parsed->flags['host-only'] = true;
 			}
 			else {
-				$parsed->flags['host-only'] = true;
+				$parsed->flags['host-only'] = false;
 			}
 
 			$path_is_valid = (!empty($parsed->attributes['path']) && $parsed->attributes['path'][0] === '/');
@@ -362,7 +458,7 @@ class Requests_Cookie {
 			}
 
 			// Reject invalid cookie domains
-			if (!$parsed->domainMatches($origin->host)) {
+			if (!empty($origin) && !$parsed->domainMatches($origin->host)) {
 				continue;
 			}
 
