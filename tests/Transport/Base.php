@@ -507,10 +507,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * Test that SSL fails with a bad certificate
 	 *
-	 * This is defined as invalid by
-	 * https://onlinessl.netlock.hu/en/test-center/invalid-ssl-certificate.html
-	 * and is used in testing in PhantomJS. That said, expect this to break.
-	 *
 	 * @expectedException Requests_Exception
 	 */
 	public function testBadDomain() {
@@ -519,7 +515,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://tv.eurosport.com/', array(), $this->getOptions());
+		$request = Requests::get('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
 	/**
