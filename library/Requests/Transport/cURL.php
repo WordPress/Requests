@@ -153,7 +153,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		curl_exec($this->handle);
 		$response = $this->response_data;
 
-		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
+		$options['hooks']->dispatch('curl.after_send', array());
 
 		if (curl_errno($this->handle) === 23 || curl_errno($this->handle) === 61) {
 			// Reset encoding and try again
