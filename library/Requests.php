@@ -604,7 +604,7 @@ class Requests {
 		if ($return->is_redirect() && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
 				if ($return->status_code === 303) {
-					$options['type'] = Requests::GET;
+					$options['type'] = self::GET;
 				}
 				$options['redirected']++;
 				$location = $return->headers['location'];
@@ -613,7 +613,7 @@ class Requests {
 					$location = Requests_IRI::absolutize($url, $location);
 					$location = $location->uri;
 				}
-				$redirected = self::request($location, $req_headers, $req_data, false, $options);
+				$redirected = self::request($location, $req_headers, $req_data, $options['type'], $options);
 				$redirected->history[] = $return;
 				return $redirected;
 			}
