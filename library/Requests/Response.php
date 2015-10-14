@@ -18,58 +18,69 @@ class Requests_Response {
 	 */
 	public function __construct() {
 		$this->headers = new Requests_Response_Headers();
+		$this->cookies = new Requests_Cookie_Jar();
 	}
 
 	/**
 	 * Response body
+	 *
 	 * @var string
 	 */
 	public $body = '';
 
 	/**
 	 * Raw HTTP data from the transport
+	 *
 	 * @var string
 	 */
 	public $raw = '';
 
 	/**
 	 * Headers, as an associative array
-	 * @var array
+	 *
+	 * @var Requests_Response_Headers Array-like object representing headers
 	 */
 	public $headers = array();
 
 	/**
 	 * Status code, false if non-blocking
+	 *
 	 * @var integer|boolean
 	 */
 	public $status_code = false;
 
 	/**
 	 * Whether the request succeeded or not
+	 *
 	 * @var boolean
 	 */
 	public $success = false;
 
 	/**
 	 * Number of redirects the request used
+	 *
 	 * @var integer
 	 */
 	public $redirects = 0;
 
 	/**
 	 * URL requested
+	 *
 	 * @var string
 	 */
 	public $url = '';
 
 	/**
 	 * Previous requests (from redirects)
+	 *
 	 * @var array Array of Requests_Response objects
 	 */
 	public $history = array();
 
 	/**
 	 * Cookies from the request
+	 *
+	 * @var Requests_Cookie_Jar Array-like object representing a cookie jar
 	 */
 	public $cookies = array();
 
