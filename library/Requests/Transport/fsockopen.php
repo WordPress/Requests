@@ -118,7 +118,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$options['hooks']->dispatch('fsockopen.remote_socket', array(&$remote_socket));
 
-		$fp = stream_socket_client($remote_socket, $errno, $errstr, ceil($options['connect_timeout']), STREAM_CLIENT_CONNECT, $context);
+		$socket = stream_socket_client($remote_socket, $errno, $errstr, ceil($options['connect_timeout']), STREAM_CLIENT_CONNECT, $context);
 
 		restore_error_handler();
 
@@ -128,7 +128,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			}
 		}
 
-		if (!$fp) {
+		if (!$socket) {
 			if ($errno === 0) {
 				// Connection issue
 				throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
@@ -207,11 +207,11 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$options['hooks']->dispatch('fsockopen.before_send', array(&$out));
 
-		fwrite($fp, $out);
+		fwrite($socket, $out);
 		$options['hooks']->dispatch('fsockopen.after_send', array($out));
 
 		if (!$options['blocking']) {
-			fclose($fp);
+			fclose($socket);
 			$fake_headers = '';
 			$options['hooks']->dispatch('fsockopen.after_request', array(&$fake_headers));
 			return '';
@@ -224,10 +224,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		else {
 			$timeout_msec = self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
 		}
-		stream_set_timeout($fp, $timeout_sec, $timeout_msec);
+		stream_set_timeout($socket, $timeout_sec, $timeout_msec);
 
 		$response = $body = $headers = '';
-		$this->info = stream_get_meta_data($fp);
+		$this->info = stream_get_meta_data($socket);
 		$size = 0;
 		$doingbody = false;
 		$download = false;
@@ -235,13 +235,13 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$download = fopen($options['filename'], 'wb');
 		}
 
-		while (!feof($fp)) {
-			$this->info = stream_get_meta_data($fp);
+		while (!feof($socket)) {
+			$this->info = stream_get_meta_data($socket);
 			if ($this->info['timed_out']) {
 				throw new Requests_Exception('fsocket timed out', 'timeout');
 			}
 
-			$block = fread($fp, Requests::BUFFER_SIZE);
+			$block = fread($socket, Requests::BUFFER_SIZE);
 			if (!$doingbody) {
 				$response .= $block;
 				if (strpos($response, "\r\n\r\n")) {
@@ -283,7 +283,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		else {
 			$this->headers .= "\r\n\r\n" . $body;
 		}
-		fclose($fp);
+		fclose($socket);
 
 		$options['hooks']->dispatch('fsockopen.after_request', array(&$this->headers));
 		return $this->headers;

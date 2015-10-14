@@ -49,7 +49,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 *
 	 * @var resource
 	 */
-	protected $fp;
+	protected $handle;
 
 	/**
 	 * Hook dispatcher instance
@@ -92,18 +92,18 @@ class Requests_Transport_cURL implements Requests_Transport {
 	public function __construct() {
 		$curl = curl_version();
 		$this->version = $curl['version_number'];
-		$this->fp = curl_init();
+		$this->handle = curl_init();
 
-		curl_setopt($this->fp, CURLOPT_HEADER, false);
-		curl_setopt($this->fp, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($this->handle, CURLOPT_HEADER, false);
+		curl_setopt($this->handle, CURLOPT_RETURNTRANSFER, 1);
 		if ($this->version >= self::CURL_7_10_5) {
-			curl_setopt($this->fp, CURLOPT_ENCODING, '');
+			curl_setopt($this->handle, CURLOPT_ENCODING, '');
 		}
 		if (defined('CURLOPT_PROTOCOLS')) {
-			curl_setopt($this->fp, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+			curl_setopt($this->handle, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 		}
 		if (defined('CURLOPT_REDIR_PROTOCOLS')) {
-			curl_setopt($this->fp, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+			curl_setopt($this->handle, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 		}
 	}
 
@@ -123,7 +123,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		$this->setup_handle($url, $headers, $data, $options);
 
-		$options['hooks']->dispatch('curl.before_send', array(&$this->fp));
+		$options['hooks']->dispatch('curl.before_send', array(&$this->handle));
 
 		if ($options['filename'] !== false) {
 			$this->stream_handle = fopen($options['filename'], 'wb');
@@ -138,35 +138,35 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if (isset($options['verify'])) {
 			if ($options['verify'] === false) {
-				curl_setopt($this->fp, CURLOPT_SSL_VERIFYHOST, 0);
-				curl_setopt($this->fp, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, 0);
 
 			} elseif (is_string($options['verify'])) {
-				curl_setopt($this->fp, CURLOPT_CAINFO, $options['verify']);
+				curl_setopt($this->handle, CURLOPT_CAINFO, $options['verify']);
 			}
 		}
 
 		if (isset($options['verifyname']) && $options['verifyname'] === false) {
-			curl_setopt($this->fp, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
 		}
 
-		curl_exec($this->fp);
+		curl_exec($this->handle);
 		$response = $this->response_data;
 
 		$options['hooks']->dispatch('curl.after_send', array(&$fake_headers));
 
-		if (curl_errno($this->fp) === 23 || curl_errno($this->fp) === 61) {
+		if (curl_errno($this->handle) === 23 || curl_errno($this->handle) === 61) {
 			// Reset encoding and try again
-			curl_setopt($this->fp, CURLOPT_ENCODING, 'none');
+			curl_setopt($this->handle, CURLOPT_ENCODING, 'none');
 
 			$this->response_data = '';
 			$this->response_bytes = 0;
-			curl_exec($this->fp);
+			curl_exec($this->handle);
 			$response = $this->response_data;
 		}
 
 		$this->process_response($response, $options);
-		curl_close($this->fp);
+		curl_close($this->handle);
 		return $this->headers;
 	}
 
@@ -262,7 +262,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 		$this->hooks = $options['hooks'];
 
-		return $this->fp;
+		return $this->handle;
 	}
 
 	/**
@@ -274,7 +274,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
 	 */
 	protected function setup_handle($url, $headers, $data, $options) {
-		$options['hooks']->dispatch('curl.before_request', array(&$this->fp));
+		$options['hooks']->dispatch('curl.before_request', array(&$this->handle));
 
 		$headers = Requests::flatten($headers);
 		if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE)) & !empty($data)) {
@@ -286,41 +286,41 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		switch ($options['type']) {
 			case Requests::POST:
-				curl_setopt($this->fp, CURLOPT_POST, true);
-				curl_setopt($this->fp, CURLOPT_POSTFIELDS, $data);
+				curl_setopt($this->handle, CURLOPT_POST, true);
+				curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
 				break;
 			case Requests::PATCH:
 			case Requests::PUT:
-				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, $options['type']);
-				curl_setopt($this->fp, CURLOPT_POSTFIELDS, $data);
+				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
+				curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
 				break;
 			case Requests::DELETE:
-				curl_setopt($this->fp, CURLOPT_CUSTOMREQUEST, 'DELETE');
+				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, 'DELETE');
 				break;
 			case Requests::HEAD:
-				curl_setopt($this->fp, CURLOPT_NOBODY, true);
+				curl_setopt($this->handle, CURLOPT_NOBODY, true);
 				break;
 		}
 
 		if( is_int($options['timeout']) or $this->version < self::CURL_7_16_2 ) {
-			curl_setopt($this->fp, CURLOPT_TIMEOUT, ceil($options['timeout']));
+			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($options['timeout']));
 		} else {
-			curl_setopt($this->fp, CURLOPT_TIMEOUT_MS, round($options['timeout'] * 1000) );
+			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($options['timeout'] * 1000) );
 		}
 		if( is_int($options['connect_timeout'])  or $this->version < self::CURL_7_16_2 ) {
-			curl_setopt($this->fp, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
+			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
 		} else {
-			curl_setopt($this->fp, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
+			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
 		}
-		curl_setopt($this->fp, CURLOPT_URL, $url);
-		curl_setopt($this->fp, CURLOPT_REFERER, $url);
-		curl_setopt($this->fp, CURLOPT_USERAGENT, $options['useragent']);
-		curl_setopt($this->fp, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($this->handle, CURLOPT_URL, $url);
+		curl_setopt($this->handle, CURLOPT_REFERER, $url);
+		curl_setopt($this->handle, CURLOPT_USERAGENT, $options['useragent']);
+		curl_setopt($this->handle, CURLOPT_HTTPHEADER, $headers);
 
 		if (true === $options['blocking']) {
-			curl_setopt($this->fp, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
-			curl_setopt($this->fp, CURLOPT_WRITEFUNCTION, array(&$this, 'stream_body'));
-			curl_setopt($this->fp, CURLOPT_BUFFERSIZE, Requests::BUFFER_SIZE);
+			curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
+			curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, array(&$this, 'stream_body'));
+			curl_setopt($this->handle, CURLOPT_BUFFERSIZE, Requests::BUFFER_SIZE);
 		}
 	}
 
@@ -338,10 +338,10 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$this->headers .= $response;
 		}
 
-		if (curl_errno($this->fp)) {
-			throw new Requests_Exception('cURL error ' . curl_errno($this->fp) . ': ' . curl_error($this->fp), 'curlerror', $this->fp);
+		if (curl_errno($this->handle)) {
+			throw new Requests_Exception('cURL error ' . curl_errno($this->handle) . ': ' . curl_error($this->handle), 'curlerror', $this->handle);
 		}
-		$this->info = curl_getinfo($this->fp);
+		$this->info = curl_getinfo($this->handle);
 
 		$options['hooks']->dispatch('curl.after_request', array(&$this->headers));
 		return $this->headers;
