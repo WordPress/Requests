@@ -132,7 +132,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			}
 			else {
 				throw new Requests_Exception($errstr, 'fsockopenerror', NULL, $errno);
-				return;
 			}
 		}
 
@@ -153,7 +152,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				}
 
 				$options['hooks']->dispatch( 'fsockopen.remote_host_path', array( &$path, $url ) );
-				$out = $options['type'] . " $path HTTP/1.0\r\n";
+				$out = sprintf("%s %s HTTP/1.0\r\n", $options['type'], $path);
 
 				if (is_array($data)) {
 					$request_body = http_build_query($data, null, '&');
@@ -173,20 +172,20 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			case Requests::DELETE:
 				$path = self::format_get($url_parts, $data);
 				$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
-				$out = $options['type'] . " $path HTTP/1.0\r\n";
+				$out = sprintf("%s %s HTTP/1.0\r\n", $options['type'], $path);
 				break;
 		}
-		$out .= "Host: {$url_parts['host']}";
+		$out .= sprintf("Host: %s", $url_parts['host']);
 
 		if ($url_parts['port'] !== 80) {
-			$out .= ":{$url_parts['port']}";
+			$out .= ':' . $url_parts['port'];
 		}
 		$out .= "\r\n";
 
-		$out .= "User-Agent: {$options['useragent']}\r\n";
+		$out .= sprintf("User-Agent: %s\r\n", $options['useragent']);
 		$accept_encoding = $this->accept_encoding();
 		if (!empty($accept_encoding)) {
-			$out .= "Accept-Encoding: $accept_encoding\r\n";
+			$out .= sprintf("Accept-Encoding: %s\r\n", $accept_encoding);
 		}
 
 		$headers = Requests::flatten($headers);
@@ -216,7 +215,12 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 
 		$timeout_sec = (int) floor($options['timeout']);
-		$timeout_msec = $timeout_sec == $options['timeout'] ? 0 : self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
+		if ($timeout_sec == $options['timeout']) {
+			$timeout_msec = 0;
+		}
+		else {
+			$timeout_msec = self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
+		}
 		stream_set_timeout($fp, $timeout_sec, $timeout_msec);
 
 		$response = $body = $headers = '';
