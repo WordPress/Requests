@@ -208,7 +208,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$options['hooks']->dispatch('fsockopen.before_send', array(&$out));
 
 		fwrite($fp, $out);
-		$options['hooks']->dispatch('fsockopen.after_send', array(&$fake_headers));
+		$options['hooks']->dispatch('fsockopen.after_send', array($out));
 
 		if (!$options['blocking']) {
 			fclose($fp);
