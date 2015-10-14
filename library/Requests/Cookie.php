@@ -59,7 +59,7 @@ class Requests_Cookie {
 	 *
 	 * @param string $name
 	 * @param string $value
-	 * @param array $attributes Associative array of attribute data
+	 * @param array|Requests_Utility_CaseInsensitiveDictionary $attributes Associative array of attribute data
 	 */
 	public function __construct($name, $value, $attributes = array(), $flags = array(), $reference_time = null) {
 		$this->name = $name;
@@ -122,11 +122,7 @@ class Requests_Cookie {
 			return false;
 		}
 
-		if (!empty($this->attributes['secure']) && $uri->scheme !== 'https') {
-			return false;
-		}
-
-		return true;
+		return empty($this->attributes['secure']) || $uri->scheme === 'https';
 	}
 
 	/**
@@ -172,12 +168,8 @@ class Requests_Cookie {
 			return false;
 		}
 
-		if (preg_match('#^(.+\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$#', $string)) {
-			// The string should be a host name (i.e., not an IP address).
-			return false;
-		}
-
-		return true;
+		// The string should be a host name (i.e., not an IP address).
+		return !preg_match('#^(.+\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$#', $string);
 	}
 
 	/**
