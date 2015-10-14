@@ -178,6 +178,11 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @return array Array of Requests_Response objects (may contain Requests_Exception or string responses as well)
 	 */
 	public function request_multiple($requests, $options) {
+		// If you're not requesting, we can't get any responses ¯\_(ツ)_/¯
+		if (empty($requests)) {
+			return array();
+		}
+
 		$multihandle = curl_multi_init();
 		$subrequests = array();
 		$subhandles = array();
@@ -302,12 +307,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 				break;
 		}
 
-		if( is_int($options['timeout']) or $this->version < self::CURL_7_16_2 ) {
+		if (is_int($options['timeout']) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($options['timeout']));
 		} else {
 			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($options['timeout'] * 1000) );
 		}
-		if( is_int($options['connect_timeout'])  or $this->version < self::CURL_7_16_2 ) {
+		if (is_int($options['connect_timeout']) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
 		} else {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
@@ -339,7 +344,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		if (curl_errno($this->handle)) {
-			throw new Requests_Exception('cURL error ' . curl_errno($this->handle) . ': ' . curl_error($this->handle), 'curlerror', $this->handle);
+			$error = sprintf(
+				'cURL error %s: %s',
+				curl_errno($this->handle),
+				curl_error($this->handle)
+			);
+			throw new Requests_Exception($error, 'curlerror', $this->handle);
 		}
 		$this->info = curl_getinfo($this->handle);
 
