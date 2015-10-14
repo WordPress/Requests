@@ -35,44 +35,35 @@ class Requests_IPv6 {
 	 * @return string The uncompressed IPv6 address
 	 */
 	public static function uncompress($ip) {
-		$c1 = -1;
-		$c2 = -1;
-		if (substr_count($ip, '::') === 1) {
-			list($ip1, $ip2) = explode('::', $ip);
-			if ($ip1 === '') {
-				$c1 = -1;
-			}
-			else {
-				$c1 = substr_count($ip1, ':');
-			}
-			if ($ip2 === '') {
-				$c2 = -1;
-			}
-			else {
-				$c2 = substr_count($ip2, ':');
-			}
-			if (strpos($ip2, '.') !== false) {
-				$c2++;
-			}
-			// ::
-			if ($c1 === -1 && $c2 === -1) {
-				$ip = '0:0:0:0:0:0:0:0';
-			}
-			// ::xxx
-			else if ($c1 === -1) {
-				$fill = str_repeat('0:', 7 - $c2);
-				$ip = str_replace('::', $fill, $ip);
-			}
-			// xxx::
-			else if ($c2 === -1) {
-				$fill = str_repeat(':0', 7 - $c1);
-				$ip = str_replace('::', $fill, $ip);
-			}
-			// xxx::xxx
-			else {
-				$fill = ':' . str_repeat('0:', 6 - $c2 - $c1);
-				$ip = str_replace('::', $fill, $ip);
-			}
+		if (substr_count($ip, '::') !== 1) {
+			return $ip;
+		}
+
+		list($ip1, $ip2) = explode('::', $ip);
+		$c1 = ($ip1 === '') ? -1 : substr_count($ip1, ':');
+		$c2 = ($ip2 === '') ? -1 : substr_count($ip2, ':');
+
+		if (strpos($ip2, '.') !== false) {
+			$c2++;
+		}
+		// ::
+		if ($c1 === -1 && $c2 === -1) {
+			$ip = '0:0:0:0:0:0:0:0';
+		}
+		// ::xxx
+		else if ($c1 === -1) {
+			$fill = str_repeat('0:', 7 - $c2);
+			$ip = str_replace('::', $fill, $ip);
+		}
+		// xxx::
+		else if ($c2 === -1) {
+			$fill = str_repeat(':0', 7 - $c1);
+			$ip = str_replace('::', $fill, $ip);
+		}
+		// xxx::xxx
+		else {
+			$fill = ':' . str_repeat('0:', 6 - $c2 - $c1);
+			$ip = str_replace('::', $fill, $ip);
 		}
 		return $ip;
 	}
