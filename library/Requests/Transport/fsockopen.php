@@ -59,6 +59,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$options['hooks']->dispatch('fsockopen.before_request');
 
 		$url_parts = parse_url($url);
+		if (empty($url_parts)) {
+			throw new Requests_Exception('Invalid URL.', 'invalidurl', $url);
+		}
 		$host = $url_parts['host'];
 		$context = stream_context_create();
 		$verifyname = false;
