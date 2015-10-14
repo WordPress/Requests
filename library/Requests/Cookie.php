@@ -113,12 +113,12 @@ class Requests_Cookie {
 	 * @param Requests_IRI $uri URI to check
 	 * @return boolean Whether the cookie is valid for the given URI
 	 */
-	public function uriMatches(Requests_IRI $uri) {
-		if (!$this->domainMatches($uri->host)) {
+	public function uri_matches(Requests_IRI $uri) {
+		if (!$this->domain_matches($uri->host)) {
 			return false;
 		}
 
-		if (!$this->pathMatches($uri->path)) {
+		if (!$this->path_matches($uri->path)) {
 			return false;
 		}
 
@@ -135,7 +135,7 @@ class Requests_Cookie {
 	 * @param string $string Domain to check
 	 * @return boolean Whether the cookie is valid for the given domain
 	 */
-	public function domainMatches($string) {
+	public function domain_matches($string) {
 		if (!isset($this->attributes['domain'])) {
 			// Cookies created manually; cookies created by Requests will set
 			// the domain to the requested domain
@@ -188,7 +188,7 @@ class Requests_Cookie {
 	 * @param string $request_path Path to check
 	 * @return boolean Whether the cookie is valid for the given path
 	 */
-	public function pathMatches($request_path) {
+	public function path_matches($request_path) {
 		if (empty($request_path)) {
 			// Normalize empty path to root
 			$request_path = '/';
@@ -233,7 +233,7 @@ class Requests_Cookie {
 	public function normalize() {
 		foreach ($this->attributes as $key => $value) {
 			$orig_value = $value;
-			$value = $this->normalizeAttribute($key, $value);
+			$value = $this->normalize_attribute($key, $value);
 			if ($value === null) {
 				unset($this->attributes[$key]);
 				continue;
@@ -256,7 +256,7 @@ class Requests_Cookie {
 	 * @param string|boolean $value Attribute value (string value, or true if empty/flag)
 	 * @return mixed Value if available, or null if the attribute value is invalid (and should be skipped)
 	 */
-	protected function normalizeAttribute($name, $value) {
+	protected function normalize_attribute($name, $value) {
 		switch (strtolower($name)) {
 			case 'expires':
 				// Expiration parsing, as per RFC 6265 section 5.2.1
@@ -312,8 +312,18 @@ class Requests_Cookie {
 	 *
 	 * @return string Cookie formatted for Cookie header
 	 */
-	public function formatForHeader() {
+	public function format_for_header() {
 		return sprintf('%s=%s', $this->name, $this->value);
+	}
+
+	/**
+	 * Format a cookie for a Cookie header
+	 *
+	 * @deprecated Use {@see Requests_Cookie::format_for_header}
+	 * @return string
+	 */
+	public function formatForHeader() {
+		return $this->format_for_header();
 	}
 
 	/**
@@ -324,8 +334,8 @@ class Requests_Cookie {
 	 *
 	 * @return string Cookie formatted for Set-Cookie header
 	 */
-	public function formatForSetCookie() {
-		$header_value = $this->formatForHeader();
+	public function format_for_set_cookie() {
+		$header_value = $this->format_for_header();
 		if (!empty($this->attributes)) {
 			$parts = array();
 			foreach ($this->attributes as $key => $value) {
@@ -341,6 +351,16 @@ class Requests_Cookie {
 			$header_value .= '; ' . implode('; ', $parts);
 		}
 		return $header_value;
+	}
+
+	/**
+	 * Format a cookie for a Set-Cookie header
+	 *
+	 * @deprecated Use {@see Requests_Cookie::format_for_set_cookie}
+	 * @return string
+	 */
+	public function formatForSetCookie() {
+		return $this->format_for_set_cookie();
 	}
 
 	/**
@@ -412,7 +432,7 @@ class Requests_Cookie {
 	 * @param Requests_Response_Headers $headers
 	 * @return array
 	 */
-	public static function parseFromHeaders(Requests_Response_Headers $headers, Requests_IRI $origin = null, $reference_time = null) {
+	public static function parse_from_headers(Requests_Response_Headers $headers, Requests_IRI $origin = null, $reference_time = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
 			return array();
@@ -458,7 +478,7 @@ class Requests_Cookie {
 			}
 
 			// Reject invalid cookie domains
-			if (!empty($origin) && !$parsed->domainMatches($origin->host)) {
+			if (!empty($origin) && !$parsed->domain_matches($origin->host)) {
 				continue;
 			}
 
@@ -466,5 +486,15 @@ class Requests_Cookie {
 		}
 
 		return $cookies;
+	}
+
+	/**
+	 * Parse all Set-Cookie headers from request headers
+	 *
+	 * @deprecated Use {@see Requests_Cookie::parse_from_headers}
+	 * @return string
+	 */
+	public static function parseFromHeaders(Requests_Response_Headers $headers) {
+		return self::parse_from_headers($headers);
 	}
 }
