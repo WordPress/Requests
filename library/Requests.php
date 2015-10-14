@@ -634,7 +634,7 @@ class Requests {
 	 * Internal use only. Converts a raw HTTP response to a Requests_Response
 	 * while still executing a multiple request.
 	 *
-	 * @param string $headers Full response text including headers and body
+	 * @param string $response Full response text including headers and body (will be overwritten with Response instance)
 	 * @param array $request Request data as passed into {@see Requests::request_multiple()}
 	 * @return null `$response` is either set to a Requests_Response instance, or a Requests_Exception object
 	 */
