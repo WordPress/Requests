@@ -488,7 +488,7 @@ class Requests {
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
-	 * @param array $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type
 	 * @param array $options Options for the request
 	 * @return array $options
