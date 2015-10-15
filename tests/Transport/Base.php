@@ -338,7 +338,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testStatusCode($code, $success) {
 		$transport = new MockTransport();
 		$transport->code = $code;
-		
+
 		$url = sprintf(httpbin('/status/%d'), $code);
 
 		$options = array(

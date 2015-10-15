@@ -107,9 +107,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$this->max_bytes = $options['max_bytes'];
 
-		$proxy = isset($options['proxy']);
-		$proxy_auth = $proxy && isset($options['proxy_username']) && isset($options['proxy_password']);
-
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = 80;
 		}
@@ -179,7 +176,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				$out = sprintf("%s %s HTTP/1.0\r\n", $options['type'], $path);
 				break;
 		}
-		$out .= sprintf("Host: %s", $url_parts['host']);
+		$out .= sprintf('Host: %s', $url_parts['host']);
 
 		if ($url_parts['port'] !== 80) {
 			$out .= ':' . $url_parts['port'];

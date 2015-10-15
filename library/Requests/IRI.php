@@ -221,12 +221,7 @@ class Requests_IRI {
 	 * @return bool
 	 */
 	public function __isset($name) {
-		if (method_exists($this, 'get_' . $name) || isset($this->$name)) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return (method_exists($this, 'get_' . $name) || isset($this->$name));
 	}
 
 	/**
@@ -243,7 +238,7 @@ class Requests_IRI {
 	/**
 	 * Create a new IRI object, from a specified string
 	 *
-	 * @param string $iri
+	 * @param string|null $iri
 	 */
 	public function __construct($iri = null) {
 		$this->set_iri($iri);
@@ -363,21 +358,27 @@ class Requests_IRI {
 	protected function remove_dot_segments($input) {
 		$output = '';
 		while (strpos($input, './') !== false || strpos($input, '/.') !== false || $input === '.' || $input === '..') {
-			// A: If the input buffer begins with a prefix of "../" or "./", then remove that prefix from the input buffer; otherwise,
+			// A: If the input buffer begins with a prefix of "../" or "./",
+			// then remove that prefix from the input buffer; otherwise,
 			if (strpos($input, '../') === 0) {
 				$input = substr($input, 3);
 			}
 			elseif (strpos($input, './') === 0) {
 				$input = substr($input, 2);
 			}
-			// B: if the input buffer begins with a prefix of "/./" or "/.", where "." is a complete path segment, then replace that prefix with "/" in the input buffer; otherwise,
+			// B: if the input buffer begins with a prefix of "/./" or "/.",
+			// where "." is a complete path segment, then replace that prefix
+			// with "/" in the input buffer; otherwise,
 			elseif (strpos($input, '/./') === 0) {
 				$input = substr($input, 2);
 			}
 			elseif ($input === '/.') {
 				$input = '/';
 			}
-			// C: if the input buffer begins with a prefix of "/../" or "/..", where ".." is a complete path segment, then replace that prefix with "/" in the input buffer and remove the last segment and its preceding "/" (if any) from the output buffer; otherwise,
+			// C: if the input buffer begins with a prefix of "/../" or "/..",
+			// where ".." is a complete path segment, then replace that prefix
+			// with "/" in the input buffer and remove the last segment and its
+			// preceding "/" (if any) from the output buffer; otherwise,
 			elseif (strpos($input, '/../') === 0) {
 				$input = substr($input, 3);
 				$output = substr_replace($output, '', strrpos($output, '/'));
@@ -386,11 +387,15 @@ class Requests_IRI {
 				$input = '/';
 				$output = substr_replace($output, '', strrpos($output, '/'));
 			}
-			// D: if the input buffer consists only of "." or "..", then remove that from the input buffer; otherwise,
+			// D: if the input buffer consists only of "." or "..", then remove
+			// that from the input buffer; otherwise,
 			elseif ($input === '.' || $input === '..') {
 				$input = '';
 			}
-			// E: move the first path segment in the input buffer to the end of the output buffer, including the initial "/" character (if any) and any subsequent characters up to, but not including, the next "/" character or the end of the input buffer
+			// E: move the first path segment in the input buffer to the end of
+			// the output buffer, including the initial "/" character (if any)
+			// and any subsequent characters up to, but not including, the next
+			// "/" character or the end of the input buffer
 			elseif (($pos = strpos($input, '/', 1)) !== false) {
 				$output .= substr($input, 0, $pos);
 				$input = substr_replace($input, '', 0, $pos);

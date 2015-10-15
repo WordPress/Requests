@@ -112,7 +112,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * Alter remote socket information before opening socket connection
 	 *
 	 * @since 1.6
-	 * @param string $out HTTP header string
+	 * @param string $remote_socket Socket connection string
 	 */
 	public function fsockopen_remote_socket(&$remote_socket) {
 		$remote_socket = $this->proxy;
@@ -122,7 +122,8 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * Alter remote path before getting stream data
 	 *
 	 * @since 1.6
-	 * @param string $out HTTP header string
+	 * @param string $path Path to send in HTTP request string ("GET ...")
+	 * @param string $url Full URL we're requesting
 	 */
 	public function fsockopen_remote_host_path(&$path, $url) {
 		$path = $url;
@@ -135,7 +136,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * @param string $out HTTP header string
 	 */
 	public function fsockopen_header(&$out) {
-		$out .= "Proxy-Authorization: Basic " . base64_encode($this->get_auth_string()) . "\r\n";
+		$out .= sprintf("Proxy-Authorization: Basic %s\r\n", base64_encode($this->get_auth_string()));
 	}
 
 	/**

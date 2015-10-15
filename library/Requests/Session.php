@@ -194,7 +194,7 @@ class Requests_Session {
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
-	 * @param array $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use Requests constants)
 	 * @param array $options Options for the request (see {@see Requests::request})
 	 * @return Requests_Response
