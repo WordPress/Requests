@@ -1,6 +1,9 @@
 Requests for PHP
 ================
 
+[![Build Status](https://travis-ci.org/rmccue/Requests.svg?branch=master)](https://travis-ci.org/rmccue/Requests)
+[![codecov.io](http://codecov.io/github/rmccue/Requests/coverage.svg?branch=master)](http://codecov.io/github/rmccue/Requests?branch=master)
+
 Requests is a HTTP library written in PHP, for human beings. It is roughly
 based on the API from the excellent [Requests Python
 library](http://python-requests.org/). Requests is [ISC
@@ -114,8 +117,6 @@ issue](https://github.com/rmccue/Requests/issues/new)!
 
 Testing
 -------
-[![Build Status](https://secure.travis-ci.org/rmccue/Requests.png?branch=master)](http://travis-ci.org/rmccue/Requests)
-[![codecov.io](http://codecov.io/github/rmccue/Requests/coverage.svg?branch=master)](http://codecov.io/github/rmccue/Requests?branch=master)
 
 Requests strives to have 100% code-coverage of the library with an extensive
 set of tests. We're not quite there yet, but [we're getting close][codecov].
