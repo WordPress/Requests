@@ -14,23 +14,26 @@
  */
 class Requests_Cookie {
 	/**
-	 * 
+	 * Cookie name.
+	 *
 	 * @var string
 	 */
 	public $name;
 
 	/**
+	 * Cookie value.
+	 *
 	 * @var string
 	 */
 	public $value;
 
 	/**
 	 * Cookie attributes
-	 * 
+	 *
 	 * Valid keys are (currently) path, domain, expires, max-age, secure and
 	 * httponly.
 	 *
-	 * @var array
+	 * @var Requests_Utility_CaseInsensitiveDictionary|array Array-like object
 	 */
 	public $attributes = array();
 
@@ -59,7 +62,7 @@ class Requests_Cookie {
 	 *
 	 * @param string $name
 	 * @param string $value
-	 * @param array $attributes Associative array of attribute data
+	 * @param array|Requests_Utility_CaseInsensitiveDictionary $attributes Associative array of attribute data
 	 */
 	public function __construct($name, $value, $attributes = array(), $flags = array(), $reference_time = null) {
 		$this->name = $name;
@@ -122,11 +125,7 @@ class Requests_Cookie {
 			return false;
 		}
 
-		if (!empty($this->attributes['secure']) && $uri->scheme !== 'https') {
-			return false;
-		}
-
-		return true;
+		return empty($this->attributes['secure']) || $uri->scheme === 'https';
 	}
 
 	/**
@@ -172,12 +171,8 @@ class Requests_Cookie {
 			return false;
 		}
 
-		if (preg_match('#^(.+\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$#', $string)) {
-			// The string should be a host name (i.e., not an IP address).
-			return false;
-		}
-
-		return true;
+		// The string should be a host name (i.e., not an IP address).
+		return !preg_match('#^(.+\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$#', $string);
 	}
 
 	/**
@@ -429,10 +424,12 @@ class Requests_Cookie {
 	/**
 	 * Parse all Set-Cookie headers from request headers
 	 *
-	 * @param Requests_Response_Headers $headers
+	 * @param Requests_Response_Headers $headers Headers to parse from
+	 * @param Requests_IRI|null $origin URI for comparing cookie origins
+	 * @param int|null $time Reference time for expiration calculation
 	 * @return array
 	 */
-	public static function parse_from_headers(Requests_Response_Headers $headers, Requests_IRI $origin = null, $reference_time = null) {
+	public static function parse_from_headers(Requests_Response_Headers $headers, Requests_IRI $origin = null, $time = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
 			return array();
@@ -440,7 +437,7 @@ class Requests_Cookie {
 
 		$cookies = array();
 		foreach ($cookie_headers as $header) {
-			$parsed = self::parse($header, '', $reference_time);
+			$parsed = self::parse($header, '', $time);
 
 			// Default domain/path attributes
 			if (empty($parsed->attributes['domain']) && !empty($origin)) {
