@@ -726,7 +726,6 @@ class Requests {
 	 * Implements gzip, compress and deflate. Guesses which it is by attempting
 	 * to decode.
 	 *
-	 * @todo Make this smarter by defaulting to whatever the headers say first
 	 * @param string $data Compressed data in one of the above formats
 	 * @return string Decompressed string
 	 */
