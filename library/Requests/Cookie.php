@@ -14,23 +14,26 @@
  */
 class Requests_Cookie {
 	/**
-	 * 
+	 * Cookie name.
+	 *
 	 * @var string
 	 */
 	public $name;
 
 	/**
+	 * Cookie value.
+	 *
 	 * @var string
 	 */
 	public $value;
 
 	/**
 	 * Cookie attributes
-	 * 
+	 *
 	 * Valid keys are (currently) path, domain, expires, max-age, secure and
 	 * httponly.
 	 *
-	 * @var array
+	 * @var Requests_Utility_CaseInsensitiveDictionary|array Array-like object
 	 */
 	public $attributes = array();
 
@@ -421,10 +424,12 @@ class Requests_Cookie {
 	/**
 	 * Parse all Set-Cookie headers from request headers
 	 *
-	 * @param Requests_Response_Headers $headers
+	 * @param Requests_Response_Headers $headers Headers to parse from
+	 * @param Requests_IRI|null $origin URI for comparing cookie origins
+	 * @param int|null $time Reference time for expiration calculation
 	 * @return array
 	 */
-	public static function parse_from_headers(Requests_Response_Headers $headers, Requests_IRI $origin = null, $reference_time = null) {
+	public static function parse_from_headers(Requests_Response_Headers $headers, Requests_IRI $origin = null, $time = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
 			return array();
@@ -432,7 +437,7 @@ class Requests_Cookie {
 
 		$cookies = array();
 		foreach ($cookie_headers as $header) {
-			$parsed = self::parse($header, '', $reference_time);
+			$parsed = self::parse($header, '', $time);
 
 			// Default domain/path attributes
 			if (empty($parsed->attributes['domain']) && !empty($origin)) {
