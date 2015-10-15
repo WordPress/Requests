@@ -45,6 +45,17 @@
  * @copyright 2007-2009 Geoffrey Sneddon and Steve Minutillo
  * @license http://www.opensource.org/licenses/bsd-license.php
  * @link http://hg.gsnedders.com/iri/
+ *
+ * @property string $iri IRI we're working with
+ * @property-read string $uri IRI in URI form, {@see to_uri}
+ * @property string $scheme Scheme part of the IRI
+ * @property string $authority Authority part of the IRI (userinfo + host + port)
+ * @property string $userinfo Userinfo part of the IRI (after '://' and before '@')
+ * @property string $host Host part of the IRI
+ * @property string $port Port part of the IRI (after ':')
+ * @property string $path Path part of the IRI (after first '/')
+ * @property string $query Query part of the IRI (after '?')
+ * @property string $fragment Fragment part of the IRI (after '#')
  */
 class Requests_IRI {
 	/**
