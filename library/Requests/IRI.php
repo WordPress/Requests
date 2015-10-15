@@ -49,13 +49,19 @@
  * @property string $iri IRI we're working with
  * @property-read string $uri IRI in URI form, {@see to_uri}
  * @property string $scheme Scheme part of the IRI
- * @property string $authority Authority part of the IRI (userinfo + host + port)
- * @property string $userinfo Userinfo part of the IRI (after '://' and before '@')
- * @property string $host Host part of the IRI
+ * @property string $authority Authority part, formatted for a URI (userinfo + host + port)
+ * @property string $iauthority Authority part of the IRI (userinfo + host + port)
+ * @property string $userinfo Userinfo part, formatted for a URI (after '://' and before '@')
+ * @property string $iuserinfo Userinfo part of the IRI (after '://' and before '@')
+ * @property string $host Host part, formatted for a URI
+ * @property string $ihost Host part of the IRI
  * @property string $port Port part of the IRI (after ':')
- * @property string $path Path part of the IRI (after first '/')
- * @property string $query Query part of the IRI (after '?')
- * @property string $fragment Fragment part of the IRI (after '#')
+ * @property string $path Path part, formatted for a URI (after first '/')
+ * @property string $ipath Path part of the IRI (after first '/')
+ * @property string $query Query part, formatted for a URI (after '?')
+ * @property string $iquery Query part of the IRI (after '?')
+ * @property string $fragment Fragment, formatted for a URI (after '#')
+ * @property string $ifragment Fragment part of the IRI (after '#')
  */
 class Requests_IRI {
 	/**
