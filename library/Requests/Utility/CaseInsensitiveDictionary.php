@@ -39,8 +39,9 @@ class Requests_Utility_CaseInsensitiveDictionary implements ArrayAccess, Iterato
 	 */
 	public function offsetGet($key) {
 		$key = strtolower($key);
-		if (!isset($this->data[$key]))
+		if (!isset($this->data[$key])) {
 			return null;
+		}
 
 		return $this->data[$key];
 	}

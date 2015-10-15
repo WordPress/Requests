@@ -89,7 +89,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			if (isset($options['verify'])) {
 				if ($options['verify'] === false) {
 					$context_options['verify_peer'] = false;
-				} elseif (is_string($options['verify'])) {
+				}
+				elseif (is_string($options['verify'])) {
 					$context_options['cafile'] = $options['verify'];
 				}
 			}
@@ -106,8 +107,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$this->max_bytes = $options['max_bytes'];
 
-		$proxy = isset( $options['proxy'] );
-		$proxy_auth = $proxy && isset( $options['proxy_username'] ) && isset( $options['proxy_password'] );
+		$proxy = isset($options['proxy']);
+		$proxy_auth = $proxy && isset($options['proxy_username']) && isset($options['proxy_password']);
 
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = 80;
@@ -134,7 +135,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
 			}
 			else {
-				throw new Requests_Exception($errstr, 'fsockopenerror', NULL, $errno);
+				throw new Requests_Exception($errstr, 'fsockopenerror', null, $errno);
 			}
 		}
 
@@ -154,7 +155,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 					$path = '/';
 				}
 
-				$options['hooks']->dispatch( 'fsockopen.remote_host_path', array( &$path, $url ) );
+				$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
 				$out = sprintf("%s %s HTTP/1.0\r\n", $options['type'], $path);
 
 				if (is_array($data)) {
@@ -347,8 +348,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 */
 	protected static function format_get($url_parts, $data) {
 		if (!empty($data)) {
-			if (empty($url_parts['query']))
+			if (empty($url_parts['query'])) {
 				$url_parts['query'] = '';
+			}
 
 			$url_parts['query'] .= '&' . http_build_query($data, null, '&');
 			$url_parts['query'] = trim($url_parts['query'], '&');
@@ -420,17 +422,20 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * @return boolean True if the transport is valid, false otherwise.
 	 */
 	public static function test($capabilities = array()) {
-		if (!function_exists('fsockopen'))
+		if (!function_exists('fsockopen')) {
 			return false;
+		}
 
 		// If needed, check that streams support SSL
-		if (isset( $capabilities['ssl'] ) && $capabilities['ssl']) {
-			if (!extension_loaded('openssl') || !function_exists('openssl_x509_parse'))
+		if (isset($capabilities['ssl']) && $capabilities['ssl']) {
+			if (!extension_loaded('openssl') || !function_exists('openssl_x509_parse')) {
 				return false;
+			}
 
 			// Currently broken, thanks to https://github.com/facebook/hhvm/issues/2156
-			if (defined('HHVM_VERSION'))
+			if (defined('HHVM_VERSION')) {
 				return false;
+			}
 		}
 
 		return true;

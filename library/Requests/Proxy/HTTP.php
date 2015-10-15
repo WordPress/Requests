@@ -67,7 +67,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 				$this->use_authentication = true;
 			}
 			else {
-				throw new Requests_Exception( 'Invalid number of arguments', 'proxyhttpbadargs');
+				throw new Requests_Exception('Invalid number of arguments', 'proxyhttpbadargs');
 			}
 		}
 	}
@@ -87,7 +87,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 
 		$hooks->register('fsockopen.remote_socket', array(&$this, 'fsockopen_remote_socket'));
 		$hooks->register('fsockopen.remote_host_path', array(&$this, 'fsockopen_remote_host_path'));
-		if( $this->use_authentication ) {
+		if ($this->use_authentication) {
 			$hooks->register('fsockopen.after_headers', array(&$this, 'fsockopen_header'));
 		}
 	}
@@ -114,7 +114,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * @since 1.6
 	 * @param string $out HTTP header string
 	 */
-	public function fsockopen_remote_socket( &$remote_socket ) {
+	public function fsockopen_remote_socket(&$remote_socket) {
 		$remote_socket = $this->proxy;
 	}
 
@@ -124,7 +124,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * @since 1.6
 	 * @param string $out HTTP header string
 	 */
-	public function fsockopen_remote_host_path( &$path, $url ) {
+	public function fsockopen_remote_host_path(&$path, $url) {
 		$path = $url;
 	}
 
@@ -134,7 +134,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * @since 1.6
 	 * @param string $out HTTP header string
 	 */
-	public function fsockopen_header( &$out ) {
+	public function fsockopen_header(&$out) {
 		$out .= "Proxy-Authorization: Basic " . base64_encode($this->get_auth_string()) . "\r\n";
 	}
 

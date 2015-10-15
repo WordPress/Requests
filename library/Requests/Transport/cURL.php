@@ -140,8 +140,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 			if ($options['verify'] === false) {
 				curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
 				curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, 0);
-
-			} elseif (is_string($options['verify'])) {
+			}
+			elseif (is_string($options['verify'])) {
 				curl_setopt($this->handle, CURLOPT_CAINFO, $options['verify']);
 			}
 		}
@@ -309,12 +309,15 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if (is_int($options['timeout']) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($options['timeout']));
-		} else {
-			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($options['timeout'] * 1000) );
 		}
+		else {
+			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($options['timeout'] * 1000));
+		}
+
 		if (is_int($options['connect_timeout']) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
-		} else {
+		}
+		else {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
 		}
 		curl_setopt($this->handle, CURLOPT_URL, $url);
@@ -329,6 +332,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 	}
 
+	/**
+	 * Process a response
+	 *
+	 * @param string $response Response data from the body
+	 * @param array $options Request options
+	 * @return string HTTP response data including headers
+	 */
 	public function process_response($response, $options) {
 		if ($options['blocking'] === false) {
 			$fake_headers = '';
@@ -455,11 +465,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @return boolean True if the transport is valid, false otherwise.
 	 */
 	public static function test($capabilities = array()) {
-		if (!function_exists('curl_init') && !function_exists('curl_exec'))
+		if (!function_exists('curl_init') && !function_exists('curl_exec')) {
 			return false;
+		}
 
 		// If needed, check that our installed curl version supports SSL
-		if (isset( $capabilities['ssl'] ) && $capabilities['ssl']) {
+		if (isset($capabilities['ssl']) && $capabilities['ssl']) {
 			$curl_version = curl_version();
 			if (!(CURL_VERSION_SSL & $curl_version['features'])) {
 				return false;

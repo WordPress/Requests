@@ -239,7 +239,7 @@ class Requests_Session {
 			$request['url'] = Requests_IRI::absolutize($this->url, $request['url']);
 			$request['url'] = $request['url']->uri;
 		}
-		
+
 		$request['headers'] = array_merge($this->headers, $request['headers']);
 
 		if (is_array($request['data']) && is_array($this->data)) {
@@ -252,7 +252,7 @@ class Requests_Session {
 			// Disallow forcing the type, as that's a per request setting
 			unset($request['options']['type']);
 		}
-		
+
 		return $request;
 	}
 }
