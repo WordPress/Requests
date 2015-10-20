@@ -286,7 +286,10 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$url = self::format_get($url, $data);
 		}
 		elseif (!empty($data) && !is_string($data)) {
-			$data = http_build_query($data, null, '&');
+			if ($options["type"] !== Requests::POST) {
+				// It does not work when CurlFile, curl supports arrays
+				$data = http_build_query($data, null, '&');
+			}
 		}
 
 		switch ($options['type']) {
