@@ -234,6 +234,13 @@ class Requests {
 	public static function delete($url, $headers = array(), $options = array()) {
 		return self::request($url, $headers, null, self::DELETE, $options);
 	}
+
+	/**
+	 * Send a TRACE request
+	 */
+	public static function trace($url, $headers = array(), $options = array()) {
+		return self::request($url, $headers, null, self::TRACE, $options);
+	}
 	/**#@-*/
 
 	/**#@+
@@ -262,13 +269,6 @@ class Requests {
 	 */
 	public static function options($url, $headers = array(), $data = array(), $options = array()) {
 		return self::request($url, $headers, $data, self::OPTIONS, $options);
-	}
-
-	/**
-	 * Send a TRACE request
-	 */
-	public static function trace($url, $headers = array(), $data = array(), $options = array()) {
-		return self::request($url, $headers, $data, self::TRACE, $options);
 	}
 
 	/**
