@@ -565,7 +565,7 @@ class Requests {
 		}
 
 		if (!isset($options['data_format'])) {
-			if (in_array($type, array(Requests::HEAD, Requests::GET, Requests::DELETE))) {
+			if (in_array($type, array(self::HEAD, self::GET, self::DELETE))) {
 				$options['data_format'] = 'query';
 			}
 			else {
