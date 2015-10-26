@@ -297,7 +297,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 			if ($data_format === 'query') {
 				$url = self::format_get($url, $data);
-				curl_setopt($this->handle, CURLOPT_POSTFIELDS, '');
 			}
 			elseif ($options['type'] !== Requests::TRACE) {
 				if (is_resource($data)) {
@@ -327,6 +326,10 @@ class Requests_Transport_cURL implements Requests_Transport {
 		switch ($options['type']) {
 			case Requests::POST:
 				curl_setopt($this->handle, CURLOPT_POST, true);
+				if ($data_format === 'query') {
+					// cURL needs a POST body, even if we didn't have one.
+					curl_setopt($this->handle, CURLOPT_POSTFIELDS, '');
+				}
 				break;
 
 			case Requests::HEAD:
