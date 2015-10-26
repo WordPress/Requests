@@ -235,6 +235,29 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		fclose($stream);
 	}
 
+	public function testPOSTStreamInQuery() {
+		$stream = fopen('php://memory', 'r');
+		$options = array(
+			// Attempt to use the stream for query data
+			'data_format' => 'query',
+		);
+
+		// This should fail, as streams can't be used for query data
+		$this->setExpectedException('Requests_Exception', 'Streams can only be sent in the request body.');
+
+		$request = Requests::post(httpbin('/post'), array(), $stream, $this->getOptions($options));
+	}
+
+	public function testPOSTWithInvalidResource() {
+		// Use a socket stream instead of a file
+		$stream = socket_create(AF_UNIX, SOCK_STREAM, 0);
+
+		// This should fail, as the resource isn't a stream
+		$this->setExpectedException('Requests_Exception', 'Invalid stream resource for request body.');
+
+		$request = Requests::post(httpbin('/post'), array(), $stream, $this->getOptions());
+	}
+
 	public function testRawPUT() {
 		$data = 'test';
 		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
