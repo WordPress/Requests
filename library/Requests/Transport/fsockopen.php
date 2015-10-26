@@ -136,15 +136,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$data_format = $options['data_format'];
 
-		if ($data_format === 'default') {
-			if (in_array($options['type'], array(Requests::HEAD, Requests::GET, Requests::DELETE))) {
-				$data_format = 'query';
-			}
-			else {
-				$data_format = 'body';
-			}
-		}
-
 		if ($data_format === 'query') {
 			$path = self::format_get($url_parts, $data);
 			$data = '';

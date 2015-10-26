@@ -562,7 +562,12 @@ class Requests {
 		}
 
 		if (!isset($options['data_format'])) {
-			$options['data_format'] = 'default';
+			if (in_array($type, array(Requests::HEAD, Requests::GET, Requests::DELETE))) {
+				$options['data_format'] = 'query';
+			}
+			else {
+				$options['data_format'] = 'body';
+			}
 		}
 	}
 
