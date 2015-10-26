@@ -302,6 +302,9 @@ class Requests_Transport_cURL implements Requests_Transport {
 			elseif ($options['type'] !== Requests::TRACE) {
 				if (is_resource($data)) {
 					$stat = fstat($data);
+					if (!$stat) {
+						throw new Requests_Exception('Body stream resource does not support stat.', 'requests.stream_no_stat', $stat);
+					}
 					curl_setopt($this->handle, CURLOPT_INFILE, $data);
 					curl_setopt($this->handle, CURLOPT_INFILESIZE, $stat['size']);
 

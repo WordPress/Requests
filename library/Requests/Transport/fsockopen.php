@@ -335,6 +335,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			elseif (is_resource($data)) {
 				$this->request_body = $data;
 				$stat = fstat($data);
+				if (!$stat) {
+					throw new Requests_Exception('Body stream resource does not support stat.', 'requests.stream_no_stat', $stat);
+				}
 				$length = $stat['size'];
 			}
 			else {
