@@ -51,6 +51,20 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function testProtocolVersionParsing() {
+		$transport = new RawTransport();
+		$transport->data =
+			"HTTP/1.0 200 OK\r\n".
+			"Host: localhost\r\n\r\n";
+
+		$options = array(
+			'transport' => $transport
+		);
+
+		$response = Requests::get('http://example.com/', array(), $options);
+		$this->assertEquals(1.0, $response->protocol_version);
+	}
+
 	public function testRawAccess() {
 		$transport = new RawTransport();
 		$transport->data =

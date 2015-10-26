@@ -55,6 +55,20 @@ class Requests {
 	const DELETE = 'DELETE';
 
 	/**
+	 * OPTIONS method
+	 *
+	 * @var string
+	 */
+	const OPTIONS = 'OPTIONS';
+
+	/**
+	 * TRACE method
+	 *
+	 * @var string
+	 */
+	const TRACE = 'TRACE';
+
+	/**
 	 * PATCH method
 	 *
 	 * @link http://tools.ietf.org/html/rfc5789
@@ -220,6 +234,13 @@ class Requests {
 	public static function delete($url, $headers = array(), $options = array()) {
 		return self::request($url, $headers, null, self::DELETE, $options);
 	}
+
+	/**
+	 * Send a TRACE request
+	 */
+	public static function trace($url, $headers = array(), $options = array()) {
+		return self::request($url, $headers, null, self::TRACE, $options);
+	}
 	/**#@-*/
 
 	/**#@+
@@ -241,6 +262,13 @@ class Requests {
 	 */
 	public static function put($url, $headers = array(), $data = array(), $options = array()) {
 		return self::request($url, $headers, $data, self::PUT, $options);
+	}
+
+	/**
+	 * Send an OPTIONS request
+	 */
+	public static function options($url, $headers = array(), $data = array(), $options = array()) {
+		return self::request($url, $headers, $data, self::OPTIONS, $options);
 	}
 
 	/**
@@ -301,6 +329,9 @@ class Requests {
 	 *    (string|boolean, default: library/Requests/Transport/cacert.pem)
 	 * - `verifyname`: Should we verify the common name in the SSL certificate?
 	 *    (boolean: default, true)
+	 * - `data_format`: How should we send the `$data` parameter?
+	 *    (string, one of 'query' or 'body', default: 'query' for
+	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
 	 *
 	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
 	 *
@@ -461,6 +492,7 @@ class Requests {
 			'timeout' => 10,
 			'connect_timeout' => 10,
 			'useragent' => 'php-requests/' . self::VERSION,
+			'protocol_version' => 1.1,
 			'redirected' => 0,
 			'redirects' => 10,
 			'follow_redirects' => true,
@@ -531,6 +563,15 @@ class Requests {
 			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
 			$url = $iri->uri;
 		}
+
+		if (!isset($options['data_format'])) {
+			if (in_array($type, array(self::HEAD, self::GET, self::DELETE))) {
+				$options['data_format'] = 'query';
+			}
+			else {
+				$options['data_format'] = 'body';
+			}
+		}
 	}
 
 	/**
@@ -573,11 +614,12 @@ class Requests {
 		// Unfold headers (replace [CRLF] 1*( SP | HT ) with SP) as per RFC 2616 (section 2.2)
 		$headers = preg_replace('/\n[ \t]/', ' ', $headers);
 		$headers = explode("\n", $headers);
-		preg_match('#^HTTP/1\.\d[ \t]+(\d+)#i', array_shift($headers), $matches);
+		preg_match('#^HTTP/(1\.\d)[ \t]+(\d+)#i', array_shift($headers), $matches);
 		if (empty($matches)) {
 			throw new Requests_Exception('Response could not be parsed', 'noversion', $headers);
 		}
-		$return->status_code = (int) $matches[1];
+		$return->protocol_version = (float) $matches[1];
+		$return->status_code = (int) $matches[2];
 		if ($return->status_code >= 200 && $return->status_code < 300) {
 			$return->success = true;
 		}
