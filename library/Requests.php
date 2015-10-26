@@ -77,6 +77,13 @@ class Requests {
 	const PATCH = 'PATCH';
 
 	/**
+	 * Default size of buffer size to read streams
+	 *
+	 * @var integer
+	 */
+	const BUFFER_SIZE = 1160;
+
+	/**
 	 * Current version of Requests
 	 *
 	 * @var string
@@ -183,8 +190,9 @@ class Requests {
 
 		// Find us a working transport
 		foreach (self::$transports as $class) {
-			if (!class_exists($class))
+			if (!class_exists($class)) {
 				continue;
+			}
 
 			$result = call_user_func(array($class, 'test'), $capabilities);
 			if ($result) {
@@ -304,6 +312,8 @@ class Requests {
 	 *    (Requests_Auth|array|boolean, default: false)
 	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
 	 *    (Requests_Proxy|array|boolean, default: false)
+	 * - `max_bytes`: Limit for the response body size.
+	 *    (integer|boolean, default: false)
 	 * - `idn`: Enable IDN parsing
 	 *    (boolean, default: true)
 	 * - `transport`: Custom transport. Either a class name, or a
@@ -324,7 +334,7 @@ class Requests {
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
-	 * @param array $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use Requests constants)
 	 * @param array $options Options for the request (see description for more information)
 	 * @return Requests_Response
@@ -345,7 +355,8 @@ class Requests {
 			if (is_string($options['transport'])) {
 				$transport = new $transport();
 			}
-		} else {
+		}
+		else {
 			$need_ssl = (0 === stripos($url, 'https://'));
 			$capabilities = array('ssl' => $need_ssl);
 			$transport = self::get_transport($capabilities);
@@ -488,10 +499,11 @@ class Requests {
 			'auth' => false,
 			'proxy' => false,
 			'cookies' => false,
+			'max_bytes' => false,
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
-			'verify' => dirname( __FILE__ ) . '/Requests/Transport/cacert.pem',
+			'verify' => dirname(__FILE__) . '/Requests/Transport/cacert.pem',
 			'verifyname' => true,
 		);
 		if ($multirequest !== false) {
@@ -505,14 +517,14 @@ class Requests {
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
-	 * @param array $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type
 	 * @param array $options Options for the request
 	 * @return array $options
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
-			throw new Requests_Exception('Only HTTP requests are handled.', 'nonhttp', $url);
+			throw new Requests_Exception('Only HTTP(S) requests are handled.', 'nonhttp', $url);
 		}
 
 		if (empty($options['hooks'])) {
@@ -625,19 +637,19 @@ class Requests {
 
 		$options['hooks']->dispatch('requests.before_redirect_check', array(&$return, $req_headers, $req_data, $options));
 
-		if ((in_array($return->status_code, array(300, 301, 302, 303, 307)) || $return->status_code > 307 && $return->status_code < 400) && $options['follow_redirects'] === true) {
+		if ($return->is_redirect() && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
 				if ($return->status_code === 303) {
-					$options['type'] = Requests::GET;
+					$options['type'] = self::GET;
 				}
 				$options['redirected']++;
 				$location = $return->headers['location'];
-				if (strpos ($location, 'http://') !== 0 && strpos ($location, 'https://') !== 0) {
+				if (strpos($location, 'http://') !== 0 && strpos($location, 'https://') !== 0) {
 					// relative redirect, for compatibility make it absolute
 					$location = Requests_IRI::absolutize($url, $location);
 					$location = $location->uri;
 				}
-				$redirected = self::request($location, $req_headers, $req_data, false, $options);
+				$redirected = self::request($location, $req_headers, $req_data, $options['type'], $options);
 				$redirected->history[] = $return;
 				return $redirected;
 			}
@@ -658,13 +670,17 @@ class Requests {
 	 * Internal use only. Converts a raw HTTP response to a Requests_Response
 	 * while still executing a multiple request.
 	 *
-	 * @param string $headers Full response text including headers and body
+	 * @param string $response Full response text including headers and body (will be overwritten with Response instance)
 	 * @param array $request Request data as passed into {@see Requests::request_multiple()}
 	 * @return null `$response` is either set to a Requests_Response instance, or a Requests_Exception object
 	 */
 	public static function parse_multiple(&$response, $request) {
 		try {
-			$response = self::parse_response($response, $request['url'], $request['headers'], $request['data'], $request['options']);
+			$url = $request['url'];
+			$headers = $request['headers'];
+			$data = $request['data'];
+			$options = $request['options'];
+			$response = self::parse_response($response, $url, $headers, $data, $options);
 		}
 		catch (Requests_Exception $e) {
 			$response = $e;
@@ -687,7 +703,7 @@ class Requests {
 		$encoded = $data;
 
 		while (true) {
-			$is_chunked = (bool) preg_match( '/^([0-9a-f]+)[^\r\n]*\r\n/i', $encoded, $matches );
+			$is_chunked = (bool) preg_match('/^([0-9a-f]+)[^\r\n]*\r\n/i', $encoded, $matches);
 			if (!$is_chunked) {
 				// Looks like it's not chunked after all
 				return $data;
@@ -700,7 +716,7 @@ class Requests {
 			}
 
 			$chunk_length = strlen($matches[0]);
-			$decoded .= $part = substr($encoded, $chunk_length, $length);
+			$decoded .= substr($encoded, $chunk_length, $length);
 			$encoded = substr($encoded, $chunk_length + $length + 2);
 
 			if (trim($encoded) === '0' || empty($encoded)) {
@@ -722,7 +738,7 @@ class Requests {
 	public static function flatten($array) {
 		$return = array();
 		foreach ($array as $key => $value) {
-			$return[] = "$key: $value";
+			$return[] = sprintf('%s: %s', $key, $value);
 		}
 		return $return;
 	}
@@ -744,7 +760,6 @@ class Requests {
 	 * Implements gzip, compress and deflate. Guesses which it is by attempting
 	 * to decode.
 	 *
-	 * @todo Make this smarter by defaulting to whatever the headers say first
 	 * @param string $data Compressed data in one of the above formats
 	 * @return string Decompressed string
 	 */
@@ -793,23 +808,26 @@ class Requests {
 	public static function compatible_gzinflate($gzData) {
 		// Compressed data might contain a full zlib header, if so strip it for
 		// gzinflate()
-		if ( substr($gzData, 0, 3) == "\x1f\x8b\x08" ) {
+		if (substr($gzData, 0, 3) == "\x1f\x8b\x08") {
 			$i = 10;
-			$flg = ord( substr($gzData, 3, 1) );
-			if ( $flg > 0 ) {
-				if ( $flg & 4 ) {
-					list($xlen) = unpack('v', substr($gzData, $i, 2) );
+			$flg = ord(substr($gzData, 3, 1));
+			if ($flg > 0) {
+				if ($flg & 4) {
+					list($xlen) = unpack('v', substr($gzData, $i, 2));
 					$i = $i + 2 + $xlen;
 				}
-				if ( $flg & 8 )
+				if ($flg & 8) {
 					$i = strpos($gzData, "\0", $i) + 1;
-				if ( $flg & 16 )
+				}
+				if ($flg & 16) {
 					$i = strpos($gzData, "\0", $i) + 1;
-				if ( $flg & 2 )
+				}
+				if ($flg & 2) {
 					$i = $i + 2;
+				}
 			}
-			$decompressed = self::compatible_gzinflate( substr( $gzData, $i ) );
-			if ( false !== $decompressed ) {
+			$decompressed = self::compatible_gzinflate(substr($gzData, $i));
+			if (false !== $decompressed) {
 				return $decompressed;
 			}
 		}
@@ -825,55 +843,57 @@ class Requests {
 		$huffman_encoded = false;
 
 		// low nibble of first byte should be 0x08
-		list( , $first_nibble )    = unpack( 'h', $gzData );
+		list(, $first_nibble)    = unpack('h', $gzData);
 
 		// First 2 bytes should be divisible by 0x1F
-		list( , $first_two_bytes ) = unpack( 'n', $gzData );
+		list(, $first_two_bytes) = unpack('n', $gzData);
 
-		if ( 0x08 == $first_nibble && 0 == ( $first_two_bytes % 0x1F ) )
+		if (0x08 == $first_nibble && 0 == ($first_two_bytes % 0x1F)) {
 			$huffman_encoded = true;
-
-		if ( $huffman_encoded ) {
-			if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 2 ) ) ) )
-				return $decompressed;
 		}
 
-		if ( "\x50\x4b\x03\x04" == substr( $gzData, 0, 4 ) ) {
+		if ($huffman_encoded) {
+			if (false !== ($decompressed = @gzinflate(substr($gzData, 2)))) {
+				return $decompressed;
+			}
+		}
+
+		if ("\x50\x4b\x03\x04" == substr($gzData, 0, 4)) {
 			// ZIP file format header
 			// Offset 6: 2 bytes, General-purpose field
 			// Offset 26: 2 bytes, filename length
 			// Offset 28: 2 bytes, optional field length
 			// Offset 30: Filename field, followed by optional field, followed
 			// immediately by data
-			list( , $general_purpose_flag ) = unpack( 'v', substr( $gzData, 6, 2 ) );
+			list(, $general_purpose_flag) = unpack('v', substr($gzData, 6, 2));
 
 			// If the file has been compressed on the fly, 0x08 bit is set of
 			// the general purpose field. We can use this to differentiate
 			// between a compressed document, and a ZIP file
-			$zip_compressed_on_the_fly = ( 0x08 == (0x08 & $general_purpose_flag ) );
+			$zip_compressed_on_the_fly = (0x08 == (0x08 & $general_purpose_flag));
 
-			if ( ! $zip_compressed_on_the_fly ) {
+			if (!$zip_compressed_on_the_fly) {
 				// Don't attempt to decode a compressed zip file
 				return $gzData;
 			}
 
 			// Determine the first byte of data, based on the above ZIP header
 			// offsets:
-			$first_file_start = array_sum( unpack( 'v2', substr( $gzData, 26, 4 ) ) );
-			if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 30 + $first_file_start ) ) ) ) {
+			$first_file_start = array_sum(unpack('v2', substr($gzData, 26, 4)));
+			if (false !== ($decompressed = @gzinflate(substr($gzData, 30 + $first_file_start)))) {
 				return $decompressed;
 			}
 			return false;
 		}
 
 		// Finally fall back to straight gzinflate
-		if ( false !== ( $decompressed = @gzinflate( $gzData ) ) ) {
+		if (false !== ($decompressed = @gzinflate($gzData))) {
 			return $decompressed;
 		}
 
 		// Fallback for all above failing, not expected, but included for
 		// debugging and preventing regressions and to track stats
-		if ( false !== ( $decompressed = @gzinflate( substr( $gzData, 2 ) ) ) ) {
+		if (false !== ($decompressed = @gzinflate(substr($gzData, 2)))) {
 			return $decompressed;
 		}
 

@@ -25,6 +25,27 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		return $options;
 	}
 
+	public function testResponseByteLimit() {
+		$limit = 104;
+		$options = array(
+			'max_bytes' => $limit,
+		);
+		$response = Requests::get(httpbin('/bytes/325'), array(), $this->getOptions($options));
+		$this->assertEquals($limit, strlen($response->body));
+	}
+
+	public function testResponseByteLimitWithFile() {
+		$limit = 300;
+		$options = array(
+			'max_bytes' => $limit,
+			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+		);
+		$response = Requests::get(httpbin('/bytes/482'), array(), $this->getOptions($options));
+		$this->assertEmpty($response->body);
+		$this->assertEquals($limit, filesize($options['filename']));
+		unlink($options['filename']);
+	}
+
 	public function testSimpleGET() {
 		$request = Requests::get(httpbin('/get'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
@@ -325,11 +346,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCode($code, $success) {
+		$transport = new MockTransport();
+		$transport->code = $code;
+
 		$url = sprintf(httpbin('/status/%d'), $code);
+
 		$options = array(
 			'follow_redirects' => false,
+			'transport' => $transport,
 		);
-		$request = Requests::get($url, array(), $this->getOptions($options));
+		$request = Requests::get($url, array(), $options);
 		$this->assertEquals($code, $request->status_code);
 		$this->assertEquals($success, $request->success);
 	}
@@ -338,9 +364,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrow($code, $success) {
+		$transport = new MockTransport();
+		$transport->code = $code;
+
 		$url = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
+			'transport' => $transport,
 		);
 
 		if (!$success) {
@@ -351,7 +381,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->setExpectedException('Requests_Exception');
 			}
 		}
-		$request = Requests::get($url, array(), $this->getOptions($options));
+		$request = Requests::get($url, array(), $options);
 		$request->throw_for_status(false);
 	}
 
@@ -359,22 +389,33 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrowAllowRedirects($code, $success) {
+		$transport = new MockTransport();
+		$transport->code = $code;
+
 		$url = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
+			'transport' => $transport,
 		);
 
 		if (!$success) {
-			if ($code >= 400) {
+			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
 				$this->setExpectedException('Requests_Exception_HTTP_' . $code, $code);
 			}
 		}
-		$request = Requests::get($url, array(), $this->getOptions($options));
+		$request = Requests::get($url, array(), $options);
 		$request->throw_for_status(true);
 	}
 
 	public function testStatusCodeUnknown(){
-		$request = Requests::get(httpbin('/status/599'), array(), $this->getOptions());
+		$transport = new MockTransport();
+		$transport->code = 599;
+
+		$options = array(
+			'transport' => $transport,
+		);
+
+		$request = Requests::get(httpbin('/status/599'), array(), $options);
 		$this->assertEquals(599, $request->status_code);
 		$this->assertEquals(false, $request->success);
 	}
@@ -383,7 +424,14 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception_HTTP_Unknown
 	 */
 	public function testStatusCodeThrowUnknown(){
-		$request = Requests::get(httpbin('/status/599'), array(), $this->getOptions());
+		$transport = new MockTransport();
+		$transport->code = 599;
+
+		$options = array(
+			'transport' => $transport,
+		);
+
+		$request = Requests::get(httpbin('/status/599'), array(), $options);
 		$request->throw_for_status(true);
 	}
 
@@ -469,10 +517,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * Test that SSL fails with a bad certificate
 	 *
-	 * This is defined as invalid by
-	 * https://onlinessl.netlock.hu/en/test-center/invalid-ssl-certificate.html
-	 * and is used in testing in PhantomJS. That said, expect this to break.
-	 *
 	 * @expectedException Requests_Exception
 	 */
 	public function testBadDomain() {
@@ -481,7 +525,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://tv.eurosport.com/', array(), $this->getOptions());
+		$request = Requests::get('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
 	/**
@@ -682,13 +726,25 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		unlink($requests['post']['options']['filename']);
 	}
 
-	public function testHostHeader() {
-		$request = Requests::get('http://portquiz.positon.org:8080/', array(), $this->getOptions());
-		$responseDoc = new DOMDocument;
-		$responseDoc->loadHTML($request->body);
-		$portXpath = new DOMXPath($responseDoc);
-		$portXpathMatches = $portXpath->query('//p/b');
-		$this->assertEquals(8080, $portXpathMatches->item(0)->nodeValue);
+	public function testAlternatePort() {
+		$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+		$num = preg_match('#You have reached this page on port <b>(\d+)</b>#i', $request->body, $matches);
+		$this->assertEquals(1, $num, 'Response should contain the port number');
+		$this->assertEquals(8080, $matches[1]);
+	}
+
+	public function testProgressCallback() {
+		$mock = $this->getMockBuilder('stdClass')->setMethods(array('progress'))->getMock();
+		$mock->expects($this->atLeastOnce())->method('progress');
+		$hooks = new Requests_Hooks();
+		$hooks->register('request.progress', array($mock, 'progress'));
+		$options = array(
+			'hooks' => $hooks,
+		);
+		$options = $this->getOptions($options);
+
+		$response = Requests::get(httpbin('/get'), array(), $options);
 	}
 
 	public function testReusableTransport() {

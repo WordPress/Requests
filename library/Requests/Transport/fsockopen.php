@@ -34,6 +34,13 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 */
 	public $info;
 
+	/**
+	 * What's the maximum number of bytes we should keep?
+	 *
+	 * @var int|bool Byte count, or false if no limit.
+	 */
+	protected $max_bytes = false;
+
 	protected $connect_error = '';
 
 	/**
@@ -52,6 +59,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$options['hooks']->dispatch('fsockopen.before_request');
 
 		$url_parts = parse_url($url);
+		if (empty($url_parts)) {
+			throw new Requests_Exception('Invalid URL.', 'invalidurl', $url);
+		}
 		$host = $url_parts['host'];
 		$context = stream_context_create();
 		$verifyname = false;
@@ -96,8 +106,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$remote_socket = 'tcp://' . $host;
 		}
 
-		$proxy = isset($options['proxy']);
-		$proxy_auth = $proxy && isset($options['proxy_username']) && isset($options['proxy_password']);
+		$this->max_bytes = $options['max_bytes'];
 
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = 80;
@@ -108,7 +117,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$options['hooks']->dispatch('fsockopen.remote_socket', array(&$remote_socket));
 
-		$fp = stream_socket_client($remote_socket, $errno, $errstr, ceil($options['connect_timeout']), STREAM_CLIENT_CONNECT, $context);
+		$socket = stream_socket_client($remote_socket, $errno, $errstr, ceil($options['connect_timeout']), STREAM_CLIENT_CONNECT, $context);
 
 		restore_error_handler();
 
@@ -116,13 +125,13 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			throw new Requests_Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
 		}
 
-		if (!$fp) {
+		if (!$socket) {
 			if ($errno === 0) {
 				// Connection issue
 				throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
 			}
 
-			throw new Requests_Exception($errstr, 'fsockopenerror');
+			throw new Requests_Exception($errstr, 'fsockopenerror', null, $errno);
 		}
 
 		$data_format = $options['data_format'];
@@ -147,7 +156,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
 
 		$request_body = '';
-		$out = $options['type'] . " $path HTTP/" . sprintf('%.1f', $options['protocol_version']) . "\r\n";
+		$out = sprintf("%s %s HTTP/%.1f\r\n", $options['type'], $path, $options['protocol_version']);
 
 		if ($options['type'] !== Requests::TRACE) {
 			if (is_array($data)) {
@@ -169,21 +178,21 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 
 		if (!isset($case_insensitive_headers['Host'])) {
-			$out .= "Host: {$url_parts['host']}";
+			$out .= sprintf('Host: %s', $url_parts['host']);
 
 			if ($url_parts['port'] !== 80) {
-				$out .= ":{$url_parts['port']}";
+				$out .= ':' . $url_parts['port'];
 			}
 			$out .= "\r\n";
 		}
 
 		if (!isset($case_insensitive_headers['User-Agent'])) {
-			$out .= "User-Agent: {$options['useragent']}\r\n";
+			$out .= sprintf("User-Agent: %s\r\n", $options['useragent']);
 		}
 
 		$accept_encoding = $this->accept_encoding();
 		if (!isset($case_insensitive_headers['Accept-Encoding']) && !empty($accept_encoding)) {
-			$out .= "Accept-Encoding: $accept_encoding\r\n";
+			$out .= sprintf("Accept-Encoding: %s\r\n", $accept_encoding);
 		}
 
 		$headers = Requests::flatten($headers);
@@ -206,60 +215,83 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$options['hooks']->dispatch('fsockopen.before_send', array(&$out));
 
-		fwrite($fp, $out);
-		$options['hooks']->dispatch('fsockopen.after_send', array(&$fake_headers));
+		fwrite($socket, $out);
+		$options['hooks']->dispatch('fsockopen.after_send', array($out));
 
 		if (!$options['blocking']) {
-			fclose($fp);
+			fclose($socket);
 			$fake_headers = '';
 			$options['hooks']->dispatch('fsockopen.after_request', array(&$fake_headers));
 			return '';
 		}
 
 		$timeout_sec = (int) floor($options['timeout']);
-		$timeout_msec = $timeout_sec == $options['timeout'] ? 0 : self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
-		stream_set_timeout($fp, $timeout_sec, $timeout_msec);
-
-		$this->info = stream_get_meta_data($fp);
-
-		$this->headers = '';
-		$this->info = stream_get_meta_data($fp);
-		if (!$options['filename']) {
-			while (!feof($fp)) {
-				$this->info = stream_get_meta_data($fp);
-				if ($this->info['timed_out']) {
-					throw new Requests_Exception('fsocket timed out', 'timeout');
-				}
-
-				$this->headers .= fread($fp, 1160);
-			}
+		if ($timeout_sec == $options['timeout']) {
+			$timeout_msec = 0;
 		}
 		else {
+			$timeout_msec = self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
+		}
+		stream_set_timeout($socket, $timeout_sec, $timeout_msec);
+
+		$response = $body = $headers = '';
+		$this->info = stream_get_meta_data($socket);
+		$size = 0;
+		$doingbody = false;
+		$download = false;
+		if ($options['filename']) {
 			$download = fopen($options['filename'], 'wb');
-			$doingbody = false;
-			$response = '';
-			while (!feof($fp)) {
-				$this->info = stream_get_meta_data($fp);
-				if ($this->info['timed_out']) {
-					throw new Requests_Exception('fsocket timed out', 'timeout');
+		}
+
+		while (!feof($socket)) {
+			$this->info = stream_get_meta_data($socket);
+			if ($this->info['timed_out']) {
+				throw new Requests_Exception('fsocket timed out', 'timeout');
+			}
+
+			$block = fread($socket, Requests::BUFFER_SIZE);
+			if (!$doingbody) {
+				$response .= $block;
+				if (strpos($response, "\r\n\r\n")) {
+					list($headers, $block) = explode("\r\n\r\n", $response, 2);
+					$doingbody = true;
+				}
+			}
+
+			// Are we in body mode now?
+			if ($doingbody) {
+				$options['hooks']->dispatch('request.progress', array($block, $size, $this->max_bytes));
+				$data_length = strlen($block);
+				if ($this->max_bytes) {
+					// Have we already hit a limit?
+					if ($size === $this->max_bytes) {
+						continue;
+					}
+					if (($size + $data_length) > $this->max_bytes) {
+						// Limit the length
+						$limited_length = ($this->max_bytes - $size);
+						$block = substr($block, 0, $limited_length);
+					}
 				}
 
-				$block = fread($fp, 1160);
-				if ($doingbody) {
+				$size += strlen($block);
+				if ($download) {
 					fwrite($download, $block);
 				}
 				else {
-					$response .= $block;
-					if (strpos($response, "\r\n\r\n")) {
-						list($this->headers, $block) = explode("\r\n\r\n", $response, 2);
-						$doingbody = true;
-						fwrite($download, $block);
-					}
+					$body .= $block;
 				}
 			}
+		}
+		$this->headers = $headers;
+
+		if ($download) {
 			fclose($download);
 		}
-		fclose($fp);
+		else {
+			$this->headers .= "\r\n\r\n" . $body;
+		}
+		fclose($socket);
 
 		$options['hooks']->dispatch('fsockopen.after_request', array(&$this->headers));
 		return $this->headers;
@@ -323,8 +355,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 */
 	protected static function format_get($url_parts, $data) {
 		if (!empty($data)) {
-			if (empty($url_parts['query']))
+			if (empty($url_parts['query'])) {
 				$url_parts['query'] = '';
+			}
 
 			$url_parts['query'] .= '&' . http_build_query($data, null, '&');
 			$url_parts['query'] = trim($url_parts['query'], '&');
@@ -396,17 +429,20 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * @return boolean True if the transport is valid, false otherwise.
 	 */
 	public static function test($capabilities = array()) {
-		if (!function_exists('fsockopen'))
+		if (!function_exists('fsockopen')) {
 			return false;
+		}
 
 		// If needed, check that streams support SSL
-		if (isset( $capabilities['ssl'] ) && $capabilities['ssl']) {
-			if (!extension_loaded('openssl') || !function_exists('openssl_x509_parse'))
+		if (isset($capabilities['ssl']) && $capabilities['ssl']) {
+			if (!extension_loaded('openssl') || !function_exists('openssl_x509_parse')) {
 				return false;
+			}
 
 			// Currently broken, thanks to https://github.com/facebook/hhvm/issues/2156
-			if (defined('HHVM_VERSION'))
+			if (defined('HHVM_VERSION')) {
 				return false;
+			}
 		}
 
 		return true;
