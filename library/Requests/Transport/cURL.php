@@ -299,27 +299,40 @@ class Requests_Transport_cURL implements Requests_Transport {
 				$url = self::format_get($url, $data);
 				$data = '';
 			}
-			elseif (!is_string($data)) {
-				$data = http_build_query($data, null, '&');
+			elseif ($options['type'] !== Requests::TRACE) {
+				if (is_resource($data)) {
+					$stat = fstat($data);
+					curl_setopt($this->handle, CURLOPT_INFILE, $data);
+					curl_setopt($this->handle, CURLOPT_INFILESIZE, $stat['size']);
+
+					// We need to set CURLOPT_PUT so that cURL uses INFILE, but
+					// this will set the request type to PUT by default. We need
+					// to set CURLOPT_CUSTOMREQUEST to set it back.
+					curl_setopt($this->handle, CURLOPT_PUT, true);
+					curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
+				}
+				elseif (!is_string($data)) {
+					$data = http_build_query($data, null, '&');
+					curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
+				}
+				else {
+					curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
+				}
 			}
 		}
 
 		switch ($options['type']) {
 			case Requests::POST:
 				curl_setopt($this->handle, CURLOPT_POST, true);
-				curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
 				break;
+
+			case Requests::HEAD:
+				curl_setopt($this->handle, CURLOPT_NOBODY, true);
+				// Fall-through
 			case Requests::PATCH:
 			case Requests::PUT:
 			case Requests::DELETE:
 			case Requests::OPTIONS:
-				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
-				curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
-				break;
-			case Requests::HEAD:
-				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
-				curl_setopt($this->handle, CURLOPT_NOBODY, true);
-				break;
 			case Requests::TRACE:
 				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
 				break;
