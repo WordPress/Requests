@@ -217,6 +217,24 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected_length, $sent_headers['Content-Length']);
 	}
 
+	public function testPOSTWithInvalidStream() {
+		// Register our wrapper
+		stream_wrapper_register('requeststestvar', 'RequestsTest_VariableStream');
+
+		$data = base64_encode('hello');
+		$stream = fopen('requeststestvar://', 'r+');
+		stream_wrapper_unregister('requeststestvar');
+
+		fwrite($stream, 'Hello!');
+		rewind($stream);
+
+		// This should fail, as the stream doesn't support stat
+		$this->setExpectedException('Requests_Exception', 'Body stream resource does not support stat.');
+
+		$request = Requests::post(httpbin('/post'), array(), $stream, $this->getOptions());
+		fclose($stream);
+	}
+
 	public function testRawPUT() {
 		$data = 'test';
 		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
