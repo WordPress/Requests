@@ -45,7 +45,9 @@ Available Hooks
 
     Alter the raw HTTP response before returning for parsing
 
-    Parameters: `string &$response`
+    Parameters: `string &$response, array &$info`
+
+    `$info` contains the associated array as defined in [curl-getinfo-returnvalues](http://php.net/manual/en/function.curl-getinfo.php#refsect1-function.curl-getinfo-returnvalues)
 
 * `fsockopen.before_request`
 
@@ -71,7 +73,9 @@ Available Hooks
 
     Alter the raw HTTP response before returning for parsing
 
-    Parameters: `string &$response`
+    Parameters: `string &$response, array &$info`
+
+    `$info` contains the associated array as defined in [stream-get-meta-data-returnvalues](http://php.net/manual/en/function.stream-get-meta-data.php#refsect1-function.stream-get-meta-data-returnvalues)
 
 
 Registering Hooks

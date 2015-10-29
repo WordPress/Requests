@@ -284,7 +284,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 		fclose($socket);
 
-		$options['hooks']->dispatch('fsockopen.after_request', array(&$this->headers));
+		$options['hooks']->dispatch('fsockopen.after_request', array(&$this->headers, &$this->info));
 		return $this->headers;
 	}
 
