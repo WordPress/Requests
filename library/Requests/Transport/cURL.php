@@ -230,9 +230,23 @@ class Requests_Transport_cURL implements Requests_Transport {
 			// Parse the finished requests before we start getting the new ones
 			foreach ($to_process as $key => $done) {
 				$options = $requests[$key]['options'];
-				$responses[$key] = $subrequests[$key]->process_response($subrequests[$key]->response_data, $options);
+				if (CURLE_OK !== $done['result']) {
+					//get error string for handle.
+					$reason = curl_error($done['handle']);
+					$exception = new Requests_Exception_Transport_cURL(
+									$reason,
+									Requests_Exception_Transport_cURL::EASY,
+									$done['handle'],
+									$done['result']
+								);
+					$responses[$key] = $exception;
+					$options['hooks']->dispatch('transport.internal.parse_error', array(&$responses[$key], $requests[$key]));
+				}
+				else {
+					$responses[$key] = $subrequests[$key]->process_response($subrequests[$key]->response_data, $options);
 
-				$options['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$key], $requests[$key]));
+					$options['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$key], $requests[$key]));
+				}
 
 				curl_multi_remove_handle($multihandle, $done['handle']);
 				curl_close($done['handle']);
