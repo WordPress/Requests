@@ -525,7 +525,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://wrong.host.badssl.com/', array(), $this->getOptions());
+		$request = Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
 	/**
@@ -541,7 +541,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://badssl.com/', array(), $this->getOptions());
+		$request = Requests::head('https://badssl.com/', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -557,7 +557,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://feelingrestful.com/', array(), $this->getOptions());
+		$request = Requests::head('https://feelingrestful.com/', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
