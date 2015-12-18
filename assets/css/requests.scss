@@ -1,0 +1,119 @@
+---
+---
+@import "variables";
+@import "base";
+@import "layout";
+@import "buttons";
+
+body {
+	background: #fafafa;
+}
+.navbar {
+	background: $color-brand;
+	color: #fff;
+	margin-bottom: 0;
+
+	.container {
+		width: 1170px;
+	}
+
+	.navbar-inner {
+		background: transparent;
+		// padding-top: 18px;
+		// padding-bottom: 18px;
+		border: none;
+	}
+	.brand {
+		font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
+		font-size: 30px;
+		color: inherit;
+		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+	}
+	.nav {
+		// height: 40px;
+	}
+	.nav > li {
+		margin: 0;
+
+		> a {
+			line-height: 26px;
+			padding: 6px 10px 7px;
+			border-radius: 3px;
+			color: inherit;
+			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+
+			&:hover {
+				background: darken($color-brand, 10%);
+				text-decoration: none;
+			}
+		}
+	}
+}
+#content {
+	background: #fff;
+	border: 1px solid #eee;
+}
+
+@import "masthead";
+
+.aux-links {
+	margin: 0;
+	list-style: none;
+}
+	.aux-links li {
+		display: inline;
+		padding: 0 10px;
+		color: rgba(255,255,255,.75);
+	}
+
+#watch {
+	float: right;
+	margin-top: 3px;
+}
+
+li {
+	margin-bottom: 9px;
+}
+	.linenums li {
+		margin-bottom: 4.5px;
+	}
+	li ul {
+		margin-top: 9px;
+	}
+
+pre code {
+	border: none;
+	color: #333;
+}
+
+pre {
+	background-color: #F7F7F7;
+}
+@import "syntax";
+
+#page-footer {
+	padding: 1.2rem 0;
+
+	p {
+		margin-bottom: 0;
+		color: #555;
+	}
+}
+
+@media (max-width: 480px) {
+	.github {
+		display: none;
+	}
+
+	body {
+		padding-top: 15px;
+	}
+
+	#masthead {
+		padding: 10px 0;
+	}
+
+	#masthead h1 {
+		font-size: 24px;
+	}
+}

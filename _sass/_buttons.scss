@@ -1,0 +1,20 @@
+.btn {
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+
+	transition: background-position 100ms linear 0s, background-color 100ms linear 0s;
+
+	&:hover {
+		text-decoration: none;
+		background-position: 0px -15px;
+	}
+}
+
+.btn-success {
+	background-color: #51A351;
+	background-image: linear-gradient(to bottom, #62C462, #51A351);
+	background-repeat: repeat-x;
+	color: #fff;
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25);
+}

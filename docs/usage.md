@@ -14,13 +14,13 @@ Loading Requests
 Before we can load Requests up, we'll need to make sure it's loaded. This is a
 simple two-step:
 
-{% highlight php startinline %}
+```php
 // First, include Requests
 include('/path/to/library/Requests.php');
 
 // Next, make sure Requests can load internal classes
 Requests::register_autoloader();
-{% endhighlight %}
+```
 
 If you'd like to bring along your own autoloader, you can forget about this
 completely.
@@ -32,9 +32,9 @@ One of the most basic things you can do with HTTP is make a GET request.
 
 Let's grab GitHub's public timeline:
 
-{% highlight php startinline %}
+```php
 $response = Requests::get('https://github.com/timeline.json');
-{% endhighlight %}
+```
 
 `$response` is now a **Requests_Response** object. Response objects are what
 you'll be working with whenever you want to get data back from your request.
@@ -44,10 +44,10 @@ Using the Response Object
 -------------------------
 Now that we have the response from GitHub, let's get the body of the response.
 
-{% highlight php startinline %}
+```php
 var_dump($response->body);
 // string(42865) "[{"repository":{"url":"...
-{% endhighlight %}
+```
 
 
 Custom Headers
@@ -55,18 +55,18 @@ Custom Headers
 If you want to add custom headers to the request, simply pass them in as an
 associative array as the second parameter:
 
-{% highlight php startinline %}
+```php
 $response = Requests::get('https://github.com/timeline.json', array('X-Requests' => 'Is Awesome!'));
-{% endhighlight %}
+```
 
 
 Make a POST Request
 -------------------
 Making a POST request is very similar to making a GET:
 
-{% highlight php startinline %}
+```php
 $response = Requests::post('http://httpbin.org/post');
-{% endhighlight %}
+```
 
 You'll probably also want to pass in some data. You can pass in either a
 string, an array or an object (Requests uses [`http_build_query`][build_query]
@@ -74,11 +74,11 @@ internally) as the third parameter (after the URL and headers):
 
 [build_query]: http://php.net/http_build_query
 
-{% highlight php startinline %}
+```php
 $data = array('key1' => 'value1', 'key2' => 'value2');
 $response = Requests::post('http://httpbin.org/post', array(), $data);
 var_dump($response->body);
-{% endhighlight %}
+```
 
 This gives the output:
 
@@ -107,12 +107,12 @@ To send raw data, simply pass in a string instead. You'll probably also want to
 set the Content-Type header to ensure the remote server knows what you're
 sending it:
 
-{% highlight php startinline %}
+```php
 $url = 'https://api.github.com/some/endpoint';
 $headers = array('Content-Type' => 'application/json');
 $data = array('some' => 'data');
 $response = Requests::post($url, $headers, json_encode($data));
-{% endhighlight %}
+```
 
 Note that if you don't manually specify a Content-Type header, Requests has
 undefined behaviour for the header. It may be set to various values depending
@@ -124,35 +124,37 @@ Status Codes
 ------------
 The Response object also gives you access to the status code:
 
-{% highlight php startinline %}
+```php
 var_dump($response->status_code);
 // int(200)
-{% endhighlight %}
+```
 
 You can also easily check if this status code is a success code, or if it's an
 error:
 
-{% highlight php startinline %}
+```php
 var_dump($response->success);
 // bool(true)
-{% endhighlight %}
+```
 
 
 Response Headers
 ----------------
 We can also grab headers pretty easily:
 
-{% highlight php startinline %}
+```php
 var_dump($response->headers['Date']);
 // string(29) "Thu, 09 Feb 2012 15:22:06 GMT"
-{% endhighlight %}
+```
 
 Note that this is case-insensitive, so the following are all equivalent:
 
-* `$response->headers['Date']`
-* `$response->headers['date']`
-* `$response->headers['DATE']`
-* `$response->headers['dAtE']`
+```php
+$response->headers['Date']
+$response->headers['date']
+$response->headers['DATE']
+$response->headers['dAtE']
+```
 
 If a header isn't set, this will give `null`. You can also check with
 `isset($response->headers['date'])`

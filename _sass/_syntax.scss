@@ -1,0 +1,90 @@
+.CodeRay {
+	.annotation { color:#007 }
+	.attribute-name { color:#f08 }
+	.attribute-value { color:#700 }
+	.binary { color:#509; }
+	.comment  { color:#969896; }
+	.char { color:#04D }
+	.char .content { color:#183691 }
+	.char .delimiter { color:#039 }
+	.class { color:#458; }
+	.complex { color:#A08; }
+	.constant { color: #0086B3; }
+	.color { color:#0A0 }
+	.class-variable { color:#369 }
+	.decorator { color:#B0B; }
+	.definition { color:#099; }
+	.directive { color:#088; }
+	.delimiter { color:black }
+	.doc { color:#970 }
+	.doctype { color:#34b }
+	.doc-string { color:#D42; }
+	.escape  { color:#666; }
+	.entity { color:#800; }
+	.error { color:#F00; background-color:#FAA }
+	.exception { color:#C00; }
+	.filename { color:#099; }
+	.function { color:#900; }
+	.global-variable { color:teal; }
+	.hex { color:#058; }
+	.integer  { color:#099; }
+	.include { color:#B44; }
+	.inline { color: black }
+	.inline .inline { background: #ccc }
+	.inline .inline .inline { background: #bbb }
+	.inline .inline-delimiter { color: #D14; }
+	.inline-delimiter { color: #D14; }
+	.important { color:#f00; }
+	.interpreted { color:#B2B; }
+	.instance-variable { color:teal }
+	.label { color:#970; }
+	.local-variable { color: #008080 }
+	.octal { color:#40E; }
+	.operator { }
+	.predefined { color: #0086B3; }
+	.preprocessor { color:#579; }
+	.pseudo-class { color:#00C; }
+	.predefined-type { color:#074; }
+	.reserved, .keyword  { color:#000; }
+
+	.key { color: #808; }
+	.key .delimiter { color: #606; }
+	.key .char { color: #80f; }
+	.value { color: #088; }
+
+	.regexp { background-color:#fff0ff }
+	.regexp .content { color:#808 }
+	.regexp .delimiter { color:#404 }
+	.regexp .modifier { color:#C2C }
+	.regexp .function  { color:#404; font-weight: bold }
+
+	.string { color: #D20; }
+	.string .string { }
+	.string .string .string { background-color:#ffd0d0 }
+	.string .content { color: #4E9A06; }
+	.string .char { color: #D14; }
+	.string .delimiter { color: #D14; }
+
+	.shell { color:#D14 }
+	.shell .content { }
+	.shell .delimiter { color:#D14 }
+
+	.symbol { color:#990073 }
+	.symbol .content { color:#A60 }
+	.symbol .delimiter { color:#630 }
+
+	.tag { color:#070 }
+	.tag-special { color:#D70; }
+	.type { color:#339; }
+	.variable  { color:#036 }
+
+	.insert { background: #afa; }
+	.delete { background: #faa; }
+	.change { color: #aaf; background: #007; }
+	.head { color: #f8f; background: #505 }
+
+	.insert .insert { color: #080; }
+	.delete .delete { color: #800; }
+	.change .change { color: #66f; }
+	.head .head { color: #f4f; }
+}

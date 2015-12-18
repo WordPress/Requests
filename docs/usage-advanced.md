@@ -13,35 +13,35 @@ default parameters for these.
 
 Let's simulate communicating with GitHub.
 
-{% highlight php startinline %}
+```php
 $session = new Requests_Session('https://api.github.com/');
 $session->headers['X-ContactAuthor'] = 'rmccue';
 $session->useragent = 'My-Awesome-App';
 
 $response = $session->get('/zen');
-{% endhighlight %}
+```
 
 You can use the `url`, `headers`, `data` and `options` properties of the Session
 object to set the defaults for this session, and the constructor also takes
 parameters in the same order as `Requests::request()`. Accessing any other
 properties will set the corresponding key in the options array; that is:
 
-{% highlight php startinline %}
+```php
 // Setting the property...
 $session->useragent = 'My-Awesome-App';
 
 // ...is the same as setting the option
 $session->options['useragent'] = 'My-Awesome-App';
-{% endhighlight %}
+```
 
 
 Secure Requests with SSL
 ------------------------
 By default, HTTPS requests will use the most secure options available:
 
-{% highlight php startinline %}
+```php
 $response = Requests::get('https://httpbin.org/');
-{% endhighlight %}
+```
 
 Requests bundles certificates from the [Mozilla certificate authority list][],
 which is the same list of root certificates used in most browsers. If you're
@@ -49,12 +49,12 @@ accessing sites with certificates from other CAs, or self-signed certificates,
 you can point Requests to a custom CA list in PEM form (the same format
 accepted by cURL and OpenSSL):
 
-{% highlight php startinline %}
+```php
 $options = array(
 	'verify' => '/path/to/cacert.pem'
 );
 $response = Requests::get('https://httpbin.org/', array(), $options);
-{% endhighlight %}
+```
 
 Alternatively, if you want to disable verification completely, this is possible
 with `'verify' => false`, but note that this is extremely insecure and should be
