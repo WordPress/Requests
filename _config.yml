@@ -1,6 +1,13 @@
 name: Requests for PHP
-markdown: redcarpet
-pygments: true
+markdown: kramdown
 
-port: 80
+kramdown:
+    input: GFM
+    hard_wrap: false
+    use_coderay: true
+    coderay:
+        coderay_line_numbers: nil
+        coderay_css: class
+
+baseurl: /
 exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh']
