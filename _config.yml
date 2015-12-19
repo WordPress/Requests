@@ -11,3 +11,6 @@ kramdown:
 
 baseurl: /
 exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh']
+
+gems:
+  - jekyll-sitemap
