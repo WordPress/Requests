@@ -1,5 +1,5 @@
 ---
-layout: documentation
+layout: page
 title: Support
 ---
 Getting Support
