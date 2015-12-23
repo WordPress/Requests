@@ -8,51 +8,9 @@
 body {
 	background: #fafafa;
 }
-.navbar {
-	background: $color-brand;
-	color: #fff;
-	margin-bottom: 0;
 
-	.container {
-		width: 1170px;
-	}
+@import "header";
 
-	.navbar-inner {
-		background: transparent;
-		// padding-top: 18px;
-		// padding-bottom: 18px;
-		border: none;
-	}
-	.brand {
-		font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
-		font-size: 30px;
-		color: inherit;
-		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
-	}
-
-	.nav > li {
-		margin-bottom: 0;
-
-		> a {
-			line-height: 26px;
-			padding: 6px 10px 7px;
-			border-radius: 3px;
-			color: inherit;
-			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
-
-			&:hover {
-				background: darken($color-brand, 10%);
-				text-decoration: none;
-			}
-		}
-	}
-
-	.divider-vertical {
-		border-right: 1px solid rgba(255, 255, 255, 0.2);
-		margin-left: 0.1rem;
-		margin-right: 0.1rem;
-	}
-}
 #content {
 	background: #fff;
 	border: 1px solid #eee;
@@ -96,8 +54,6 @@ pre {
 @import "syntax";
 
 #page-footer {
-	padding: 1.2rem 0;
-
 	p {
 		margin-bottom: 0;
 		color: #555;
@@ -107,10 +63,6 @@ pre {
 @media (max-width: 480px) {
 	.github {
 		display: none;
-	}
-
-	body {
-		padding-top: 15px;
 	}
 
 	#masthead {

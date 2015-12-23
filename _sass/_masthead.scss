@@ -1,13 +1,15 @@
 #masthead {
-	padding: 60px 0;
+	padding: 40px 0;
 	margin-bottom: 30px;
 	background-color: $color-brand;
 	color: #ddd;
 	text-align: center;
 
+	line-height: 1.5;
+
 	h1 {
 		font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
-		font-size: 60px;
+		font-size: 4em;
 		line-height: 1;
 		letter-spacing: -1px;
 		color: #fff;
@@ -17,25 +19,26 @@
 		color: #eee;
 	}
 	p {
-		font-size: 18px;
+		font-size: 1.3em;
 		font-weight: 200;
-		line-height: 27px;
 	}
 	pre {
-		font-size: 16px;
-		line-height: 24px;
+		font-size: 1.15em;
+		line-height: inherit;
 		display: inline-block;
 		padding: 20px 14px;
+
+		word-break: keep-all;
 	}
 	code {
-		font-size: 17px;
+		font-size: 1em;
 	}
 	a {
 		color: #fff;
 	}
 	.btn {
-		padding: 19px 24px;
-		font-size: 24px;
+		padding: 0.65em 1em;
+		font-size: 1.35em;
 		border: 0;
 		color: #fff;
 		-webkit-border-radius: 6px;
@@ -48,4 +51,24 @@
 		   -moz-transition: none;
 		        transition: none;*/
 	}
+	@media (max-width: $break-small) {
+		font-size: 0.8em;
+
+		h1 {
+			display: none;
+		}
+
+		p {
+			padding: {
+				left: 1em;
+				right: 1em;
+			}
+		}
+
+		pre {
+			width: 100%;
+			border-radius: 0;
+		}
+	}
+
 }

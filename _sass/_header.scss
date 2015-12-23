@@ -1,0 +1,39 @@
+.navbar {
+	background: $color-brand;
+	color: #fff;
+	margin-bottom: 0;
+
+	.brand {
+		font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
+		font-size: 30px;
+		color: inherit;
+		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+
+		@media (max-width: $break-large) {
+			font-size: 24px;
+		}
+	}
+
+	.nav > li {
+		margin-bottom: 0;
+
+		> a {
+			line-height: 26px;
+			padding: 6px 10px 7px;
+			border-radius: 3px;
+			color: inherit;
+			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+
+			&:hover {
+				background: darken($color-brand, 10%);
+				text-decoration: none;
+			}
+		}
+	}
+
+	.divider-vertical {
+		border-right: 1px solid rgba(255, 255, 255, 0.2);
+		margin-left: 0.1rem;
+		margin-right: 0.1rem;
+	}
+}
