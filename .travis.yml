@@ -28,7 +28,7 @@ install:
  - phpenv local --unset
 
  # Setup the proxy
- - pip install --user mitmproxy
+ - pip install --user mitmproxy~=0.15
 
 before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
