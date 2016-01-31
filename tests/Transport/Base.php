@@ -132,7 +132,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testTRACE() {
-		$request = Requests::trace(httpbin('/get'), array(), $this->getOptions());
+		$request = Requests::trace(httpbin('/trace'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -242,7 +242,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testOPTIONS() {
-		$request = Requests::options(httpbin('/post'), array(), array(), $this->getOptions());
+		$request = Requests::options(httpbin('/options'), array(), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
