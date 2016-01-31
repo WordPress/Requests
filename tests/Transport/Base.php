@@ -255,6 +255,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		// This should fail, as the resource isn't a stream
 		$this->setExpectedException('Requests_Exception', 'Invalid stream resource for request body.');
 
+		// https://github.com/facebook/hhvm/issues/4036
+		if (defined('HHVM_VERSION')) {
+			$this->setExpectedException('Requests_Exception', 'Body stream resource does not support stat.');
+		}
+
 		$request = Requests::post(httpbin('/post'), array(), $stream, $this->getOptions());
 	}
 
