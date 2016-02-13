@@ -754,6 +754,7 @@ class Requests {
 	/**
 	 * Convert a key => value array to a 'key: value' array for headers
 	 *
+	 * @codeCoverageIgnore
 	 * @deprecated Misspelling of {@see Requests::flatten}
 	 * @param array $array Dictionary of header values
 	 * @return array List of headers
