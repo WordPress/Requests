@@ -402,7 +402,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 		$this->info = curl_getinfo($this->handle);
 
-		$options['hooks']->dispatch('curl.after_request', array(&$this->headers));
+		$options['hooks']->dispatch('curl.after_request', array(&$this->headers, &$this->info));
 		return $this->headers;
 	}
 

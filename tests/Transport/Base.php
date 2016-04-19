@@ -746,6 +746,28 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$response = Requests::get(httpbin('/get'), array(), $options);
 	}
 
+	public function testAfterRequestCallback() {
+		$mock = $this->getMockBuilder('stdClass')
+			->setMethods(array('after_request'))
+			->getMock();
+
+		$mock->expects($this->atLeastOnce())
+			->method('after_request')
+			->with(
+				$this->isType('string'),
+				$this->logicalAnd($this->isType('array'), $this->logicalNot($this->isEmpty()))
+			);
+		$hooks = new Requests_Hooks();
+		$hooks->register('curl.after_request', array($mock, 'after_request'));
+		$hooks->register('fsockopen.after_request', array($mock, 'after_request'));
+		$options = array(
+			'hooks' => $hooks,
+		);
+		$options = $this->getOptions($options);
+
+		$response = Requests::get(httpbin('/get'), array(), $options);
+	}
+
 	public function testReusableTransport() {
 		$options = $this->getOptions(array('transport' => new $this->transport()));
 
