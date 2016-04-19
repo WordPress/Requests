@@ -132,7 +132,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testTRACE() {
-		$request = Requests::trace(httpbin('/get'), array(), $this->getOptions());
+		$request = Requests::trace(httpbin('/trace'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -242,7 +242,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testOPTIONS() {
-		$request = Requests::options(httpbin('/post'), array(), array(), $this->getOptions());
+		$request = Requests::options(httpbin('/options'), array(), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -375,7 +375,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, $code);
+				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
 			}
 			elseif ($code >= 300 && $code < 400) {
 				$this->setExpectedException('Requests_Exception');
@@ -400,7 +400,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, $code);
+				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
 			}
 		}
 		$request = Requests::get($url, array(), $options);
@@ -525,15 +525,15 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://wrong.host.badssl.com/', array(), $this->getOptions());
+		$request = Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
 	/**
 	 * Test that the transport supports Server Name Indication with HTTPS
 	 *
-	 * sni.velox.ch is used for SNI testing, and the common name is set to
-	 * `*.sni.velox.ch` as such. Without alternate name support, this will fail
-	 * as `sni.velox.ch` is only in the alternate name
+	 * badssl.com is used for SSL testing, and the common name is set to
+	 * `*.badssl.com` as such. Without alternate name support, this will fail
+	 * as `badssl.com` is only in the alternate name
 	 */
 	public function testAlternateNameSupport() {
 		if ($this->skip_https) {
@@ -541,16 +541,15 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://sni.velox.ch/', array(), $this->getOptions());
+		$request = Requests::head('https://badssl.com/', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
 	/**
 	 * Test that the transport supports Server Name Indication with HTTPS
 	 *
-	 * sni.velox.ch is used for SNI testing, and the common name is set to
-	 * `*.sni.velox.ch` as such. Without SNI support, this will fail. Also tests
-	 * our wildcard support.
+	 * feelingrestful.com (owned by hmn.md and used with permission) points to
+	 * CloudFlare, and will fail if SNI isn't sent.
 	 */
 	public function testSNISupport() {
 		if ($this->skip_https) {
@@ -558,7 +557,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://abc.sni.velox.ch/', array(), $this->getOptions());
+		$request = Requests::head('https://feelingrestful.com/', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 

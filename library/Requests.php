@@ -657,6 +657,15 @@ class Requests {
 					$location = Requests_IRI::absolutize($url, $location);
 					$location = $location->uri;
 				}
+
+				$hook_args = array(
+					&$location,
+					&$req_headers,
+					&$req_data,
+					&$options,
+					$return
+				);
+				$options['hooks']->dispatch('requests.before_redirect', $hook_args);
 				$redirected = self::request($location, $req_headers, $req_data, $options['type'], $options);
 				$redirected->history[] = $return;
 				return $redirected;
@@ -754,6 +763,7 @@ class Requests {
 	/**
 	 * Convert a key => value array to a 'key: value' array for headers
 	 *
+	 * @codeCoverageIgnore
 	 * @deprecated Misspelling of {@see Requests::flatten}
 	 * @param array $array Dictionary of header values
 	 * @return array List of headers

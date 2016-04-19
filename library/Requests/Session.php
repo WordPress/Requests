@@ -240,9 +240,17 @@ class Requests_Session {
 			$request['url'] = $request['url']->uri;
 		}
 
+		if (empty($request['headers'])) {
+			$request['headers'] = array();
+		}
 		$request['headers'] = array_merge($this->headers, $request['headers']);
 
-		if (is_array($request['data']) && is_array($this->data)) {
+		if (empty($request['data'])) {
+			if (is_array($this->data)) {
+				$request['data'] = $this->data;
+			}
+		}
+		elseif (is_array($request['data']) && is_array($this->data)) {
 			$request['data'] = array_merge($this->data, $request['data']);
 		}
 
