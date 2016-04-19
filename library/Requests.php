@@ -572,6 +572,9 @@ class Requests {
 				$options['data_format'] = 'body';
 			}
 		}
+
+		// Massage the type to ensure we support it.
+		$type = strtoupper($type);
 	}
 
 	/**
