@@ -564,6 +564,9 @@ class Requests {
 			$url = $iri->uri;
 		}
 
+		// Massage the type to ensure we support it.
+		$type = strtoupper($type);
+
 		if (!isset($options['data_format'])) {
 			if (in_array($type, array(self::HEAD, self::GET, self::DELETE))) {
 				$options['data_format'] = 'query';
@@ -572,9 +575,6 @@ class Requests {
 				$options['data_format'] = 'body';
 			}
 		}
-
-		// Massage the type to ensure we support it.
-		$type = strtoupper($type);
 	}
 
 	/**
