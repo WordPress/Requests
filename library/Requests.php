@@ -107,6 +107,16 @@ class Requests {
 	public static $transport = array();
 
 	/**
+	 * Default certificate path.
+	 *
+	 * @see Requests::get_certificate_path()
+	 * @see Requests::set_certificate_path()
+	 *
+	 * @var string
+	 */
+	protected static $certificate_path;
+
+	/**
 	 * This is a static class, do not instantiate it
 	 *
 	 * @codeCoverageIgnore
@@ -506,13 +516,35 @@ class Requests {
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
-			'verify' => dirname(__FILE__) . '/Requests/Transport/cacert.pem',
+			'verify' => Requests::get_certificate_path(),
 			'verifyname' => true,
 		);
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
 		}
 		return $defaults;
+	}
+
+	/**
+	 * Get default certificate path.
+	 *
+	 * @return string Default certificate path.
+	 */
+	public static function get_certificate_path() {
+		if ( ! empty( Requests::$certificate_path ) ) {
+			return Requests::$certificate_path;
+		}
+
+		return dirname(__FILE__) . '/Requests/Transport/cacert.pem';
+	}
+
+	/**
+	 * Set default certificate path.
+	 *
+	 * @param string $path Certificate path, pointing to a PEM file.
+	 */
+	public static function set_certificate_path( $path ) {
+		Requests::$certificate_path = $path;
 	}
 
 	/**
