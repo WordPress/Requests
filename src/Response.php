@@ -134,7 +134,7 @@ class Response {
 	 * @throws Requests_Exception If `$this->body` is not a valid json
 	 * @return array
 	 */
-	public function json($assoc = true, $depth = 512, $options = 0) {
+	public function json($assoc = true) {
 		static $json_errors = array(
 			JSON_ERROR_DEPTH => 'JSON_ERROR_DEPTH - Maximum stack depth exceeded',
 			JSON_ERROR_STATE_MISMATCH => 'JSON_ERROR_STATE_MISMATCH - Underflow or the modes mismatch',
@@ -143,13 +143,19 @@ class Response {
 			JSON_ERROR_UTF8 => 'JSON_ERROR_UTF8 - Malformed UTF-8 characters, possibly incorrectly encoded'
 		);
 
-		$data = json_decode($this->body, $assoc, $depth, $options);
+		$data = json_decode($this->body, $assoc);
 
-		if (JSON_ERROR_NONE !== json_last_error()) {
-			$last_error = json_last_error();
-			$error = isset($json_errors[$last_error]) ? $json_errors[$last_error] : 'Unknown error';
-			throw new Requests_Exception('Unable to parse JSON data: ' . $error, 'response.invalid', $this);
+		if (function_exists('json_last_error')) {
+			if (JSON_ERROR_NONE !== json_last_error()) {
+				$last_error = json_last_error();
+				$error = isset($json_errors[$last_error]) ? $json_errors[$last_error] : 'Unknown error';
+				throw new Requests_Exception('Unable to parse JSON data: ' . $error, 'response.invalid', $this);
+			}
 		}
+		elseif ($data === null) {
+			throw new Requests_Exception('Unable to parse JSON data.', 'response.invalid', $this);
+		}
+
 
 		return $data;
 	}
