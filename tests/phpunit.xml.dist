@@ -16,6 +16,7 @@
 			<file>IDNAEncoder.php</file>
 			<file>IRI.php</file>
 			<file>Requests.php</file>
+			<file>Response.php</file>
 			<file>Response/Headers.php</file>
 			<file>Session.php</file>
 			<file>SSL.php</file>
