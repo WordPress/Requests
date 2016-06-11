@@ -33,7 +33,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	/**
 	 * Information on the current request
 	 *
-	 * @var array cURL information array, see {@see http://php.net/curl_getinfo}
+	 * @var array cURL information array, see {@see https://secure.php.net/curl_getinfo}
 	 */
 	public $info;
 
@@ -176,7 +176,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		$this->process_response($response, $options);
 
-		// Need to remove the $this reference from the curl handle. 
+		// Need to remove the $this reference from the curl handle.
 		// Otherwise Requests_Transport_cURL wont be garbage collected and the curl_close() will never be called.
 		curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, null);
 		curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, null);
@@ -481,7 +481,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * Format a URL given GET data
 	 *
 	 * @param string $url
-	 * @param array|object $data Data to build query using, see {@see http://php.net/http_build_query}
+	 * @param array|object $data Data to build query using, see {@see https://secure.php.net/http_build_query}
 	 * @return string URL with data
 	 */
 	protected static function format_get($url, $data) {
