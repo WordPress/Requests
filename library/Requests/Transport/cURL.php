@@ -353,7 +353,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		// DNS resolver (getaddrinfo). There's no way to detect which DNS
 		// resolver is being used from our end, so we need to round up
 		// regardless of the supplied timeout.
-		$timeout = min($options['timeout'], 1);
+		$timeout = max($options['timeout'], 1);
 
 		if (is_int($timeout) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($timeout));
