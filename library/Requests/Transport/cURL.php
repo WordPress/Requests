@@ -349,11 +349,17 @@ class Requests_Transport_cURL implements Requests_Transport {
 				break;
 		}
 
-		if (is_int($options['timeout']) || $this->version < self::CURL_7_16_2) {
-			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($options['timeout']));
+		// cURL requires a minimum timeout of 1 second when using the system
+		// DNS resolver (getaddrinfo). There's no way to detect which DNS
+		// resolver is being used from our end, so we need to round up
+		// regardless of the supplied timeout.
+		$timeout = min($options['timeout'], 1);
+
+		if (is_int($timeout) || $this->version < self::CURL_7_16_2) {
+			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($timeout));
 		}
 		else {
-			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($options['timeout'] * 1000));
+			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($timeout * 1000));
 		}
 
 		if (is_int($options['connect_timeout']) || $this->version < self::CURL_7_16_2) {
