@@ -790,7 +790,7 @@ class Requests {
 	 * @return array List of headers
 	 */
 	public static function flatten($array) {
-		if(empty($array)){
+		if (empty($array)) {
 			return null;
 		}
 		$return = array();
