@@ -790,9 +790,6 @@ class Requests {
 	 * @return array List of headers
 	 */
 	public static function flatten($array) {
-		if (empty($array)) {
-			return null;
-		}
 		$return = array();
 		foreach ($array as $key => $value) {
 			$return[] = sprintf('%s: %s', $key, $value);
