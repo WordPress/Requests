@@ -575,7 +575,7 @@ class Requests {
 			$options['auth']->register($options['hooks']);
 		}
 
-		if (!empty($options['proxy'])) {
+		if (is_string($options['proxy']) || is_array($options['proxy'])) {
 			$options['proxy'] = new Requests_Proxy_HTTP($options['proxy']);
 		}
 		if ($options['proxy'] !== false) {
