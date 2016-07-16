@@ -79,7 +79,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->checkProxyAvailable();
 
 		$options = array(
-			'proxy' => REQUESTS_HTTP_PROXY,
+			'proxy' => new Requests_Proxy_HTTP(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
