@@ -181,6 +181,88 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['form']);
 	}
 
+	public function streamProvider() {
+		$streams = array();
+
+		// Regular stream
+		$contents = file_get_contents(__FILE__);
+		$stream = fopen(__FILE__, 'r');
+		$streams[] = array($stream, $contents, strlen($contents));
+
+		// In-memory stream
+		$string = "Hello! \xF0\x9F\x92\xA9";
+		$stream = fopen('php://memory', 'r+');
+		fwrite($stream, $string);
+
+		// Reset for reading
+		rewind($stream);
+		$streams[] = array($stream, $string, strlen($string));
+
+		return $streams;
+	}
+
+	/**
+	 * @dataProvider streamProvider
+	 */
+	public function testPOSTWithStream($stream, $expected_data, $expected_length) {
+		$request = Requests::post(httpbin('/post'), array(), $stream, $this->getOptions());
+		fclose($stream);
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals($expected_data, $result['data']);
+
+		// Check the length we sent
+		$sent_headers = new Requests_Utility_CaseInsensitiveDictionary($result['headers']);
+		$this->assertEquals($expected_length, $sent_headers['Content-Length']);
+	}
+
+	public function testPOSTWithInvalidStream() {
+		// Register our wrapper
+		stream_wrapper_register('requeststestvar', 'RequestsTest_VariableStream');
+
+		$data = base64_encode('hello');
+		$stream = fopen('requeststestvar://', 'r+');
+		stream_wrapper_unregister('requeststestvar');
+
+		fwrite($stream, 'Hello!');
+		rewind($stream);
+
+		// This should fail, as the stream doesn't support stat
+		$this->setExpectedException('Requests_Exception', 'Body stream resource does not support stat.');
+
+		$request = Requests::post(httpbin('/post'), array(), $stream, $this->getOptions());
+		fclose($stream);
+	}
+
+	public function testPOSTStreamInQuery() {
+		$stream = fopen('php://memory', 'r');
+		$options = array(
+			// Attempt to use the stream for query data
+			'data_format' => 'query',
+		);
+
+		// This should fail, as streams can't be used for query data
+		$this->setExpectedException('Requests_Exception', 'Streams can only be sent in the request body.');
+
+		$request = Requests::post(httpbin('/post'), array(), $stream, $this->getOptions($options));
+	}
+
+	public function testPOSTWithInvalidResource() {
+		// Use a socket stream instead of a file
+		$stream = socket_create(AF_UNIX, SOCK_STREAM, 0);
+
+		// This should fail, as the resource isn't a stream
+		$this->setExpectedException('Requests_Exception', 'Invalid stream resource for request body.');
+
+		// https://github.com/facebook/hhvm/issues/4036
+		if (defined('HHVM_VERSION')) {
+			$this->setExpectedException('Requests_Exception', 'Body stream resource does not support stat.');
+		}
+
+		$request = Requests::post(httpbin('/post'), array(), $stream, $this->getOptions());
+	}
+
 	public function testRawPUT() {
 		$data = 'test';
 		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
@@ -209,6 +291,22 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		$result = json_decode($request->body, true);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+	}
+
+	/**
+	 * @dataProvider streamProvider
+	 */
+	public function testPUTWithStream($stream, $expected_data, $expected_length) {
+		$request = Requests::put(httpbin('/put'), array(), $stream, $this->getOptions());
+		fclose($stream);
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals($expected_data, $result['data']);
+
+		// Check the length we sent
+		$sent_headers = new Requests_Utility_CaseInsensitiveDictionary($result['headers']);
+		$this->assertEquals($expected_length, $sent_headers['Content-Length']);
 	}
 
 	public function testRawPATCH() {

@@ -609,6 +609,16 @@ class Requests {
 				$options['data_format'] = 'body';
 			}
 		}
+
+		// Check the data stream is valid
+		if (is_resource($data)) {
+			if ($options['data_format'] !== 'body') {
+				throw new Requests_Exception('Streams can only be sent in the request body.', 'requests.stream_as_query', $data);
+			}
+			if (get_resource_type($data) !== 'stream') {
+				throw new Requests_Exception('Invalid stream resource for request body.', 'requests.invalid_stream', $data);
+			}
+		}
 	}
 
 	/**

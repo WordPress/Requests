@@ -35,6 +35,13 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	public $info;
 
 	/**
+	 * Request body to send.
+	 *
+	 * @var stream|string|null
+	 */
+	protected $request_body = null;
+
+	/**
 	 * What's the maximum number of bytes we should keep?
 	 *
 	 * @var int|bool Byte count, or false if no limit.
@@ -138,7 +145,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		if ($data_format === 'query') {
 			$path = self::format_get($url_parts, $data);
-			$data = '';
+			$data = null;
 		}
 		else {
 			$path = self::format_get($url_parts, array());
@@ -146,27 +153,11 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
 
-		$request_body = '';
+		$this->request_body = '';
 		$out = sprintf("%s %s HTTP/%.1f\r\n", $options['type'], $path, $options['protocol_version']);
 
-		if ($options['type'] !== Requests::TRACE) {
-			if (is_array($data)) {
-				$request_body = http_build_query($data, null, '&');
-			}
-			else {
-				$request_body = $data;
-			}
-
-			if (!empty($data)) {
-				if (!isset($case_insensitive_headers['Content-Length'])) {
-					$headers['Content-Length'] = strlen($request_body);
-				}
-
-				if (!isset($case_insensitive_headers['Content-Type'])) {
-					$headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-				}
-			}
-		}
+		$body_headers = $this->prepare_body($data, $case_insensitive_headers, $options);
+		$headers = array_merge($headers, $body_headers);
 
 		if (!isset($case_insensitive_headers['Host'])) {
 			$out .= sprintf('Host: %s', $url_parts['host']);
@@ -202,11 +193,16 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$out .= "Connection: Close\r\n";
 		}
 
-		$out .= "\r\n" . $request_body;
+		$out .= "\r\n";
+		if (is_string($this->request_body)) {
+			$out .= $this->request_body;
+		}
 
 		$options['hooks']->dispatch('fsockopen.before_send', array(&$out));
 
 		fwrite($socket, $out);
+		$this->send_body($socket);
+
 		$options['hooks']->dispatch('fsockopen.after_send', array($out));
 
 		if (!$options['blocking']) {
@@ -315,6 +311,69 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 
 		return $responses;
+	}
+
+	/**
+	 * Prepare the body data to send.
+	 *
+	 * @param string|resource|null $data Data as a string, stream resource, or null.
+	 * @param array|Requests_Utility_CaseInsensitiveDictionary $headers Headers set on the request.
+	 * @param array $options Options set on the request.
+	 * @return array Extra headers to add to the request.
+	 */
+	protected function prepare_body($data, $headers, $options) {
+		if (empty($data)) {
+			return array();
+		}
+
+		$body_headers = array();
+		if ($options['type'] !== Requests::TRACE) {
+			if (is_array($data)) {
+				$this->request_body = http_build_query($data, null, '&');
+				$length = strlen($this->request_body);
+			}
+			elseif (is_resource($data)) {
+				$this->request_body = $data;
+				$stat = fstat($data);
+				if (!$stat) {
+					throw new Requests_Exception('Body stream resource does not support stat.', 'requests.stream_no_stat', $stat);
+				}
+				$length = $stat['size'];
+			}
+			else {
+				$this->request_body = $data;
+				$length = strlen($this->request_body);
+			}
+
+			if (!empty($data)) {
+				if (!isset($headers['Content-Length'])) {
+					$body_headers['Content-Length'] = $length;
+				}
+
+				if (!isset($headers['Content-Type'])) {
+					$body_headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+				}
+			}
+		}
+
+		return $body_headers;
+	}
+
+	/**
+	 * Send body data with the request.
+	 *
+	 * @param resource $stream Remote socket for the server.
+	 */
+	protected function send_body($stream) {
+		if (!is_resource($this->request_body)) {
+			// Already sent
+			return;
+		}
+
+		while (!feof($this->request_body)) {
+			$bytes = fread($this->request_body, Requests::BUFFER_SIZE);
+			fwrite($stream, $bytes);
+		}
 	}
 
 	/**
