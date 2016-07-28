@@ -347,6 +347,11 @@ class Requests_Transport_cURL implements Requests_Transport {
 			case Requests::TRACE:
 				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
 				break;
+			default:
+				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
+				if (!empty($data)) {
+					curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
+				}
 		}
 
 		// cURL requires a minimum timeout of 1 second when using the system

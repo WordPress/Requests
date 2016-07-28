@@ -268,6 +268,24 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
+	public function testPURGE() {
+		$request = Requests::request(httpbin('/purge'), array(), array(), 'PURGE', $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+	}
+
+	public function testPURGEWithData() {
+		$data = array(
+			'test' => 'true',
+			'test2' => 'test',
+		);
+		$request = Requests::request(httpbin('/purge'), array(), $data, 'PURGE', array_merge(array('data_format'=>'query'),$this->getOptions()));
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertEquals(httpbin('/purge?test=true&test2=test'), $result['url']);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+	}
+
 	public function testRedirects() {
 		$request = Requests::get(httpbin('/redirect/6'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
