@@ -15,6 +15,10 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 				"02\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
 				"abra\ncadabra\nall we got\n"
 			),
+			array(
+				"02;foo=bar;hello=world\r\nab\r\n04;foo=baz\r\nra\nc\r\n06;justfoo\r\nadabra\r\n0c\r\n\nall we got\n",
+				"abra\ncadabra\nall we got\n"
+			),
 		);
 	}
 
@@ -39,7 +43,7 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 	 */
 	public function testNotActuallyChunked() {
 		$transport = new MockTransport();
-		$transport->body = 'Hello! This is a non-chunked response!';
+		$transport->body = "Believe me\r\nthis looks chunked, but it isn't.";
 		$transport->chunked = true;
 
 		$options = array(
@@ -49,6 +53,7 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($transport->body, $response->body);
 	}
+
 
 	/**
 	 * Response says it's chunked and starts looking like it is, but turns out

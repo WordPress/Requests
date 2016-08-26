@@ -749,7 +749,7 @@ class Requests {
 	 * @return string Decoded body
 	 */
 	protected static function decode_chunked($data) {
-		if (!preg_match('/^([0-9a-f]+)[^\r\n]*\r\n/i', trim($data))) {
+		if (!preg_match('/^([0-9a-f]+)(?:;[^\r\n]*)*\r\n/i', trim($data))) {
 			return $data;
 		}
 
@@ -757,7 +757,7 @@ class Requests {
 		$encoded = $data;
 
 		while (true) {
-			$is_chunked = (bool) preg_match('/^([0-9a-f]+)[^\r\n]*\r\n/i', $encoded, $matches);
+			$is_chunked = (bool) preg_match('/^([0-9a-f]+)(?:;[^\r\n]*)*\r\n/i', $encoded, $matches);
 			if (!$is_chunked) {
 				// Looks like it's not chunked after all
 				return $data;
