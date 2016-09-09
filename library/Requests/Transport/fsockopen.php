@@ -97,6 +97,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			}
 
 			if (isset($options['verifyname']) && $options['verifyname'] === false) {
+				$context_options['verify_peer_name'] = false;
 				$verifyname = false;
 			}
 
