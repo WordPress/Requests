@@ -333,11 +333,6 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$this->assertFalse(Requests_IRI::absolutize('://not a URL', '../'));
 	}
 
-	public function testInvalidAbsolutizeRelative()
-	{
-		$this->assertFalse(Requests_IRI::absolutize('http://example.com/', 'http://example.com//not a URL'));
-	}
-
 	public function testFullGamut()
 	{
 		$iri = new Requests_IRI();
