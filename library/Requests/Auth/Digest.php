@@ -1,11 +1,21 @@
 <?php
+/**
+ * Digest Authentication provider
+ *
+ * @package Requests
+ * @subpackage Authentication
+ */
 
 /**
- * Created by PhpStorm.
- * User: jaredchu
- * Date: 10/2/16
- * Time: 11:40 AM
+ * Digest Authentication provider
+ *
+ * Provides a handler for Digest HTTP authentication via the Authorization
+ * header.
+ *
+ * @package Requests
+ * @subpackage Authentication
  */
+
 class Requests_Auth_Digest extends Requests_Auth_Basic {
 
 	/**
