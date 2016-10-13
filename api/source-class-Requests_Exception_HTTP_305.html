@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
 
-	<title>Deprecated | Requests 1.6 API Documentation</title>
+	<title>File Requests/Exception/HTTP/305.php | Requests 1.7 API Documentation</title>
 
-	<script type="text/javascript" src="resources/combined.js?2148508009"></script>
-	<script type="text/javascript" src="elementlist.js?612500304"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
 </head>
 
@@ -19,27 +17,49 @@
 
 
 		<div id="groups">
-			<h3>Packages</h3>
+				<h3>Packages</h3>
 			<ul>
-				<li class="main"><a href="package-Requests.html">Requests<span></span></a>
+				<li class="main">
+					<a href="package-Requests.html">
+						Requests<span></span>
+					</a>
+
 						<ul>
-				<li class="main"><a href="package-Requests.Authentication.html">Authentication</a>
+				<li class="main">
+					<a href="package-Requests.Authentication.html">
+						Authentication					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Cookies.html">Cookies</a>
+				<li class="main">
+					<a href="package-Requests.Cookies.html">
+						Cookies					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Proxy.html">Proxy</a>
+				<li class="main">
+					<a href="package-Requests.Proxy.html">
+						Proxy					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Session.html">Session</a>
+				<li class="main">
+					<a href="package-Requests.Session.html">
+						Session					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Transport.html">Transport</a>
+				<li class="main">
+					<a href="package-Requests.Transport.html">
+						Transport					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Utilities.html">Utilities</a>
+				<li class="main">
+					<a href="package-Requests.Utilities.html">
+						Utilities					</a>
+
 						</li>
 							</ul></li>
 			</ul>
 		</div>
 
-		<hr />
+		<hr>
 
 
 		<div id="elements">
@@ -77,6 +97,9 @@
 			<ul>
 				<li><a href="class-Requests_Exception.html">Requests_Exception</a></li>
 				<li><a href="class-Requests_Exception_HTTP.html">Requests_Exception_HTTP</a></li>
+				<li><a href="class-Requests_Exception_HTTP_304.html">Requests_Exception_HTTP_304</a></li>
+				<li><a href="class-Requests_Exception_HTTP_305.html">Requests_Exception_HTTP_305</a></li>
+				<li><a href="class-Requests_Exception_HTTP_306.html">Requests_Exception_HTTP_306</a></li>
 				<li><a href="class-Requests_Exception_HTTP_400.html">Requests_Exception_HTTP_400</a></li>
 				<li><a href="class-Requests_Exception_HTTP_401.html">Requests_Exception_HTTP_401</a></li>
 				<li><a href="class-Requests_Exception_HTTP_402.html">Requests_Exception_HTTP_402</a></li>
@@ -107,6 +130,8 @@
 				<li><a href="class-Requests_Exception_HTTP_505.html">Requests_Exception_HTTP_505</a></li>
 				<li><a href="class-Requests_Exception_HTTP_511.html">Requests_Exception_HTTP_511</a></li>
 				<li><a href="class-Requests_Exception_HTTP_Unknown.html">Requests_Exception_HTTP_Unknown</a></li>
+				<li><a href="class-Requests_Exception_Transport.html">Requests_Exception_Transport</a></li>
+				<li><a href="class-Requests_Exception_Transport_cURL.html">Requests_Exception_Transport_cURL</a></li>
 			</ul>
 
 
@@ -119,10 +144,9 @@
 <div id="right">
 <div id="rightInner">
 	<form id="search">
-		<input type="hidden" name="cx" value="" />
-		<input type="hidden" name="ie" value="UTF-8" />
-		<input type="text" name="q" class="text" />
-		<input type="submit" value="Search" />
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
 	</form>
 
 	<div id="navigation">
@@ -139,41 +163,51 @@
 			<li>
 				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
 			</li>
-			<li class="active">
-<span>Deprecated</span>			</li>
+				<li>
+					<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+						<span>Deprecated</span>
+					</a>
+				</li>
 		</ul>
 		<ul>
 		</ul>
 	</div>
 
-<div id="content">
-	<h1>Deprecated</h1>
-
-
-
-
-
-
-	<table class="summary" id="methods">
-	<caption>Methods summary</caption>
-	<tr>
-		<td class="name"><a href="class-Requests.html">Requests</a></td>
-		<td class="name"><code><a href="class-Requests.html#_flattern">flattern()</a></code></td>
-		<td>
-					Misspelling of <code><a href="class-Requests.html#_flatten">Requests::flatten()</a></code>
-<!-- by Texy2! --><br />
-		</td>
-	</tr>
-	</table>
-
-
-
-</div>
+<pre><code><span id="1" class="l"><a href="#1"> 1: </a><span class="xlang">&lt;?php</span>
+</span><span id="2" class="l"><a href="#2"> 2: </a><span class="php-comment">/**
+</span></span><span id="3" class="l"><a href="#3"> 3: </a><span class="php-comment"> * Exception for 305 Use Proxy responses
+</span></span><span id="4" class="l"><a href="#4"> 4: </a><span class="php-comment"> *
+</span></span><span id="5" class="l"><a href="#5"> 5: </a><span class="php-comment"> * @package Requests
+</span></span><span id="6" class="l"><a href="#6"> 6: </a><span class="php-comment"> */</span>
+</span><span id="7" class="l"><a href="#7"> 7: </a>
+</span><span id="8" class="l"><a href="#8"> 8: </a><span class="php-comment">/**
+</span></span><span id="9" class="l"><a href="#9"> 9: </a><span class="php-comment"> * Exception for 305 Use Proxy responses
+</span></span><span id="10" class="l"><a href="#10">10: </a><span class="php-comment"> *
+</span></span><span id="11" class="l"><a href="#11">11: </a><span class="php-comment"> * @package Requests
+</span></span><span id="12" class="l"><a href="#12">12: </a><span class="php-comment"> */</span>
+</span><span id="13" class="l"><a href="#13">13: </a><span class="php-keyword1">class</span> Requests_Exception_HTTP_305 <span class="php-keyword1">extends</span> Requests_Exception_HTTP {
+</span><span id="14" class="l"><a href="#14">14: </a>    <span class="php-comment">/**
+</span></span><span id="15" class="l"><a href="#15">15: </a><span class="php-comment">     * HTTP status code
+</span></span><span id="16" class="l"><a href="#16">16: </a><span class="php-comment">     *
+</span></span><span id="17" class="l"><a href="#17">17: </a><span class="php-comment">     * @var integer
+</span></span><span id="18" class="l"><a href="#18">18: </a><span class="php-comment">     */</span>
+</span><span id="19" class="l"><a href="#19">19: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$code</span> = <span class="php-num">305</span>;
+</span><span id="20" class="l"><a href="#20">20: </a>
+</span><span id="21" class="l"><a href="#21">21: </a>    <span class="php-comment">/**
+</span></span><span id="22" class="l"><a href="#22">22: </a><span class="php-comment">     * Reason phrase
+</span></span><span id="23" class="l"><a href="#23">23: </a><span class="php-comment">     *
+</span></span><span id="24" class="l"><a href="#24">24: </a><span class="php-comment">     * @var string
+</span></span><span id="25" class="l"><a href="#25">25: </a><span class="php-comment">     */</span>
+</span><span id="26" class="l"><a href="#26">26: </a>    <span class="php-keyword1">protected</span> <span class="php-var">$reason</span> = <span class="php-quote">'Use Proxy'</span>;
+</span><span id="27" class="l"><a href="#27">27: </a>}
+</span><span id="28" class="l"><a href="#28">28: </a></span></code></pre>
 
 	<div id="footer">
-		Requests 1.6 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+		Requests 1.7 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
+<script src="resources/combined.js?dfb849e5a0593a324b6acc7cf1958a4533aaa119"></script>
+<script src="elementlist.js?aa9ec570e6976e98ef84950ea5d12015b7befca8"></script>
 </body>
 </html>

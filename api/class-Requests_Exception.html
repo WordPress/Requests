@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
+	<meta charset="utf-8">
 
-	<title>Class Requests_Exception | Requests 1.6 API Documentation</title>
+	<title>Class Requests_Exception | Requests 1.7 API Documentation</title>
 
-	<script type="text/javascript" src="resources/combined.js?2148508009"></script>
-	<script type="text/javascript" src="elementlist.js?612500304"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
 </head>
 
@@ -19,27 +16,49 @@
 
 
 		<div id="groups">
-			<h3>Packages</h3>
+				<h3>Packages</h3>
 			<ul>
-				<li class="active main"><a href="package-Requests.html">Requests<span></span></a>
+				<li class="main">
+					<a href="package-Requests.html">
+						Requests<span></span>
+					</a>
+
 						<ul>
-				<li class="main"><a href="package-Requests.Authentication.html">Authentication</a>
+				<li class="main">
+					<a href="package-Requests.Authentication.html">
+						Authentication					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Cookies.html">Cookies</a>
+				<li class="main">
+					<a href="package-Requests.Cookies.html">
+						Cookies					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Proxy.html">Proxy</a>
+				<li class="main">
+					<a href="package-Requests.Proxy.html">
+						Proxy					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Session.html">Session</a>
+				<li class="main">
+					<a href="package-Requests.Session.html">
+						Session					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Transport.html">Transport</a>
+				<li class="main">
+					<a href="package-Requests.Transport.html">
+						Transport					</a>
+
 						</li>
-				<li class="main"><a href="package-Requests.Utilities.html">Utilities</a>
+				<li class="main">
+					<a href="package-Requests.Utilities.html">
+						Utilities					</a>
+
 						</li>
 							</ul></li>
 			</ul>
 		</div>
 
-		<hr />
+		<hr>
 
 
 		<div id="elements">
@@ -56,6 +75,9 @@
 			<ul>
 				<li class="active"><a href="class-Requests_Exception.html">Requests_Exception</a></li>
 				<li><a href="class-Requests_Exception_HTTP.html">Requests_Exception_HTTP</a></li>
+				<li><a href="class-Requests_Exception_HTTP_304.html">Requests_Exception_HTTP_304</a></li>
+				<li><a href="class-Requests_Exception_HTTP_305.html">Requests_Exception_HTTP_305</a></li>
+				<li><a href="class-Requests_Exception_HTTP_306.html">Requests_Exception_HTTP_306</a></li>
 				<li><a href="class-Requests_Exception_HTTP_400.html">Requests_Exception_HTTP_400</a></li>
 				<li><a href="class-Requests_Exception_HTTP_401.html">Requests_Exception_HTTP_401</a></li>
 				<li><a href="class-Requests_Exception_HTTP_402.html">Requests_Exception_HTTP_402</a></li>
@@ -86,6 +108,8 @@
 				<li><a href="class-Requests_Exception_HTTP_505.html">Requests_Exception_HTTP_505</a></li>
 				<li><a href="class-Requests_Exception_HTTP_511.html">Requests_Exception_HTTP_511</a></li>
 				<li><a href="class-Requests_Exception_HTTP_Unknown.html">Requests_Exception_HTTP_Unknown</a></li>
+				<li><a href="class-Requests_Exception_Transport.html">Requests_Exception_Transport</a></li>
+				<li><a href="class-Requests_Exception_Transport_cURL.html">Requests_Exception_Transport_cURL</a></li>
 			</ul>
 
 
@@ -98,10 +122,9 @@
 <div id="right">
 <div id="rightInner">
 	<form id="search">
-		<input type="hidden" name="cx" value="" />
-		<input type="hidden" name="ie" value="UTF-8" />
-		<input type="text" name="q" class="text" />
-		<input type="submit" value="Search" />
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
 	</form>
 
 	<div id="navigation">
@@ -110,8 +133,7 @@
 				<a href="index.html" title="Overview"><span>Overview</span></a>
 			</li>
 			<li>
-				<a href="package-Requests.html" title="Summary of Requests"><span>Package</span></a>
-			</li>
+<span>Package</span>			</li>
 			<li class="active">
 <span>Class</span>			</li>
 		</ul>
@@ -119,9 +141,11 @@
 			<li>
 				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
 			</li>
-			<li>
-				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
-			</li>
+				<li>
+					<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+						<span>Deprecated</span>
+					</a>
+				</li>
 		</ul>
 		<ul>
 		</ul>
@@ -132,9 +156,7 @@
 
 
 	<div class="description">
-	
-<p>Exception for HTTP requests</p>
-
+	<p>Exception for HTTP requests</p>
 	</div>
 
 	<dl class="tree">
@@ -144,7 +166,7 @@ Exception
 			
 		</dd>
 		<dd style="padding-left:30px">
-			<img src="resources/inherit.png" alt="Extended by" />
+			<img src="resources/inherit.png" alt="Extended by">
 <b><span>Requests_Exception</span></b>			
 			
 			
@@ -154,13 +176,17 @@ Exception
 
 	<div>
 		<h4>Direct known subclasses</h4>
-			<a href="class-Requests_Exception_HTTP.html">Requests_Exception_HTTP</a>
+			<a href="class-Requests_Exception_HTTP.html">Requests_Exception_HTTP</a>, 
+			<a href="class-Requests_Exception_Transport.html">Requests_Exception_Transport</a>
 	</div>
 
 	<div>
 		<h4>Indirect known subclasses</h4>
-			<a href="class-Requests_Exception_HTTP_400.html">Requests_Exception_HTTP_400</a>, 
-			<a href="class-Requests_Exception_HTTP_401.html">Requests_Exception_HTTP_401</a>, 
+			<a href="class-Requests_Exception_HTTP_304.html">Requests_Exception_HTTP_304</a>, 
+			<a href="class-Requests_Exception_HTTP_305.html">Requests_Exception_HTTP_305</a>, 
+			<a href="class-Requests_Exception_HTTP_407.html">Requests_Exception_HTTP_407</a>, 
+			<a href="class-Requests_Exception_HTTP_408.html">Requests_Exception_HTTP_408</a>, 
+			<a href="class-Requests_Exception_HTTP_409.html">Requests_Exception_HTTP_409</a>, 
 			<a href="class-Requests_Exception_HTTP_410.html">Requests_Exception_HTTP_410</a>, 
 			<a href="class-Requests_Exception_HTTP_411.html">Requests_Exception_HTTP_411</a>, 
 			<a href="class-Requests_Exception_HTTP_412.html">Requests_Exception_HTTP_412</a>, 
@@ -168,10 +194,10 @@ Exception
 			<a href="class-Requests_Exception_HTTP_414.html">Requests_Exception_HTTP_414</a>, 
 			<a href="class-Requests_Exception_HTTP_415.html">Requests_Exception_HTTP_415</a>, 
 			<a href="class-Requests_Exception_HTTP_416.html">Requests_Exception_HTTP_416</a>, 
+			<a href="class-Requests_Exception_HTTP_306.html">Requests_Exception_HTTP_306</a>, 
 			<a href="class-Requests_Exception_HTTP_417.html">Requests_Exception_HTTP_417</a>, 
 			<a href="class-Requests_Exception_HTTP_418.html">Requests_Exception_HTTP_418</a>, 
 			<a href="class-Requests_Exception_HTTP_428.html">Requests_Exception_HTTP_428</a>, 
-			<a href="class-Requests_Exception_HTTP_402.html">Requests_Exception_HTTP_402</a>, 
 			<a href="class-Requests_Exception_HTTP_429.html">Requests_Exception_HTTP_429</a>, 
 			<a href="class-Requests_Exception_HTTP_431.html">Requests_Exception_HTTP_431</a>, 
 			<a href="class-Requests_Exception_HTTP_500.html">Requests_Exception_HTTP_500</a>, 
@@ -179,16 +205,17 @@ Exception
 			<a href="class-Requests_Exception_HTTP_502.html">Requests_Exception_HTTP_502</a>, 
 			<a href="class-Requests_Exception_HTTP_503.html">Requests_Exception_HTTP_503</a>, 
 			<a href="class-Requests_Exception_HTTP_504.html">Requests_Exception_HTTP_504</a>, 
+			<a href="class-Requests_Exception_HTTP_400.html">Requests_Exception_HTTP_400</a>, 
 			<a href="class-Requests_Exception_HTTP_505.html">Requests_Exception_HTTP_505</a>, 
 			<a href="class-Requests_Exception_HTTP_511.html">Requests_Exception_HTTP_511</a>, 
 			<a href="class-Requests_Exception_HTTP_Unknown.html">Requests_Exception_HTTP_Unknown</a>, 
+			<a href="class-Requests_Exception_Transport_cURL.html">Requests_Exception_Transport_cURL</a>, 
+			<a href="class-Requests_Exception_HTTP_401.html">Requests_Exception_HTTP_401</a>, 
+			<a href="class-Requests_Exception_HTTP_402.html">Requests_Exception_HTTP_402</a>, 
 			<a href="class-Requests_Exception_HTTP_403.html">Requests_Exception_HTTP_403</a>, 
 			<a href="class-Requests_Exception_HTTP_404.html">Requests_Exception_HTTP_404</a>, 
 			<a href="class-Requests_Exception_HTTP_405.html">Requests_Exception_HTTP_405</a>, 
-			<a href="class-Requests_Exception_HTTP_406.html">Requests_Exception_HTTP_406</a>, 
-			<a href="class-Requests_Exception_HTTP_407.html">Requests_Exception_HTTP_407</a>, 
-			<a href="class-Requests_Exception_HTTP_408.html">Requests_Exception_HTTP_408</a>, 
-			<a href="class-Requests_Exception_HTTP_409.html">Requests_Exception_HTTP_409</a>
+			<a href="class-Requests_Exception_HTTP_406.html">Requests_Exception_HTTP_406</a>
 	</div>
 
 
@@ -199,19 +226,21 @@ Exception
 		
 		
 		
-		<b>Package:</b> <a href="package-Requests.html">Requests</a><br />
+		<b>Package:</b> <a href="package-Requests.html">Requests</a><br>
 
-		<b>Located at</b> <a href="source-class-Requests_Exception.html#8-62" title="Go to source code">Requests/Exception.php</a><br />
+			<b>Located at</b> <a href="source-class-Requests_Exception.html#8-62" title="Go to source code">Requests/Exception.php</a>
+		<br>
 	</div>
 
 
 
-	<table class="summary" id="methods">
+	<table class="summary methods" id="methods">
 	<caption>Methods summary</caption>
 	<tr data-order="__construct" id="___construct">
 
 		<td class="attributes"><code>
 			 public 
+
 			
 			
 			</code>
@@ -222,27 +251,23 @@ Exception
 		<code><a href="source-class-Requests_Exception.html#28-41" title="Go to source code">__construct</a>( <span>string <var>$message</var></span>, <span>string <var>$type</var></span>, <span>mixed <var>$data</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$code</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
-			
-<p>Create a new exception</p>
-
+			<p>Create a new exception</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
-<p>Create a new exception</p>
-
+			<p>Create a new exception</p>
 
 
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 					<dt><var>$message</var></dt>
-					<dd><code>string</code><br>$message Exception message</dd>
+					<dd>Exception message</dd>
 					<dt><var>$type</var></dt>
-					<dd><code>string</code><br>$type Exception type</dd>
+					<dd>Exception type</dd>
 					<dt><var>$data</var></dt>
-					<dd><code>mixed</code><br>$data Associated data</dd>
+					<dd>Associated data</dd>
 					<dt><var>$code</var></dt>
-					<dd><code>integer</code><br>$code Exception numerical code, if applicable</dd>
+					<dd>Exception numerical code, if applicable</dd>
 				</dl></div>
 
 
@@ -258,6 +283,7 @@ Exception
 
 		<td class="attributes"><code>
 			 public 
+
 			string
 			
 			</code>
@@ -268,25 +294,21 @@ Exception
 		<code><a href="source-class-Requests_Exception.html#43-51" title="Go to source code">getType</a>( )</code>
 
 		<div class="description short">
-			
-<p>Like getCode(), but a string code.</p>
-
+			<p>Like getCode(), but a string code.</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
-<p>Like getCode(), but a string code.</p>
-
+			<p>Like getCode(), but a string code.</p>
 
 
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>string</code><br />
+					string
 				</div>
 
 
-				<h4>CodeCoverageIgnore</h4>
+				<h4>Codecoverageignore</h4>
 				<div class="list">
 				</div>
 
@@ -298,6 +320,7 @@ Exception
 
 		<td class="attributes"><code>
 			 public 
+
 			mixed
 			
 			</code>
@@ -308,25 +331,21 @@ Exception
 		<code><a href="source-class-Requests_Exception.html#53-61" title="Go to source code">getData</a>( )</code>
 
 		<div class="description short">
-			
-<p>Gives any relevant data</p>
-
+			<p>Gives any relevant data</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
-<p>Gives any relevant data</p>
-
+			<p>Gives any relevant data</p>
 
 
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>mixed</code><br />
+					mixed
 				</div>
 
 
-				<h4>CodeCoverageIgnore</h4>
+				<h4>Codecoverageignore</h4>
 				<div class="list">
 				</div>
 
@@ -362,7 +381,7 @@ getTraceAsString()
 
 
 
-	<table class="summary" id="properties">
+	<table class="summary properties" id="properties">
 	<caption>Properties summary</caption>
 	<tr data-order="type" id="$type">
 		<td class="attributes"><code>
@@ -372,24 +391,22 @@ getTraceAsString()
 
 		<td class="name">
 				<a href="source-class-Requests_Exception.html#14-19" title="Go to source code"><var>$type</var></a>
-		</td>
-		<td class="value"><code></code></td>
-		<td class="description"><div>
-			<a href="#$type" class="anchor">#</a>
 
 			<div class="description short">
-				
-<p>Type of exception</p>
-
+				<p>Type of exception</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
-<p>Type of exception</p>
-
+				<p>Type of exception</p>
 
 			</div>
-		</div></td>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$type" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
 	</tr>
 	<tr data-order="data" id="$data">
 		<td class="attributes"><code>
@@ -399,24 +416,22 @@ getTraceAsString()
 
 		<td class="name">
 				<a href="source-class-Requests_Exception.html#21-26" title="Go to source code"><var>$data</var></a>
-		</td>
-		<td class="value"><code></code></td>
-		<td class="description"><div>
-			<a href="#$data" class="anchor">#</a>
 
 			<div class="description short">
-				
-<p>Data associated with the exception</p>
-
+				<p>Data associated with the exception</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
-<p>Data associated with the exception</p>
-
+				<p>Data associated with the exception</p>
 
 			</div>
-		</div></td>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$data" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
 	</tr>
 	</table>
 
@@ -439,9 +454,11 @@ getTraceAsString()
 </div>
 
 	<div id="footer">
-		Requests 1.6 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+		Requests 1.7 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
 </body>
 </html>

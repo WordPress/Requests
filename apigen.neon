@@ -6,26 +6,20 @@ destination: './api/'
 exclude: []
 # Don't generate documentation for classes from file or directory with this mask
 skipDocPath: ''
-# Don't generate documentation for classes with this name prefix
-skipDocPrefix: ''
 # Character set of source files
 charset: ['UTF-8']
 # Main project name prefix
 main: 'Requests'
 
 # Title of generated documentation
-title: 'Requests 1.6 API Documentation'
+title: 'Requests 1.7 API Documentation'
 # Documentation base URL
 baseUrl: ''
 #templateConfig: 'F:\Projects\PHP\ApiGen\templates\simplepie\config.neon'
 # Google Custom Search ID
 googleCseId: ''
-# Google Custom Search label
-googleCseLabel: ''
 # Google Analytics tracking code
 googleAnalytics: ''
-# List of allowed HTML tags in documentation
-allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd, tt]
 
 # Generate documentation for methods and properties with given access level
 accessLevels: [public, protected]
@@ -43,18 +37,8 @@ todo: No
 sourceCode: Yes
 # Add a link to download documentation as a ZIP archive
 download: No
-# Save a checkstyle report of poorly documented elements into a file
-report: 'badreport'
 
-# Wipe out the destination directory first
-wipeout: Yes
 # Don't display scaning and generating messages
 quiet: No
-# Display progressbars
-progressbar: Yes
-# Use colors
-colors: No
-# Check for update
-updateCheck: Yes
 # Display additional information in case of an error
 debug: No
