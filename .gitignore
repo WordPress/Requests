@@ -4,3 +4,4 @@ tests/coverage/*
 # Ignore composer related files
 /composer.lock
 /vendor
+.idea/
