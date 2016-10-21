@@ -160,7 +160,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				$request_body = $data;
 			}
 
-			if (!empty($data)) {
+			if (!empty($data) || $options['type'] === Requests::POST) {
 				if (!isset($case_insensitive_headers['Content-Length'])) {
 					$headers['Content-Length'] = strlen($request_body);
 				}
