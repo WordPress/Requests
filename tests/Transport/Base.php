@@ -145,6 +145,15 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('test', $result['data']);
 	}
 
+	public function testEmptyPOST() {
+		$request = Requests::post(httpbin('/post'), array(), null, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		// Heroku appears to add this on incoming requests even if we don't send it
+		$this->assertArrayHasKey( 'content-length', $result['headers'] ); 
+	}
+
 	public function testFormPost() {
 		$data = 'test=true&test2=test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
