@@ -51,7 +51,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array('./g', 'http://a/b/c/g'),
 			array('g/', 'http://a/b/c/g/'),
 			array('/g', 'http://a/g'),
-			array('//g', 'http://g'),
+			array('//g', 'http://g/'),
 			array('?y', 'http://a/b/c/d;p?y'),
 			array('g?y', 'http://a/b/c/g?y'),
 			array('#s', 'http://a/b/c/d;p?q#s'),
@@ -66,8 +66,8 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array('..', 'http://a/b/'),
 			array('../', 'http://a/b/'),
 			array('../g', 'http://a/b/g'),
-			array('../..', 'http://a'),
-			array('../../', 'http://a'),
+			array('../..', 'http://a/'),
+			array('../../', 'http://a/'),
 			array('../../g', 'http://a/g'),
 			// Abnormal
 			array('../../../g', 'http://a/g'),
@@ -132,14 +132,14 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array('http://a/b', 'c', 'http://a/c'),
 			array('http://a/b/', "c\x0Ad", 'http://a/b/c%0Ad'),
 			array('http://a/b/', "c\x0A\x0B", 'http://a/b/c%0A%0B'),
-			array('http://a/b/c', '//0', 'http://0'),
+			array('http://a/b/c', '//0', 'http://0/'),
 			array('http://a/b/c', '0', 'http://a/b/0'),
 			array('http://a/b/c', '?0', 'http://a/b/c?0'),
 			array('http://a/b/c', '#0', 'http://a/b/c#0'),
 			array('http://0/b/c', 'd', 'http://0/b/d'),
 			array('http://a/b/c?0', 'd', 'http://a/b/d'),
 			array('http://a/b/c#0', 'd', 'http://a/b/d'),
-			array('http://example.com', '//example.net', 'http://example.net'),
+			array('http://example.com', '//example.net', 'http://example.net/'),
 			array('http:g', 'a', 'http:a'),
 		);
 	}
@@ -168,7 +168,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	{
 		return array(
 			array('http://example.com/', 'foo/111:bar', 'http://example.com/foo/111:bar'),
-			array('http://example.com/#foo', '', 'http://example.com'),
+			array('http://example.com/#foo', '', 'http://example.com/'),
 		);
 	}
 
@@ -201,38 +201,38 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array('example://A/', 'example://a/'),
 			array('example://a/', 'example://a/'),
 			array('example://%25A/', 'example://%25a/'),
-			array('HTTP://EXAMPLE.com/', 'http://example.com'),
-			array('http://example.com/', 'http://example.com'),
-			array('http://example.com:', 'http://example.com'),
-			array('http://example.com:80', 'http://example.com'),
-			array('http://@example.com', 'http://@example.com'),
-			array('http://', 'http://'),
-			array('http://example.com?', 'http://example.com?'),
-			array('http://example.com#', 'http://example.com#'),
-			array('https://example.com/', 'https://example.com'),
-			array('https://example.com:', 'https://example.com'),
-			array('https://@example.com', 'https://@example.com'),
-			array('https://example.com?', 'https://example.com?'),
-			array('https://example.com#', 'https://example.com#'),
+			array('HTTP://EXAMPLE.com/', 'http://example.com/'),
+			array('http://example.com/', 'http://example.com/'),
+			array('http://example.com:', 'http://example.com/'),
+			array('http://example.com:80', 'http://example.com/'),
+			array('http://@example.com', 'http://@example.com/'),
+			array('http://', 'http:///'),
+			array('http://example.com?', 'http://example.com/?'),
+			array('http://example.com#', 'http://example.com/#'),
+			array('https://example.com/', 'https://example.com/'),
+			array('https://example.com:', 'https://example.com/'),
+			array('https://@example.com', 'https://@example.com/'),
+			array('https://example.com?', 'https://example.com/?'),
+			array('https://example.com#', 'https://example.com/#'),
 			array('file://localhost/foobar', 'file:/foobar'),
-			array('http://[0:0:0:0:0:0:0:1]', 'http://[::1]'),
-			array('http://[2001:db8:85a3:0000:0000:8a2e:370:7334]', 'http://[2001:db8:85a3::8a2e:370:7334]'),
-			array('http://[0:0:0:0:0:ffff:c0a8:a01]', 'http://[::ffff:c0a8:a01]'),
-			array('http://[ffff:0:0:0:0:0:0:0]', 'http://[ffff::]'),
-			array('http://[::ffff:192.0.2.128]', 'http://[::ffff:192.0.2.128]'),
+			array('http://[0:0:0:0:0:0:0:1]', 'http://[::1]/'),
+			array('http://[2001:db8:85a3:0000:0000:8a2e:370:7334]', 'http://[2001:db8:85a3::8a2e:370:7334]/'),
+			array('http://[0:0:0:0:0:ffff:c0a8:a01]', 'http://[::ffff:c0a8:a01]/'),
+			array('http://[ffff:0:0:0:0:0:0:0]', 'http://[ffff::]/'),
+			array('http://[::ffff:192.0.2.128]', 'http://[::ffff:192.0.2.128]/'),
 			array('http://[invalid]', 'http:'),
-			array('http://[0:0:0:0:0:0:0:1]:', 'http://[::1]'),
-			array('http://[0:0:0:0:0:0:0:1]:80', 'http://[::1]'),
-			array('http://[0:0:0:0:0:0:0:1]:1234', 'http://[::1]:1234'),
+			array('http://[0:0:0:0:0:0:0:1]:', 'http://[::1]/'),
+			array('http://[0:0:0:0:0:0:0:1]:80', 'http://[::1]/'),
+			array('http://[0:0:0:0:0:0:0:1]:1234', 'http://[::1]:1234/'),
 			// Punycode decoding helps with normalisation of IRIs, but is not
 			// needed for URIs, so we don't really care about it for Requests
-			//array('http://xn--tdali-d8a8w.lv', 'http://tūdaliņ.lv'),
-			//array('http://t%C5%ABdali%C5%86.lv', 'http://tūdaliņ.lv'),
-			array('http://Aa@example.com', 'http://Aa@example.com'),
-			array('http://example.com?Aa', 'http://example.com?Aa'),
+			//array('http://xn--tdali-d8a8w.lv', 'http://tūdaliņ.lv/'),
+			//array('http://t%C5%ABdali%C5%86.lv', 'http://tūdaliņ.lv/'),
+			array('http://Aa@example.com', 'http://Aa@example.com/'),
+			array('http://example.com?Aa', 'http://example.com/?Aa'),
 			array('http://example.com/Aa', 'http://example.com/Aa'),
-			array('http://example.com#Aa', 'http://example.com#Aa'),
-			array('http://[0:0:0:0:0:0:0:0]', 'http://[::]'),
+			array('http://example.com#Aa', 'http://example.com/#Aa'),
+			array('http://[0:0:0:0:0:0:0:0]', 'http://[::]/'),
 			array('http:.', 'http:'),
 			array('http:..', 'http:'),
 			array('http:./', 'http:'),
@@ -249,15 +249,15 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array("http://example.com/\xF3\xB0\x80\x80", 'http://example.com/%F3%B0%80%80'),
 			array("http://example.com/\xF3\xB0\x80\x80%00", 'http://example.com/%F3%B0%80%80%00'),
 			array("http://example.com/\xF3\xB0\x80\x80a", 'http://example.com/%F3%B0%80%80a'),
-			array("http://example.com?\xF3\xB0\x80\x80", "http://example.com?\xF3\xB0\x80\x80"),
-			array("http://example.com?\xF3\xB0\x80\x80%00", "http://example.com?\xF3\xB0\x80\x80%00"),
-			array("http://example.com?\xF3\xB0\x80\x80a", "http://example.com?\xF3\xB0\x80\x80a"),
+			array("http://example.com?\xF3\xB0\x80\x80", "http://example.com/?\xF3\xB0\x80\x80"),
+			array("http://example.com?\xF3\xB0\x80\x80%00", "http://example.com/?\xF3\xB0\x80\x80%00"),
+			array("http://example.com?\xF3\xB0\x80\x80a", "http://example.com/?\xF3\xB0\x80\x80a"),
 			array("http://example.com/\xEE\x80\x80", 'http://example.com/%EE%80%80'),
 			array("http://example.com/\xEE\x80\x80%00", 'http://example.com/%EE%80%80%00'),
 			array("http://example.com/\xEE\x80\x80a", 'http://example.com/%EE%80%80a'),
-			array("http://example.com?\xEE\x80\x80", "http://example.com?\xEE\x80\x80"),
-			array("http://example.com?\xEE\x80\x80%00", "http://example.com?\xEE\x80\x80%00"),
-			array("http://example.com?\xEE\x80\x80a", "http://example.com?\xEE\x80\x80a"),
+			array("http://example.com?\xEE\x80\x80", "http://example.com/?\xEE\x80\x80"),
+			array("http://example.com?\xEE\x80\x80%00", "http://example.com/?\xEE\x80\x80%00"),
+			array("http://example.com?\xEE\x80\x80a", "http://example.com/?\xEE\x80\x80a"),
 			array("http://example.com/\xC2", 'http://example.com/%C2'),
 			array("http://example.com/\xC2a", 'http://example.com/%C2a'),
 			array("http://example.com/\xC2\x00", 'http://example.com/%C2%00'),
@@ -268,8 +268,8 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 			array("http://example.com/\xFF%00", 'http://example.com/%FF%00'),
 			array("http://example.com/\xFFa", 'http://example.com/%FFa'),
 			array('http://example.com/%61', 'http://example.com/a'),
-			array('http://example.com?%26', 'http://example.com?%26'),
-			array('http://example.com?%61', 'http://example.com?a'),
+			array('http://example.com?%26', 'http://example.com/?%26'),
+			array('http://example.com?%61', 'http://example.com/?a'),
 			array('///', '///'),
 		);
 	}
@@ -331,11 +331,6 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	public function testInvalidAbsolutizeBase()
 	{
 		$this->assertFalse(Requests_IRI::absolutize('://not a URL', '../'));
-	}
-
-	public function testInvalidAbsolutizeRelative()
-	{
-		$this->assertFalse(Requests_IRI::absolutize('http://example.com/', 'http://example.com//not a URL'));
 	}
 
 	public function testFullGamut()

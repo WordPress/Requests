@@ -9,7 +9,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testDefaultTransport() {
-		$request = Requests::get('http://httpbin.org/get');
+		$request = Requests::get(httpbin('/get'));
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -49,6 +49,20 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		foreach ($response->headers as $key => $value) {
 			$this->assertEquals($value, $expected[$key]);
 		}
+	}
+
+	public function testProtocolVersionParsing() {
+		$transport = new RawTransport();
+		$transport->data =
+			"HTTP/1.0 200 OK\r\n".
+			"Host: localhost\r\n\r\n";
+
+		$options = array(
+			'transport' => $transport
+		);
+
+		$response = Requests::get('http://example.com/', array(), $options);
+		$this->assertEquals(1.0, $response->protocol_version);
 	}
 
 	public function testRawAccess() {
@@ -136,5 +150,13 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$response = Requests::get('http://example.com/', array(), $options);
 		$this->assertEquals(302, $response->status_code);
 		$this->assertEquals(0, $response->redirects);
+	}
+
+	/**
+	 * @expectedException Requests_Exception
+	 */
+	public function testTimeoutException() {
+		$options = array('timeout' => 0.5);
+		$response = Requests::get(httpbin('/delay/3'), array(), $options);
 	}
 }

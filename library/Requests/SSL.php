@@ -22,11 +22,11 @@ class Requests_SSL {
 	 * names, leading things like 'https://www.github.com/' to be invalid.
 	 * Instead
 	 *
-	 * @see http://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
+	 * @see https://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
 	 *
 	 * @throws Requests_Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
 	 * @param string $host Host name to verify against
-	 * @param resource $context Stream context
+	 * @param array $cert Certificate data from openssl_x509_parse()
 	 * @return bool
 	 */
 	public static function verify_certificate($host, $cert) {
@@ -44,8 +44,9 @@ class Requests_SSL {
 			$altnames = explode(',', $cert['extensions']['subjectAltName']);
 			foreach ($altnames as $altname) {
 				$altname = trim($altname);
-				if (strpos($altname, 'DNS:') !== 0)
+				if (strpos($altname, 'DNS:') !== 0) {
 					continue;
+				}
 
 				$has_dns_alt = true;
 

@@ -22,7 +22,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 			'auth' => array('user', 'passwd'),
 			'transport' => $transport,
 		);
-		$request = Requests::get('http://httpbin.org/basic-auth/user/passwd', array(), $options);
+		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -43,7 +43,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
-		$request = Requests::get('http://httpbin.org/basic-auth/user/passwd', array(), $options);
+		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -65,7 +65,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$data = 'test';
-		$request = Requests::post('http://httpbin.org/post', array(), $data, $options);
+		$request = Requests::post(httpbin('/post'), array(), $data, $options);
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);

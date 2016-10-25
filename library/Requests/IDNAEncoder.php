@@ -7,14 +7,14 @@
  *
  * @package Requests
  * @subpackage Utilities
- * @see http://tools.ietf.org/html/rfc3490 IDNA specification
- * @see http://tools.ietf.org/html/rfc3492 Punycode/Bootstrap specification
+ * @see https://tools.ietf.org/html/rfc3490 IDNA specification
+ * @see https://tools.ietf.org/html/rfc3492 Punycode/Bootstrap specification
  */
 class Requests_IDNAEncoder {
 	/**
 	 * ACE prefix used for IDNA
 	 *
-	 * @see http://tools.ietf.org/html/rfc3490#section-5
+	 * @see https://tools.ietf.org/html/rfc3490#section-5
 	 * @var string
 	 */
 	const ACE_PREFIX = 'xn--';
@@ -22,7 +22,7 @@ class Requests_IDNAEncoder {
 	/**#@+
 	 * Bootstrap constant for Punycode
 	 *
-	 * @see http://tools.ietf.org/html/rfc3492#section-5
+	 * @see https://tools.ietf.org/html/rfc3492#section-5
 	 * @var int
 	 */
 	const BOOTSTRAP_BASE         = 36;
@@ -237,6 +237,7 @@ class Requests_IDNAEncoder {
 		$h = $b = 0; // see loop
 #		copy them to the output in order
 		$codepoints = self::utf8_to_codepoints($input);
+		$extended = array();
 
 		foreach ($codepoints as $char) {
 			if ($char < 128) {
@@ -303,7 +304,6 @@ class Requests_IDNAEncoder {
 						}
 #						output the code point for digit t + ((q - t) mod (base - t))
 						$digit = $t + (($q - $t) % (self::BOOTSTRAP_BASE - $t));
-						//printf('needed delta is %d, encodes as "%s"' . PHP_EOL, $delta, self::digit_to_char($digit));
 						$output .= self::digit_to_char($digit);
 #						let q = (q - t) div (base - t)
 						$q = floor(($q - $t) / (self::BOOTSTRAP_BASE - $t));
@@ -311,10 +311,8 @@ class Requests_IDNAEncoder {
 					}
 #					output the code point for digit q
 					$output .= self::digit_to_char($q);
-					//printf('needed delta is %d, encodes as "%s"' . PHP_EOL, $delta, self::digit_to_char($q));
 #					let bias = adapt(delta, h + 1, test h equals b?)
 					$bias = self::adapt($delta, $h + 1, $h === $b);
-					//printf('bias becomes %d' . PHP_EOL, $bias);
 #					let delta = 0
 					$delta = 0;
 #					increment h
@@ -335,7 +333,7 @@ class Requests_IDNAEncoder {
 	/**
 	 * Convert a digit to its respective character
 	 *
-	 * @see http://tools.ietf.org/html/rfc3492#section-5
+	 * @see https://tools.ietf.org/html/rfc3492#section-5
 	 * @throws Requests_Exception On invalid digit (`idna.invalid_digit`)
 	 *
 	 * @param int $digit Digit in the range 0-35
@@ -355,7 +353,7 @@ class Requests_IDNAEncoder {
 	/**
 	 * Adapt the bias
 	 *
-	 * @see http://tools.ietf.org/html/rfc3492#section-6.1
+	 * @see https://tools.ietf.org/html/rfc3492#section-6.1
 	 * @param int $delta
 	 * @param int $numpoints
 	 * @param bool $firsttime
