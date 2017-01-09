@@ -65,9 +65,11 @@ composer require rmccue/requests
 or
 
     {
-        "require": {
-            "rmccue/requests": ">=1.0"
-        }
+    "require": {
+        "rmccue/requests": ">=1.0"
+    },
+    "autoload": {
+        "psr-0": {"Requests": "library/"}
     }
 
 ### Install source from GitHub
