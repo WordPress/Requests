@@ -1,8 +1,14 @@
 <?php
+namespace Rmccue\Requests\Auth;
+
+use Rmccue\Requests\Auth as Auth;
+use Rmccue\Requests\Exception as Exception;
+use Rmccue\Requests\Hooks as Hooks;
+
 /**
  * Basic Authentication provider
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Authentication
  */
 
@@ -12,10 +18,10 @@
  * Provides a handler for Basic HTTP authentication via the Authorization
  * header.
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Authentication
  */
-class Requests_Auth_Basic implements Requests_Auth {
+class Basic implements Auth {
 	/**
 	 * Username
 	 *
@@ -33,13 +39,13 @@ class Requests_Auth_Basic implements Requests_Auth {
 	/**
 	 * Constructor
 	 *
-	 * @throws Requests_Exception On incorrect number of arguments (`authbasicbadargs`)
+	 * @throws Rmccue\Requests\Exception On incorrect number of arguments (`authbasicbadargs`)
 	 * @param array|null $args Array of user and password. Must have exactly two elements
 	 */
 	public function __construct($args = null) {
 		if (is_array($args)) {
 			if (count($args) !== 2) {
-				throw new Requests_Exception('Invalid number of arguments', 'authbasicbadargs');
+				throw new Exception('Invalid number of arguments', 'authbasicbadargs');
 			}
 
 			list($this->user, $this->pass) = $args;
@@ -51,9 +57,9 @@ class Requests_Auth_Basic implements Requests_Auth {
 	 *
 	 * @see curl_before_send
 	 * @see fsockopen_header
-	 * @param Requests_Hooks $hooks Hook system
+	 * @param Rmccue\Requests\Hooks $hooks Hook system
 	 */
-	public function register(Requests_Hooks &$hooks) {
+	public function register(Hooks &$hooks) {
 		$hooks->register('curl.before_send', array(&$this, 'curl_before_send'));
 		$hooks->register('fsockopen.after_headers', array(&$this, 'fsockopen_header'));
 	}

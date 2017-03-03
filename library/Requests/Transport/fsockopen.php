@@ -1,18 +1,26 @@
 <?php
+namespace Rmccue\Requests\Transport;
+
+use Rmccue\Requests as Requests;
+use Rmccue\Requests\Exception as Exception;
+use Rmccue\Requests\SSL as SSL;
+use Rmccue\Requests\Transport as Transport;
+use Rmccue\Requests\Utility\CaseInsensitiveDictionary as CaseInsensitiveDictionary;
+
 /**
  * fsockopen HTTP transport
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Transport
  */
 
 /**
  * fsockopen HTTP transport
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Transport
  */
-class Requests_Transport_fsockopen implements Requests_Transport {
+class fsockopen implements Transport {
 	/**
 	 * Second to microsecond conversion
 	 *
@@ -46,13 +54,13 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @throws Requests_Exception On failure to connect to socket (`fsockopenerror`)
-	 * @throws Requests_Exception On socket timeout (`timeout`)
+	 * @throws Rmccue\Requests\Exception On failure to connect to socket (`fsockopenerror`)
+	 * @throws Rmccue\Requests\Exception On socket timeout (`timeout`)
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
-	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @param array $options Request options, see {@see Rmccue\Requests::response()} for documentation
 	 * @return string Raw HTTP result
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
@@ -60,12 +68,12 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$url_parts = parse_url($url);
 		if (empty($url_parts)) {
-			throw new Requests_Exception('Invalid URL.', 'invalidurl', $url);
+			throw new Exception('Invalid URL.', 'invalidurl', $url);
 		}
 		$host = $url_parts['host'];
 		$context = stream_context_create();
 		$verifyname = false;
-		$case_insensitive_headers = new Requests_Utility_CaseInsensitiveDictionary($headers);
+		$case_insensitive_headers = new CaseInsensitiveDictionary($headers);
 
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
@@ -125,16 +133,16 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		restore_error_handler();
 
 		if ($verifyname && !$this->verify_certificate_from_context($host, $context)) {
-			throw new Requests_Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
+			throw new Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
 		}
 
 		if (!$socket) {
 			if ($errno === 0) {
 				// Connection issue
-				throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
+				throw new Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
 			}
 
-			throw new Requests_Exception($errstr, 'fsockopenerror', null, $errno);
+			throw new Exception($errstr, 'fsockopenerror', null, $errno);
 		}
 
 		$data_format = $options['data_format'];
@@ -240,7 +248,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		while (!feof($socket)) {
 			$this->info = stream_get_meta_data($socket);
 			if ($this->info['timed_out']) {
-				throw new Requests_Exception('fsocket timed out', 'timeout');
+				throw new Exception('fsocket timed out', 'timeout');
 			}
 
 			$block = fread($socket, Requests::BUFFER_SIZE);
@@ -294,9 +302,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	/**
 	 * Send multiple requests simultaneously
 	 *
-	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see Requests_Transport::request}
+	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see Rmccue\Requests\Transport::request}
 	 * @param array $options Global options, see {@see Requests::response()} for documentation
-	 * @return array Array of Requests_Response objects (may contain Requests_Exception or string responses as well)
+	 * @return array Array of Rmccue\Requests\Response objects (may contain Rmccue\Requests\Exception or string responses as well)
 	 */
 	public function request_multiple($requests, $options) {
 		$responses = array();
@@ -308,7 +316,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 				$request['options']['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$id], $request));
 			}
-			catch (Requests_Exception $e) {
+			catch (Exception $e) {
 				$responses[$id] = $e;
 			}
 
@@ -396,8 +404,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 *
 	 * @see https://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
 	 *
-	 * @throws Requests_Exception On failure to connect via TLS (`fsockopen.ssl.connect_error`)
-	 * @throws Requests_Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
+	 * @throws Rmccue\Requests\Exception On failure to connect via TLS (`fsockopen.ssl.connect_error`)
+	 * @throws Rmccue\Requests\Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
 	 * @param string $host Host name to verify against
 	 * @param resource $context Stream context
 	 * @return bool
@@ -408,12 +416,12 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		// If we don't have SSL options, then we couldn't make the connection at
 		// all
 		if (empty($meta) || empty($meta['ssl']) || empty($meta['ssl']['peer_certificate'])) {
-			throw new Requests_Exception(rtrim($this->connect_error), 'ssl.connect_error');
+			throw new Exception(rtrim($this->connect_error), 'ssl.connect_error');
 		}
 
 		$cert = openssl_x509_parse($meta['ssl']['peer_certificate']);
 
-		return Requests_SSL::verify_certificate($host, $cert);
+		return SSL::verify_certificate($host, $cert);
 	}
 
 	/**

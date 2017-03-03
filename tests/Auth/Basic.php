@@ -1,10 +1,14 @@
 <?php
+namespace Rmccue\RequestTests\Auth;
 
-class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
+use \Rmccue\Requests as Requests;
+use \PHPUnit\Framework\TestCase as TestCase;
+
+class Basic extends TestCase {
 	public static function transportProvider() {
 		$transports = array(
-			array('Requests_Transport_fsockopen'),
-			array('Requests_Transport_cURL'),
+			array('\\Rmccue\\Requests\\Transport\\fsockopen'),
+			array('\\Rmccue\\Requests\\Transport\\cURL'),
 		);
 		return $transports;
 	}
@@ -22,7 +26,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 			'auth' => array('user', 'passwd'),
 			'transport' => $transport,
 		);
-		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/basic-auth/user/passwd'), array(), $options);
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -40,10 +44,10 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		}
 
 		$options = array(
-			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
+			'auth' => new Requests\Auth\Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
-		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/basic-auth/user/passwd'), array(), $options);
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -61,11 +65,11 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		}
 
 		$options = array(
-			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
+			'auth' => new Requests\Auth\Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
 		$data = 'test';
-		$request = Requests::post(httpbin('/post'), array(), $data, $options);
+		$request = Requests::post(\Rmccue\RequestTests\httpbin('/post'), array(), $data, $options);
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -78,10 +82,10 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testMissingPassword() {
-		$auth = new Requests_Auth_Basic(array('user'));
+		$auth = new Requests\Auth\Basic(array('user'));
 	}
 
 }

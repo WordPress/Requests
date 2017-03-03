@@ -8,7 +8,7 @@ Requests is a HTTP library written in PHP, for human beings. It is roughly
 based on the API from the excellent [Requests Python
 library](http://python-requests.org/). Requests is [ISC
 Licensed](https://github.com/rmccue/Requests/blob/master/LICENSE) (similar to
-the new BSD license) and has no dependencies, except for PHP 5.2+.
+the new BSD license) and has no dependencies, except for PHP 5.3+.
 
 Despite PHP's use as a language for the web, its tools for sending HTTP requests
 are severely lacking. cURL has an
@@ -22,7 +22,7 @@ We all have better things to do. That's why Requests was born.
 ```php
 $headers = array('Accept' => 'application/json');
 $options = array('auth' => array('user', 'pass'));
-$request = Requests::get('https://api.github.com/gists', $headers, $options);
+$request = Rmccue\Requests::get('https://api.github.com/gists', $headers, $options);
 
 var_dump($request->status_code);
 // int(200)
@@ -34,10 +34,10 @@ var_dump($request->body);
 // string(26891) "[...]"
 ```
 
-Requests allows you to send  **HEAD**, **GET**, **POST**, **PUT**, **DELETE**, 
-and **PATCH** HTTP requests. You can add headers, form data, multipart files, 
-and parameters with simple arrays, and access the response data in the same way. 
-Requests uses cURL and fsockopen, depending on what your system has available, 
+Requests allows you to send  **HEAD**, **GET**, **POST**, **PUT**, **DELETE**,
+and **PATCH** HTTP requests. You can add headers, form data, multipart files,
+and parameters with simple arrays, and access the response data in the same way.
+Requests uses cURL and fsockopen, depending on what your system has available,
 but abstracts all the nasty stuff out of your way, providing a consistent API.
 
 
@@ -81,7 +81,7 @@ And include it in your scripts:
 
 You'll probably also want to register an autoloader:
 
-    Requests::register_autoloader();
+    Rmccue\Requests::register_autoloader();
 
 
 ### Install source from zip/tarball
@@ -134,11 +134,11 @@ JSON extension ](http://php.net/manual/en/book.json.php) enabled. Then
 simply:
 
     $ cd tests
-    $ phpunit
+    $ ../vendor/bin/phpunit
 
 If you'd like to run a single set of tests, specify just the name:
 
-    $ phpunit Transport/cURL
+    $ ../vendor/bin/phpunit Transport/cURL
 
 Contribute
 ----------

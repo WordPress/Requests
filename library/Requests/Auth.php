@@ -1,8 +1,11 @@
 <?php
+namespace Rmccue\Requests;
+
+use Rmccue\Requests\Hooks as Hooks;
 /**
  * Authentication provider interface
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Authentication
  */
 
@@ -14,11 +17,11 @@
  * Parameters should be passed via the constructor where possible, as this
  * makes it much easier for users to use your provider.
  *
- * @see Requests_Hooks
- * @package Requests
+ * @see Rmccue\Requests\Hooks
+ * @package Rmccue\Requests
  * @subpackage Authentication
  */
-interface Requests_Auth {
+interface Auth {
 	/**
 	 * Register hooks as needed
 	 *
@@ -27,7 +30,7 @@ interface Requests_Auth {
 	 * hooks you'll need.
 	 *
 	 * @see Requests_Hooks::register
-	 * @param Requests_Hooks $hooks Hook system
+	 * @param Rmccue\Requests\Hooks $hooks Hook system
 	 */
-	public function register(Requests_Hooks &$hooks);
+	public function register(Hooks &$hooks);
 }

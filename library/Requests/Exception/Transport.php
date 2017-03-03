@@ -1,5 +1,8 @@
 <?php
+namespace Rmccue\Requests\Exception;
 
-class Requests_Exception_Transport extends Requests_Exception {
+use Rmccue\Requests\Exception as Exception;
+
+class Transport extends Exception {
 
 }

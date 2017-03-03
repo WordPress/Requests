@@ -1,14 +1,19 @@
 <?php
+namespace Rmccue\RequestTests\Requests;
 
-class RequestsTest_Response_Headers extends PHPUnit_Framework_TestCase {
+use Rmccue\Requests\Response as Response;
+use Rmccue\Requests\Exception as Exception;
+use PHPUnit\Framework\TestCase as TestCase;
+
+class Headers extends TestCase {
 	public function testArrayAccess() {
-		$headers = new Requests_Response_Headers();
+		$headers = new Response\Headers();
 		$headers['Content-Type'] = 'text/plain';
 
 		$this->assertEquals('text/plain', $headers['Content-Type']);
 	}
 	public function testCaseInsensitiveArrayAccess() {
-		$headers = new Requests_Response_Headers();
+		$headers = new Response\Headers();
 		$headers['Content-Type'] = 'text/plain';
 
 		$this->assertEquals('text/plain', $headers['CONTENT-TYPE']);
@@ -19,7 +24,7 @@ class RequestsTest_Response_Headers extends PHPUnit_Framework_TestCase {
 	 * @depends testArrayAccess
 	 */
 	public function testIteration() {
-		$headers = new Requests_Response_Headers();
+		$headers = new Response\Headers();
 		$headers['Content-Type'] = 'text/plain';
 		$headers['Content-Length'] = 10;
 
@@ -38,15 +43,15 @@ class RequestsTest_Response_Headers extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testInvalidKey() {
-		$headers = new Requests_Response_Headers();
+		$headers = new Response\Headers();
 		$headers[] = 'text/plain';
 	}
 
 	public function testMultipleHeaders() {
-		$headers = new Requests_Response_Headers();
+		$headers = new Response\Headers();
 		$headers['Accept'] = 'text/html;q=1.0';
 		$headers['Accept'] = '*/*;q=0.1';
 

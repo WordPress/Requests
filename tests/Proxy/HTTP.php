@@ -1,6 +1,10 @@
 <?php
+namespace Rmccue\RequestTests\Proxy;
 
-class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase as TestCase;
+use Rmccue\Requests as Requests;
+
+class HTTP extends TestCase {
 	protected function checkProxyAvailable($type = '') {
 		switch ($type) {
 			case 'auth':
@@ -19,8 +23,8 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 
 	public function transportProvider() {
 		return array(
-			array('Requests_Transport_cURL'),
-			array('Requests_Transport_fsockopen'),
+			array('\\Rmccue\\Requests\\Transport\\cURL'),
+			array('\\Rmccue\\Requests\\Transport\\fsockopen'),
 		);
 	}
 
@@ -34,7 +38,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'proxy' => REQUESTS_HTTP_PROXY,
 			'transport' => $transport,
 		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 		$this->assertEquals('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -51,7 +55,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'proxy' => array(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 		$this->assertEquals('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -60,7 +64,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider transportProvider
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testConnectInvalidParameters($transport) {
 		$this->checkProxyAvailable();
@@ -69,7 +73,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'proxy' => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
 			'transport' => $transport,
 		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 	}
 
 	/**
@@ -82,7 +86,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'proxy' => new Requests_Proxy_HTTP(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 		$this->assertEquals('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -103,7 +107,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			),
 			'transport' => $transport,
 		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 		$this->assertEquals(200, $response->status_code);
 		$this->assertEquals('http', $response->headers['x-requests-proxied']);
 
@@ -125,7 +129,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			),
 			'transport' => $transport,
 		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 		$this->assertEquals(407, $response->status_code);
 	}
 }

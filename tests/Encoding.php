@@ -1,6 +1,10 @@
 <?php
+namespace Rmccue\RequestTests;
 
-class RequestsTests_Encoding extends PHPUnit_Framework_TestCase {
+use Rmccue\Requests as Requests;
+use PHPUnit\Framework\TestCase as TestCase;
+
+class Encoding extends TestCase {
 	protected static function mapData($type, $data) {
 		$real_data = array();
 		foreach ($data as $value) {

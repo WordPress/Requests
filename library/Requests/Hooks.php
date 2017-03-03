@@ -1,18 +1,20 @@
 <?php
+namespace Rmccue\Requests;
+
 /**
  * Handles adding and dispatching events
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Utilities
  */
 
 /**
  * Handles adding and dispatching events
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Utilities
  */
-class Requests_Hooks implements Requests_Hooker {
+class Hooks implements Hooker {
 	/**
 	 * Registered callbacks for each hook
 	 *

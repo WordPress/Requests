@@ -1,6 +1,10 @@
 <?php
+namespace Rmccue\RequestTests;
 
-class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
+use Rmccue\Requests as Requests;
+use PHPUnit\Framework\TestCase as TestCase;
+
+class IDNAEncoder extends TestCase {
 	public static function specExamples() {
 		return array(
 			array(
@@ -18,85 +22,85 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	 * @dataProvider specExamples
 	 */
 	public function testEncoding($data, $expected) {
-		$result = Requests_IDNAEncoder::encode($data);
+		$result = Requests\IDNAEncoder::encode($data);
 		$this->assertEquals($expected, $result);
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testASCIITooLong() {
 		$data = str_repeat("abcd", 20);
-		$result = Requests_IDNAEncoder::encode($data);
+		$result = Requests\IDNAEncoder::encode($data);
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testEncodedTooLong() {
 		$data = str_repeat("\xe4\xbb\x96", 60);
-		$result = Requests_IDNAEncoder::encode($data);
+		$result = Requests\IDNAEncoder::encode($data);
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testAlreadyPrefixed() {
-		$result = Requests_IDNAEncoder::encode("xn--\xe4\xbb\x96");
+		$result = Requests\IDNAEncoder::encode("xn--\xe4\xbb\x96");
 	}
 
 	public function testASCIICharacter() {
-		$result = Requests_IDNAEncoder::encode("a");
+		$result = Requests\IDNAEncoder::encode("a");
 		$this->assertEquals('a', $result);
 	}
 
 	public function testTwoByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xc2\xb6"); // Pilcrow character
+		$result = Requests\IDNAEncoder::encode("\xc2\xb6"); // Pilcrow character
 		$this->assertEquals('xn--tba', $result);
 	}
 
 	public function testThreeByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xe2\x82\xac"); // Euro symbol
+		$result = Requests\IDNAEncoder::encode("\xe2\x82\xac"); // Euro symbol
 		$this->assertEquals('xn--lzg', $result);
 	}
 
 	public function testFourByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xf0\xa4\xad\xa2"); // Chinese symbol?
+		$result = Requests\IDNAEncoder::encode("\xf0\xa4\xad\xa2"); // Chinese symbol?
 		$this->assertEquals('xn--ww6j', $result);
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testFiveByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
+		$result = Requests\IDNAEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testSixByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
+		$result = Requests\IDNAEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testInvalidASCIICharacterWithMultibyte() {
-		$result = Requests_IDNAEncoder::encode("\0\xc2\xb6");
+		$result = Requests\IDNAEncoder::encode("\0\xc2\xb6");
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testUnfinishedMultibyte() {
-		$result = Requests_IDNAEncoder::encode("\xc2");
+		$result = Requests\IDNAEncoder::encode("\xc2");
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testPartialMultibyte() {
-		$result = Requests_IDNAEncoder::encode("\xc2\xc2\xb6");
+		$result = Requests\IDNAEncoder::encode("\xc2\xc2\xb6");
 	}
 }

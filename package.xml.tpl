@@ -49,7 +49,7 @@
 	<dependencies>
 		<required>
 			<php>
-				<min>5.2.0</min>
+				<min>5.3.0</min>
 			</php>
 			<pearinstaller>
 				<min>1.4.0</min>

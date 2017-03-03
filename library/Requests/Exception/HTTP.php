@@ -1,16 +1,21 @@
 <?php
+namespace Rmccue\Requests\Exception;
+
+Use Rmccue\Requests as Requests;
+Use Rmccue\Requests\Exception as Exception;
+
 /**
  * Exception based on HTTP response
  *
- * @package Requests
+ * @package Rmccue\Requests
  */
 
 /**
  * Exception based on HTTP response
  *
- * @package Requests
+ * @package Rmccue\Requests
  */
-class Requests_Exception_HTTP extends Requests_Exception {
+class HTTP extends Exception {
 	/**
 	 * HTTP status code
 	 *
@@ -54,18 +59,18 @@ class Requests_Exception_HTTP extends Requests_Exception {
 	 * Get the correct exception class for a given error code
 	 *
 	 * @param int|bool $code HTTP status code, or false if unavailable
-	 * @return string Exception class name to use
+	 * @return string Rmccue\Requests\Exception class name to use
 	 */
 	public static function get_class($code) {
 		if (!$code) {
-			return 'Requests_Exception_HTTP_Unknown';
+			return '\\Rmccue\\Requests\\Exception\\HTTP\\Unknown';
 		}
 
-		$class = sprintf('Requests_Exception_HTTP_%d', $code);
+		$class = sprintf('Rmccue\\Requests\\Exception\\HTTP\\Response%d', $code);
 		if (class_exists($class)) {
 			return $class;
 		}
 
-		return 'Requests_Exception_HTTP_Unknown';
+		return '\\Rmccue\\Requests\\Exception\\HTTP\\Unknown';
 	}
 }

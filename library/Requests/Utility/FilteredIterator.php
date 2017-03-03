@@ -1,18 +1,21 @@
 <?php
+namespace Rmccue\Requests\Utility;
+
+use Rmccue\Requests\Exception as Exception;
 /**
  * Iterator for arrays requiring filtered values
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Utilities
  */
 
 /**
  * Iterator for arrays requiring filtered values
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Utilities
  */
-class Requests_Utility_FilteredIterator extends ArrayIterator {
+class FilteredIterator extends \ArrayIterator {
 	/**
 	 * Callback to run as a filter
 	 *

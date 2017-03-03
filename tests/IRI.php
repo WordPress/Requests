@@ -1,5 +1,8 @@
 <?php
+namespace Rmccue\RequestTests;
 
+use Rmccue\Requests as Requests;
+use PHPUnit\Framework\TestCase as TestCase;
 /**
  * IRI test cases
  *
@@ -40,7 +43,7 @@
  *
  */
 
-class RequestsTest_IRI extends PHPUnit_Framework_TestCase
+class IRI extends TestCase
 {
 	public static function rfc3986_tests()
 	{
@@ -97,9 +100,9 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testStringRFC3986($relative, $expected)
 	{
-		$base = new Requests_IRI('http://a/b/c/d;p?q');
-		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
-		$this->assertEquals($expected, (string) Requests_IRI::absolutize($base, $relative));
+		$base = new Requests\IRI('http://a/b/c/d;p?q');
+		$this->assertEquals($expected, Requests\IRI::absolutize($base, $relative)->iri);
+		$this->assertEquals($expected, (string) Requests\IRI::absolutize($base, $relative));
 	}
 
 	/**
@@ -108,8 +111,8 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	public function testBothStringRFC3986($relative, $expected)
 	{
 		$base = 'http://a/b/c/d;p?q';
-		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
-		$this->assertEquals($expected, (string) Requests_IRI::absolutize($base, $relative));
+		$this->assertEquals($expected, Requests\IRI::absolutize($base, $relative)->iri);
+		$this->assertEquals($expected, (string) Requests\IRI::absolutize($base, $relative));
 	}
 
 	/**
@@ -117,9 +120,9 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testObjectRFC3986($relative, $expected)
 	{
-		$base = new Requests_IRI('http://a/b/c/d;p?q');
-		$expected = new Requests_IRI($expected);
-		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative));
+		$base = new Requests\IRI('http://a/b/c/d;p?q');
+		$expected = new Requests\IRI($expected);
+		$this->assertEquals($expected, Requests\IRI::absolutize($base, $relative));
 	}
 
 	public static function sp_tests()
@@ -149,9 +152,9 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testStringSP($base, $relative, $expected)
 	{
-		$base = new Requests_IRI($base);
-		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
-		$this->assertEquals($expected, (string) Requests_IRI::absolutize($base, $relative));
+		$base = new Requests\IRI($base);
+		$this->assertEquals($expected, Requests\IRI::absolutize($base, $relative)->iri);
+		$this->assertEquals($expected, (string) Requests\IRI::absolutize($base, $relative));
 	}
 
 	/**
@@ -159,9 +162,9 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testObjectSP($base, $relative, $expected)
 	{
-		$base = new Requests_IRI($base);
-		$expected = new Requests_IRI($expected);
-		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative));
+		$base = new Requests\IRI($base);
+		$expected = new Requests\IRI($expected);
+		$this->assertEquals($expected, Requests\IRI::absolutize($base, $relative));
 	}
 
 	public static function absolutize_tests()
@@ -177,8 +180,8 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testAbsolutizeString($base, $relative, $expected)
 	{
-		$base = new Requests_IRI($base);
-		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative)->iri);
+		$base = new Requests\IRI($base);
+		$this->assertEquals($expected, Requests\IRI::absolutize($base, $relative)->iri);
 	}
 
 	/**
@@ -186,9 +189,9 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testAbsolutizeObject($base, $relative, $expected)
 	{
-		$base = new Requests_IRI($base);
-		$expected = new Requests_IRI($expected);
-		$this->assertEquals($expected, Requests_IRI::absolutize($base, $relative));
+		$base = new Requests\IRI($base);
+		$expected = new Requests\IRI($expected);
+		$this->assertEquals($expected, Requests\IRI::absolutize($base, $relative));
 	}
 
 	public static function normalization_tests()
@@ -279,7 +282,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testStringNormalization($input, $output)
 	{
-		$input = new Requests_IRI($input);
+		$input = new Requests\IRI($input);
 		$this->assertEquals($output, $input->iri);
 		$this->assertEquals($output, (string) $input);
 	}
@@ -289,8 +292,8 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testObjectNormalization($input, $output)
 	{
-		$input = new Requests_IRI($input);
-		$output = new Requests_IRI($output);
+		$input = new Requests\IRI($input);
+		$output = new Requests\IRI($output);
 		$this->assertEquals($output, $input);
 	}
 
@@ -306,8 +309,8 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testObjectEquivalence($input, $output)
 	{
-		$input = new Requests_IRI($input);
-		$output = new Requests_IRI($output);
+		$input = new Requests\IRI($input);
+		$output = new Requests\IRI($output);
 		$this->assertEquals($output, $input);
 	}
 
@@ -323,19 +326,19 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	 */
 	public function testObjectNotEquivalence($input, $output)
 	{
-		$input = new Requests_IRI($input);
-		$output = new Requests_IRI($output);
+		$input = new Requests\IRI($input);
+		$output = new Requests\IRI($output);
 		$this->assertNotEquals($output, $input);
 	}
 
 	public function testInvalidAbsolutizeBase()
 	{
-		$this->assertFalse(Requests_IRI::absolutize('://not a URL', '../'));
+		$this->assertFalse(Requests\IRI::absolutize('://not a URL', '../'));
 	}
 
 	public function testFullGamut()
 	{
-		$iri = new Requests_IRI();
+		$iri = new Requests\IRI();
 		$iri->scheme = 'http';
 		$iri->userinfo = 'user:password';
 		$iri->host = 'example.com';
@@ -352,7 +355,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 
 	public function testReadAliased()
 	{
-		$iri = new Requests_IRI();
+		$iri = new Requests\IRI();
 		$iri->scheme = 'http';
 		$iri->userinfo = 'user:password';
 		$iri->host = 'example.com';
@@ -369,7 +372,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 
 	public function testWriteAliased()
 	{
-		$iri = new Requests_IRI();
+		$iri = new Requests\IRI();
 		$iri->scheme = 'http';
 		$iri->iuserinfo = 'user:password';
 		$iri->ihost = 'example.com';
@@ -385,18 +388,18 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException PHPUnit_Framework_Error_Notice
+	 * @expectedException \PHPUnit\Framework\Error\Notice
 	 */
 	public function testNonexistantProperty()
 	{
-		$iri = new Requests_IRI();
+		$iri = new Requests\IRI();
 		$this->assertFalse(isset($iri->nonexistant_prop));
 		$should_fail = $iri->nonexistant_prop;
 	}
 
 	public function testBlankHost()
 	{
-		$iri = new Requests_IRI('http://example.com/a/?b=c#d');
+		$iri = new Requests\IRI('http://example.com/a/?b=c#d');
 		$iri->host = null;
 
 		$this->assertEquals(null, $iri->host);
@@ -405,7 +408,7 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 
 	public function testBadPort()
 	{
-		$iri = new Requests_IRI();
+		$iri = new Requests\IRI();
 		$iri->port = 'example';
 
 		$this->assertEquals(null, $iri->port);

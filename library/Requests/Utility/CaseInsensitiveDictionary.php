@@ -1,18 +1,21 @@
 <?php
+namespace Rmccue\Requests\Utility;
+
+use Rmccue\Requests\Exception as Exception;
 /**
  * Case-insensitive dictionary, suitable for HTTP headers
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Utilities
  */
 
 /**
  * Case-insensitive dictionary, suitable for HTTP headers
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Utilities
  */
-class Requests_Utility_CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
+class CaseInsensitiveDictionary implements \ArrayAccess, \IteratorAggregate {
 	/**
 	 * Actual item data
 	 *
@@ -60,14 +63,14 @@ class Requests_Utility_CaseInsensitiveDictionary implements ArrayAccess, Iterato
 	/**
 	 * Set the given item
 	 *
-	 * @throws Requests_Exception On attempting to use dictionary as list (`invalidset`)
+	 * @throws Rmccue\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 *
 	 * @param string $key Item name
 	 * @param string $value Item value
 	 */
 	public function offsetSet($key, $value) {
 		if ($key === null) {
-			throw new Requests_Exception('Object is a dictionary, not a list', 'invalidset');
+			throw new Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
 		$key = strtolower($key);
@@ -89,7 +92,7 @@ class Requests_Utility_CaseInsensitiveDictionary implements ArrayAccess, Iterato
 	 * @return ArrayIterator
 	 */
 	public function getIterator() {
-		return new ArrayIterator($this->data);
+		return new \ArrayIterator($this->data);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 {
 	"name": "rmccue/requests",
 	"description": "A HTTP library written in PHP, for human beings.",
-	"homepage": "http://github.com/rmccue/Requests",
+	"homepage": "http://github.com/DArcMattr/Requests",
 	"license": "ISC",
 	"keywords": ["http", "idna", "iri", "ipv6", "curl", "sockets", "fsockopen"],
 	"authors": [
@@ -11,13 +11,14 @@
 		}
 	],
 	"require": {
-		"php": ">=5.2"
+		"php": ">=5.3"
 	},
 	"require-dev": {
-		"requests/test-server": "dev-master"
+		"requests/test-server": "dev-master",
+		"phpunit/phpunit": "6.*"
 	},
 	"type": "library",
 	"autoload": {
-		"psr-0": {"Requests": "library/"}
+		"psr-4": {"Rmccue\\Requests\\": "library/"}
 	}
 }

@@ -1,24 +1,30 @@
 <?php
+namespace Rmccue\Requests;
+
+use Rmccue\Requests\Exception as Exception;
+use Rmccue\Requests\Exception\HTTP as Exception_HTTP;
+use Rmccue\Requests\Cookie\Jar as Cookie_Jar;
+use Rmccue\Requests\Response\Headers as Headers;
 /**
  * HTTP response class
  *
  * Contains a response from Requests::request()
- * @package Requests
+ * @package Rmccue\Requests
  */
 
 /**
  * HTTP response class
  *
  * Contains a response from Requests::request()
- * @package Requests
+ * @package Rmccue\Requests
  */
-class Requests_Response {
+class Response {
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->headers = new Requests_Response_Headers();
-		$this->cookies = new Requests_Cookie_Jar();
+		$this->headers = new Headers();
+		$this->cookies = new Cookie_Jar();
 	}
 
 	/**
@@ -38,7 +44,7 @@ class Requests_Response {
 	/**
 	 * Headers, as an associative array
 	 *
-	 * @var Requests_Response_Headers Array-like object representing headers
+	 * @var Rmccue\Requests\Response\Headers Array-like object representing headers
 	 */
 	public $headers = array();
 
@@ -79,14 +85,14 @@ class Requests_Response {
 	/**
 	 * Previous requests (from redirects)
 	 *
-	 * @var array Array of Requests_Response objects
+	 * @var array Array of Rmccue\Requests\Response objects
 	 */
 	public $history = array();
 
 	/**
 	 * Cookies from the request
 	 *
-	 * @var Requests_Cookie_Jar Array-like object representing a cookie jar
+	 * @var Rmccue\Requests\Cookie\Jar Array-like object representing a cookie jar
 	 */
 	public $cookies = array();
 
@@ -103,18 +109,18 @@ class Requests_Response {
 	/**
 	 * Throws an exception if the request was not successful
 	 *
-	 * @throws Requests_Exception If `$allow_redirects` is false, and code is 3xx (`response.no_redirects`)
-	 * @throws Requests_Exception_HTTP On non-successful status code. Exception class corresponds to code (e.g. {@see Requests_Exception_HTTP_404})
+	 * @throws Rmccue\Requests\Exception If `$allow_redirects` is false, and code is 3xx (`response.no_redirects`)
+	 * @throws Rmccue\Requests\Exception\HTTP On non-successful status code. Exception class corresponds to code (e.g. {@see Rmccue\Requests\Exception\HTTP\Response404})
 	 * @param boolean $allow_redirects Set to false to throw on a 3xx as well
 	 */
 	public function throw_for_status($allow_redirects = true) {
 		if ($this->is_redirect()) {
 			if (!$allow_redirects) {
-				throw new Requests_Exception('Redirection not allowed', 'response.no_redirects', $this);
+				throw new Exception('Redirection not allowed', 'response.no_redirects', $this);
 			}
 		}
 		elseif (!$this->success) {
-			$exception = Requests_Exception_HTTP::get_class($this->status_code);
+			$exception = Exception_HTTP::get_class($this->status_code);
 			throw new $exception(null, $this);
 		}
 	}

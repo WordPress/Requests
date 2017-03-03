@@ -1,16 +1,20 @@
 <?php
+namespace Rmccue\Requests\Exception\HTTP;
+
+Use Rmccue\Requests\Response as Response;
+Use Rmccue\Requests\Exception\HTTP as HTTP;
 /**
  * Exception for unknown status responses
  *
- * @package Requests
+ * @package Rmccue\Requests
  */
 
 /**
  * Exception for unknown status responses
  *
- * @package Requests
+ * @package Rmccue\Requests
  */
-class Requests_Exception_HTTP_Unknown extends Requests_Exception_HTTP {
+class Unknown extends HTTP {
 	/**
 	 * HTTP status code
 	 *
@@ -28,14 +32,14 @@ class Requests_Exception_HTTP_Unknown extends Requests_Exception_HTTP {
 	/**
 	 * Create a new exception
 	 *
-	 * If `$data` is an instance of {@see Requests_Response}, uses the status
+	 * If `$data` is an instance of {@see Rmccue\Requests\Response}, uses the status
 	 * code from it. Otherwise, sets as 0
 	 *
 	 * @param string|null $reason Reason phrase
 	 * @param mixed $data Associated data
 	 */
 	public function __construct($reason = null, $data = null) {
-		if ($data instanceof Requests_Response) {
+		if ($data instanceof Response) {
 			$this->code = $data->status_code;
 		}
 

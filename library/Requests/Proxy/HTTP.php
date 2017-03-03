@@ -1,8 +1,14 @@
 <?php
+namespace Rmccue\Requests\Proxy;
+
+use Rmccue\Requests\Proxy as Proxy;
+use Rmccue\Requests\Hooks as Hooks;
+use Rmccue\Requests\Exception as Exception;
+
 /**
  * HTTP Proxy connection interface
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Proxy
  * @since 1.6
  */
@@ -12,11 +18,11 @@
  *
  * Provides a handler for connection via an HTTP proxy
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Proxy
  * @since 1.6
  */
-class Requests_Proxy_HTTP implements Requests_Proxy {
+class HTTP implements Proxy {
 	/**
 	 * Proxy host and port
 	 *
@@ -51,7 +57,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * Constructor
 	 *
 	 * @since 1.6
-	 * @throws Requests_Exception On incorrect number of arguments (`authbasicbadargs`)
+	 * @throws Rmccue\Requests\Exception On incorrect number of arguments (`authbasicbadargs`)
 	 * @param array|null $args Array of user and password. Must have exactly two elements
 	 */
 	public function __construct($args = null) {
@@ -67,7 +73,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 				$this->use_authentication = true;
 			}
 			else {
-				throw new Requests_Exception('Invalid number of arguments', 'proxyhttpbadargs');
+				throw new Exception('Invalid number of arguments', 'proxyhttpbadargs');
 			}
 		}
 	}
@@ -80,9 +86,9 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * @see fsockopen_remote_socket
 	 * @see fsockopen_remote_host_path
 	 * @see fsockopen_header
-	 * @param Requests_Hooks $hooks Hook system
+	 * @param Rmccue\Requests\Hooks $hooks Hook system
 	 */
-	public function register(Requests_Hooks &$hooks) {
+	public function register(Hooks &$hooks) {
 		$hooks->register('curl.before_send', array(&$this, 'curl_before_send'));
 
 		$hooks->register('fsockopen.remote_socket', array(&$this, 'fsockopen_remote_socket'));

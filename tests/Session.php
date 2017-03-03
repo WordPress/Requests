@@ -1,18 +1,23 @@
 <?php
+namespace Rmccue\RequestTests;
 
-class RequestsTest_Session extends PHPUnit_Framework_TestCase {
+use Rmccue\Requests as Requests;
+use Rmccue\Requests\Session as Session;
+use PHPUnit\Framework\TestCase as TestCase;
+
+class MockSession extends TestCase {
 	public function testURLResolution() {
-		$session = new Requests_Session(httpbin('/'));
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'));
 
 		// Set the cookies up
 		$response = $session->get('/get');
 		$this->assertTrue($response->success);
-		$this->assertEquals(httpbin('/get'), $response->url);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $response->url);
 
 		$data = json_decode($response->body, true);
 		$this->assertNotNull($data);
 		$this->assertArrayHasKey('url', $data);
-		$this->assertEquals(httpbin('/get'), $data['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $data['url']);
 	}
 
 	public function testBasicGET() {
@@ -20,7 +25,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 			'X-Requests-Session' => 'BasicGET',
 			'X-Requests-Request' => 'notset',
 		);
-		$session = new Requests_Session(httpbin('/'), $session_headers);
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'), $session_headers);
 		$response = $session->get('/get', array('X-Requests-Request' => 'GET'));
 		$response->throw_for_status(false);
 		$this->assertEquals(200, $response->status_code);
@@ -37,7 +42,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 			'X-Requests-Session' => 'BasicHEAD',
 			'X-Requests-Request' => 'notset',
 		);
-		$session = new Requests_Session(httpbin('/'), $session_headers);
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'), $session_headers);
 		$response = $session->head('/get', array('X-Requests-Request' => 'HEAD'));
 		$response->throw_for_status(false);
 		$this->assertEquals(200, $response->status_code);
@@ -48,7 +53,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 			'X-Requests-Session' => 'BasicDELETE',
 			'X-Requests-Request' => 'notset',
 		);
-		$session = new Requests_Session(httpbin('/'), $session_headers);
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'), $session_headers);
 		$response = $session->delete('/delete', array('X-Requests-Request' => 'DELETE'));
 		$response->throw_for_status(false);
 		$this->assertEquals(200, $response->status_code);
@@ -65,7 +70,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 			'X-Requests-Session' => 'BasicPOST',
 			'X-Requests-Request' => 'notset',
 		);
-		$session = new Requests_Session(httpbin('/'), $session_headers);
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'), $session_headers);
 		$response = $session->post('/post', array('X-Requests-Request' => 'POST'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
 		$this->assertEquals(200, $response->status_code);
@@ -82,7 +87,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 			'X-Requests-Session' => 'BasicPUT',
 			'X-Requests-Request' => 'notset',
 		);
-		$session = new Requests_Session(httpbin('/'), $session_headers);
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'), $session_headers);
 		$response = $session->put('/put', array('X-Requests-Request' => 'PUT'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
 		$this->assertEquals(200, $response->status_code);
@@ -99,7 +104,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 			'X-Requests-Session' => 'BasicPATCH',
 			'X-Requests-Request' => 'notset',
 		);
-		$session = new Requests_Session(httpbin('/'), $session_headers);
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'), $session_headers);
 		$response = $session->patch('/patch', array('X-Requests-Request' => 'PATCH'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
 		$this->assertEquals(200, $response->status_code);
@@ -112,33 +117,33 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testMultiple() {
-		$session = new Requests_Session(httpbin('/'), array('X-Requests-Session' => 'Multiple'));
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'), array('X-Requests-Session' => 'Multiple'));
 		$requests = array(
 			'test1' => array(
-				'url' => httpbin('/get')
+				'url' => \Rmccue\RequestTests\httpbin('/get')
 			),
 			'test2' => array(
-				'url' => httpbin('/get')
+				'url' => \Rmccue\RequestTests\httpbin('/get')
 			),
 		);
 		$responses = $session->request_multiple($requests);
 
 		// test1
 		$this->assertNotEmpty($responses['test1']);
-		$this->assertInstanceOf('Requests_Response', $responses['test1']);
+		$this->assertInstanceOf('\\Rmccue\\Requests\\Response', $responses['test1']);
 		$this->assertEquals(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		// test2
 		$this->assertNotEmpty($responses['test2']);
-		$this->assertInstanceOf('Requests_Response', $responses['test2']);
+		$this->assertInstanceOf('\\Rmccue\\Requests\\Response', $responses['test2']);
 		$this->assertEquals(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -160,7 +165,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 			'foo' => 'bar'
 		);
 
-		$session = new Requests_Session('http://example.com/', $headers, $data, $options);
+		$session = new Session('http://example.com/', $headers, $data, $options);
 		$this->assertEquals('http://example.com/', $session->url);
 		$this->assertEquals($headers, $session->headers);
 		$this->assertEquals($data, $session->data);
@@ -188,7 +193,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testSharedCookies() {
-		$session = new Requests_Session(httpbin('/'));
+		$session = new Session(\Rmccue\RequestTests\httpbin('/'));
 
 		$options = array(
 			'follow_redirects' => false

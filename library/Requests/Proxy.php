@@ -1,8 +1,12 @@
 <?php
+namespace Rmccue\Requests;
+
+use Rmccue\Requests\Hooks as Hooks;
+
 /**
  * Proxy connection interface
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Proxy
  * @since 1.6
  */
@@ -15,21 +19,21 @@
  * Parameters should be passed via the constructor where possible, as this
  * makes it much easier for users to use your provider.
  *
- * @see Requests_Hooks
- * @package Requests
+ * @see \Rmccue\Requests\Hooks
+ * @package Rmccue\Requests
  * @subpackage Proxy
  * @since 1.6
  */
-interface Requests_Proxy {
+interface Proxy {
 	/**
 	 * Register hooks as needed
 	 *
-	 * This method is called in {@see Requests::request} when the user has set
+	 * This method is called in {@see \Rmccue\Requests::request} when the user has set
 	 * an instance as the 'auth' option. Use this callback to register all the
 	 * hooks you'll need.
 	 *
 	 * @see Requests_Hooks::register
 	 * @param Requests_Hooks $hooks Hook system
 	 */
-	public function register(Requests_Hooks &$hooks);
+	public function register(Hooks &$hooks);
 }
