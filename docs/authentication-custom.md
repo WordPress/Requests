@@ -1,7 +1,7 @@
 Custom Authentication
 =====================
 Custom authentication handlers are designed to be extremely simple to write.
-In order to write a handler, you'll need to implement the `Requests_Auth`
+In order to write a handler, you'll need to implement the `Rmccue\Requests\Auth`
 interface.
 
 An instance of this handler is then passed in by the user via the `auth`
@@ -12,14 +12,14 @@ authenticates you if said header is set to `Yummy`. (I don't know of any
 services that do this; perhaps this is a market waiting to be tapped?)
 
 ```php
-class MySoftware_Auth_Hotdog implements Requests_Auth {
+class MySoftware_Auth_Hotdog implements Rmccue\Requests\Auth {
 	protected $password;
 
 	public function __construct($password) {
 		$this->password = $password;
 	}
 
-	public function register(Requests_Hooks &$hooks) {
+	public function register(Rmccue\Requests\Hooks &$hooks) {
 		$hooks->register('requests.before_request', array(&$this, 'before_request'));
 	}
 
@@ -35,7 +35,7 @@ We then use this in our request calls:
 $options = array(
 	'auth' => new MySoftware_Auth_Hotdog('yummy')
 );
-$response = Requests::get('http://hotdogbin.org/admin', array(), $options);
+$response = Rmccue\Requests::get('http://hotdogbin.org/admin', array(), $options);
 ```
 
 (For more information on how to register and use hooks, see the [hooking

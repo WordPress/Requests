@@ -15,7 +15,7 @@ simple two-step:
 include('/path/to/library/Requests.php');
 
 // Next, make sure Requests can load internal classes
-Requests::register_autoloader();
+Rmccue\Requests::register_autoloader();
 ```
 
 If you'd like to bring along your own autoloader, you can forget about this
@@ -29,7 +29,7 @@ One of the most basic things you can do with HTTP is make a GET request.
 Let's grab GitHub's public timeline:
 
 ```php
-$response = Requests::get('https://github.com/timeline.json');
+$response = Rmccue\Requests::get('https://github.com/timeline.json');
 ```
 
 `$response` is now a **Requests_Response** object. Response objects are what
@@ -52,7 +52,7 @@ If you want to add custom headers to the request, simply pass them in as an
 associative array as the second parameter:
 
 ```php
-$response = Requests::get('https://github.com/timeline.json', array('X-Requests' => 'Is Awesome!'));
+$response = Rmccue\Requests::get('https://github.com/timeline.json', array('X-Requests' => 'Is Awesome!'));
 ```
 
 
@@ -61,7 +61,7 @@ Make a POST Request
 Making a POST request is very similar to making a GET:
 
 ```php
-$response = Requests::post('http://httpbin.org/post');
+$response = Rmccue\Requests::post('http://httpbin.org/post');
 ```
 
 You'll probably also want to pass in some data. You can pass in either a
@@ -72,30 +72,30 @@ internally) as the third parameter (after the URL and headers):
 
 ```php
 $data = array('key1' => 'value1', 'key2' => 'value2');
-$response = Requests::post('http://httpbin.org/post', array(), $data);
+$response = Rmccue\Requests::post('http://httpbin.org/post', array(), $data);
 var_dump($response->body);
 ```
 
 This gives the output:
 
 	string(503) "{
-	  "origin": "124.191.162.147", 
-	  "files": {}, 
+	  "origin": "124.191.162.147",
+	  "files": {},
 	  "form": {
-	    "key2": "value2", 
+	    "key2": "value2",
 	    "key1": "value1"
-	  }, 
+	  },
 	  "headers": {
-	    "Content-Length": "23", 
-	    "Accept-Encoding": "deflate;q=1.0, compress;q=0.5, gzip;q=0.5", 
-	    "X-Forwarded-Port": "80", 
-	    "Connection": "keep-alive", 
-	    "User-Agent": "php-requests/1.6-dev", 
-	    "Host": "httpbin.org", 
+	    "Content-Length": "23",
+	    "Accept-Encoding": "deflate;q=1.0, compress;q=0.5, gzip;q=0.5",
+	    "X-Forwarded-Port": "80",
+	    "Connection": "keep-alive",
+	    "User-Agent": "php-requests/1.6-dev",
+	    "Host": "httpbin.org",
 	    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-	  }, 
-	  "url": "http://httpbin.org/post", 
-	  "args": {}, 
+	  },
+	  "url": "http://httpbin.org/post",
+	  "args": {},
 	  "data": ""
 	}"
 
@@ -107,7 +107,7 @@ sending it:
 $url = 'https://api.github.com/some/endpoint';
 $headers = array('Content-Type' => 'application/json');
 $data = array('some' => 'data');
-$response = Requests::post($url, $headers, json_encode($data));
+$response = Rmccue\Requests::post($url, $headers, json_encode($data));
 ```
 
 Note that if you don't manually specify a Content-Type header, Requests has
