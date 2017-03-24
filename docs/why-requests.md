@@ -91,10 +91,10 @@ instead of something else, in our opinion.
    horrible functions such as `curl_setopt()`. Combined with that, it uses 229
    global constants, polluting the global namespace horribly.
 
-   Requests, on the other hand, exposes only a handful of classes to the
-   global namespace, most of which are for internal use. You can learn to use
-   the `Requests::request()` method and the `Requests_Response` object in the
-   space of 10 minutes and you already know how to use Requests.
+   Requests, on the other hand, has its own namespace, most of which are for
+   internal use. You can learn to use the `Rmccue\Requests::request()` method
+   and the `Rmccue\Requests\Response` object in the space of 10 minutes and you
+   already know how to use Requests.
 
 
 ### Guzzle
@@ -171,7 +171,7 @@ instead of something else, in our opinion.
    using PEAR for your project.
 
    Requests is entirely self-contained, and includes all the libraries it needs
-   (for example, Requests\_IRI is based on ComplexPie\_IRI by Geoffrey Sneddon).
+   (for example, Rmccue\Requests\IRI is based on ComplexPie\_IRI by Geoffrey Sneddon).
 
 
 ### PECL HttpRequest

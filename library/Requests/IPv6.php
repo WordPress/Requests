@@ -1,8 +1,10 @@
 <?php
+namespace Rmccue\Requests;
+
 /**
  * Class to validate and to work with IPv6 addresses
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Utilities
  */
 
@@ -12,10 +14,10 @@
  * This was originally based on the PEAR class of the same name, but has been
  * entirely rewritten.
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Utilities
  */
-class Requests_IPv6 {
+class IPv6 {
 	/**
 	 * Uncompresses an IPv6 address
 	 *

@@ -1,4 +1,7 @@
 <?php
+namespace Rmccue\RequestTests;
+
+require_once( '../vendor/autoload.php' );
 
 date_default_timezone_set('UTC');
 
@@ -22,10 +25,10 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
 include(dirname(dirname(__FILE__)) . '/library/Requests.php');
-Requests::register_autoloader();
+\Rmccue\Requests::register_autoloader();
 
 function autoload_tests($class) {
-	if (strpos($class, 'RequestsTest_') !== 0) {
+	if (strpos($class, 'Rmccue\\RequestTests') !== 0) {
 		return;
 	}
 
@@ -36,14 +39,14 @@ function autoload_tests($class) {
 	}
 }
 
-spl_autoload_register('autoload_tests');
+spl_autoload_register(__NAMESPACE__ . '\\autoload_tests');
 
 function httpbin($suffix = '', $ssl = false) {
 	$host = $ssl ? 'https://' . REQUESTS_TEST_HOST_HTTPS : 'http://' . REQUESTS_TEST_HOST_HTTP;
 	return rtrim( $host, '/' ) . '/' . ltrim( $suffix, '/' );
 }
 
-class MockTransport implements Requests_Transport {
+class MockTransport implements \Rmccue\Requests\Transport {
 	public $code = 200;
 	public $chunked = false;
 	public $body = 'Test Body';
@@ -135,7 +138,7 @@ class MockTransport implements Requests_Transport {
 	}
 }
 
-class RawTransport implements Requests_Transport {
+class RawTransport implements \Rmccue\Requests\Transport {
 	public $data = '';
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		return $this->data;

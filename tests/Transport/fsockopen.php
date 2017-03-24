@@ -1,5 +1,10 @@
 <?php
+namespace Rmccue\RequestTests\Transport;
 
-class RequestsTest_Transport_fsockopen extends RequestsTest_Transport_Base {
-	protected $transport = 'Requests_Transport_fsockopen';
+use Rmccue\Requests as Requests;
+use Rmccue\Requests\Transport\Hooks as Hooks;
+use Rmccue\RequestTests\Transport\Base as Base;
+
+class fsockopen extends Base {
+	protected $transport = '\\Rmccue\\Requests\\Transport\\fsockopen';
 }

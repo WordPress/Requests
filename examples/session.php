@@ -4,10 +4,10 @@
 include('../library/Requests.php');
 
 // Next, make sure Requests can load internal classes
-Requests::register_autoloader();
+\Rmccue\Requests::register_autoloader();
 
 // Set up our session
-$session = new Requests_Session('http://httpbin.org/');
+$session = new \Rmccue\Requests\Session('http://httpbin.org/');
 $session->headers['Accept'] = 'application/json';
 $session->useragent = 'Awesomesauce';
 

@@ -1,18 +1,26 @@
 <?php
+namespace Rmccue\Requests\Cookie;
+
+Use Rmccue\Requests as Requests;
+Use Rmccue\Requests\IRI as IRI;
+Use Rmccue\Requests\Cookie as Cookie;
+Use Rmccue\Requests\Exception as Exception;
+Use Rmccue\Requests\Hooker as Hooker;
+Use Rmccue\Requests\Response as Response;
 /**
  * Cookie holder object
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Cookies
  */
 
 /**
  * Cookie holder object
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Cookies
  */
-class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
+class Jar implements \ArrayAccess, \IteratorAggregate {
 	/**
 	 * Actual item data
 	 *
@@ -30,25 +38,25 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	}
 
 	/**
-	 * Normalise cookie data into a Requests_Cookie
+	 * Normalise cookie data into a Rmccue\Requests\Cookie
 	 *
-	 * @param string|Requests_Cookie $cookie
-	 * @return Requests_Cookie
+	 * @param string|Rmccue\Requests\Cookie $cookie
+	 * @return \Rmccue\Requests\Cookie
 	 */
 	public function normalize_cookie($cookie, $key = null) {
-		if ($cookie instanceof Requests_Cookie) {
+		if ($cookie instanceof Cookie) {
 			return $cookie;
 		}
 
-		return Requests_Cookie::parse($cookie, $key);
+		return Cookie::parse($cookie, $key);
 	}
 
 	/**
-	 * Normalise cookie data into a Requests_Cookie
+	 * Normalise cookie data into a Rmccue\Requests\Cookie
 	 *
 	 * @codeCoverageIgnore
-	 * @deprecated Use {@see Requests_Cookie_Jar::normalize_cookie}
-	 * @return Requests_Cookie
+	 * @deprecated Use {@see Rmccue\Requests\Cookie\Jar::normalize_cookie}
+	 * @return Rmccue\Requests\Cookie
 	 */
 	public function normalizeCookie($cookie, $key = null) {
 		return $this->normalize_cookie($cookie, $key);
@@ -81,14 +89,14 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Set the given item
 	 *
-	 * @throws Requests_Exception On attempting to use dictionary as list (`invalidset`)
+	 * @throws \Rmccue\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 *
 	 * @param string $key Item name
 	 * @param string $value Item value
 	 */
 	public function offsetSet($key, $value) {
 		if ($key === null) {
-			throw new Requests_Exception('Object is a dictionary, not a list', 'invalidset');
+			throw new Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
 		$this->cookies[$key] = $value;
@@ -109,15 +117,15 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 * @return ArrayIterator
 	 */
 	public function getIterator() {
-		return new ArrayIterator($this->cookies);
+		return new \ArrayIterator($this->cookies);
 	}
 
 	/**
 	 * Register the cookie handler with the request's hooking system
 	 *
-	 * @param Requests_Hooker $hooks Hooking system
+	 * @param Rmccue\Requests\Hooker $hooks Hooking system
 	 */
-	public function register(Requests_Hooker $hooks) {
+	public function register(Hooker $hooks) {
 		$hooks->register('requests.before_request', array($this, 'before_request'));
 		$hooks->register('requests.before_redirect_check', array($this, 'before_redirect_check'));
 	}
@@ -134,8 +142,8 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 * @param array $options
 	 */
 	public function before_request($url, &$headers, &$data, &$type, &$options) {
-		if (!$url instanceof Requests_IRI) {
-			$url = new Requests_IRI($url);
+		if (!$url instanceof IRI) {
+			$url = new IRI($url);
 		}
 
 		if (!empty($this->cookies)) {
@@ -160,15 +168,15 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Parse all cookies from a response and attach them to the response
 	 *
-	 * @var Requests_Response $response
+	 * @var Rmccue\Requests\Response $response
 	 */
-	public function before_redirect_check(Requests_Response &$return) {
+	public function before_redirect_check(Response &$return) {
 		$url = $return->url;
-		if (!$url instanceof Requests_IRI) {
-			$url = new Requests_IRI($url);
+		if (!$url instanceof IRI) {
+			$url = new IRI($url);
 		}
 
-		$cookies = Requests_Cookie::parse_from_headers($return->headers, $url);
+		$cookies = Cookie::parse_from_headers($return->headers, $url);
 		$this->cookies = array_merge($this->cookies, $cookies);
 		$return->cookies = $this;
 	}

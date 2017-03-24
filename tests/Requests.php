@@ -1,15 +1,21 @@
 <?php
+namespace Rmccue\RequestTests;
 
-class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
+use Rmccue\Requests as Requests;
+use Rmccue\Requests\Exception as Exception;
+use Rmccue\Requests\Response\Headers as Headers;
+use PHPUnit\Framework\TestCase as TestCase;
+
+class MockRequests extends TestCase {
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testInvalidProtocol() {
 		$request = Requests::request('ftp://128.0.0.1/');
 	}
 
 	public function testDefaultTransport() {
-		$request = Requests::get(httpbin('/get'));
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/get'));
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -35,7 +41,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
-		$expected = new Requests_Response_Headers();
+		$expected = new Headers();
 		$expected['host'] = 'localhost,ambiguous';
 		$expected['nospace'] = 'here';
 		$expected['muchspace'] = 'there';
@@ -100,7 +106,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * We do not support HTTP/0.9. If this is really an issue for you, file a
 	 * new issue, and update your server/proxy to support a proper protocol.
 	 *
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testInvalidProtocolVersion() {
 		$transport = new RawTransport();
@@ -115,7 +121,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	/**
 	 * HTTP/0.9 also appears to use a single CRLF instead of two
 	 *
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testSingleCRLFSeparator() {
 		$transport = new RawTransport();
@@ -128,7 +134,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testInvalidStatus() {
 		$transport = new RawTransport();
@@ -153,10 +159,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testTimeoutException() {
 		$options = array('timeout' => 0.5);
-		$response = Requests::get(httpbin('/delay/3'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/delay/3'), array(), $options);
 	}
 }

@@ -1,16 +1,19 @@
 <?php
+namespace Rmccue\Requests;
+
+Use Rmccue\Requests as Requests;
 /**
  * Exception for HTTP requests
  *
- * @package Requests
+ * @package Rmccue\Requests
  */
 
 /**
  * Exception for HTTP requests
  *
- * @package Requests
+ * @package Rmccue\Requests
  */
-class Requests_Exception extends Exception {
+class Exception extends \Exception {
 	/**
 	 * Type of exception
 	 *

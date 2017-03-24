@@ -1,6 +1,10 @@
 <?php
+namespace Rmccue\RequestTests;
 
-class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
+use Rmccue\Requests as Requests;
+use PHPUnit\Framework\TestCase as TestCase;
+
+class ChunkedDecoding extends TestCase {
 	public static function chunkedProvider() {
 		return array(
 			array(

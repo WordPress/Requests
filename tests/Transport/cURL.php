@@ -1,5 +1,6 @@
 <?php
+namespace Rmccue\RequestTests\Transport;
 
-class RequestsTest_Transport_cURL extends RequestsTest_Transport_Base {
-	protected $transport = 'Requests_Transport_cURL';
+class cURL extends \Rmccue\RequestTests\Transport\Base {
+	protected $transport = '\\Rmccue\\Requests\\Transport\\cURL';
 }

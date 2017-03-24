@@ -1,6 +1,11 @@
 <?php
+namespace Rmccue\RequestTests\Transport;
 
-abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
+use Rmccue\Requests as Requests;
+use Rmccue\RequestTests as RequestTests;
+use PHPUnit\Framework\TestCase as TestCase;
+
+abstract class Base extends TestCase {
 	public function setUp() {
 		$callback = array($this->transport, 'test');
 		$supported = call_user_func($callback);
@@ -30,7 +35,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'max_bytes' => $limit,
 		);
-		$response = Requests::get(httpbin('/bytes/325'), array(), $this->getOptions($options));
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/bytes/325'), array(), $this->getOptions($options));
 		$this->assertEquals($limit, strlen($response->body));
 	}
 
@@ -40,27 +45,27 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'max_bytes' => $limit,
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 		);
-		$response = Requests::get(httpbin('/bytes/482'), array(), $this->getOptions($options));
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/bytes/482'), array(), $this->getOptions($options));
 		$this->assertEmpty($response->body);
 		$this->assertEquals($limit, filesize($options['filename']));
 		unlink($options['filename']);
 	}
 
 	public function testSimpleGET() {
-		$request = Requests::get(httpbin('/get'), array(), $this->getOptions());
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testGETWithArgs() {
-		$request = Requests::get(httpbin('/get?test=true&test2=test'), array(), $this->getOptions());
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/get?test=true&test2=test'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
@@ -69,11 +74,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::request(httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
+		$request = Requests::request(\Rmccue\RequestTests\httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
@@ -85,11 +90,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'test4' => 'test-too',
 			),
 		);
-		$request = Requests::request(httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
+		$request = Requests::request(\Rmccue\RequestTests\httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['args']);
 	}
 
@@ -97,11 +102,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$data = array(
 			'test2' => 'test',
 		);
-		$request = Requests::request(httpbin('/get?test=true'), array(), $data, Requests::GET, $this->getOptions());
+		$request = Requests::request(\Rmccue\RequestTests\httpbin('/get?test=true'), array(), $data, Requests::GET, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
@@ -109,7 +114,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$headers = array(
 			'Requested-At' => time(),
 		);
-		$request = Requests::get(httpbin('/get'), $headers, $this->getOptions());
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/get'), $headers, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -117,28 +122,28 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testChunked() {
-		$request = Requests::get(httpbin('/stream/1'), array(), $this->getOptions());
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/stream/1'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/stream/1'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/stream/1'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testHEAD() {
-		$request = Requests::head(httpbin('/get'), array(), $this->getOptions());
+		$request = Requests::head(\Rmccue\RequestTests\httpbin('/get'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 		$this->assertEquals('', $request->body);
 	}
 
 	public function testTRACE() {
-		$request = Requests::trace(httpbin('/trace'), array(), $this->getOptions());
+		$request = Requests::trace(\Rmccue\RequestTests\httpbin('/trace'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
 	public function testRawPOST() {
 		$data = 'test';
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$request = Requests::post(\Rmccue\RequestTests\httpbin('/post'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -147,7 +152,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFormPost() {
 		$data = 'test=true&test2=test';
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$request = Requests::post(\Rmccue\RequestTests\httpbin('/post'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -159,7 +164,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$request = Requests::post(\Rmccue\RequestTests\httpbin('/post'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -174,7 +179,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'test4' => 'test-too',
 			),
 		);
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$request = Requests::post(\Rmccue\RequestTests\httpbin('/post'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -183,7 +188,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testRawPUT() {
 		$data = 'test';
-		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
+		$request = Requests::put(\Rmccue\RequestTests\httpbin('/put'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -192,7 +197,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFormPUT() {
 		$data = 'test=true&test2=test';
-		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
+		$request = Requests::put(\Rmccue\RequestTests\httpbin('/put'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -204,7 +209,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
+		$request = Requests::put(\Rmccue\RequestTests\httpbin('/put'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -213,7 +218,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testRawPATCH() {
 		$data = 'test';
-		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
+		$request = Requests::patch(\Rmccue\RequestTests\httpbin('/patch'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -222,7 +227,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFormPATCH() {
 		$data = 'test=true&test2=test';
-		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
+		$request = Requests::patch(\Rmccue\RequestTests\httpbin('/patch'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code, $request->body);
 
 		$result = json_decode($request->body, true);
@@ -234,7 +239,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
+		$request = Requests::patch(\Rmccue\RequestTests\httpbin('/patch'), array(), $data, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -242,16 +247,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testOPTIONS() {
-		$request = Requests::options(httpbin('/options'), array(), array(), $this->getOptions());
+		$request = Requests::options(\Rmccue\RequestTests\httpbin('/options'), array(), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
 	public function testDELETE() {
-		$request = Requests::delete(httpbin('/delete'), array(), $this->getOptions());
+		$request = Requests::delete(\Rmccue\RequestTests\httpbin('/delete'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/delete'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/delete'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -260,16 +265,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::request(httpbin('/delete'), array(), $data, Requests::DELETE, $this->getOptions());
+		$request = Requests::request(\Rmccue\RequestTests\httpbin('/delete'), array(), $data, Requests::DELETE, $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/delete?test=true&test2=test'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/delete?test=true&test2=test'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
 	public function testLOCK() {
-		$request = Requests::request(httpbin('/lock'), array(), array(), 'LOCK', $this->getOptions());
+		$request = Requests::request(\Rmccue\RequestTests\httpbin('/lock'), array(), array(), 'LOCK', $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -278,7 +283,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::request(httpbin('/lock'), array(), $data, 'LOCK', $this->getOptions());
+		$request = Requests::request(\Rmccue\RequestTests\httpbin('/lock'), array(), $data, 'LOCK', $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -286,28 +291,28 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirects() {
-		$request = Requests::get(httpbin('/redirect/6'), array(), $this->getOptions());
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/redirect/6'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$this->assertEquals(6, $request->redirects);
 	}
 
 	public function testRelativeRedirects() {
-		$request = Requests::get(httpbin('/relative-redirect/6'), array(), $this->getOptions());
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/relative-redirect/6'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$this->assertEquals(6, $request->redirects);
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 * @todo This should also check that the type is "toomanyredirects"
 	 */
 	public function testTooManyRedirects() {
 		$options = array(
 			'redirects' => 10, // default, but force just in case
 		);
-		$request = Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/redirect/11'), array(), $this->getOptions($options));
 	}
 
 	public static function statusCodeSuccessProvider() {
@@ -363,10 +368,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCode($code, $success) {
-		$transport = new MockTransport();
+		$transport = new RequestTests\MockTransport();
 		$transport->code = $code;
 
-		$url = sprintf(httpbin('/status/%d'), $code);
+		$url = sprintf(\Rmccue\RequestTests\httpbin('/status/%d'), $code);
 
 		$options = array(
 			'follow_redirects' => false,
@@ -381,10 +386,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrow($code, $success) {
-		$transport = new MockTransport();
+		$transport = new RequestTests\MockTransport();
 		$transport->code = $code;
 
-		$url = sprintf(httpbin('/status/%d'), $code);
+		$url = sprintf(\Rmccue\RequestTests\httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
 			'transport' => $transport,
@@ -392,10 +397,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
+				$this->expectException('Rmccue\\Requests\\Exception\\HTTP\\Response' . $code);
 			}
 			elseif ($code >= 300 && $code < 400) {
-				$this->setExpectedException('Requests_Exception');
+				$this->expectException('Rmccue\\Requests\\Exception');
 			}
 		}
 		$request = Requests::get($url, array(), $options);
@@ -406,10 +411,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrowAllowRedirects($code, $success) {
-		$transport = new MockTransport();
+		$transport = new RequestTests\MockTransport();
 		$transport->code = $code;
 
-		$url = sprintf(httpbin('/status/%d'), $code);
+		$url = sprintf(\Rmccue\RequestTests\httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
 			'transport' => $transport,
@@ -417,7 +422,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
+				$this->expectException('Rmccue\\Requests\\Exception\\HTTP\\Response' . $code);
 			}
 		}
 		$request = Requests::get($url, array(), $options);
@@ -425,35 +430,35 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testStatusCodeUnknown(){
-		$transport = new MockTransport();
+		$transport = new RequestTests\MockTransport();
 		$transport->code = 599;
 
 		$options = array(
 			'transport' => $transport,
 		);
 
-		$request = Requests::get(httpbin('/status/599'), array(), $options);
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/status/599'), array(), $options);
 		$this->assertEquals(599, $request->status_code);
 		$this->assertEquals(false, $request->success);
 	}
 
 	/**
-	 * @expectedException Requests_Exception_HTTP_Unknown
+	 * @expectedException Rmccue\Requests\Exception\HTTP\Unknown
 	 */
 	public function testStatusCodeThrowUnknown(){
-		$transport = new MockTransport();
+		$transport = new RequestTests\MockTransport();
 		$transport->code = 599;
 
 		$options = array(
 			'transport' => $transport,
 		);
 
-		$request = Requests::get(httpbin('/status/599'), array(), $options);
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/status/599'), array(), $options);
 		$request->throw_for_status(true);
 	}
 
 	public function testGzipped() {
-		$request = Requests::get(httpbin('/gzip'), array(), $this->getOptions());
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/gzip'), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -464,13 +469,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 		);
-		$request = Requests::get(httpbin('/get'), array(), $this->getOptions($options));
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $this->getOptions($options));
 		$this->assertEquals(200, $request->status_code);
 		$this->assertEmpty($request->body);
 
 		$contents = file_get_contents($options['filename']);
 		$result = json_decode($contents, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		unlink($options['filename']);
@@ -480,13 +485,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'blocking' => false
 		);
-		$request = Requests::get(httpbin('/get'), array(), $this->getOptions($options));
-		$empty = new Requests_Response();
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $this->getOptions($options));
+		$empty = new Requests\Response();
 		$this->assertEquals($empty, $request);
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testBadIP() {
 		$request = Requests::get('http://256.256.256.0/', array(), $this->getOptions());
@@ -498,17 +503,17 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get(httpbin('/get', true), array(), $this->getOptions());
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/get', true), array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		// Disable, since httpbin always returns http
-		// $this->assertEquals(httpbin('/get', true), $result['url']);
+		// Disable, since \Rmccue\RequestTests\httpbin always returns http
+		// $this->assertEquals(\Rmccue\RequestTests\httpbin('/get', true), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testExpiredHTTPS() {
 		if ($this->skip_https) {
@@ -520,7 +525,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testRevokedHTTPS() {
 		if ($this->skip_https) {
@@ -534,7 +539,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * Test that SSL fails with a bad certificate
 	 *
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testBadDomain() {
 		if ($this->skip_https) {
@@ -579,53 +584,53 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException Rmccue\Requests\Exception
 	 */
 	public function testTimeout() {
 		$options = array(
 			'timeout' => 1,
 		);
-		$request = Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
+		$request = Requests::get(\Rmccue\RequestTests\httpbin('/delay/10'), array(), $this->getOptions($options));
 		var_dump($request);
 	}
 
 	public function testMultiple() {
 		$requests = array(
 			'test1' => array(
-				'url' => httpbin('/get')
+				'url' => \Rmccue\RequestTests\httpbin('/get')
 			),
 			'test2' => array(
-				'url' => httpbin('/get')
+				'url' => \Rmccue\RequestTests\httpbin('/get')
 			),
 		);
 		$responses = Requests::request_multiple($requests, $this->getOptions());
 
 		// test1
 		$this->assertNotEmpty($responses['test1']);
-		$this->assertInstanceOf('Requests_Response', $responses['test1']);
+		$this->assertInstanceOf('\\Rmccue\\Requests\\Response', $responses['test1']);
 		$this->assertEquals(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		// test2
 		$this->assertNotEmpty($responses['test2']);
-		$this->assertInstanceOf('Requests_Response', $responses['test2']);
+		$this->assertInstanceOf('\\Rmccue\\Requests\\Response', $responses['test2']);
 		$this->assertEquals(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testMultipleWithDifferingMethods() {
 		$requests = array(
 			'get' => array(
-				'url' => httpbin('/get'),
+				'url' => \Rmccue\RequestTests\httpbin('/get'),
 			),
 			'post' => array(
-				'url' => httpbin('/post'),
+				'url' => \Rmccue\RequestTests\httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 			),
@@ -647,10 +652,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultipleWithFailure() {
 		$requests = array(
 			'success' => array(
-				'url' => httpbin('/get'),
+				'url' => \Rmccue\RequestTests\httpbin('/get'),
 			),
 			'timeout' => array(
-				'url' => httpbin('/delay/10'),
+				'url' => \Rmccue\RequestTests\httpbin('/delay/10'),
 				'options' => array(
 					'timeout' => 1,
 				),
@@ -658,16 +663,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 		$responses = Requests::request_multiple($requests, $this->getOptions());
 		$this->assertEquals(200, $responses['success']->status_code);
-		$this->assertInstanceOf('Requests_Exception', $responses['timeout']);
+		$this->assertInstanceOf('\Rmccue\Requests\Exception', $responses['timeout']);
 	}
 
 	public function testMultipleUsingCallback() {
 		$requests = array(
 			'get' => array(
-				'url' => httpbin('/get'),
+				'url' => \Rmccue\RequestTests\httpbin('/get'),
 			),
 			'post' => array(
-				'url' => httpbin('/post'),
+				'url' => \Rmccue\RequestTests\httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 			),
@@ -685,10 +690,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultipleUsingCallbackAndFailure() {
 		$requests = array(
 			'success' => array(
-				'url' => httpbin('/get'),
+				'url' => \Rmccue\RequestTests\httpbin('/get'),
 			),
 			'timeout' => array(
-				'url' => httpbin('/delay/10'),
+				'url' => \Rmccue\RequestTests\httpbin('/delay/10'),
 				'options' => array(
 					'timeout' => 1,
 				),
@@ -711,13 +716,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultipleToFile() {
 		$requests = array(
 			'get' => array(
-				'url' => httpbin('/get'),
+				'url' => \Rmccue\RequestTests\httpbin('/get'),
 				'options' => array(
 					'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 				),
 			),
 			'post' => array(
-				'url' => httpbin('/post'),
+				'url' => \Rmccue\RequestTests\httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 				'options' => array(
@@ -730,14 +735,14 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		// GET request
 		$contents = file_get_contents($requests['get']['options']['filename']);
 		$result = json_decode($contents, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 		unlink($requests['get']['options']['filename']);
 
 		// POST request
 		$contents = file_get_contents($requests['post']['options']['filename']);
 		$result = json_decode($contents, true);
-		$this->assertEquals(httpbin('/post'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/post'), $result['url']);
 		$this->assertEquals('test', $result['data']);
 		unlink($requests['post']['options']['filename']);
 	}
@@ -753,14 +758,14 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testProgressCallback() {
 		$mock = $this->getMockBuilder('stdClass')->setMethods(array('progress'))->getMock();
 		$mock->expects($this->atLeastOnce())->method('progress');
-		$hooks = new Requests_Hooks();
+		$hooks = new Requests\Hooks();
 		$hooks->register('request.progress', array($mock, 'progress'));
 		$options = array(
 			'hooks' => $hooks,
 		);
 		$options = $this->getOptions($options);
 
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 	}
 
 	public function testAfterRequestCallback() {
@@ -774,7 +779,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->isType('string'),
 				$this->logicalAnd($this->isType('array'), $this->logicalNot($this->isEmpty()))
 			);
-		$hooks = new Requests_Hooks();
+		$hooks = new Requests\Hooks();
 		$hooks->register('curl.after_request', array($mock, 'after_request'));
 		$hooks->register('fsockopen.after_request', array($mock, 'after_request'));
 		$options = array(
@@ -782,14 +787,14 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 		$options = $this->getOptions($options);
 
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 	}
 
 	public function testReusableTransport() {
 		$options = $this->getOptions(array('transport' => new $this->transport()));
 
-		$request1 = Requests::get(httpbin('/get'), array(), $options);
-		$request2 = Requests::get(httpbin('/get'), array(), $options);
+		$request1 = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
+		$request2 = Requests::get(\Rmccue\RequestTests\httpbin('/get'), array(), $options);
 
 		$this->assertEquals(200, $request1->status_code);
 		$this->assertEquals(200, $request2->status_code);
@@ -797,8 +802,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$result1 = json_decode($request1->body, true);
 		$result2 = json_decode($request2->body, true);
 
-		$this->assertEquals(httpbin('/get'), $result1['url']);
-		$this->assertEquals(httpbin('/get'), $result2['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result1['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/get'), $result2['url']);
 
 		$this->assertEmpty($result1['args']);
 		$this->assertEmpty($result2['args']);
@@ -806,21 +811,21 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testQueryDataFormat() {
 		$data = array('test' => 'true', 'test2' => 'test');
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'query')));
+		$request = Requests::post(\Rmccue\RequestTests\httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'query')));
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/post').'?test=true&test2=test', $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/post').'?test=true&test2=test', $result['url']);
 		$this->assertEquals('', $result['data']);
 	}
 
 	public function testBodyDataFormat() {
 		$data = array('test' => 'true', 'test2' => 'test');
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'body')));
+		$request = Requests::post(\Rmccue\RequestTests\httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'body')));
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/post'), $result['url']);
+		$this->assertEquals(\Rmccue\RequestTests\httpbin('/post'), $result['url']);
 		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 }

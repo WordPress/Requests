@@ -1,6 +1,10 @@
 <?php
+namespace Rmccue\RequestTests;
 
-class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
+use Rmccue\Requests as Requests;
+use PHPUnit\Framework\TestCase as TestCase;
+
+class SSL extends TestCase {
 	public static function domainMatchProvider() {
 		return array(
 			array('example.com', 'example.com'),
@@ -35,14 +39,14 @@ class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
 	 * @dataProvider domainMatchProvider
 	 */
 	public function testMatch($base, $dnsname) {
-		$this->assertTrue(Requests_SSL::match_domain($base, $dnsname));
+		$this->assertTrue(Requests\SSL::match_domain($base, $dnsname));
 	}
 
 	/**
 	 * @dataProvider domainNoMatchProvider
 	 */
 	public function testNoMatch($base, $dnsname) {
-		$this->assertFalse(Requests_SSL::match_domain($base, $dnsname));
+		$this->assertFalse(Requests\SSL::match_domain($base, $dnsname));
 	}
 
 	protected function fakeCertificate($dnsname, $with_san = true) {
@@ -70,7 +74,7 @@ class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
 	 */
 	public function testMatchViaCertificate($base, $dnsname) {
 		$certificate = $this->fakeCertificate($dnsname);
-		$this->assertTrue(Requests_SSL::verify_certificate($base, $certificate));
+		$this->assertTrue(Requests\SSL::verify_certificate($base, $certificate));
 	}
 
 	/**
@@ -78,17 +82,17 @@ class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
 	 */
 	public function testNoMatchViaCertificate($base, $dnsname) {
 		$certificate = $this->fakeCertificate($dnsname);
-		$this->assertFalse(Requests_SSL::verify_certificate($base, $certificate));
+		$this->assertFalse(Requests\SSL::verify_certificate($base, $certificate));
 	}
 
 	public function testCNFallback() {
 		$certificate = $this->fakeCertificate('example.com', false);
-		$this->assertTrue(Requests_SSL::verify_certificate('example.com', $certificate));
+		$this->assertTrue(Requests\SSL::verify_certificate('example.com', $certificate));
 	}
 
 	public function testInvalidCNFallback() {
 		$certificate = $this->fakeCertificate('example.com', false);
-		$this->assertFalse(Requests_SSL::verify_certificate('example.net', $certificate));
+		$this->assertFalse(Requests\SSL::verify_certificate('example.net', $certificate));
 	}
 
 	/**
@@ -102,7 +106,7 @@ class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
 	public function testIgnoreCNWithSAN() {
 		$certificate =  $this->fakeCertificate('example.net', 'example.com');
 
-		$this->assertTrue(Requests_SSL::verify_certificate('example.com', $certificate), 'Checking SAN validation');
-		$this->assertFalse(Requests_SSL::verify_certificate('example.net', $certificate), 'Checking CN non-validation');
+		$this->assertTrue(Requests\SSL::verify_certificate('example.com', $certificate), 'Checking SAN validation');
+		$this->assertFalse(Requests\SSL::verify_certificate('example.net', $certificate), 'Checking CN non-validation');
 	}
 }

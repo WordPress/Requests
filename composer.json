@@ -11,13 +11,14 @@
 		}
 	],
 	"require": {
-		"php": ">=5.2"
+		"php": ">=5.3"
 	},
 	"require-dev": {
-		"requests/test-server": "dev-master"
+		"requests/test-server": "dev-master",
+		"phpunit/phpunit": "6.*"
 	},
 	"type": "library",
 	"autoload": {
-		"psr-0": {"Requests": "library/"}
+		"psr-4": {"Rmccue\\Requests\\": "library/"}
 	}
 }

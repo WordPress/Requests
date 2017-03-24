@@ -1,6 +1,9 @@
 <?php
+namespace Rmccue\Requests\Exception\Transport;
 
-class Requests_Exception_Transport_cURL extends Requests_Exception_Transport {
+use Rmccue\Requests\Exception\Transport as Transport;
+
+class cURL extends Transport {
 
 	const EASY = 'cURLEasy';
 	const MULTI = 'cURLMulti';

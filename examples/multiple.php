@@ -4,7 +4,7 @@
 include('../library/Requests.php');
 
 // Next, make sure Requests can load internal classes
-Requests::register_autoloader();
+\Rmccue\Requests::register_autoloader();
 
 // Setup what we want to request
 $requests = array(
@@ -35,7 +35,7 @@ $options = array(
 );
 
 // Send the request!
-$responses = Requests::request_multiple($requests, $options);
+$responses = \Rmccue\Requests::request_multiple($requests, $options);
 
 // Note: the response from the above call will be an associative array matching
 // $requests with the response data, however we've already handled it in

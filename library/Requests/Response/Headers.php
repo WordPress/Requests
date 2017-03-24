@@ -1,16 +1,22 @@
 <?php
+namespace Rmccue\Requests\Response;
+
+use Rmccue\Requests as Requests;
+use Rmccue\Requests\Exception as Exception;
+use Rmccue\Requests\Utility\FilteredIterator as FilteredIterator;
+use Rmccue\Requests\Utility\CaseInsensitiveDictionary as CaseInsensitiveDictionary;
 /**
  * Case-insensitive dictionary, suitable for HTTP headers
  *
- * @package Requests
+ * @package Rmccue\Requests
  */
 
 /**
  * Case-insensitive dictionary, suitable for HTTP headers
  *
- * @package Requests
+ * @package Rmccue\Requests
  */
-class Requests_Response_Headers extends Requests_Utility_CaseInsensitiveDictionary {
+class Headers extends CaseInsensitiveDictionary {
 	/**
 	 * Get the given header
 	 *
@@ -35,14 +41,14 @@ class Requests_Response_Headers extends Requests_Utility_CaseInsensitiveDictiona
 	/**
 	 * Set the given item
 	 *
-	 * @throws Requests_Exception On attempting to use dictionary as list (`invalidset`)
+	 * @throws Rmccue\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 *
 	 * @param string $key Item name
 	 * @param string $value Item value
 	 */
 	public function offsetSet($key, $value) {
 		if ($key === null) {
-			throw new Requests_Exception('Object is a dictionary, not a list', 'invalidset');
+			throw new Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
 		$key = strtolower($key);
@@ -93,6 +99,6 @@ class Requests_Response_Headers extends Requests_Utility_CaseInsensitiveDictiona
 	 * @return ArrayIterator
 	 */
 	public function getIterator() {
-		return new Requests_Utility_FilteredIterator($this->data, array($this, 'flatten'));
+		return new FilteredIterator($this->data, array($this, 'flatten'));
 	}
 }

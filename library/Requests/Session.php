@@ -1,8 +1,14 @@
 <?php
+namespace Rmccue\Requests;
+
+use Rmccue\Requests as Requests;
+
+use Rmccue\Requests\IRI as IRI;
+use Rmccue\Requests\Cookie\Jar as Cookie_Jar;
 /**
  * Session handler for persistent requests and default parameters
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Session Handler
  */
 
@@ -14,10 +20,10 @@
  * with all subrequests resolved from this. Base options can be set (including
  * a shared cookie jar), then overridden for individual requests.
  *
- * @package Requests
+ * @package Rmccue\Requests
  * @subpackage Session Handler
  */
-class Requests_Session {
+class Session {
 	/**
 	 * Base URL for requests
 	 *
@@ -70,7 +76,7 @@ class Requests_Session {
 		$this->options = $options;
 
 		if (empty($this->options['cookies'])) {
-			$this->options['cookies'] = new Requests_Cookie_Jar();
+			$this->options['cookies'] = new Cookie_Jar();
 		}
 	}
 
@@ -123,7 +129,7 @@ class Requests_Session {
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $options
-	 * @return Requests_Response
+	 * @return Rmccue\Requests\Response
 	 */
 	/**
 	 * Send a GET request
@@ -153,7 +159,7 @@ class Requests_Session {
 	 * @param array $headers
 	 * @param array $data
 	 * @param array $options
-	 * @return Requests_Response
+	 * @return Rmccue\Requests\Response
 	 */
 	/**
 	 * Send a POST request
@@ -236,7 +242,7 @@ class Requests_Session {
 	 */
 	protected function merge_request($request, $merge_options = true) {
 		if ($this->url !== null) {
-			$request['url'] = Requests_IRI::absolutize($this->url, $request['url']);
+			$request['url'] = IRI::absolutize($this->url, $request['url']);
 			$request['url'] = $request['url']->uri;
 		}
 
