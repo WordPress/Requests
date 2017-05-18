@@ -186,8 +186,9 @@ class Requests {
 		$cap_string = serialize($capabilities);
 
 		// Don't search for a transport if it's already been done for these $capabilities
-		if (isset(self::$transport[$cap_string]) && self::$transport[$cap_string] !== null) {
-			return new self::$transport[$cap_string]();
+        $transport = self::$transport;
+        if (isset($transport[$cap_string]) && $transport[$cap_string] !== null) {
+			return new $transport[$cap_string]();
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -206,15 +207,15 @@ class Requests {
 
 			$result = call_user_func(array($class, 'test'), $capabilities);
 			if ($result) {
-				self::$transport[$cap_string] = $class;
+				$transport[$cap_string] = $class;
 				break;
 			}
 		}
-		if (self::$transport[$cap_string] === null) {
+		if ($transport[$cap_string] === null) {
 			throw new Requests_Exception('No working transports found', 'notransport', self::$transports);
 		}
 
-		return new self::$transport[$cap_string]();
+		return new $transport[$cap_string]();
 	}
 
 	/**#@+

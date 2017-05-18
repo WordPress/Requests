@@ -42,9 +42,13 @@ class Requests_IDNAEncoder {
 	 */
 	public static function encode($string) {
 		$parts = explode('.', $string);
-		foreach ($parts as &$part) {
-			$part = self::to_ascii($part);
-		}
+        $parts = array_map(
+            function ($part) {
+                return Requests_IDNAEncoder::to_ascii($part);
+            },
+            $parts
+        );
+
 		return implode('.', $parts);
 	}
 
