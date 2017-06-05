@@ -8,7 +8,7 @@ So you want to contribute to Requests? Fantastic! There are a few rules you'll n
 
 1. Ideally, start with an issue to check the need for a PR. It's possible that a feature may be rejected at an early stage, and it's better to find out before you write the code.
 2. Write the code. Small, atomic commits are preferred. Explain the motivation behind the change when needed.
-3. file a PR. If it isn't ready for merge yet, note that in the description.
+3. File a PR. If it isn't ready for merge yet, note that in the description. If your PR closes an existing issue, add "fixes #xxx" to the message, so that the issue will be closed when the PR is merged.
 4. If needed, iterate on the code until it is ready. This includes adding unit tests. When you're ready, comment that the PR is complete.
 5. A committer will review your code and offer you feedback.
 6. Update with the feedback as necessary.
