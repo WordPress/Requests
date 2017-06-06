@@ -1,6 +1,20 @@
 <?php
 
 abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
+	/**
+	 * Backwards compatibility shim for PHPUnit 6+
+	 *
+	 * @param string $class Class to expect exception instance of.
+	 */
+	public function setExpectedException($class) {
+		if (method_exists($this, 'expectException')) {
+			return $this->expectException($class);
+		}
+		else {
+			return parent::setExpectedException($class);
+		}
+	}
+
 	public function setUp() {
 		$callback = array($this->transport, 'test');
 		$supported = call_user_func($callback);
