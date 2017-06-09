@@ -17,7 +17,7 @@ So you want to contribute to Requests? Fantastic! There are a few rules you'll n
 Notes:
 
 * All code needs to go through peer review. Committers may not merge their own PR.
-* PRs should **never be squashed or rebased**. This includes when merging. Keeping the history is important for tracking motivation behind changes later.
+* PRs should **never be squashed or rebased**, even when merging. Keeping the history is important for tracking motivation behind changes later.
 
 ## Compatibility
 
