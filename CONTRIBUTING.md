@@ -21,11 +21,16 @@ Notes:
 
 ## Compatibility
 
-All code in Requests must be compatible with PHP 5.2. Requests is used in WordPress, and hence is tied to [its compatibility][wp-requirements].
+All code in Requests must be compatible with PHP 5.2.
+Requests is used in WordPress, and hence is tied to [its compatibility][wp-requirements].
 
-Requests is also bound to not break backwards compatibility. In semantic versioning terms, this means we will be in the 1.x release cycle for the forseeable future.
+Requests is also bound to not break backwards compatibility.
+In semantic versioning terms, this means we will be in the 1.x release cycle for the forseeable future.
 
-Generally speaking, the goal of Requests is to provide an interface that smoothes the differences across various server setups. That means there shouldn't be any code relying on any extensions (even if they're common) unless we also provide a pure-PHP version (that is, we can use extensions to improve performance when available). Only two extensions are currently used: SPL, and cURL. SPL is always available from PHP 5.3 onwards, and is rarely disabled in PHP 5.2, so this is an acceptable exception. cURL is only used for better performance over sockets.
+Generally speaking, the goal of Requests is to provide an interface that smoothes the differences across various server setups.
+That means there shouldn't be any code relying on any extensions (even if they're common) unless we also provide a pure-PHP version (that is, we can use extensions to improve performance when available). Only two extensions are currently used: SPL, and cURL.
+SPL is always available from PHP 5.3 onwards, and is rarely disabled in PHP 5.2, so this is an acceptable exception.
+cURL is only used for better performance over sockets.
 
 [wp-requirements]: https://wordpress.org/about/requirements/
 
@@ -65,9 +70,12 @@ class Requests_Some_Class_Name {
 
 ## Unit Tests
 
-PRs should include unit tests for any changes. These are written in PHPUnit, and should be added to the file corresponding to the class they test (that is, tests for `library/Requests/Cookie.php` would be in `tests/Cookie.php`).
+PRs should include unit tests for any changes.
+These are written in PHPUnit, and should be added to the file corresponding to the class they test (that is, tests for `library/Requests/Cookie.php` would be in `tests/Cookie.php`).
 
-Where possible, features must be unit tested. We aim for >90% coverage at all times. The master branch may drop below 90% if features are merged independently of their tests, but there is a hard limit of 85%. Release versions must have >90% coverage.
+Where possible, features must be unit tested.
+We aim for >90% coverage at all times.
+The master branch may drop below 90% if features are merged independently of their tests, but there is a hard limit of 85%. Release versions must have >90% coverage.
 
 For complex features by third-parties, PRs may be merged that drop coverage below the 90% threshold, with the intent of increasing tests back up in a subsequent PR.
 
