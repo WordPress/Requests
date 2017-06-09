@@ -28,7 +28,7 @@ install:
  - phpenv local --unset
 
  # Setup the proxy
- - pip install --user mitmproxy~=0.15
+ - pip install --user mitmproxy==0.18.2
 
  # Display relevant versions for our custom pieces.
  - python --version
