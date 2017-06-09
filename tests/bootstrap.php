@@ -24,7 +24,8 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 // Fixes https://github.com/rmccue/Requests/issues/279 by aliasing PHPUnit_Framework_TestCase to PHPUnit\Framework\TestCase
 // (Designed to work in php 5.2+)
 if (function_exists('class_exists') && !class_exists('PHPUnit_Framework_TestCase') && PHP_VERSION_ID >= 70000 && class_exists('PHPUnit\Framework\TestCase')) {
-    class_alias('PHPUnit\Framework\TestCase', 'PHPUnit_Framework_TestCase');
+	class_alias('PHPUnit\Framework\TestCase', 'PHPUnit_Framework_TestCase');
+	class_alias('PHPUnit\Framework\Error\Notice', 'PHPUnit_Framework_Error_Notice');
 }
 
 include(dirname(dirname(__FILE__)) . '/library/Requests.php');

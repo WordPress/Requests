@@ -9,7 +9,6 @@ matrix:
     - php: 5.6
       env: TEST_COVERAGE=1
     - php: 7.0
-    - php: hhvm
 
 # Use new container infrastructure
 sudo: false
@@ -28,7 +27,11 @@ install:
  - phpenv local --unset
 
  # Setup the proxy
- - pip install --user mitmproxy~=0.15
+ - pip install --user mitmproxy==0.18.2
+
+ # Display relevant versions for our custom pieces.
+ - python --version
+ - mitmproxy --version
 
 before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh

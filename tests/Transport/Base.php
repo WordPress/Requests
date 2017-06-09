@@ -413,6 +413,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			}
 		}
 		$request = Requests::get($url, array(), $options);
+		$this->assertEquals($code, $request->status_code);
 		$request->throw_for_status(false);
 	}
 
@@ -435,6 +436,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			}
 		}
 		$request = Requests::get($url, array(), $options);
+		$this->assertEquals($code, $request->status_code);
 		$request->throw_for_status(true);
 	}
 
