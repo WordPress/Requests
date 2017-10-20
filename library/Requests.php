@@ -340,7 +340,7 @@ class Requests {
 	 *    across transports.)
 	 *    (string|boolean, default: library/Requests/Transport/cacert.pem)
 	 * - `verifyname`: Should we verify the common name in the SSL certificate?
-	 *    (boolean: default, true)
+	 *    (boolean, default: true)
 	 * - `data_format`: How should we send the `$data` parameter?
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
