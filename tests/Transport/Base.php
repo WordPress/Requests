@@ -392,7 +392,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
+				$this->expectException('Requests_Exception_HTTP_' . $code);
+				$this->expectExceptionCode($code);
 			}
 			elseif ($code >= 300 && $code < 400) {
 				$this->setExpectedException('Requests_Exception');
@@ -417,7 +418,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
+				$this->expectException('Requests_Exception_HTTP_' . $code);
+				$this->expectExceptionCode($code);
 			}
 		}
 		$request = Requests::get($url, array(), $options);
