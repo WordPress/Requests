@@ -22,10 +22,8 @@ cache:
 
 install:
  # Setup the test server
- - phpenv local 5.5
  - composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)
- - phpenv local --unset
 
  # Setup the proxy
  - pip install --user mitmproxy~=0.15
