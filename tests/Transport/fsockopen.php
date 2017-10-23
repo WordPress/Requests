@@ -1,5 +1,5 @@
 <?php
 
-class RequestsTest_Transport_fsockopen extends RequestsTest_Transport_Base {
+class RequestsTest_Transport_fsockopen extends PHPUnit\Framework\TestCase {
 	protected $transport = 'Requests_Transport_fsockopen';
 }

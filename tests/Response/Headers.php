@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_Response_Headers extends PHPUnit_Framework_TestCase {
+class RequestsTest_Response_Headers extends PHPUnit\Framework\TestCase {
 	public function testArrayAccess() {
 		$headers = new Requests_Response_Headers();
 		$headers['Content-Type'] = 'text/plain';

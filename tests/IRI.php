@@ -40,7 +40,7 @@
  *
  */
 
-class RequestsTest_IRI extends PHPUnit_Framework_TestCase
+class RequestsTest_IRI extends PHPUnit\Framework\TestCase
 {
 	public static function rfc3986_tests()
 	{

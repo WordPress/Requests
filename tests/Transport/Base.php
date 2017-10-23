@@ -1,6 +1,6 @@
 <?php
 
-abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
+abstract class RequestsTest_Transport_Base extends PHPUnit\Framework\TestCase {
 	public function setUp() {
 		$callback = array($this->transport, 'test');
 		$supported = call_user_func($callback);
