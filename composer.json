@@ -14,6 +14,7 @@
 		"php": ">=5.2"
 	},
 	"require-dev": {
+        "phpunit/phpunit": ">=4.0",
 		"requests/test-server": "dev-master"
 	},
 	"type": "library",
