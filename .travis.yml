@@ -3,13 +3,15 @@ matrix:
   fast_finish: true
   include:
     - php: 5.2
+      dist: precise
     - php: 5.3
+      dist: precise
     - php: 5.4
     - php: 5.5
     - php: 5.6
       env: TEST_COVERAGE=1
     - php: 7.0
-    - php: hhvm
+    - php: 7.1
 
 # Use new container infrastructure
 sudo: false
@@ -22,13 +24,17 @@ cache:
 
 install:
  # Setup the test server
- - phpenv local 5.5
+ - phpenv global 5.5
  - composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)
- - phpenv local --unset
+ - phpenv global "$TRAVIS_PHP_VERSION"
 
  # Setup the proxy
- - pip install --user mitmproxy~=0.15
+ - pip install --user mitmproxy==0.18.2
+
+ # Display relevant versions for our custom pieces.
+ - python --version
+ - mitmproxy --version
 
 before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
