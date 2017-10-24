@@ -16,6 +16,17 @@ abstract class RequestsTest_Transport_Base extends PHPUnit\Framework\TestCase {
 		}
 	}
 	protected $skip_https = false;
+    
+    protected function requestExpectedException($exception, $code = null) {
+        if (method_exists($this, 'expectException')) {
+            // PHPUnit 5+
+            $this->expectException($exception);
+            $this->expectExceptionCode($code);
+        } else {
+            // PHPUnit 4
+            $this->setExpectedException($exception, '', $code);
+        }
+    }
 
 	protected function getOptions($other = array()) {
 		$options = array(
@@ -392,10 +403,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit\Framework\TestCase {
 
 		if (!$success) {
 			if ($code >= 400) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
+				$this->requestExpectedException('Requests_Exception_HTTP_' . $code, $code);
 			}
 			elseif ($code >= 300 && $code < 400) {
-				$this->setExpectedException('Requests_Exception');
+				$this->requestExpectedException('Requests_Exception');
 			}
 		}
 		$request = Requests::get($url, array(), $options);
@@ -417,7 +428,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit\Framework\TestCase {
 
 		if (!$success) {
 			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
+				$this->requestExpectedException('Requests_Exception_HTTP_' . $code, $code);
 			}
 		}
 		$request = Requests::get($url, array(), $options);
