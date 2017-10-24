@@ -40,7 +40,7 @@
  *
  */
 
-class RequestsTest_IRI extends PHPUnit_Framework_TestCase
+class RequestsTest_IRI extends PHPUnit\Framework\TestCase
 {
 	public static function rfc3986_tests()
 	{
@@ -387,11 +387,11 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 	/**
 	 * @expectedException PHPUnit_Framework_Error_Notice
 	 */
-	public function testNonexistantProperty()
+	public function testNonexistentProperty()
 	{
 		$iri = new Requests_IRI();
-		$this->assertFalse(isset($iri->nonexistant_prop));
-		$should_fail = $iri->nonexistant_prop;
+		$this->assertFalse(isset($iri->nonexistent_prop));
+		$should_fail = $iri->nonexistent_prop;
 	}
 
 	public function testBlankHost()

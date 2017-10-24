@@ -1,15 +1,23 @@
+dist: trusty
 language: php
 matrix:
   fast_finish: true
   include:
     - php: 5.2
+      dist: precise
     - php: 5.3
+      dist: precise
     - php: 5.4
     - php: 5.5
     - php: 5.6
       env: TEST_COVERAGE=1
     - php: 7.0
+    - php: 7.1
+    - php: 7.2
+    - php: nightly
     - php: hhvm
+  allow_failures:
+    - php: nightly
 
 # Use new container infrastructure
 sudo: false
@@ -17,18 +25,16 @@ sudo: false
 cache:
   directories:
     - $HOME/.cache/pip
-    - $HOME/.composer/cache
-    - vendor
 
 install:
  # Setup the test server
- - phpenv local 5.5
  - composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)
- - phpenv local --unset
 
  # Setup the proxy
- - pip install --user mitmproxy~=0.15
+ - python --version
+ - pip install --user "mitmproxy==0.18.2"
+ - mitmproxy --version
 
 before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
@@ -45,9 +51,12 @@ before_script:
 
  # Ensure the HTTPS test instance on Heroku is spun up
  - curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
+ 
+ # Environment checks
+ - ../vendor/bin/phpunit --version
 
 script:
- - phpunit --coverage-clover clover.xml
+ - ../vendor/bin/phpunit --coverage-clover clover.xml
 
 after_script:
  - utils/proxy/stop.sh

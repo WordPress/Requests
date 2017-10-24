@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
+class RequestsTest_Auth_Basic extends PHPUnit\Framework\TestCase {
 	public static function transportProvider() {
 		$transports = array(
 			array('Requests_Transport_fsockopen'),

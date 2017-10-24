@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
+class RequestsTest_ChunkedDecoding extends PHPUnit\Framework\TestCase {
 	public static function chunkedProvider() {
 		return array(
 			array(
