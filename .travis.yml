@@ -32,7 +32,9 @@ install:
  - TESTPHPBIN=$(phpenv which php)
 
  # Setup the proxy
- - pip install --user mitmproxy~=0.15
+ - python --version
+ - pip install --user mitmproxy~=0.18.2
+ - mitmproxy --version
 
 before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
