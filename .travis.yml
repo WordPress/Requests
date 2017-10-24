@@ -24,11 +24,10 @@ cache:
 
 install:
  # Setup the test server
- - phpenv install --releases
- - phpenv local 5.5
+ - phpenv global 5.5
  - composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)
- - phpenv local --unset
+ - phpenv global "$TRAVIS_PHP_VERSION"
 
  # Setup the proxy
  - pip install --user mitmproxy==0.18.2
