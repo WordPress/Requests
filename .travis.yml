@@ -33,7 +33,7 @@ install:
 
  # Setup the proxy
  - python --version
- - pip install --user mitmproxy~=0.18.2
+ - pip install --user "mitmproxy==0.18.2"
  - mitmproxy --version
 
 before_script:
