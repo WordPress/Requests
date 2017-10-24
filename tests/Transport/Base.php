@@ -21,7 +21,9 @@ abstract class RequestsTest_Transport_Base extends PHPUnit\Framework\TestCase {
         if (method_exists($this, 'expectException')) {
             // PHPUnit 5+
             $this->expectException($exception);
-            $this->expectExceptionCode($code);
+            if ($code) {
+                $this->expectExceptionCode($code);
+            }
         } else {
             // PHPUnit 4
             $this->setExpectedException($exception, '', $code);
