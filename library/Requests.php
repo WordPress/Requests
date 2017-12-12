@@ -225,7 +225,7 @@ class Requests {
 	public static function has_capability($capabilities = array()) {
 		try {
 			$transport = self::get_transport($capabilities);
-		} catch(Requests_Exception $e) {
+		} catch (Requests_Exception $e) {
 			return false;
 		}
 
