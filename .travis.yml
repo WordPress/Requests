@@ -30,10 +30,10 @@ cache:
 
 install:
  # Setup the test server
- - phpenv local 5.5
+ - phpenv global 5.5
  - composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)
- - phpenv local --unset
+ - phpenv global --unset
 
  # Setup the proxy
  - pip install --user mitmproxy~=0.15
@@ -60,7 +60,7 @@ script:
 after_script:
  - utils/proxy/stop.sh
  - cd ..
- - phpenv local 5.5
+ - phpenv global 5.5
  - PATH=$PATH vendor/bin/stop.sh
  - test $TEST_COVERAGE && bash <(curl -s https://codecov.io/bash)
- - phpenv local --unset
+ - phpenv global --unset
