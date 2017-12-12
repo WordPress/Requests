@@ -53,10 +53,10 @@ before_script:
  - curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
  
  # Environment checks
- - ../vendor/bin/phpunit --version
+ - vendor/bin/phpunit --version
 
 script:
- - ../vendor/bin/phpunit --coverage-clover clover.xml
+ - vendor/bin/phpunit --coverage-clover clover.xml
 
 after_script:
  - utils/proxy/stop.sh
