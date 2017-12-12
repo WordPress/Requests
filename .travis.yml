@@ -29,7 +29,7 @@ cache:
 
 install:
  # Setup the test server
- - phpenv local 5.6
+ - phpenv local $( phpenv versions | grep 5.6 | tail -1 )
  - composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)
  - phpenv local --unset
@@ -62,8 +62,5 @@ script:
 after_script:
  - utils/proxy/stop.sh
  - cd ..
- - phpenv local 5.6
  - PATH=$PATH vendor/bin/stop.sh
  - test $TEST_COVERAGE && bash <(curl -s https://codecov.io/bash)
- - phpenv local --unset
-
