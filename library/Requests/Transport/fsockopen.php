@@ -243,7 +243,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				throw new Requests_Exception('fsocket timed out', 'timeout');
 			}
 
-			$block = fread($socket, Requests::BUFFER_SIZE);
+			$block = fread($socket, $options['buffer_size']);
 			if (!$doingbody) {
 				$response .= $block;
 				if (strpos($response, "\r\n\r\n")) {

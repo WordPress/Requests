@@ -77,13 +77,6 @@ class Requests {
 	const PATCH = 'PATCH';
 
 	/**
-	 * Default size of buffer size to read streams
-	 *
-	 * @var integer
-	 */
-	const BUFFER_SIZE = 1160;
-
-	/**
 	 * Current version of Requests
 	 *
 	 * @var string
@@ -341,7 +334,9 @@ class Requests {
 	 *    (string|boolean, default: library/Requests/Transport/cacert.pem)
 	 * - `verifyname`: Should we verify the common name in the SSL certificate?
 	 *    (boolean: default, true)
-	 * - `data_format`: How should we send the `$data` parameter?
+     * - `buffer_size`: How many buffer size should you want?
+     *    (integer, default: 1160)
+     * - `data_format`: How should we send the `$data` parameter?
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
 	 *
@@ -520,6 +515,7 @@ class Requests {
 			'transport' => null,
 			'verify' => Requests::get_certificate_path(),
 			'verifyname' => true,
+            'buffer_size' => 1160,
 		);
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
