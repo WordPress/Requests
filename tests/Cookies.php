@@ -229,6 +229,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$cookie->flags['host-only'] = true;
 		$this->assertEquals($matches, $cookie->domain_matches($check));
 	}
 
@@ -238,10 +239,8 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 	public function testDomainMatch($original, $check, $matches, $domain_matches) {
 		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
-		$flags = array(
-			'host-only' => false
-		);
-		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$cookie->flags['host-only'] = false;
 		$this->assertEquals($domain_matches, $cookie->domain_matches($check));
 	}
 
