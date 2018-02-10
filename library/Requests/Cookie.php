@@ -291,6 +291,7 @@ class Requests_Cookie {
 				// Domain normalization, as per RFC 6265 section 5.2.3
 				if ($value[0] === '.') {
 					$value = substr($value, 1);
+					$this->flags['host-only'] = false;
 				}
 
 				return $value;
