@@ -34,6 +34,14 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($cookie->attributes['httponly']);
 	}
 
+	public function testHostOnlyInference() {
+		$cookie = Requests_Cookie::parse('foo=bar; Domain=example.org');
+		$this->assertTrue($cookie->flags['host-only']);
+
+		$cookie = Requests_Cookie::parse('foo=bar; Domain=.example.org');
+		$this->assertFalse($cookie->flags['host-only']);
+	}
+
 	public function testCookieJarSetter() {
 		$jar1 = new Requests_Cookie_Jar();
 		$jar1['requests-testcookie'] = 'testvalue';
@@ -221,6 +229,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$cookie->flags['host-only'] = true;
 		$this->assertEquals($matches, $cookie->domain_matches($check));
 	}
 
@@ -230,10 +239,8 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 	public function testDomainMatch($original, $check, $matches, $domain_matches) {
 		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
-		$flags = array(
-			'host-only' => false
-		);
-		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$cookie->flags['host-only'] = false;
 		$this->assertEquals($domain_matches, $cookie->domain_matches($check));
 	}
 
