@@ -53,9 +53,10 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @param array $files File uploads
 	 * @return string Raw HTTP result
 	 */
-	public function request($url, $headers = array(), $data = array(), $options = array()) {
+	public function request($url, $headers = array(), $data = array(), $options = array(), $files = array()) {
 		$options['hooks']->dispatch('fsockopen.before_request');
 
 		$url_parts = parse_url($url);

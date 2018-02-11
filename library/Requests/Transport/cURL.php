@@ -125,12 +125,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @param array $files File uploads
 	 * @return string Raw HTTP result
 	 */
-	public function request($url, $headers = array(), $data = array(), $options = array()) {
+	public function request($url, $headers = array(), $data = array(), $options = array(), $files = array()) {
 		$this->hooks = $options['hooks'];
 
-		$this->setup_handle($url, $headers, $data, $options);
+		$this->setup_handle($url, $headers, $data, $options, $files);
 
 		$options['hooks']->dispatch('curl.before_send', array(&$this->handle));
 
@@ -305,8 +306,9 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @param array $files File uploads
 	 */
-	protected function setup_handle($url, $headers, $data, $options) {
+	protected function setup_handle($url, $headers, $data, $options, $files = array()) {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->handle));
 
 		// Force closing the connection for old versions of cURL (<7.22).
@@ -321,10 +323,23 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 			if ($data_format === 'query') {
 				$url = self::format_get($url, $data);
-				$data = '';
+				$data = array();
 			}
-			elseif (!is_string($data)) {
+
+			if (!is_string($data) && empty($files)) {
 				$data = http_build_query($data, null, '&');
+			}
+		}
+
+		if (!empty($files)) {
+			if (function_exists('curl_file_create')) {
+				foreach($files as $key => $path) {
+					$data[$key] = curl_file_create($path);
+				}
+			} else {
+				foreach($files as $key => $path) {
+					$data[$key] = "@$path";
+				}
 			}
 		}
 
