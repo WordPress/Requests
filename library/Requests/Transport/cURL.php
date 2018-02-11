@@ -145,20 +145,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$this->response_byte_limit = $options['max_bytes'];
 		}
 
-		if (isset($options['verify'])) {
-			if ($options['verify'] === false) {
-				curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
-				curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, 0);
-			}
-			elseif (is_string($options['verify'])) {
-				curl_setopt($this->handle, CURLOPT_CAINFO, $options['verify']);
-			}
-		}
-
-		if (isset($options['verifyname']) && $options['verifyname'] === false) {
-			curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
-		}
-
 		curl_exec($this->handle);
 		$response = $this->response_data;
 
@@ -389,6 +375,20 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
 			curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, array(&$this, 'stream_body'));
 			curl_setopt($this->handle, CURLOPT_BUFFERSIZE, Requests::BUFFER_SIZE);
+		}
+
+		if (isset($options['verify'])) {
+			if ($options['verify'] === false) {
+				curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, 0);
+			}
+			elseif (is_string($options['verify'])) {
+				curl_setopt($this->handle, CURLOPT_CAINFO, $options['verify']);
+			}
+		}
+
+		if (isset($options['verifyname']) && $options['verifyname'] === false) {
+			curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
 		}
 	}
 

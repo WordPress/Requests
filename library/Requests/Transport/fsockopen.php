@@ -92,6 +92,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			if (isset($options['verify'])) {
 				if ($options['verify'] === false) {
 					$context_options['verify_peer'] = false;
+					$context_options['verify_peer_name'] = false;
+					$verifyname = false;
 				}
 				elseif (is_string($options['verify'])) {
 					$context_options['cafile'] = $options['verify'];
