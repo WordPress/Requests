@@ -154,14 +154,14 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$out = sprintf("%s %s HTTP/%.1f\r\n", $options['type'], $path, $options['protocol_version']);
 
 		if ($options['type'] !== Requests::TRACE) {
-			if (is_array($data)) {
+			if (is_array($data) && empty($files)) {
 				$request_body = http_build_query($data, null, '&');
 			}
 			else {
 				$request_body = $data;
 			}
 
-			if (!empty($data)) {
+			if (!empty($data) && empty($files)) {
 				if (!isset($case_insensitive_headers['Content-Length'])) {
 					$headers['Content-Length'] = strlen($request_body);
 				}
@@ -169,6 +169,34 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				if (!isset($case_insensitive_headers['Content-Type'])) {
 					$headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 				}
+			}
+
+			if (!empty($files)) {
+				$boundary = sha1(time());
+				$headers['Content-Type'] = "multipart/form-data; boundary=$boundary";
+
+				$request_body = '';
+
+				if (!empty($data)) {
+					foreach ($data as $key => $value) {
+						$request_body .= "--$boundary\r\n";
+						$request_body .= "Content-Disposition: form-data; name=\"$key\"";
+						$request_body .= "\r\n\r\n" . $value . "\r\n";
+					}
+				}
+
+				foreach ($files as $key => $path) {
+					$filename = basename($path);
+					$request_body .= "--$boundary\r\n";
+					$request_body .= "Content-Disposition: form-data; name=\"$key\"; filename=\"$filename\"";
+					// @todo Compression, encoding (base64), etc.
+					// @todo Large files can hit PHP memory limits quite quickly
+					$request_body .= "\r\n\r\n" . file_get_contents($path) . "\r\n";
+				}
+
+				$request_body .= "--$boundary--\r\n\r\n";
+
+				$headers['Content-Length'] = strlen($request_body);
 			}
 		}
 
