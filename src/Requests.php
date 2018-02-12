@@ -825,7 +825,7 @@ class Requests {
 	public static function decompress($data) {
 		// All valid deflate, gzip header magic markers
 		$valid_magic = array("\x1f\x8b", "\x78\x01", "\x78\x5e", "\x78\x9c", "\x78\xda");
-		if (!in_array(substr($data, 0, 2), $valid_magic)) {
+		if (!in_array(substr($data, 0, 2), $valid_magic, true)) {
 			// Not actually compressed. Probably cURL ruining this for us.
 			return $data;
 		}
