@@ -259,14 +259,13 @@ class Requests {
 	 * @param array $headers
 	 * @param array $data
 	 * @param array $options
-	 * @param array $files
 	 * @return Requests_Response
 	 */
 	/**
 	 * Send a POST request
 	 */
-	public static function post($url, $headers = array(), $data = array(), $options = array(), $files = array()) {
-		return self::request($url, $headers, $data, self::POST, $options, $files);
+	public static function post($url, $headers = array(), $data = array(), $options = array()) {
+		return self::request($url, $headers, $data, self::POST, $options);
 	}
 	/**
 	 * Send a PUT request
@@ -355,7 +354,7 @@ class Requests {
 	 * @param array $options Options for the request (see description for more information)
 	 * @return Requests_Response
 	 */
-	public static function request($url, $headers = array(), $data = array(), $type = self::GET, $options = array(), $files = array()) {
+	public static function request($url, $headers = array(), $data = array(), $type = self::GET, $options = array()) {
 		if (empty($options['type'])) {
 			$options['type'] = $type;
 		}
@@ -377,7 +376,7 @@ class Requests {
 			$capabilities = array('ssl' => $need_ssl);
 			$transport = self::get_transport($capabilities);
 		}
-		$response = $transport->request($url, $headers, $data, $options, $files);
+		$response = $transport->request($url, $headers, $data, $options);
 
 		$options['hooks']->dispatch('requests.before_parse', array(&$response, $url, $headers, $data, $type, $options));
 

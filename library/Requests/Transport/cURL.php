@@ -125,13 +125,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
-	 * @param array $files File uploads
 	 * @return string Raw HTTP result
 	 */
-	public function request($url, $headers = array(), $data = array(), $options = array(), $files = array()) {
+	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$this->hooks = $options['hooks'];
 
-		$this->setup_handle($url, $headers, $data, $options, $files);
+		$this->setup_handle($url, $headers, $data, $options);
 
 		$options['hooks']->dispatch('curl.before_send', array(&$this->handle));
 
@@ -306,9 +305,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
-	 * @param array $files File uploads
 	 */
-	protected function setup_handle($url, $headers, $data, $options, $files = array()) {
+	protected function setup_handle($url, $headers, $data, $options) {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->handle));
 
 		// Force closing the connection for old versions of cURL (<7.22).
@@ -318,27 +316,34 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		$headers = Requests::flatten($headers);
 
+		$files = array();
+
 		if (!empty($data)) {
 			$data_format = $options['data_format'];
+
+			if (is_array($data)) {
+				foreach($data as $key => $value) {
+					if ($value instanceof Requests_File) {
+						$files[$key] = $value;
+					}
+				}
+			}
 
 			if ($data_format === 'query') {
 				$url = self::format_get($url, $data);
 				$data = array();
 			}
-
-			if (!is_string($data) && empty($files)) {
-				$data = http_build_query($data, null, '&');
-			}
 		}
 
 		if (!empty($files)) {
 			if (function_exists('curl_file_create')) {
-				foreach($files as $key => $path) {
-					$data[$key] = curl_file_create($path);
+				foreach($files as $key => $file) {
+					$data[$key] = curl_file_create($file->path, $file->type, $file->name);
 				}
-			} else {
-				foreach($files as $key => $path) {
-					$data[$key] = "@$path";
+			}
+			else {
+				foreach($files as $key => $file) {
+					$data[$key] = "@{$file->path}";
 				}
 			}
 		}

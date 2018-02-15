@@ -53,10 +53,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see Requests::response()} for documentation
-	 * @param array $files File uploads
 	 * @return string Raw HTTP result
 	 */
-	public function request($url, $headers = array(), $data = array(), $options = array(), $files = array()) {
+	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		$options['hooks']->dispatch('fsockopen.before_request');
 
 		$url_parts = parse_url($url);
@@ -154,6 +153,16 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$out = sprintf("%s %s HTTP/%.1f\r\n", $options['type'], $path, $options['protocol_version']);
 
 		if ($options['type'] !== Requests::TRACE) {
+			$files = array();
+
+			if (is_array($data)) {
+				foreach($data as $key => $value) {
+					if ($value instanceof Requests_File) {
+						$files[$key] = $value;
+					}
+				}
+			}
+
 			if (is_array($data) && empty($files)) {
 				$request_body = http_build_query($data, null, '&');
 			}
@@ -180,18 +189,17 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				if (!empty($data)) {
 					foreach ($data as $key => $value) {
 						$request_body .= "--$boundary\r\n";
-						$request_body .= "Content-Disposition: form-data; name=\"$key\"";
-						$request_body .= "\r\n\r\n" . $value . "\r\n";
-					}
-				}
 
-				foreach ($files as $key => $path) {
-					$filename = basename($path);
-					$request_body .= "--$boundary\r\n";
-					$request_body .= "Content-Disposition: form-data; name=\"$key\"; filename=\"$filename\"";
-					// @todo Compression, encoding (base64), etc.
-					// @todo Large files can hit PHP memory limits quite quickly
-					$request_body .= "\r\n\r\n" . file_get_contents($path) . "\r\n";
+						if ($value instanceof Requests_File) {
+							$request_body .= "Content-Disposition: form-data; name=\"$key\"; filename=\"$value->name\"\r\n";
+							$request_body .= "Content-Type: $value->type";
+							$request_body .= "\r\n\r\n" . $value->get_contents() . "\r\n";
+						}
+						else {
+							$request_body .= "Content-Disposition: form-data; name=\"$key\"";
+							$request_body .= "\r\n\r\n" . $value . "\r\n";
+						}
+					}
 				}
 
 				$request_body .= "--$boundary--\r\n\r\n";

@@ -848,7 +848,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFileUploads() {
 		file_put_contents($tmpfile = tempnam(sys_get_temp_dir(), 'requests'), 'some secret bytes, yo');
-		$request = Requests::post('http://httpbin.org/post', array(), array('foo' => 'bar'), $this->getOptions(), array('file1' => $tmpfile));
+		$request = Requests::post('http://httpbin.org/post', array(), array('foo' => 'bar', 'file1' => new Requests_File($tmpfile)), $this->getOptions());
 
 		$result = json_decode($request->body, true);
 		$this->assertEquals($result['files']['file1'], 'some secret bytes, yo');
