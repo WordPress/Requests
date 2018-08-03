@@ -1006,13 +1006,13 @@ class Requests {
 	
     protected static function httpBuildQuery(array &$data, $key = '', $value = null) {
         foreach ($value ?? $data as $k => $v) {
+            $cur_key = $key ? "{$key}[{$k}]" : "{$k}";
             if (is_array($v)) {
-                self::httpBuildQuery($data, "{$key}[{$k}]", $v);
+                self::httpBuildQuery($data, "{$cur_key}", $v);
+                unset($data[$k]);
             }else{
-                $cur_key = $key ? "{$key}[{$k}]" : "{$k}";
                 $data[$cur_key] = $v;
             }
-            unset($data[$k]);
         }
     }
 }
