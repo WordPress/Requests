@@ -267,19 +267,17 @@ class Requests {
 	 */
     public static function post($url, $headers = [], $data = [], $files = [], $options = []) : \Requests_Response{
         if (count($files)) {
-
+            self::httpBuildQuery($data);
             // replacing file paths with curlFile Object
             array_walk($files, function ($filePath, $key) use (&$data) {
                 if (is_array($filePath)) {
                     array_walk($filePath, function ($subFilePath, $subKey) use (&$data, $key) {
-                        $data[$key][$subKey] = new \CURLFile(realpath($subFilePath));
+                        $data["{$key}[{$subKey}]"] = new \CURLFile(realpath($subFilePath));
                     });
                 } else {
                     $data[ $key ] = new \CURLFile(realpath($filePath));
                 }
             });
-
-            self::httpBuildQuery($data);
 
             // starting to add a hook to attach file to request
             $hooks = new \Requests_Hooks();
@@ -294,6 +292,7 @@ class Requests {
 
         return self::request($url, $headers, $data, self::POST, $options);
     }
+	
 	/**
 	 * Send a PUT request
 	 */
