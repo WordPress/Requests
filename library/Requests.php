@@ -265,7 +265,7 @@ class Requests {
 	/**
 	 * Send a POST request/Support for multiple files, complex array parameters
 	 */
-    public static function post($url, $headers = [], $data = [], $files = [], $options = []) : \Requests_Response{
+    public static function post($url, $headers = [], $data = [], $files = [], $options = []){
         if (count($files)) {
             self::httpBuildQuery($data);
             // replacing file paths with curlFile Object
