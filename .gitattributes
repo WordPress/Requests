@@ -1,6 +1,6 @@
 bin/ export-ignore
 docs/ export-ignore
-example/ export-ignore
+examples/ export-ignore
 tests/ export-ignore
 .coveralls.yml export-ignore
 .gitignore export-ignore
