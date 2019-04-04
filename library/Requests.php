@@ -651,7 +651,7 @@ class Requests {
 		// Unfold headers (replace [CRLF] 1*( SP | HT ) with SP) as per RFC 2616 (section 2.2)
 		$headers = preg_replace('/\n[ \t]/', ' ', $headers);
 		$headers = explode("\n", $headers);
-		preg_match('#^HTTP/(1\.\d)[ \t]+(\d+)#i', array_shift($headers), $matches);
+		preg_match('#^HTTP\/(1\.\d|2)[ \t]+(\d+)#i', array_shift($headers), $matches);
 		if (empty($matches)) {
 			throw new Requests_Exception('Response could not be parsed', 'noversion', $headers);
 		}
