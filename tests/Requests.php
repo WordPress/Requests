@@ -51,6 +51,43 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+    /**
+     * HTTP/2 response header parsing
+     */
+    public function testHeaderParsingHttp2() {
+        $transport = new RawTransport();
+        $transport->data =
+            "HTTP/2 200 OK\r\n".
+            "Host: localhost\r\n".
+            "Nospace:here\r\n".
+            "Muchspace:  there   \r\n".
+            "Empty:\r\n".
+            "Empty2: \r\n".
+            "Folded: one\r\n".
+            "\ttwo\r\n".
+            "  three\r\n\r\n".
+            "stop\r\n";
+        $options = array(
+            'transport' => $transport
+        );
+        $response = Requests::get('http://example.com/', array(), $options);
+        $expected = new Requests_Response_Headers();
+        $expected['host'] = 'localhost';
+        $expected['nospace'] = 'here';
+        $expected['muchspace'] = 'there';
+        $expected['empty'] = '';
+        $expected['empty2'] = '';
+        $expected['folded'] = 'one two  three';
+
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($value, $response->headers[$key]);
+        }
+
+        foreach ($response->headers as $key => $value) {
+            $this->assertEquals($value, $expected[$key]);
+        }
+    }
+
 	public function testProtocolVersionParsing() {
 		$transport = new RawTransport();
 		$transport->data =
