@@ -166,12 +166,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		$curl_errno = curl_errno($this->handle);
 
-		if ( $curl_errno === 23 && $this->response_byte_limit && $this->response_byte_limit === $this->response_bytes ) {
+		if ($curl_errno === 23 && $this->response_byte_limit && $this->response_byte_limit === $this->response_bytes) {
 			// CURLE_WRITE_ERROR - Not actually an error in this case. We've drained as much data from the request that we want.
 			$curl_errno = false;
 		}
 
-		if ( $curl_errno === 23 || $curl_errno === 61) {
+		if ($curl_errno === 23 || $curl_errno === 61) {
 			// Reset encoding and try again
 			curl_setopt($this->handle, CURLOPT_ENCODING, 'none');
 
@@ -421,7 +421,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		$curl_errno = curl_errno($this->handle);
-		if ( $curl_errno === 23 && $this->response_byte_limit && $this->response_byte_limit === $this->response_bytes ) {
+		if ($curl_errno === 23 && $this->response_byte_limit && $this->response_byte_limit === $this->response_bytes) {
 			// CURLE_WRITE_ERROR - Not actually an error in this case. We've drained as much data from the request that we want.
 			$curl_errno = false;
 		}
