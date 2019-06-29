@@ -29,7 +29,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			parent::setExpectedException( $exception, $message, $code );
 		} else {
 			$this->expectException( $exception );
-			if ( '' !== $message ) {
+			if ( null !== $message ) {
 				$this->expectExceptionMessage( $message );
 			}
 			if ( null !== $code ) {
