@@ -15,7 +15,7 @@
 	},
 	"require-dev": {
 		"requests/test-server": "dev-master",
-		"phpunit/phpunit": "^6.0"
+		"phpunit/phpunit": "^5.0"
 	},
 	"type": "library",
 	"autoload": {
