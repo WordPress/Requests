@@ -57,7 +57,10 @@ before_script:
  - ../vendor/bin/phpunit --version
 
 script:
- - ../vendor/bin/phpunit --coverage-clover clover.xml
+ - if [[ $(phpenv version-name:0:1) == "5" ]];
+   then phpunit --coverage-clover clover.xml;
+   else ../vendor/bin/phpunit --coverage-clover clover.xml;
+   fi
 
 after_script:
  - utils/proxy/stop.sh
