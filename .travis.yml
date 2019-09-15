@@ -23,9 +23,8 @@ matrix:
      env: COMPOSER_PHPUNIT=true
    - php: nightly
      env: COMPOSER_PHPUNIT=true
-
-allow_failures:
-  - php: nightly
+  allow_failures:
+    - php: nightly
 
 # Use new container infrastructure
 sudo: false
