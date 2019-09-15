@@ -587,8 +587,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * Test that the transport supports Server Name Indication with HTTPS
 	 *
-	 * feelingrestful.com (owned by hmn.md and used with permission) points to
-	 * CloudFlare, and will fail if SNI isn't sent.
+	 * humanmade.com (owned by Human Made and used with permission) points to
+	 * CloudFront, and will fail if SNI isn't sent.
 	 */
 	public function testSNISupport() {
 		if ($this->skip_https) {
@@ -596,7 +596,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::head('https://feelingrestful.com/', array(), $this->getOptions());
+		$request = Requests::head('https://humanmade.com/', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
