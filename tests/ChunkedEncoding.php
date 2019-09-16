@@ -33,7 +33,7 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider chunkedProvider
 	 */
-	public function testChunked($body, $expected){
+	public function testChunked($body, $expected) {
 		$transport = new MockTransport();
 		$transport->body = $body;
 		$transport->chunked = true;
@@ -48,12 +48,12 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 
 	public static function notChunkedProvider() {
 		return array(
-			'invalid chunk size' => array( 'Hello! This is a non-chunked response!' ),
-			'invalid chunk extension' => array( '1BNot chunked\r\nLooks chunked but it is not\r\n' ),
-			'unquoted chunk-ext-val with space' => array( "02;foo=unquoted with space\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n" ),
-			'unquoted chunk-ext-val with forbidden character' => array( "02;foo={unquoted}\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n" ),
-			'invalid chunk-ext-name' => array( "02;{foo}=bar\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n" ),
-			'incomplete quote for chunk-ext-value' => array( "02;foo=\"no end quote\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n" ),
+			'invalid chunk size' => array('Hello! This is a non-chunked response!'),
+			'invalid chunk extension' => array('1BNot chunked\r\nLooks chunked but it is not\r\n'),
+			'unquoted chunk-ext-val with space' => array("02;foo=unquoted with space\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
+			'unquoted chunk-ext-val with forbidden character' => array("02;foo={unquoted}\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
+			'invalid chunk-ext-name' => array("02;{foo}=bar\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
+			'incomplete quote for chunk-ext-value' => array("02;foo=\"no end quote\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
 		);
 	}
 

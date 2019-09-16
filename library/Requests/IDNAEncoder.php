@@ -190,9 +190,8 @@ class Requests_IDNAEncoder {
 				$position--;
 			}
 
-			if (
-				// Non-shortest form sequences are invalid
-				   $length > 1 && $character <= 0x7F
+			if (// Non-shortest form sequences are invalid
+				$length > 1 && $character <= 0x7F
 				|| $length > 2 && $character <= 0x7FF
 				|| $length > 3 && $character <= 0xFFFF
 				// Outside of range of ucschar codepoints
@@ -201,7 +200,7 @@ class Requests_IDNAEncoder {
 				|| $character >= 0xFDD0 && $character <= 0xFDEF
 				|| (
 					// Everything else not in ucschar
-					   $character > 0xD7FF && $character < 0xF900
+					$character > 0xD7FF && $character < 0xF900
 					|| $character < 0x20
 					|| $character > 0x7E && $character < 0xA0
 					|| $character > 0xEFFFD

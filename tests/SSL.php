@@ -100,7 +100,7 @@ class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
 	 * @link http://tools.ietf.org/html/rfc2818#section-3.1
 	 */
 	public function testIgnoreCNWithSAN() {
-		$certificate =  $this->fakeCertificate('example.net', 'example.com');
+		$certificate = $this->fakeCertificate('example.net', 'example.com');
 
 		$this->assertTrue(Requests_SSL::verify_certificate('example.com', $certificate), 'Checking SAN validation');
 		$this->assertFalse(Requests_SSL::verify_certificate('example.net', $certificate), 'Checking CN non-validation');

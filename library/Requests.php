@@ -535,7 +535,7 @@ class Requests {
 	 * @return string Default certificate path.
 	 */
 	public static function get_certificate_path() {
-		if ( ! empty( Requests::$certificate_path ) ) {
+		if (!empty(Requests::$certificate_path)) {
 			return Requests::$certificate_path;
 		}
 
@@ -547,7 +547,7 @@ class Requests {
 	 *
 	 * @param string $path Certificate path, pointing to a PEM file.
 	 */
-	public static function set_certificate_path( $path ) {
+	public static function set_certificate_path($path) {
 		Requests::$certificate_path = $path;
 	}
 
@@ -754,8 +754,6 @@ class Requests {
 		if (!preg_match('/^([0-9a-f]+)(?:;(?:[\w-]*)(?:=(?:(?:[\w-]*)*|"(?:[^\r\n])*"))?)*\r\n/i', trim($data))) {
 			return $data;
 		}
-
-
 
 		$decoded = '';
 		$encoded = $data;

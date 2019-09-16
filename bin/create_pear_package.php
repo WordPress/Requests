@@ -33,9 +33,9 @@ $context = array(
 );
 
 $context['files'] = '';
-$path = realpath(dirname(__FILE__).'/../library/Requests');
+$path = realpath(dirname(__FILE__) . '/../library/Requests');
 foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
-	if (preg_match('/\.php$/', $file)) 	{
+	if (preg_match('/\.php$/', $file)) {
 		$name = str_replace($path . DIRECTORY_SEPARATOR, '', $file);
 		$name = str_replace(DIRECTORY_SEPARATOR, '/', $name);
 		$context['files'][] = "\t\t\t\t\t" . '<file install-as="Requests/' . $name . '" name="' . $name . '" role="php" />';
@@ -44,9 +44,9 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), Re
 
 $context['files'] = implode("\n", $context['files']);
 
-$template = file_get_contents(dirname(__FILE__).'/../package.xml.tpl');
+$template = file_get_contents(dirname(__FILE__) . '/../package.xml.tpl');
 $content = preg_replace_callback('/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/', 'replace_parameters', $template);
-file_put_contents(dirname(__FILE__).'/../package.xml', $content);
+file_put_contents(dirname(__FILE__) . '/../package.xml', $content);
 
 function replace_parameters($matches) {
 	global $context;
