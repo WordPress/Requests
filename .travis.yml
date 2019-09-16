@@ -27,9 +27,6 @@ matrix:
     - php: nightly
       env: COMPOSER_PHPUNIT=true
 
-# Use new container infrastructure
-sudo: false
-
 cache:
   directories:
     - $HOME/.cache/pip
