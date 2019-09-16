@@ -51,12 +51,12 @@ class Requests_IPv6 {
 			$ip = '0:0:0:0:0:0:0:0';
 		}
 		// ::xxx
-		else if ($c1 === -1) {
+		elseif ($c1 === -1) {
 			$fill = str_repeat('0:', 7 - $c2);
 			$ip = str_replace('::', $fill, $ip);
 		}
 		// xxx::
-		else if ($c2 === -1) {
+		elseif ($c2 === -1) {
 			$fill = str_repeat(':0', 7 - $c1);
 			$ip = str_replace('::', $fill, $ip);
 		}
