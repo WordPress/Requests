@@ -70,7 +70,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n" .
-			"Test";
+			'Test';
 
 		$options  = array(
 			'transport' => $transport,
