@@ -265,7 +265,8 @@ class Requests_IDNAEncoder {
 		}
 		// {if the input contains a non-basic code point < n then fail}
 		// while h < length(input) do begin
-		while ($h < count($codepoints)) {
+		$codepointcount = count($codepoints);
+		while ($h < $codepointcount) {
 			// let m = the minimum code point >= n in the input
 			$m = array_shift($extended);
 			//printf('next code point to insert is %s' . PHP_EOL, dechex($m));
@@ -274,7 +275,7 @@ class Requests_IDNAEncoder {
 			// let n = m
 			$n = $m;
 			// for each code point c in the input (in order) do begin
-			for ($num = 0; $num < count($codepoints); $num++) {
+			for ($num = 0; $num < $codepointcount; $num++) {
 				$c = $codepoints[$num];
 				// if c < n then increment delta, fail on overflow
 				if ($c < $n) {
