@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	name="Requests"
+	xsi:noNamespaceSchemaLocation="./vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+	<description>Requests rules for PHP_CodeSniffer</description>
+
+	<!--
+	#############################################################################
+	COMMAND LINE ARGUMENTS
+	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	#############################################################################
+	-->
+
+	<!-- Scan all files. -->
+	<file>.</file>
+
+	<!-- Third party files and build files don't need to comply with these coding standards. -->
+	<exclude-pattern>*/library/Requests/IRI\.php$</exclude-pattern>
+	<exclude-pattern>*/tests/IRI\.php$</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tests/coverage/</exclude-pattern>
+
+	<!-- Only check PHP files. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Show progress, show the error codes for each message (source). -->
+	<arg value="ps"/>
+
+	<!-- Strip the filepaths down to the relevant bit. -->
+	<arg name="basepath" value="./"/>
+
+	<!-- Check up to 8 files simultaneously. -->
+	<arg name="parallel" value="8"/>
+
+
+	<!--
+	#############################################################################
+	CHECK FOR PHP CROSS-VERSION COMPATIBILITY
+	#############################################################################
+	-->
+
+	<config name="testVersion" value="5.2-"/>
+	<rule ref="PHPCompatibility"/>
+
+
+	<!--
+	#############################################################################
+	CODING STYLE RULES
+	#############################################################################
+	-->
+
+	<!-- Use the WordPress Coding Standards as a basis, but with tweaks. -->
+	<rule ref="WordPress-Extra">
+		<!-- No need for this sniff as PHP linting is included in the CI builds against
+			 multiple PHP versions (which is the better solution). -->
+		<exclude name="Generic.PHP.Syntax"/>
+	</rule>
+
+</ruleset>
