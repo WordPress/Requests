@@ -765,7 +765,20 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testAlternatePort() {
-		$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
+		try {
+			$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
+		} catch( Requests_Exception $e ) {
+			// Retry the request as it often times-out.
+			try {
+				$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
+			} catch( Requests_Exception $e ) {
+				// If it still times out, mark the test as skipped.
+				$this->markTestSkipped(
+					$e->getMessage()
+				);
+			}
+		}
+
 		$this->assertEquals(200, $request->status_code);
 		$num = preg_match('#You have reached this page on port <b>(\d+)</b>#i', $request->body, $matches);
 		$this->assertEquals(1, $num, 'Response should contain the port number');
