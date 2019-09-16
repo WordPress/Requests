@@ -40,9 +40,17 @@ cache:
     - $HOME/.cache/composer/files
 
 install:
+ # Speed up build time by disabling Xdebug unless actually needed.
+ # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
+ # https://twitter.com/kelunik/status/954242454676475904
+ - if [ "$TEST_COVERAGE" != '1' ]; then phpenv config-rm xdebug.ini || echo 'No xdebug config.'; fi
+
  # Setup the test server
  - phpenv local $( phpenv versions | grep 5.6 | tail -1 )
  - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then composer remove phpunit/phpunit --dev; fi
+ - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then export PHPUNIT_BIN="phpunit";
+   else export PHPUNIT_BIN="../vendor/bin/phpunit";
+   fi
  - composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)
  - phpenv local --unset
@@ -67,11 +75,17 @@ before_script:
  - curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
  
  # Environment checks
- - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then phpunit --version; else ../vendor/bin/phpunit --version; fi
+ - $PHPUNIT_BIN --version
 
 script:
- - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then phpunit --coverage-clover clover.xml;
-   else ../vendor/bin/phpunit --coverage-clover clover.xml;
+ - |
+   if [ "$TEST_COVERAGE" == '1' ]; then
+     $PHPUNIT_BIN --coverage-clover clover.xml;
+   # PHPUnit 4.x does not yet support the `no-coverage` flag.
+   elif [ ${TRAVIS_PHP_VERSION:0:3} == "5.2" ]; then
+     $PHPUNIT_BIN;
+   else
+     $PHPUNIT_BIN --no-coverage;
    fi
 
 after_script:
