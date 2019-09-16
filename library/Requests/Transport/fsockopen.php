@@ -81,6 +81,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$verifyname      = true;
 
 			// SNI, if enabled (OpenSSL >=0.9.8j)
+			// phpcs:ignore PHPCompatibility.Constants.NewConstants.openssl_tlsext_server_nameFound
 			if (defined('OPENSSL_TLSEXT_SERVER_NAME') && OPENSSL_TLSEXT_SERVER_NAME) {
 				$context_options['SNI_enabled'] = true;
 				if (isset($options['verifyname']) && $options['verifyname'] === false) {
