@@ -21,6 +21,10 @@ matrix:
      env: COMPOSER_PHPUNIT=true
    - php: 7.2
      env: COMPOSER_PHPUNIT=true
+   - php: 7.3
+     env: COMPOSER_PHPUNIT=true
+   - php: 7.4snapshot
+     env: COMPOSER_PHPUNIT=true
    - php: nightly
      env: COMPOSER_PHPUNIT=true
   allow_failures:
