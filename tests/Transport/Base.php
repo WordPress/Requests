@@ -408,7 +408,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCode($code, $success) {
-		$transport       = new MockTransport();
+		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = $code;
 
 		$url = sprintf(httpbin('/status/%d'), $code);
@@ -426,7 +426,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrow($code, $success) {
-		$transport       = new MockTransport();
+		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = $code;
 
 		$url     = sprintf(httpbin('/status/%d'), $code);
@@ -451,7 +451,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrowAllowRedirects($code, $success) {
-		$transport       = new MockTransport();
+		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = $code;
 
 		$url     = sprintf(httpbin('/status/%d'), $code);
@@ -470,7 +470,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testStatusCodeUnknown() {
-		$transport       = new MockTransport();
+		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = 599;
 
 		$options = array(
@@ -486,7 +486,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception_HTTP_Unknown
 	 */
 	public function testStatusCodeThrowUnknown() {
-		$transport       = new MockTransport();
+		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = 599;
 
 		$options = array(

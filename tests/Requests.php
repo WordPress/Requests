@@ -141,7 +141,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	public function test30xWithoutLocation() {
-		$transport       = new MockTransport();
+		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = 302;
 
 		$options  = array(
