@@ -499,9 +499,10 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 */
 	protected static function format_get($url, $data) {
 		if (!empty($data)) {
+			$query     = '';
 			$url_parts = parse_url($url);
 			if (empty($url_parts['query'])) {
-				$query = $url_parts['query'] = '';
+				$url_parts['query'] = '';
 			}
 			else {
 				$query = $url_parts['query'];
