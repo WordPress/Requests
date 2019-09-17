@@ -3,33 +3,54 @@ language: php
 matrix:
   fast_finish: true
   include:
-    - php: 5.2
-      dist: precise
-    - php: 5.3
-      dist: precise
-    - php: 5.4
-    - php: 5.5
-    - php: 5.6
-      env: TEST_COVERAGE=1
-    - php: 7.0
-    - php: 7.1
-    - php: 7.2
+   - php: 5.2
+     dist: precise
+     env: COMPOSER_PHPUNIT=false
+   - php: 5.3
+     dist: precise
+     env: COMPOSER_PHPUNIT=false
+   - php: 5.4
+     env: COMPOSER_PHPUNIT=false
+   - php: 5.5
+     env: COMPOSER_PHPUNIT=false
+   - php: 5.6
+     env: TEST_COVERAGE=1 COMPOSER_PHPUNIT=true
+   - php: 7.0
+     env: COMPOSER_PHPUNIT=true
+   - php: 7.1
+     env: COMPOSER_PHPUNIT=true
+   - php: 7.2
+     env: COMPOSER_PHPUNIT=true
+   - php: 7.3
+     env: COMPOSER_PHPUNIT=true
+   - php: 7.4snapshot
+     env: COMPOSER_PHPUNIT=true
+   - php: nightly
+     env: COMPOSER_PHPUNIT=true
+  allow_failures:
     - php: nightly
-
-allow_failures:
-  - php: nightly
-
-# Use new container infrastructure
-sudo: false
+      env: COMPOSER_PHPUNIT=true
 
 cache:
   directories:
     - $HOME/.cache/pip
+    # Cache directory for older Composer versions.
     - $HOME/.composer/cache/files
+    # Cache directory for more recent Composer versions.
+    - $HOME/.cache/composer/files
 
 install:
+ # Speed up build time by disabling Xdebug unless actually needed.
+ # https://johnblackbourn.com/reducing-travis-ci-build-times-for-wordpress-projects/
+ # https://twitter.com/kelunik/status/954242454676475904
+ - if [ "$TEST_COVERAGE" != '1' ]; then phpenv config-rm xdebug.ini || echo 'No xdebug config.'; fi
+
  # Setup the test server
  - phpenv local $( phpenv versions | grep 5.6 | tail -1 )
+ - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then composer remove phpunit/phpunit --dev; fi
+ - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then export PHPUNIT_BIN="phpunit";
+   else export PHPUNIT_BIN="../vendor/bin/phpunit";
+   fi
  - composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)
  - phpenv local --unset
@@ -54,10 +75,18 @@ before_script:
  - curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
  
  # Environment checks
- - phpunit --version
+ - $PHPUNIT_BIN --version
 
 script:
- - phpunit --coverage-clover clover.xml
+ - |
+   if [ "$TEST_COVERAGE" == '1' ]; then
+     $PHPUNIT_BIN --coverage-clover clover.xml;
+   # PHPUnit 4.x does not yet support the `no-coverage` flag.
+   elif [ ${TRAVIS_PHP_VERSION:0:3} == "5.2" ]; then
+     $PHPUNIT_BIN;
+   else
+     $PHPUNIT_BIN --no-coverage;
+   fi
 
 after_script:
  - utils/proxy/stop.sh

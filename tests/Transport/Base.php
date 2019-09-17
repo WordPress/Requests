@@ -29,7 +29,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			parent::setExpectedException( $exception, $message, $code );
 		} else {
 			$this->expectException( $exception );
-			if ( '' !== $message ) {
+			if ( null !== $message ) {
 				$this->expectExceptionMessage( $message );
 			}
 			if ( null !== $code ) {
@@ -414,10 +414,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
+				$this->setExpectedException('Requests_Exception_HTTP_' . $code, null, $code);
 			}
 			elseif ($code >= 300 && $code < 400) {
-				$this->setExpectedException('Requests_Exception');
+				$this->setExpectedException('Requests_Exception', null);
 			}
 		}
 		$request = Requests::get($url, array(), $options);
@@ -439,7 +439,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, '', $code);
+				$this->setExpectedException('Requests_Exception_HTTP_' . $code, null, $code);
 			}
 		}
 		$request = Requests::get($url, array(), $options);
@@ -587,8 +587,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * Test that the transport supports Server Name Indication with HTTPS
 	 *
-	 * feelingrestful.com (owned by hmn.md and used with permission) points to
-	 * CloudFlare, and will fail if SNI isn't sent.
+	 * humanmade.com (owned by Human Made and used with permission) points to
+	 * CloudFront, and will fail if SNI isn't sent.
 	 */
 	public function testSNISupport() {
 		if ($this->skip_https) {
@@ -596,7 +596,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::head('https://feelingrestful.com/', array(), $this->getOptions());
+		$request = Requests::head('https://humanmade.com/', array(), $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 	}
 
@@ -765,7 +765,20 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testAlternatePort() {
-		$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
+		try {
+			$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
+		} catch( Requests_Exception $e ) {
+			// Retry the request as it often times-out.
+			try {
+				$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
+			} catch( Requests_Exception $e ) {
+				// If it still times out, mark the test as skipped.
+				$this->markTestSkipped(
+					$e->getMessage()
+				);
+			}
+		}
+
 		$this->assertEquals(200, $request->status_code);
 		$num = preg_match('#You have reached this page on port <b>(\d+)</b>#i', $request->body, $matches);
 		$this->assertEquals(1, $num, 'Response should contain the port number');
