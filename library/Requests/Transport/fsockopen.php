@@ -222,7 +222,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 
 		$timeout_sec = (int) floor($options['timeout']);
-		if ($timeout_sec == $options['timeout']) {
+		if ($timeout_sec === $options['timeout']) {
 			$timeout_msec = 0;
 		}
 		else {
