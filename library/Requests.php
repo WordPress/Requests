@@ -637,7 +637,8 @@ class Requests {
 		$return->url = $url;
 
 		if (!$options['filename']) {
-			if (($pos = strpos($headers, "\r\n\r\n")) === false) {
+			$pos = strpos($headers, "\r\n\r\n");
+			if ($pos === false) {
 				// Crap!
 				throw new Requests_Exception('Missing header/body separator', 'requests.no_crlf_separator');
 			}
@@ -826,17 +827,30 @@ class Requests {
 			return $data;
 		}
 
-		if (function_exists('gzdecode') && ($decoded = @gzdecode($data)) !== false) {
+		if (function_exists('gzdecode')) {
+			$decoded = @gzdecode($data);
+			if ($decoded !== false) {
+				return $decoded;
+			}
+		}
+
+		if (function_exists('gzinflate')) {
+			$decoded = @gzinflate($data);
+			if ($decoded !== false) {
+				return $decoded;
+			}
+		}
+
+		$decoded = self::compatible_gzinflate($data);
+		if ($decoded !== false) {
 			return $decoded;
 		}
-		elseif (function_exists('gzinflate') && ($decoded = @gzinflate($data)) !== false) {
-			return $decoded;
-		}
-		elseif (($decoded = self::compatible_gzinflate($data)) !== false) {
-			return $decoded;
-		}
-		elseif (function_exists('gzuncompress') && ($decoded = @gzuncompress($data)) !== false) {
-			return $decoded;
+
+		if (function_exists('gzuncompress')) {
+			$decoded = @gzuncompress($data);
+			if ($decoded !== false) {
+				return $decoded;
+			}
 		}
 
 		return $data;
@@ -910,7 +924,8 @@ class Requests {
 		}
 
 		if ($huffman_encoded) {
-			if (false !== ($decompressed = @gzinflate(substr($gzData, 2)))) {
+			$decompressed = @gzinflate(substr($gzData, 2));
+			if (false !== $decompressed) {
 				return $decompressed;
 			}
 		}
@@ -937,20 +952,23 @@ class Requests {
 			// Determine the first byte of data, based on the above ZIP header
 			// offsets:
 			$first_file_start = array_sum(unpack('v2', substr($gzData, 26, 4)));
-			if (false !== ($decompressed = @gzinflate(substr($gzData, 30 + $first_file_start)))) {
+			$decompressed     = @gzinflate(substr($gzData, 30 + $first_file_start));
+			if (false !== $decompressed) {
 				return $decompressed;
 			}
 			return false;
 		}
 
 		// Finally fall back to straight gzinflate
-		if (false !== ($decompressed = @gzinflate($gzData))) {
+		$decompressed = @gzinflate($gzData);
+		if (false !== $decompressed) {
 			return $decompressed;
 		}
 
 		// Fallback for all above failing, not expected, but included for
 		// debugging and preventing regressions and to track stats
-		if (false !== ($decompressed = @gzinflate(substr($gzData, 2)))) {
+		$decompressed = @gzinflate(substr($gzData, 2));
+		if (false !== $decompressed) {
 			return $decompressed;
 		}
 
