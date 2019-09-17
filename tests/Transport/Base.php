@@ -608,7 +608,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'timeout' => 1,
 		);
 		$request = Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
-		var_dump($request);
 	}
 
 	public function testMultiple() {
