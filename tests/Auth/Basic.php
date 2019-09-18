@@ -19,7 +19,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		}
 
 		$options = array(
-			'auth' => array('user', 'passwd'),
+			'auth'      => array('user', 'passwd'),
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
@@ -40,7 +40,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		}
 
 		$options = array(
-			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
+			'auth'      => new Requests_Auth_Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
@@ -61,7 +61,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		}
 
 		$options = array(
-			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
+			'auth'      => new Requests_Auth_Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
 		$data    = 'test';
