@@ -26,7 +26,7 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testASCIITooLong() {
-		$data = str_repeat("abcd", 20);
+		$data   = str_repeat("abcd", 20);
 		$result = Requests_IDNAEncoder::encode($data);
 	}
 
@@ -34,7 +34,7 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testEncodedTooLong() {
-		$data = str_repeat("\xe4\xbb\x96", 60);
+		$data   = str_repeat("\xe4\xbb\x96", 60);
 		$result = Requests_IDNAEncoder::encode($data);
 	}
 

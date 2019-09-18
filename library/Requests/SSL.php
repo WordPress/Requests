@@ -139,7 +139,7 @@ class Requests_SSL {
 		// Also validates that the host has 3 parts or more, as per Firefox's
 		// ruleset.
 		if (ip2long($host) === false) {
-			$parts = explode('.', $host);
+			$parts    = explode('.', $host);
 			$parts[0] = '*';
 			$wildcard = implode('.', $parts);
 			if ($wildcard === $reference) {

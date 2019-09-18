@@ -17,7 +17,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * Standard response header parsing
 	 */
 	public function testHeaderParsing() {
-		$transport = new RawTransport();
+		$transport       = new RawTransport();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n" .
@@ -31,17 +31,17 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 			"  three\r\n\r\n" .
 			"stop\r\n";
 
-		$options = array(
+		$options               = array(
 			'transport' => $transport
 		);
-		$response = Requests::get('http://example.com/', array(), $options);
-		$expected = new Requests_Response_Headers();
-		$expected['host'] = 'localhost,ambiguous';
-		$expected['nospace'] = 'here';
+		$response              = Requests::get('http://example.com/', array(), $options);
+		$expected              = new Requests_Response_Headers();
+		$expected['host']      = 'localhost,ambiguous';
+		$expected['nospace']   = 'here';
 		$expected['muchspace'] = 'there';
-		$expected['empty'] = '';
-		$expected['empty2'] = '';
-		$expected['folded'] = 'one two  three';
+		$expected['empty']     = '';
+		$expected['empty2']    = '';
+		$expected['folded']    = 'one two  three';
 		foreach ($expected as $key => $value) {
 			$this->assertEquals($value, $response->headers[$key]);
 		}
@@ -52,7 +52,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testProtocolVersionParsing() {
-		$transport = new RawTransport();
+		$transport       = new RawTransport();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n";
@@ -66,13 +66,13 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRawAccess() {
-		$transport = new RawTransport();
+		$transport       = new RawTransport();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n" .
 			"Test";
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
@@ -83,10 +83,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * Headers with only \n delimiting should be treated as if they're \r\n
 	 */
 	public function testHeaderOnlyLF() {
-		$transport = new RawTransport();
+		$transport       = new RawTransport();
 		$transport->data = "HTTP/1.0 200 OK\r\nTest: value\nAnother-Test: value\r\n\r\n";
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
@@ -103,10 +103,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testInvalidProtocolVersion() {
-		$transport = new RawTransport();
+		$transport       = new RawTransport();
 		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
@@ -118,10 +118,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testSingleCRLFSeparator() {
-		$transport = new RawTransport();
+		$transport       = new RawTransport();
 		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
@@ -131,20 +131,20 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testInvalidStatus() {
-		$transport = new RawTransport();
+		$transport       = new RawTransport();
 		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 	}
 
 	public function test30xWithoutLocation() {
-		$transport = new MockTransport();
+		$transport       = new MockTransport();
 		$transport->code = 302;
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
@@ -156,7 +156,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testTimeoutException() {
-		$options = array('timeout' => 0.5);
+		$options  = array('timeout' => 0.5);
 		$response = Requests::get(httpbin('/delay/3'), array(), $options);
 	}
 }

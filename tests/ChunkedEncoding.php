@@ -34,11 +34,11 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 	 * @dataProvider chunkedProvider
 	 */
 	public function testChunked($body, $expected) {
-		$transport = new MockTransport();
-		$transport->body = $body;
+		$transport          = new MockTransport();
+		$transport->body    = $body;
 		$transport->chunked = true;
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
@@ -62,11 +62,11 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 	 * @dataProvider notChunkedProvider
 	 */
 	public function testNotActuallyChunked($body) {
-		$transport = new MockTransport();
-		$transport->body = $body;
+		$transport          = new MockTransport();
+		$transport->body    = $body;
 		$transport->chunked = true;
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
@@ -80,11 +80,11 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 	 * that they're lying to us
 	 */
 	public function testMixedChunkiness() {
-		$transport = new MockTransport();
-		$transport->body = "02\r\nab\r\nNot actually chunked!";
+		$transport          = new MockTransport();
+		$transport->body    = "02\r\nab\r\nNot actually chunked!";
 		$transport->chunked = true;
 
-		$options = array(
+		$options  = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
