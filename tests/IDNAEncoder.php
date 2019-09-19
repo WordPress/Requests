@@ -26,23 +26,23 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testASCIITooLong() {
-		$data   = str_repeat('abcd', 20);
-		$result = Requests_IDNAEncoder::encode($data);
+		$data = str_repeat('abcd', 20);
+		Requests_IDNAEncoder::encode($data);
 	}
 
 	/**
 	 * @expectedException Requests_Exception
 	 */
 	public function testEncodedTooLong() {
-		$data   = str_repeat("\xe4\xbb\x96", 60);
-		$result = Requests_IDNAEncoder::encode($data);
+		$data = str_repeat("\xe4\xbb\x96", 60);
+		Requests_IDNAEncoder::encode($data);
 	}
 
 	/**
 	 * @expectedException Requests_Exception
 	 */
 	public function testAlreadyPrefixed() {
-		$result = Requests_IDNAEncoder::encode("xn--\xe4\xbb\x96");
+		Requests_IDNAEncoder::encode("xn--\xe4\xbb\x96");
 	}
 
 	public function testASCIICharacter() {
@@ -69,34 +69,34 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testFiveByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
+		Requests_IDNAEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
 	}
 
 	/**
 	 * @expectedException Requests_Exception
 	 */
 	public function testSixByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
+		Requests_IDNAEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
 	}
 
 	/**
 	 * @expectedException Requests_Exception
 	 */
 	public function testInvalidASCIICharacterWithMultibyte() {
-		$result = Requests_IDNAEncoder::encode("\0\xc2\xb6");
+		Requests_IDNAEncoder::encode("\0\xc2\xb6");
 	}
 
 	/**
 	 * @expectedException Requests_Exception
 	 */
 	public function testUnfinishedMultibyte() {
-		$result = Requests_IDNAEncoder::encode("\xc2");
+		Requests_IDNAEncoder::encode("\xc2");
 	}
 
 	/**
 	 * @expectedException Requests_Exception
 	 */
 	public function testPartialMultibyte() {
-		$result = Requests_IDNAEncoder::encode("\xc2\xc2\xb6");
+		Requests_IDNAEncoder::encode("\xc2\xc2\xb6");
 	}
 }

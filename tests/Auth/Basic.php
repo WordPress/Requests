@@ -80,7 +80,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testMissingPassword() {
-		$auth = new Requests_Auth_Basic(array('user'));
+		new Requests_Auth_Basic(array('user'));
 	}
 
 }

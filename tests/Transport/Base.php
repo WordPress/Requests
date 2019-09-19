@@ -352,7 +352,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'redirects' => 10, // default, but force just in case
 		);
-		$request = Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
+		Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
 	}
 
 	public static function statusCodeSuccessProvider() {
@@ -534,7 +534,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testBadIP() {
-		$request = Requests::get('http://256.256.256.0/', array(), $this->getOptions());
+		Requests::get('http://256.256.256.0/', array(), $this->getOptions());
 	}
 
 	public function testHTTPS() {
@@ -561,7 +561,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
+		Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
 	/**
@@ -573,7 +573,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
+		Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
 	/**
@@ -587,7 +587,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$request = Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
+		Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
 	public function testBadDomainNoVerify() {
@@ -640,7 +640,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$options = array(
 			'timeout' => 1,
 		);
-		$request = Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
+		Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
 	}
 
 	public function testMultiple() {
@@ -763,7 +763,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testMultipleToFile() {
-		$requests  = array(
+		$requests = array(
 			'get' => array(
 				'url'     => httpbin('/get'),
 				'options' => array(
@@ -779,7 +779,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				),
 			),
 		);
-		$responses = Requests::request_multiple($requests, $this->getOptions());
+		Requests::request_multiple($requests, $this->getOptions());
 
 		// GET request
 		$contents = file_get_contents($requests['get']['options']['filename']);
@@ -829,7 +829,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 		$options = $this->getOptions($options);
 
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		Requests::get(httpbin('/get'), array(), $options);
 	}
 
 	public function testAfterRequestCallback() {
@@ -851,7 +851,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 		$options = $this->getOptions($options);
 
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		Requests::get(httpbin('/get'), array(), $options);
 	}
 
 	public function testReusableTransport() {

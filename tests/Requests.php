@@ -5,7 +5,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testInvalidProtocol() {
-		$request = Requests::request('ftp://128.0.0.1/');
+		Requests::request('ftp://128.0.0.1/');
 	}
 
 	public function testDefaultTransport() {
@@ -106,10 +106,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
 
-		$options  = array(
+		$options = array(
 			'transport' => $transport,
 		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		Requests::get('http://example.com/', array(), $options);
 	}
 
 	/**
@@ -121,10 +121,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
 
-		$options  = array(
+		$options = array(
 			'transport' => $transport,
 		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		Requests::get('http://example.com/', array(), $options);
 	}
 
 	/**
@@ -134,10 +134,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
 
-		$options  = array(
+		$options = array(
 			'transport' => $transport,
 		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		Requests::get('http://example.com/', array(), $options);
 	}
 
 	public function test30xWithoutLocation() {
@@ -156,7 +156,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testTimeoutException() {
-		$options  = array('timeout' => 0.5);
-		$response = Requests::get(httpbin('/delay/3'), array(), $options);
+		$options = array('timeout' => 0.5);
+		Requests::get(httpbin('/delay/3'), array(), $options);
 	}
 }
