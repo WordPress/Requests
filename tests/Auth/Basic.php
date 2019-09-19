@@ -2,11 +2,10 @@
 
 class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	public static function transportProvider() {
-		$transports = array(
+		return array(
 			array('Requests_Transport_fsockopen'),
 			array('Requests_Transport_cURL'),
 		);
-		return $transports;
 	}
 
 	/**
