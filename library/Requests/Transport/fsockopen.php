@@ -178,7 +178,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		if (!isset($case_insensitive_headers['Host'])) {
 			$out .= sprintf('Host: %s', $url_parts['host']);
 
-			if (('http' === strtolower($url_parts['scheme']) && $url_parts['port'] !== 80) || ('https' === strtolower($url_parts['scheme']) && $url_parts['port'] !== 443)) {
+			if ((strtolower($url_parts['scheme']) === 'http' && $url_parts['port'] !== 80) || (strtolower($url_parts['scheme']) === 'https' && $url_parts['port'] !== 443)) {
 				$out .= ':' . $url_parts['port'];
 			}
 			$out .= "\r\n";

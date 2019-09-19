@@ -236,7 +236,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			// Parse the finished requests before we start getting the new ones
 			foreach ($to_process as $key => $done) {
 				$options = $requests[$key]['options'];
-				if (CURLE_OK !== $done['result']) {
+				if ($done['result'] !== CURLE_OK) {
 					//get error string for handle.
 					$reason          = curl_error($done['handle']);
 					$exception       = new Requests_Exception_Transport_cURL(
@@ -386,7 +386,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 		}
 
-		if (true === $options['blocking']) {
+		if ($options['blocking'] === true) {
 			curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array($this, 'stream_headers'));
 			curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, array($this, 'stream_body'));
 			curl_setopt($this->handle, CURLOPT_BUFFERSIZE, Requests::BUFFER_SIZE);

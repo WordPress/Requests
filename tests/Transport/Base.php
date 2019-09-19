@@ -30,10 +30,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		}
 		else {
 			$this->expectException($exception);
-			if (null !== $message) {
+			if ($message !== null) {
 				$this->expectExceptionMessage($message);
 			}
-			if (null !== $code) {
+			if ($code !== null) {
 				$this->expectExceptionCode($code);
 			}
 		}
