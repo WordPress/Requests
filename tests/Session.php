@@ -23,13 +23,13 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$session         = new Requests_Session(httpbin('/'), $session_headers);
 		$response        = $session->get('/get', array('X-Requests-Request' => 'GET'));
 		$response->throw_for_status(false);
-		$this->assertEquals(200, $response->status_code);
+		$this->assertSame(200, $response->status_code);
 
 		$data = json_decode($response->body, true);
 		$this->assertArrayHasKey('X-Requests-Session', $data['headers']);
-		$this->assertEquals('BasicGET', $data['headers']['X-Requests-Session']);
+		$this->assertSame('BasicGET', $data['headers']['X-Requests-Session']);
 		$this->assertArrayHasKey('X-Requests-Request', $data['headers']);
-		$this->assertEquals('GET', $data['headers']['X-Requests-Request']);
+		$this->assertSame('GET', $data['headers']['X-Requests-Request']);
 	}
 
 	public function testBasicHEAD() {
@@ -40,7 +40,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$session         = new Requests_Session(httpbin('/'), $session_headers);
 		$response        = $session->head('/get', array('X-Requests-Request' => 'HEAD'));
 		$response->throw_for_status(false);
-		$this->assertEquals(200, $response->status_code);
+		$this->assertSame(200, $response->status_code);
 	}
 
 	public function testBasicDELETE() {
@@ -51,13 +51,13 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$session         = new Requests_Session(httpbin('/'), $session_headers);
 		$response        = $session->delete('/delete', array('X-Requests-Request' => 'DELETE'));
 		$response->throw_for_status(false);
-		$this->assertEquals(200, $response->status_code);
+		$this->assertSame(200, $response->status_code);
 
 		$data = json_decode($response->body, true);
 		$this->assertArrayHasKey('X-Requests-Session', $data['headers']);
-		$this->assertEquals('BasicDELETE', $data['headers']['X-Requests-Session']);
+		$this->assertSame('BasicDELETE', $data['headers']['X-Requests-Session']);
 		$this->assertArrayHasKey('X-Requests-Request', $data['headers']);
-		$this->assertEquals('DELETE', $data['headers']['X-Requests-Request']);
+		$this->assertSame('DELETE', $data['headers']['X-Requests-Request']);
 	}
 
 	public function testBasicPOST() {
@@ -68,13 +68,13 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$session         = new Requests_Session(httpbin('/'), $session_headers);
 		$response        = $session->post('/post', array('X-Requests-Request' => 'POST'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
-		$this->assertEquals(200, $response->status_code);
+		$this->assertSame(200, $response->status_code);
 
 		$data = json_decode($response->body, true);
 		$this->assertArrayHasKey('X-Requests-Session', $data['headers']);
-		$this->assertEquals('BasicPOST', $data['headers']['X-Requests-Session']);
+		$this->assertSame('BasicPOST', $data['headers']['X-Requests-Session']);
 		$this->assertArrayHasKey('X-Requests-Request', $data['headers']);
-		$this->assertEquals('POST', $data['headers']['X-Requests-Request']);
+		$this->assertSame('POST', $data['headers']['X-Requests-Request']);
 	}
 
 	public function testBasicPUT() {
@@ -85,13 +85,13 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$session         = new Requests_Session(httpbin('/'), $session_headers);
 		$response        = $session->put('/put', array('X-Requests-Request' => 'PUT'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
-		$this->assertEquals(200, $response->status_code);
+		$this->assertSame(200, $response->status_code);
 
 		$data = json_decode($response->body, true);
 		$this->assertArrayHasKey('X-Requests-Session', $data['headers']);
-		$this->assertEquals('BasicPUT', $data['headers']['X-Requests-Session']);
+		$this->assertSame('BasicPUT', $data['headers']['X-Requests-Session']);
 		$this->assertArrayHasKey('X-Requests-Request', $data['headers']);
-		$this->assertEquals('PUT', $data['headers']['X-Requests-Request']);
+		$this->assertSame('PUT', $data['headers']['X-Requests-Request']);
 	}
 
 	public function testBasicPATCH() {
@@ -102,13 +102,13 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$session         = new Requests_Session(httpbin('/'), $session_headers);
 		$response        = $session->patch('/patch', array('X-Requests-Request' => 'PATCH'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
-		$this->assertEquals(200, $response->status_code);
+		$this->assertSame(200, $response->status_code);
 
 		$data = json_decode($response->body, true);
 		$this->assertArrayHasKey('X-Requests-Session', $data['headers']);
-		$this->assertEquals('BasicPATCH', $data['headers']['X-Requests-Session']);
+		$this->assertSame('BasicPATCH', $data['headers']['X-Requests-Session']);
 		$this->assertArrayHasKey('X-Requests-Request', $data['headers']);
-		$this->assertEquals('PATCH', $data['headers']['X-Requests-Request']);
+		$this->assertSame('PATCH', $data['headers']['X-Requests-Request']);
 	}
 
 	public function testMultiple() {
@@ -126,19 +126,19 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		// test1
 		$this->assertNotEmpty($responses['test1']);
 		$this->assertInstanceOf('Requests_Response', $responses['test1']);
-		$this->assertEquals(200, $responses['test1']->status_code);
+		$this->assertSame(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertSame(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		// test2
 		$this->assertNotEmpty($responses['test2']);
 		$this->assertInstanceOf('Requests_Response', $responses['test2']);
-		$this->assertEquals(200, $responses['test2']->status_code);
+		$this->assertSame(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertSame(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -161,18 +161,18 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		);
 
 		$session = new Requests_Session('http://example.com/', $headers, $data, $options);
-		$this->assertEquals('http://example.com/', $session->url);
-		$this->assertEquals($headers, $session->headers);
-		$this->assertEquals($data, $session->data);
-		$this->assertEquals($options['testoption'], $session->options['testoption']);
+		$this->assertSame('http://example.com/', $session->url);
+		$this->assertSame($headers, $session->headers);
+		$this->assertSame($data, $session->data);
+		$this->assertSame($options['testoption'], $session->options['testoption']);
 
 		// Test via property access
-		$this->assertEquals($options['testoption'], $session->testoption);
+		$this->assertSame($options['testoption'], $session->testoption);
 
 		// Test setting new property
 		$session->newoption   = 'foobar';
 		$options['newoption'] = 'foobar';
-		$this->assertEquals($options['newoption'], $session->options['newoption']);
+		$this->assertSame($options['newoption'], $session->options['newoption']);
 
 		// Test unsetting property
 		unset($session->newoption);
@@ -181,7 +181,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		// Update property
 		$session->testoption   = 'foobar';
 		$options['testoption'] = 'foobar';
-		$this->assertEquals($options['testoption'], $session->testoption);
+		$this->assertSame($options['testoption'], $session->testoption);
 
 		// Test getting invalid property
 		$this->assertNull($session->invalidoption);
@@ -194,7 +194,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 			'follow_redirects' => false,
 		);
 		$response = $session->get('/cookies/set?requests-testcookie=testvalue', array(), $options);
-		$this->assertEquals(302, $response->status_code);
+		$this->assertSame(302, $response->status_code);
 
 		// Check the cookies
 		$response = $session->get('/cookies');
@@ -208,6 +208,6 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$cookies = array(
 			'requests-testcookie' => 'testvalue',
 		);
-		$this->assertEquals($cookies, $data['cookies']);
+		$this->assertSame($cookies, $data['cookies']);
 	}
 }

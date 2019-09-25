@@ -4,12 +4,12 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 	public function testBasicCookie() {
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue');
 
-		$this->assertEquals('requests-testcookie', $cookie->name);
-		$this->assertEquals('testvalue', $cookie->value);
-		$this->assertEquals('testvalue', (string) $cookie);
+		$this->assertSame('requests-testcookie', $cookie->name);
+		$this->assertSame('testvalue', $cookie->value);
+		$this->assertSame('testvalue', (string) $cookie);
 
-		$this->assertEquals('requests-testcookie=testvalue', $cookie->format_for_header());
-		$this->assertEquals('requests-testcookie=testvalue', $cookie->format_for_set_cookie());
+		$this->assertSame('requests-testcookie=testvalue', $cookie->format_for_header());
+		$this->assertSame('requests-testcookie=testvalue', $cookie->format_for_set_cookie());
 	}
 
 	public function testCookieWithAttributes() {
@@ -19,14 +19,14 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		);
 		$cookie     = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
 
-		$this->assertEquals('requests-testcookie=testvalue', $cookie->format_for_header());
-		$this->assertEquals('requests-testcookie=testvalue; httponly; path=/', $cookie->format_for_set_cookie());
+		$this->assertSame('requests-testcookie=testvalue', $cookie->format_for_header());
+		$this->assertSame('requests-testcookie=testvalue; httponly; path=/', $cookie->format_for_set_cookie());
 	}
 
 	public function testEmptyCookieName() {
 		$cookie = Requests_Cookie::parse('test');
-		$this->assertEquals('', $cookie->name);
-		$this->assertEquals('test', $cookie->value);
+		$this->assertSame('', $cookie->name);
+		$this->assertSame('test', $cookie->value);
 	}
 
 	public function testEmptyAttributes() {
@@ -50,7 +50,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$jar                        = new Requests_Cookie_Jar();
 		$jar['requests-testcookie'] = 'testvalue';
 
-		$this->assertEquals('testvalue', $jar['requests-testcookie']);
+		$this->assertSame('testvalue', $jar['requests-testcookie']);
 
 		unset($jar['requests-testcookie']);
 		$this->assertEmpty($jar['requests-testcookie']);
@@ -74,7 +74,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$jar     = new Requests_Cookie_Jar($cookies);
 
 		foreach ($jar as $key => $value) {
-			$this->assertEquals($cookies[$key], $value);
+			$this->assertSame($cookies[$key], $value);
 		}
 	}
 
@@ -88,7 +88,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 
 		$cookie = $response->cookies['requests-testcookie'];
 		$this->assertNotEmpty($cookie);
-		$this->assertEquals('testvalue', $cookie->value);
+		$this->assertSame('testvalue', $cookie->value);
 	}
 
 	public function testPersistenceOnRedirect() {
@@ -101,7 +101,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 
 		$cookie = $response->cookies['requests-testcookie'];
 		$this->assertNotEmpty($cookie);
-		$this->assertEquals('testvalue', $cookie->value);
+		$this->assertSame('testvalue', $cookie->value);
 	}
 
 	protected function setCookieRequest($cookies) {
@@ -124,7 +124,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$data = $this->setCookieRequest($cookies);
 
 		$this->assertArrayHasKey('requests-testcookie1', $data);
-		$this->assertEquals('testvalue1', $data['requests-testcookie1']);
+		$this->assertSame('testvalue1', $data['requests-testcookie1']);
 	}
 
 	/**
@@ -153,7 +153,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$data    = $this->setCookieRequest($cookies);
 
 		$this->assertArrayHasKey('requests-testcookie1', $data);
-		$this->assertEquals('testvalue1', $data['requests-testcookie1']);
+		$this->assertSame('testvalue1', $data['requests-testcookie1']);
 	}
 
 	public function testSendingMultipleCookies() {
@@ -164,10 +164,10 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$data    = $this->setCookieRequest($cookies);
 
 		$this->assertArrayHasKey('requests-testcookie1', $data);
-		$this->assertEquals('testvalue1', $data['requests-testcookie1']);
+		$this->assertSame('testvalue1', $data['requests-testcookie1']);
 
 		$this->assertArrayHasKey('requests-testcookie2', $data);
-		$this->assertEquals('testvalue2', $data['requests-testcookie2']);
+		$this->assertSame('testvalue2', $data['requests-testcookie2']);
 	}
 
 	public function testSendingMultipleCookiesWithJar() {
@@ -180,10 +180,10 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$data    = $this->setCookieRequest($cookies);
 
 		$this->assertArrayHasKey('requests-testcookie1', $data);
-		$this->assertEquals('testvalue1', $data['requests-testcookie1']);
+		$this->assertSame('testvalue1', $data['requests-testcookie1']);
 
 		$this->assertArrayHasKey('requests-testcookie2', $data);
-		$this->assertEquals('testvalue2', $data['requests-testcookie2']);
+		$this->assertSame('testvalue2', $data['requests-testcookie2']);
 	}
 
 	public function testSendingPrebakedCookie() {
@@ -195,7 +195,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$data    = $this->setCookieRequest($cookies);
 
 		$this->assertArrayHasKey('requests-testcookie', $data);
-		$this->assertEquals('testvalue', $data['requests-testcookie']);
+		$this->assertSame('testvalue', $data['requests-testcookie']);
 	}
 
 	public function domainMatchProvider() {
@@ -230,7 +230,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
 		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
-		$this->assertEquals($matches, $cookie->domain_matches($check));
+		$this->assertSame($matches, $cookie->domain_matches($check));
 	}
 
 	/**
@@ -243,7 +243,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 			'host-only' => false,
 		);
 		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
-		$this->assertEquals($domain_matches, $cookie->domain_matches($check));
+		$this->assertSame($domain_matches, $cookie->domain_matches($check));
 	}
 
 	public function pathMatchProvider() {
@@ -273,7 +273,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$attributes         = new Requests_Utility_CaseInsensitiveDictionary();
 		$attributes['path'] = $original;
 		$cookie             = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
-		$this->assertEquals($matches, $cookie->path_matches($check));
+		$this->assertSame($matches, $cookie->path_matches($check));
 	}
 
 	public function urlMatchProvider() {
@@ -314,7 +314,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$attributes['path']   = $path;
 		$check                = new Requests_IRI($check);
 		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
-		$this->assertEquals($matches, $cookie->uri_matches($check));
+		$this->assertSame($matches, $cookie->uri_matches($check));
 	}
 
 	/**
@@ -331,7 +331,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		);
 		$check                = new Requests_IRI($check);
 		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
-		$this->assertEquals($domain_matches, $cookie->uri_matches($check));
+		$this->assertSame($domain_matches, $cookie->uri_matches($check));
 	}
 
 	public function testUrlMatchSecure() {
@@ -459,22 +459,22 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 
 	protected function check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags = array()) {
 		if (isset($expected['name'])) {
-			$this->assertEquals($expected['name'], $cookie->name);
+			$this->assertSame($expected['name'], $cookie->name);
 		}
 		if (isset($expected['value'])) {
-			$this->assertEquals($expected['value'], $cookie->value);
+			$this->assertSame($expected['value'], $cookie->value);
 		}
 		if (isset($expected['expired'])) {
-			$this->assertEquals($expected['expired'], $cookie->is_expired());
+			$this->assertSame($expected['expired'], $cookie->is_expired());
 		}
 		if (isset($expected_attributes)) {
 			foreach ($expected_attributes as $attr_key => $attr_val) {
-				$this->assertEquals($attr_val, $cookie->attributes[$attr_key], "$attr_key should match supplied");
+				$this->assertSame($attr_val, $cookie->attributes[$attr_key], "$attr_key should match supplied");
 			}
 		}
 		if (isset($expected_flags)) {
 			foreach ($expected_flags as $flag_key => $flag_val) {
-				$this->assertEquals($flag_val, $cookie->flags[$flag_key], "$flag_key should match supplied");
+				$this->assertSame($flag_val, $cookie->flags[$flag_key], "$flag_key should match supplied");
 			}
 		}
 	}

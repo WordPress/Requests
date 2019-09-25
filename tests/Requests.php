@@ -11,7 +11,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 
 	public function testDefaultTransport() {
 		$request = Requests::get(httpbin('/get'));
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 	}
 
 	/**
@@ -44,11 +44,11 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$expected['empty2']    = '';
 		$expected['folded']    = 'one two  three';
 		foreach ($expected as $key => $value) {
-			$this->assertEquals($value, $response->headers[$key]);
+			$this->assertSame($value, $response->headers[$key]);
 		}
 
 		foreach ($response->headers as $key => $value) {
-			$this->assertEquals($value, $expected[$key]);
+			$this->assertSame($value, $expected[$key]);
 		}
 	}
 
@@ -63,7 +63,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		);
 
 		$response = Requests::get('http://example.com/', array(), $options);
-		$this->assertEquals(1.0, $response->protocol_version);
+		$this->assertSame(1.0, $response->protocol_version);
 	}
 
 	public function testRawAccess() {
@@ -77,7 +77,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
-		$this->assertEquals($transport->data, $response->raw);
+		$this->assertSame($transport->data, $response->raw);
 	}
 
 	/**
@@ -91,8 +91,8 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
-		$this->assertEquals('value', $response->headers['test']);
-		$this->assertEquals('value', $response->headers['another-test']);
+		$this->assertSame('value', $response->headers['test']);
+		$this->assertSame('value', $response->headers['another-test']);
 	}
 
 	/**
@@ -152,8 +152,8 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
-		$this->assertEquals(302, $response->status_code);
-		$this->assertEquals(0, $response->redirects);
+		$this->assertSame(302, $response->status_code);
+		$this->assertSame(0, $response->redirects);
 	}
 
 	/**

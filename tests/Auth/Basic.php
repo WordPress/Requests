@@ -22,11 +22,11 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body);
-		$this->assertEquals(true, $result->authenticated);
-		$this->assertEquals('user', $result->user);
+		$this->assertTrue($result->authenticated);
+		$this->assertSame('user', $result->user);
 	}
 
 	/**
@@ -43,11 +43,11 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body);
-		$this->assertEquals(true, $result->authenticated);
-		$this->assertEquals('user', $result->user);
+		$this->assertTrue($result->authenticated);
+		$this->assertSame('user', $result->user);
 	}
 
 	/**
@@ -65,15 +65,15 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		);
 		$data    = 'test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $options);
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body);
 
 		$auth = $result->headers->Authorization;
 		$auth = explode(' ', $auth);
 
-		$this->assertEquals(base64_encode('user:passwd'), $auth[1]);
-		$this->assertEquals('test', $result->data);
+		$this->assertSame(base64_encode('user:passwd'), $auth[1]);
+		$this->assertSame('test', $result->data);
 	}
 
 	/**

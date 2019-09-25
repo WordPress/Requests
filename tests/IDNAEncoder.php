@@ -19,7 +19,7 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	 */
 	public function testEncoding($data, $expected) {
 		$result = Requests_IDNAEncoder::encode($data);
-		$this->assertEquals($expected, $result);
+		$this->assertSame($expected, $result);
 	}
 
 	/**
@@ -50,22 +50,22 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 
 	public function testASCIICharacter() {
 		$result = Requests_IDNAEncoder::encode('a');
-		$this->assertEquals('a', $result);
+		$this->assertSame('a', $result);
 	}
 
 	public function testTwoByteCharacter() {
 		$result = Requests_IDNAEncoder::encode("\xc2\xb6"); // Pilcrow character
-		$this->assertEquals('xn--tba', $result);
+		$this->assertSame('xn--tba', $result);
 	}
 
 	public function testThreeByteCharacter() {
 		$result = Requests_IDNAEncoder::encode("\xe2\x82\xac"); // Euro symbol
-		$this->assertEquals('xn--lzg', $result);
+		$this->assertSame('xn--lzg', $result);
 	}
 
 	public function testFourByteCharacter() {
 		$result = Requests_IDNAEncoder::encode("\xf0\xa4\xad\xa2"); // Chinese symbol?
-		$this->assertEquals('xn--ww6j', $result);
+		$this->assertSame('xn--ww6j', $result);
 	}
 
 	/**
