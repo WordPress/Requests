@@ -118,6 +118,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 		$remote_socket .= ':' . $url_parts['port'];
 
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
 		set_error_handler(array($this, 'connect_error_handler'), E_WARNING | E_NOTICE);
 
 		$options['hooks']->dispatch('fsockopen.remote_socket', array(&$remote_socket));
