@@ -185,7 +185,8 @@ class Requests_IDNAEncoder {
 						throw new Requests_Exception('Invalid Unicode codepoint', 'idna.invalidcodepoint', $character);
 					}
 
-					$character |= ($value & 0x3F) << (--$remaining * 6);
+					--$remaining;
+					$character |= ($value & 0x3F) << ($remaining * 6);
 				}
 				$position--;
 			}
