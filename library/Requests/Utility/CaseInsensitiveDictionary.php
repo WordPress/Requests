@@ -46,7 +46,7 @@ class Requests_Utility_CaseInsensitiveDictionary implements ArrayAccess, Iterato
 	 * Get the value for the item
 	 *
 	 * @param string $key Item key
-	 * @return string Item value
+	 * @return string|null Item value (null if offsetExists is false)
 	 */
 	public function offsetGet($key) {
 		$key = strtolower($key);

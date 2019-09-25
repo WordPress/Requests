@@ -154,7 +154,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		if ($options['type'] !== Requests::TRACE) {
 			if (is_array($data)) {
-				$request_body = http_build_query($data, null, '&');
+				$request_body = http_build_query($data, '', '&');
 			}
 			else {
 				$request_body = $data;
@@ -353,7 +353,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				$url_parts['query'] = '';
 			}
 
-			$url_parts['query'] .= '&' . http_build_query($data, null, '&');
+			$url_parts['query'] .= '&' . http_build_query($data, '', '&');
 			$url_parts['query'] = trim($url_parts['query'], '&');
 		}
 		if (isset($url_parts['path'])) {

@@ -38,9 +38,9 @@ class Requests_Transport_cURL implements Requests_Transport {
 	public $info;
 
 	/**
-	 * Version string
+	 * cURL version number
 	 *
-	 * @var long
+	 * @var int
 	 */
 	public $version;
 
@@ -215,7 +215,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$request['options']['hooks']->dispatch('curl.before_multi_exec', array(&$multihandle));
 
 		do {
-			$active = false;
+			$active = 0;
 
 			do {
 				$status = curl_multi_exec($multihandle, $active);
@@ -397,7 +397,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 *
 	 * @param string $response Response data from the body
 	 * @param array $options Request options
-	 * @return string HTTP response data including headers
+	 * @return string|false HTTP response data including headers. False if non-blocking.
+	 * @throws Requests_Exception
 	 */
 	public function process_response($response, $options) {
 		if ($options['blocking'] === false) {

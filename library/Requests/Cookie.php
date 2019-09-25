@@ -492,7 +492,7 @@ class Requests_Cookie {
 	 *
 	 * @codeCoverageIgnore
 	 * @deprecated Use {@see Requests_Cookie::parse_from_headers}
-	 * @return string
+	 * @return array
 	 */
 	public static function parseFromHeaders(Requests_Response_Headers $headers) {
 		return self::parse_from_headers($headers);
