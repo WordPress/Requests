@@ -162,6 +162,8 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				$request_body = $data;
 			}
 
+			// Always include Content-length on POST requests to prevent
+			// 411 errors from some servers when the body is empty.
 			if (!empty($data) || $options['type'] === Requests::POST) {
 				if (!isset($case_insensitive_headers['Content-Length'])) {
 					$headers['Content-Length'] = strlen($request_body);
@@ -169,12 +171,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 				if (!isset($case_insensitive_headers['Content-Type'])) {
 					$headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-				}
-			}
-			elseif($options['type'] === Requests::POST) {
-				if (!isset($case_insensitive_headers['Content-Length'])) {
-					// Prevent 411 errors from some servers
-					$headers['Content-Length'] = 0;
 				}
 			}
 		}
