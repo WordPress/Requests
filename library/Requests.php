@@ -143,7 +143,7 @@ class Requests {
 
 		$file = str_replace('_', '/', $class);
 		if (file_exists(dirname(__FILE__) . '/' . $file . '.php')) {
-			require_once(dirname(__FILE__) . '/' . $file . '.php');
+			require_once dirname(__FILE__) . '/' . $file . '.php';
 		}
 	}
 
