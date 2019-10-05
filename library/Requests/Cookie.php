@@ -289,7 +289,7 @@ class Requests_Cookie {
 
 			case 'domain':
 				// Domains are not required as per RFC 6265 section 5.2.3
-				if (is_null( $value ) || false === $value){
+				if (empty($value)) {
 					return null;
 				}
 
