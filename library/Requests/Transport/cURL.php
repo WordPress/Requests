@@ -313,6 +313,11 @@ class Requests_Transport_cURL implements Requests_Transport {
 		if ( ! isset( $headers['Connection'] ) ) {
 			$headers['Connection'] = 'close';
 		}
+        if(isset($headers['Content-Type']) && $headers['Content-Type']==='multipart/form-data') {
+            $is_multipart_form = true;
+        }
+        else
+            $is_multipart_form = false;
 
 		$headers = Requests::flatten($headers);
 
@@ -323,7 +328,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 				$url = self::format_get($url, $data);
 				$data = '';
 			}
-			elseif (!is_string($data)) {
+            elseif (!is_string($data) && !$is_multipart_form) {
 				$data = http_build_query($data, null, '&');
 			}
 		}
