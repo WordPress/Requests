@@ -16,8 +16,8 @@ Why should I use Requests?
    necessarily going to be available on every system. While you're welcome to
    require PHP 5.3, 5.4 or even 5.5, it's not our job to force you to use those.
 
-   (The WordPress project estimates [about 60%][wpstats] of hosts are running
-   PHP 5.2, so this is a serious issue for developers working on large
+   (The WordPress project estimates [about 1.5%][wpstats] of hosts are running
+   PHP 5.2, so this may be an issue for developers working on large
    deployable projects.)
 
    Don't worry though, Requests will automatically use better features where
