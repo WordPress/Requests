@@ -600,6 +600,13 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 				array( 'invalid' => false ),
 			),
 
+			# Empty Domain	
+			array(
+				'name=value; domain=',
+				'http://example.com/test/',
+				array(),
+			),
+
 			# Subdomain cookies
 			array(
 				'name=value; domain=test.example.com',
