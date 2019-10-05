@@ -154,20 +154,20 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		if ($options['type'] !== Requests::TRACE) {
 			if (is_array($data)) {
-			    if (isset($case_insensitive_headers['Content-Type']) && $case_insensitive_headers['Content-Type']==='multipart/form-data')
-                {
-                    $boundary = '------------------------'.substr(md5(rand()), 0, 16);
-                    $headers['Content-Type'] = sprintf('multipart/form-data; boundary=%s', $boundary);
+				if (isset($case_insensitive_headers['Content-Type']) && $case_insensitive_headers['Content-Type']==='multipart/form-data')
+				{
+					$boundary = '------------------------'.substr(md5(rand()), 0, 16);
+					$headers['Content-Type'] = sprintf('multipart/form-data; boundary=%s', $boundary);
 
-                    foreach ($data as $key=>$value)
-                    {
-                        $request_body .= '--'.$boundary."\r\n";
-                        $request_body .= sprintf("Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s\r\n", $key, $value);
-                    }
-                    $request_body .= '--'.$boundary."--\r\n";
-                }
-			    else
-				    $request_body = http_build_query($data, null, '&');
+					foreach ($data as $key=>$value)
+					{
+						$request_body .= '--'.$boundary."\r\n";
+						$request_body .= sprintf("Content-Disposition: form-data; name=\"%s\"\r\n\r\n%s\r\n", $key, $value);
+					}
+					$request_body .= '--'.$boundary."--\r\n";
+				}
+				else
+					$request_body = http_build_query($data, null, '&');
 			}
 			else {
 				$request_body = $data;

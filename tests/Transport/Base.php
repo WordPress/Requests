@@ -204,15 +204,15 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testPOSTWithMultipartData() {
-        $data = array(
-            'test' => 'true',
-            'test2' => 'test',
-        );
-        $request = Requests::post('http://httpbin.org/post', array('Content-Type'=>'multipart/form-data'), $data, $this->getOptions());
-        $this->assertEquals(200, $request->status_code);
-        $result = json_decode($request->body, true);
-        $this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
-    }
+		$data = array(
+			'test' => 'true',
+			'test2' => 'test',
+		);
+		$request = Requests::post('http://httpbin.org/post', array('Content-Type'=>'multipart/form-data'), $data, $this->getOptions());
+		$this->assertEquals(200, $request->status_code);
+		$result = json_decode($request->body, true);
+		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+	}
 
 	public function testRawPUT() {
 		$data = 'test';
