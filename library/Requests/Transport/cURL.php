@@ -224,7 +224,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 				// For a small fraction of slow requests, curl_multi_select will busy loop and return immediately with no indication of error (it returns 0 immediately with/without setting curl_multi_errno).
 				// (https://github.com/rmccue/Requests/pull/284)
 				// To mitigate this, add our own sleep if curl returned but no requests completed (failing or succeeding)
-				// - The amount of time to sleep is the smaller of 1ms or 10% of total time spent waiting for curl requests
+				// - The amount of time to sleep is the smaller of 2ms or 10% of total time spent waiting for curl requests
 				//   (10% was arbitrarily chosen to slowing down requests that would normally take less than 1 millisecond)
 				// - The amount of time that was already spent in curl_multi_exec+curl_multi_select in the previous request is subtracted from that.
 				//   (E.g. if curl_multi_select already slept for 2 milliseconds, curl_multi_select might be operating normally)
