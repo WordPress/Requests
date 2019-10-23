@@ -235,7 +235,6 @@ class Requests_Transport_cURL implements Requests_Transport {
 				}
 			}
 			$operation_start = microtime(true);
-			$made_progress = false;
 			$is_first_multi_exec = true;
 			do {
 				if (!$is_first_multi_exec) {
@@ -249,7 +248,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 			while ($status === CURLM_CALL_MULTI_PERFORM);
 
 			// curl_multi_select will sleep for at most 50 milliseconds before returning.
-			curl_multi_select($multihandle, 0.05);
+			// Note that in php 7.1.23+, curl_multi_select can return immediately but return 0 with no error in some edge cases.
+			$select_result = curl_multi_select($multihandle, 0.05);
+			// A return value of 0 means that nothing interesting happened.
+			// A return value of -1 means that either (1) nothing interesting happened or (2) there was an error.
+			// A return value of 1 or more means that interesting things happened to that many connections.
+			$made_progress = $select_result > 0;
 
 			$to_process = array();
 
@@ -263,7 +267,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 			// Parse the finished requests before we start getting the new ones
 			foreach ($to_process as $key => $done) {
-				$made_progress = true;
+				$made_progress = true;  // Set this just in case progress was made despite curl_multi_select saying otherwise.
 				$options = $requests[$key]['options'];
 				if (CURLE_OK !== $done['result']) {
 					//get error string for handle.
