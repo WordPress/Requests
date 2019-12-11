@@ -159,6 +159,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
 		}
 
+        if (isset($options['ipresolve'])) {
+            if (in_array($options['ipresolve'], array(CURL_IPRESOLVE_WHATEVER, CURL_IPRESOLVE_V4, CURL_IPRESOLVE_V6))){
+                curl_setopt($this->handle, CURLOPT_IPRESOLVE, $options['ipresolve']);
+            }
+        }
+
 		curl_exec($this->handle);
 		$response = $this->response_data;
 
