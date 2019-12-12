@@ -344,7 +344,10 @@ class Requests {
 	 * - `data_format`: How should we send the `$data` parameter?
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
-	 *
+     * - `ip_resolve` : Allows to select what kind of IP addresses to use when resolving host names.
+	 *    This is only interesting when using host names that resolve addresses using more than one version of IP,
+     *    possible values are 0(resolve_whatever), 1(resolve_v4_only), 2(resolve_v6_only), otherwise will get ignored.
+     *    (int, default: 0)
 	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
 	 *
 	 * @param string $url URL to request
@@ -358,6 +361,7 @@ class Requests {
 		if (empty($options['type'])) {
 			$options['type'] = $type;
 		}
+
 		$options = array_merge(self::get_default_options(), $options);
 
 		self::set_defaults($url, $headers, $data, $type, $options);
