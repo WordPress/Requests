@@ -609,6 +609,15 @@ abstract class BaseTestCase extends TestCase {
 		unlink($filename);
 	}
 
+	public function testStreamToInvalidFile() {
+		$options = array(
+			'filename' => tempnam(sys_get_temp_dir(), 'RLT').'/missing/directory' // RequestsLibraryTest
+		);
+		$this->expectException(Requests_Exception::class);
+		$this->expectExceptionMessage('failed to open stream: No such file or directory');
+		Requests::get(httpbin('/get'), array(), $this->getOptions($options));
+	}
+
 	public function testNonblocking() {
 		$options = array(
 			'blocking' => false,

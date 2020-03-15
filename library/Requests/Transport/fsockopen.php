@@ -260,7 +260,11 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$doingbody  = false;
 		$download   = false;
 		if ($options['filename']) {
-			$download = fopen($options['filename'], 'wb');
+			@$download = fopen($options['filename'], 'wb');
+			if($download===false) {
+				$error = error_get_last();
+				throw new Requests_Exception($error['message'], 'fopen');
+			}
 		}
 
 		while (!feof($socket)) {
