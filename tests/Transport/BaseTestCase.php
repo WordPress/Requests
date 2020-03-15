@@ -611,7 +611,7 @@ abstract class BaseTestCase extends TestCase {
 
 	/**
 	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage failed to open stream: No such file or directory
+	 * @expectedExceptionMessage failed to open stream
 	 */
 	public function testStreamToInvalidFile() {
 		$options = array(
