@@ -192,7 +192,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$headers = Requests::flatten($headers);
 
 		if (!empty($headers)) {
-			$out .= implode("\r\n", $headers) . "\r\n";
+			$out .= implode($headers, "\r\n") . "\r\n";
 		}
 
 		$options['hooks']->dispatch('fsockopen.after_headers', array(&$out));
@@ -337,7 +337,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 
 		$type[] = 'gzip;q=0.5';
 
-		return implode(', ', $type);
+		return implode($type, ', ');
 	}
 
 	/**
