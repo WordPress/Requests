@@ -114,6 +114,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		if (is_resource($this->handle)) {
 			curl_close($this->handle);
 		}
+		unset($this->handle);
 	}
 
 	/**
