@@ -23,7 +23,7 @@ matrix:
      env: COMPOSER_PHPUNIT=true
    - php: 7.3
      env: COMPOSER_PHPUNIT=true
-   - php: 7.4snapshot
+   - php: 7.4
      env: COMPOSER_PHPUNIT=true
    - php: nightly
      env: COMPOSER_PHPUNIT=true
