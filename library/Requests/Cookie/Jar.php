@@ -162,7 +162,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @var Requests_Response $response
 	 */
-	public function before_redirect_check(Requests_Response &$return) {
+	public function before_redirect_check(Requests_Response $return) {
 		$url = $return->url;
 		if (!$url instanceof Requests_IRI) {
 			$url = new Requests_IRI($url);
