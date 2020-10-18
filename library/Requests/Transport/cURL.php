@@ -386,8 +386,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		if (true === $options['blocking']) {
-			curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array(&$this, 'stream_headers'));
-			curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, array(&$this, 'stream_body'));
+			curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array($this, 'stream_headers'));
+			curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, array($this, 'stream_body'));
 			curl_setopt($this->handle, CURLOPT_BUFFERSIZE, Requests::BUFFER_SIZE);
 		}
 	}
