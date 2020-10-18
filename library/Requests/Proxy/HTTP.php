@@ -83,12 +83,12 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 	 * @param Requests_Hooks $hooks Hook system
 	 */
 	public function register(Requests_Hooks $hooks) {
-		$hooks->register('curl.before_send', array(&$this, 'curl_before_send'));
+		$hooks->register('curl.before_send', array($this, 'curl_before_send'));
 
-		$hooks->register('fsockopen.remote_socket', array(&$this, 'fsockopen_remote_socket'));
-		$hooks->register('fsockopen.remote_host_path', array(&$this, 'fsockopen_remote_host_path'));
+		$hooks->register('fsockopen.remote_socket', array($this, 'fsockopen_remote_socket'));
+		$hooks->register('fsockopen.remote_host_path', array($this, 'fsockopen_remote_host_path'));
 		if ($this->use_authentication) {
-			$hooks->register('fsockopen.after_headers', array(&$this, 'fsockopen_header'));
+			$hooks->register('fsockopen.after_headers', array($this, 'fsockopen_header'));
 		}
 	}
 
