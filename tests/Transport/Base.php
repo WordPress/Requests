@@ -24,16 +24,17 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	 * @param string     $message
 	 * @param int|string $code
 	 */
-	public function setExpectedException( $exception, $message = '', $code = null ) {
-		if ( method_exists( 'PHPUnit_Framework_TestCase', 'setExpectedException' ) ) {
-			parent::setExpectedException( $exception, $message, $code );
-		} else {
-			$this->expectException( $exception );
-			if ( null !== $message ) {
-				$this->expectExceptionMessage( $message );
+	public function setExpectedException($exception, $message = '', $code = null) {
+		if (method_exists('PHPUnit_Framework_TestCase', 'setExpectedException')) {
+			parent::setExpectedException($exception, $message, $code);
+		}
+		else {
+			$this->expectException($exception);
+			if (null !== $message) {
+				$this->expectExceptionMessage($message);
 			}
-			if ( null !== $code ) {
-				$this->expectExceptionCode( $code );
+			if (null !== $code) {
+				$this->expectExceptionCode($code);
 			}
 		}
 	}
@@ -446,7 +447,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$request->throw_for_status(true);
 	}
 
-	public function testStatusCodeUnknown(){
+	public function testStatusCodeUnknown() {
 		$transport = new MockTransport();
 		$transport->code = 599;
 
@@ -462,7 +463,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException Requests_Exception_HTTP_Unknown
 	 */
-	public function testStatusCodeThrowUnknown(){
+	public function testStatusCodeThrowUnknown() {
 		$transport = new MockTransport();
 		$transport->code = 599;
 
@@ -776,11 +777,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testAlternatePort() {
 		try {
 			$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
-		} catch( Requests_Exception $e ) {
+		}
+		catch (Requests_Exception $e) {
 			// Retry the request as it often times-out.
 			try {
 				$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
-			} catch( Requests_Exception $e ) {
+			}
+			catch (Requests_Exception $e) {
 				// If it still times out, mark the test as skipped.
 				$this->markTestSkipped(
 					$e->getMessage()
@@ -854,7 +857,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/post').'?test=true&test2=test', $result['url']);
+		$this->assertEquals(httpbin('/post') . '?test=true&test2=test', $result['url']);
 		$this->assertEquals('', $result['data']);
 	}
 

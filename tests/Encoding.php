@@ -87,8 +87,8 @@ class RequestsTests_Encoding extends PHPUnit_Framework_TestCase {
 
 	protected function bin2hex($field) {
 		$field = bin2hex($field);
-		$field = chunk_split($field,2,"\\x");
-		$field = "\\x" . substr($field,0,-2);
+		$field = chunk_split($field, 2, "\\x");
+		$field = "\\x" . substr($field, 0, -2);
 		return $field;
 	}
 }

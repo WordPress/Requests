@@ -19,16 +19,16 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	public function testHeaderParsing() {
 		$transport = new RawTransport();
 		$transport->data =
-			"HTTP/1.0 200 OK\r\n".
-			"Host: localhost\r\n".
-			"Host: ambiguous\r\n".
-			"Nospace:here\r\n".
-			"Muchspace:  there   \r\n".
-			"Empty:\r\n".
-			"Empty2: \r\n".
-			"Folded: one\r\n".
-			"\ttwo\r\n".
-			"  three\r\n\r\n".
+			"HTTP/1.0 200 OK\r\n" .
+			"Host: localhost\r\n" .
+			"Host: ambiguous\r\n" .
+			"Nospace:here\r\n" .
+			"Muchspace:  there   \r\n" .
+			"Empty:\r\n" .
+			"Empty2: \r\n" .
+			"Folded: one\r\n" .
+			"\ttwo\r\n" .
+			"  three\r\n\r\n" .
 			"stop\r\n";
 
 		$options = array(
@@ -54,7 +54,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	public function testProtocolVersionParsing() {
 		$transport = new RawTransport();
 		$transport->data =
-			"HTTP/1.0 200 OK\r\n".
+			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n";
 
 		$options = array(
@@ -68,8 +68,8 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	public function testRawAccess() {
 		$transport = new RawTransport();
 		$transport->data =
-			"HTTP/1.0 200 OK\r\n".
-			"Host: localhost\r\n\r\n".
+			"HTTP/1.0 200 OK\r\n" .
+			"Host: localhost\r\n\r\n" .
 			"Test";
 
 		$options = array(

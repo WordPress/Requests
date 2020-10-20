@@ -239,11 +239,11 @@ class Requests_Transport_cURL implements Requests_Transport {
 					//get error string for handle.
 					$reason = curl_error($done['handle']);
 					$exception = new Requests_Exception_Transport_cURL(
-									$reason,
-									Requests_Exception_Transport_cURL::EASY,
-									$done['handle'],
-									$done['result']
-								);
+						$reason,
+						Requests_Exception_Transport_cURL::EASY,
+						$done['handle'],
+						$done['result']
+					);
 					$responses[$key] = $exception;
 					$options['hooks']->dispatch('transport.internal.parse_error', array(&$responses[$key], $requests[$key]));
 				}
@@ -310,7 +310,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->handle));
 
 		// Force closing the connection for old versions of cURL (<7.22).
-		if ( ! isset( $headers['Connection'] ) ) {
+		if (!isset($headers['Connection'])) {
 			$headers['Connection'] = 'close';
 		}
 

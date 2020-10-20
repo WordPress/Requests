@@ -3,8 +3,8 @@
 /**
  * Compatibility with PHPUnit 6+
  */
-if ( class_exists( 'PHPUnit\Runner\Version' ) ) {
-	require_once dirname( __FILE__ ) . '/phpunit6-compat.php';
+if (class_exists('PHPUnit\Runner\Version')) {
+	require_once dirname(__FILE__) . '/phpunit6-compat.php';
 }
 
 date_default_timezone_set('UTC');
@@ -47,7 +47,7 @@ spl_autoload_register('autoload_tests');
 
 function httpbin($suffix = '', $ssl = false) {
 	$host = $ssl ? 'https://' . REQUESTS_TEST_HOST_HTTPS : 'http://' . REQUESTS_TEST_HOST_HTTP;
-	return rtrim( $host, '/' ) . '/' . ltrim( $suffix, '/' );
+	return rtrim($host, '/') . '/' . ltrim($suffix, '/');
 }
 
 class MockTransport implements Requests_Transport {
