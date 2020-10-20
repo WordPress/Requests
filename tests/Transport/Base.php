@@ -567,6 +567,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$request = Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
+	public function testBadDomainNoVerify() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
+		$response = Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions(array('verify' => false)));
+		$this->assertTrue($response->success);
+	}
+
 	/**
 	 * Test that the transport supports Server Name Indication with HTTPS
 	 *
