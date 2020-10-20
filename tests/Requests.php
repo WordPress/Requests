@@ -143,12 +143,26 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	public function test30xWithoutLocation() {
 		$transport = new MockTransport();
 		$transport->code = 302;
-
 		$options = array(
 			'transport' => $transport
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 		$this->assertEquals(302, $response->status_code);
+		$this->assertEquals(0, $response->redirects);
+	}
+	
+	public function test30xWithoutLocationPOST() {
+		$transport = new MockTransport();
+		$transport->code = 302;
+	
+		$url = 'http://example.com/';
+	
+		$options = array(
+		    'transport' => $transport,
+		    'url' => $url,
+		);
+		$response = Requests::post('http://example.com/', array(), $options);
+		$this->assertEquals(200, $response->status_code);
 		$this->assertEquals(0, $response->redirects);
 	}
 

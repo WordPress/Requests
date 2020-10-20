@@ -503,6 +503,7 @@ class Requests {
 	 */
 	protected static function get_default_options($multirequest = false) {
 		$defaults = array(
+			'url' => false,
 			'timeout' => 10,
 			'connect_timeout' => 10,
 			'useragent' => 'php-requests/' . self::VERSION,
@@ -562,6 +563,11 @@ class Requests {
 	 * @return array $options
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
+		if ($options['url'] !== false) {
+			$url = Requests_IRI::absolutize($options['url'], $url);
+			$url = $url->uri;
+		}
+		
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
 			throw new Requests_Exception('Only HTTP(S) requests are handled.', 'nonhttp', $url);
 		}
