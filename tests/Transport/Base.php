@@ -774,6 +774,34 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		unlink($requests['post']['options']['filename']);
 	}
 
+	public function testMultipleWithNoVerify() {
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
+		$requests = array(
+			'test1' => array(
+				'url' => 'https://wrong.host.badssl.com/',
+				'options' => array('verify' => false),
+			),
+			'test2' => array(
+				'url' => 'https://wrong.host.badssl.com/'
+			),
+		);
+
+		$responses = Requests::request_multiple($requests, $this->getOptions());
+
+		// test1
+		$this->assertNotEmpty($responses['test1']);
+		$this->assertInstanceOf('Requests_Response', $responses['test1']);
+		$this->assertEquals(200, $responses['test1']->status_code);
+
+		// test2
+		$this->assertNotEmpty($responses['test2']);
+		$this->assertInstanceOf('Requests_Exception', $responses['test2']);
+	}
+
 	public function testAlternatePort() {
 		try {
 			$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
