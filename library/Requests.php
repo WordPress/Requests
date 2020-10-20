@@ -260,15 +260,41 @@ class Requests {
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $data
+	 * @param array $files
 	 * @param array $options
 	 * @return Requests_Response
 	 */
 	/**
-	 * Send a POST request
+	 * Send a POST request/Support for multiple files, complex array parameters
 	 */
-	public static function post($url, $headers = array(), $data = array(), $options = array()) {
-		return self::request($url, $headers, $data, self::POST, $options);
-	}
+    public static function post($url, $headers = [], $data = [], $files = [], $options = []){
+        if (count($files)) {
+            self::httpBuildQuery($data);
+            // replacing file paths with curlFile Object
+            array_walk($files, function ($filePath, $key) use (&$data) {
+                if (is_array($filePath)) {
+                    array_walk($filePath, function ($subFilePath, $subKey) use (&$data, $key) {
+                        $data["{$key}[{$subKey}]"] = new \CURLFile(realpath($subFilePath));
+                    });
+                } else {
+                    $data[ $key ] = new \CURLFile(realpath($filePath));
+                }
+            });
+
+            // starting to add a hook to attach file to request
+            $hooks = new \Requests_Hooks();
+            $hooks->register('curl.before_send', function ($fp) use ($data) {
+                curl_setopt($fp, CURLOPT_SAFE_UPLOAD, true);
+                curl_setopt($fp, CURLOPT_POSTFIELDS, $data);
+            });
+            $options = ['hooks' => $hooks];
+            // no need to set the body, it's taken care of by hooks
+            $data = [];
+        }
+
+        return self::request($url, $headers, $data, self::POST, $options);
+    }
+	
 	/**
 	 * Send a PUT request
 	 */
@@ -977,4 +1003,16 @@ class Requests {
 
 		return false;
 	}
+	
+    protected static function httpBuildQuery(array &$data, $key = '', $value = null) {
+        foreach ($value ?? $data as $k => $v) {
+            $cur_key = $key ? "{$key}[{$k}]" : "{$k}";
+            if (is_array($v)) {
+                self::httpBuildQuery($data, "{$cur_key}", $v);
+                unset($data[$k]);
+            }else{
+                $data[$cur_key] = $v;
+            }
+        }
+    }
 }

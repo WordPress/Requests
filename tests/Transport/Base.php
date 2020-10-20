@@ -161,7 +161,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testRawPOST() {
 		$data = 'test';
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$request = Requests::post(httpbin('/post'), array(), $data,['fiilename' => tempnam(sys_get_temp_dir(), 'RLT')], $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -170,7 +170,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testFormPost() {
 		$data = 'test=true&test2=test';
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$request = Requests::post(httpbin('/post'), array(), $data,['fiilename' => tempnam(sys_get_temp_dir(), 'RLT')], $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -182,7 +182,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test' => 'true',
 			'test2' => 'test',
 		);
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$request = Requests::post(httpbin('/post'), array(), $data,['fiilename' => tempnam(sys_get_temp_dir(), 'RLT')], $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -197,7 +197,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'test4' => 'test-too',
 			),
 		);
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$request = Requests::post(httpbin('/post'), array(), $data,['fiilename' => tempnam(sys_get_temp_dir(), 'RLT')], $this->getOptions());
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -853,7 +853,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testQueryDataFormat() {
 		$data = array('test' => 'true', 'test2' => 'test');
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'query')));
+		$request = Requests::post(httpbin('/post'), array(), $data,['filename' => tempnam(sys_get_temp_dir(), 'RLT')], $this->getOptions(array('data_format' => 'query')));
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -863,7 +863,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testBodyDataFormat() {
 		$data = array('test' => 'true', 'test2' => 'test');
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'body')));
+		$request = Requests::post(httpbin('/post'), array(), $data,['filename' => tempnam(sys_get_temp_dir(), 'RLT')], $this->getOptions(array('data_format' => 'body')));
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
