@@ -345,8 +345,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
-	 * @todo This should also check that the type is "toomanyredirects"
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Too many redirects
 	 */
 	public function testTooManyRedirects() {
 		$options = array(
@@ -483,7 +483,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception_HTTP_Unknown
+	 * @expectedException        Requests_Exception_HTTP_Unknown
+	 * @expectedExceptionMessage 599 Unknown
 	 */
 	public function testStatusCodeThrowUnknown() {
 		$transport       = new RequestsTest_Mock_Transport();
@@ -634,7 +635,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage timed out
 	 */
 	public function testTimeout() {
 		$options = array(

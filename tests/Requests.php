@@ -2,7 +2,8 @@
 
 class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Only HTTP(S) requests are handled
 	 */
 	public function testInvalidProtocol() {
 		Requests::request('ftp://128.0.0.1/');
@@ -100,7 +101,8 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * We do not support HTTP/0.9. If this is really an issue for you, file a
 	 * new issue, and update your server/proxy to support a proper protocol.
 	 *
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Response could not be parsed
 	 */
 	public function testInvalidProtocolVersion() {
 		$transport       = new RequestsTest_Mock_RawTransport();
@@ -115,7 +117,8 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	/**
 	 * HTTP/0.9 also appears to use a single CRLF instead of two
 	 *
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Missing header/body separator
 	 */
 	public function testSingleCRLFSeparator() {
 		$transport       = new RequestsTest_Mock_RawTransport();
@@ -128,7 +131,8 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Response could not be parsed
 	 */
 	public function testInvalidStatus() {
 		$transport       = new RequestsTest_Mock_RawTransport();
@@ -153,7 +157,8 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage timed out
 	 */
 	public function testTimeoutException() {
 		$options = array('timeout' => 0.5);

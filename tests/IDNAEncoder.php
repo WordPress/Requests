@@ -23,7 +23,8 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Provided string is too long
 	 */
 	public function testASCIITooLong() {
 		$data = str_repeat('abcd', 20);
@@ -31,7 +32,8 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Encoded string is too long
 	 */
 	public function testEncodedTooLong() {
 		$data = str_repeat("\xe4\xbb\x96", 60);
@@ -39,7 +41,8 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Provided string begins with ACE prefix
 	 */
 	public function testAlreadyPrefixed() {
 		Requests_IDNAEncoder::encode("xn--\xe4\xbb\x96");
@@ -66,35 +69,40 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid Unicode codepoint
 	 */
 	public function testFiveByteCharacter() {
 		Requests_IDNAEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid Unicode codepoint
 	 */
 	public function testSixByteCharacter() {
 		Requests_IDNAEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid Unicode codepoint
 	 */
 	public function testInvalidASCIICharacterWithMultibyte() {
 		Requests_IDNAEncoder::encode("\0\xc2\xb6");
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid Unicode codepoint
 	 */
 	public function testUnfinishedMultibyte() {
 		Requests_IDNAEncoder::encode("\xc2");
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid Unicode codepoint
 	 */
 	public function testPartialMultibyte() {
 		Requests_IDNAEncoder::encode("\xc2\xc2\xb6");
