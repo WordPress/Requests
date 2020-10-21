@@ -209,8 +209,9 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_multi_add_handle($multihandle, $subhandles[$id]);
 		}
 
-		$completed = 0;
-		$responses = array();
+		$completed       = 0;
+		$responses       = array();
+		$subrequestcount = count($subrequests);
 
 		$request['options']['hooks']->dispatch('curl.before_multi_exec', array(&$multihandle));
 
@@ -262,7 +263,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 				$completed++;
 			}
 		}
-		while ($active || $completed < count($subrequests));
+		while ($active || $completed < $subrequestcount);
 
 		$request['options']['hooks']->dispatch('curl.after_multi_exec', array(&$multihandle));
 
