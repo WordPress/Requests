@@ -37,7 +37,7 @@ function autoload_tests($class) {
 	}
 
 	$class = substr($class, 13);
-	$file = str_replace('_', '/', $class);
+	$file  = str_replace('_', '/', $class);
 	if (file_exists(dirname(__FILE__) . '/' . $file . '.php')) {
 		require_once dirname(__FILE__) . '/' . $file . '.php';
 	}
@@ -51,9 +51,9 @@ function httpbin($suffix = '', $ssl = false) {
 }
 
 class MockTransport implements Requests_Transport {
-	public $code = 200;
-	public $chunked = false;
-	public $body = 'Test Body';
+	public $code        = 200;
+	public $chunked     = false;
+	public $body        = 'Test Body';
 	public $raw_headers = '';
 
 	private static $messages = array(
@@ -106,8 +106,8 @@ class MockTransport implements Requests_Transport {
 	);
 
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
-		$status = isset(self::$messages[$this->code]) ? self::$messages[$this->code] : $this->code . ' unknown';
-		$response = "HTTP/1.0 $status\r\n";
+		$status    = isset(self::$messages[$this->code]) ? self::$messages[$this->code] : $this->code . ' unknown';
+		$response  = "HTTP/1.0 $status\r\n";
 		$response .= "Content-Type: text/plain\r\n";
 		if ($this->chunked) {
 			$response .= "Transfer-Encoding: chunked\r\n";
@@ -121,12 +121,12 @@ class MockTransport implements Requests_Transport {
 	public function request_multiple($requests, $options) {
 		$responses = array();
 		foreach ($requests as $id => $request) {
-			$handler = new MockTransport();
-			$handler->code = $request['options']['mock.code'];
-			$handler->chunked = $request['options']['mock.chunked'];
-			$handler->body = $request['options']['mock.body'];
+			$handler              = new MockTransport();
+			$handler->code        = $request['options']['mock.code'];
+			$handler->chunked     = $request['options']['mock.chunked'];
+			$handler->body        = $request['options']['mock.body'];
 			$handler->raw_headers = $request['options']['mock.raw_headers'];
-			$responses[$id] = $handler->request($request['url'], $request['headers'], $request['data'], $request['options']);
+			$responses[$id]       = $handler->request($request['url'], $request['headers'], $request['data'], $request['options']);
 
 			if (!empty($options['mock.parse'])) {
 				$request['options']['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$id], $request));
@@ -149,9 +149,9 @@ class RawTransport implements Requests_Transport {
 	}
 	public function request_multiple($requests, $options) {
 		foreach ($requests as $id => &$request) {
-			$handler = new RawTransport();
+			$handler       = new RawTransport();
 			$handler->data = $request['options']['raw.data'];
-			$request = $handler->request($request['url'], $request['headers'], $request['data'], $request['options']);
+			$request       = $handler->request($request['url'], $request['headers'], $request['data'], $request['options']);
 		}
 
 		return $requests;

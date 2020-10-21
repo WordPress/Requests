@@ -70,7 +70,7 @@ class Requests_Utility_CaseInsensitiveDictionary implements ArrayAccess, Iterato
 			throw new Requests_Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
-		$key = strtolower($key);
+		$key              = strtolower($key);
 		$this->data[$key] = $value;
 	}
 

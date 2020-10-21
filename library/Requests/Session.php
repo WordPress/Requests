@@ -64,9 +64,9 @@ class Requests_Session {
 	 * @param array $options Default options for requests
 	 */
 	public function __construct($url = null, $headers = array(), $data = array(), $options = array()) {
-		$this->url = $url;
+		$this->url     = $url;
 		$this->headers = $headers;
-		$this->data = $data;
+		$this->data    = $data;
 		$this->options = $options;
 
 		if (empty($this->options['cookies'])) {

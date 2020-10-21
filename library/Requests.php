@@ -374,9 +374,9 @@ class Requests {
 			}
 		}
 		else {
-			$need_ssl = (0 === stripos($url, 'https://'));
+			$need_ssl     = (0 === stripos($url, 'https://'));
 			$capabilities = array('ssl' => $need_ssl);
-			$transport = self::get_transport($capabilities);
+			$transport    = self::get_transport($capabilities);
 		}
 		$response = $transport->request($url, $headers, $data, $options);
 
@@ -447,7 +447,7 @@ class Requests {
 				$request['type'] = self::GET;
 			}
 			if (!isset($request['options'])) {
-				$request['options'] = $options;
+				$request['options']         = $options;
 				$request['options']['type'] = $request['type'];
 			}
 			else {
@@ -595,9 +595,9 @@ class Requests {
 		}
 
 		if ($options['idn'] !== false) {
-			$iri = new Requests_IRI($url);
+			$iri       = new Requests_IRI($url);
 			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
-			$url = $iri->uri;
+			$url       = $iri->uri;
 		}
 
 		// Massage the type to ensure we support it.
@@ -642,7 +642,7 @@ class Requests {
 				throw new Requests_Exception('Missing header/body separator', 'requests.no_crlf_separator');
 			}
 
-			$headers = substr($return->raw, 0, $pos);
+			$headers      = substr($return->raw, 0, $pos);
 			$return->body = substr($return->raw, $pos + strlen("\n\r\n\r"));
 		}
 		else {
@@ -658,14 +658,14 @@ class Requests {
 			throw new Requests_Exception('Response could not be parsed', 'noversion', $headers);
 		}
 		$return->protocol_version = (float) $matches[1];
-		$return->status_code = (int) $matches[2];
+		$return->status_code      = (int) $matches[2];
 		if ($return->status_code >= 200 && $return->status_code < 300) {
 			$return->success = true;
 		}
 
 		foreach ($headers as $header) {
 			list($key, $value) = explode(':', $header, 2);
-			$value = trim($value);
+			$value             = trim($value);
 			preg_replace('#(\s+)#i', ' ', $value);
 			$return->headers[$key] = $value;
 		}
@@ -705,7 +705,7 @@ class Requests {
 					$return
 				);
 				$options['hooks']->dispatch('requests.before_redirect', $hook_args);
-				$redirected = self::request($location, $req_headers, $req_data, $options['type'], $options);
+				$redirected            = self::request($location, $req_headers, $req_data, $options['type'], $options);
 				$redirected->history[] = $return;
 				return $redirected;
 			}
@@ -732,10 +732,10 @@ class Requests {
 	 */
 	public static function parse_multiple(&$response, $request) {
 		try {
-			$url = $request['url'];
-			$headers = $request['headers'];
-			$data = $request['data'];
-			$options = $request['options'];
+			$url      = $request['url'];
+			$headers  = $request['headers'];
+			$data     = $request['data'];
+			$options  = $request['options'];
 			$response = self::parse_response($response, $url, $headers, $data, $options);
 		}
 		catch (Requests_Exception $e) {
@@ -772,8 +772,8 @@ class Requests {
 			}
 
 			$chunk_length = strlen($matches[0]);
-			$decoded .= substr($encoded, $chunk_length, $length);
-			$encoded = substr($encoded, $chunk_length + $length + 2);
+			$decoded     .= substr($encoded, $chunk_length, $length);
+			$encoded      = substr($encoded, $chunk_length + $length + 2);
 
 			if (trim($encoded) === '0' || empty($encoded)) {
 				return $decoded;
@@ -866,12 +866,12 @@ class Requests {
 		// Compressed data might contain a full zlib header, if so strip it for
 		// gzinflate()
 		if (substr($gzData, 0, 3) == "\x1f\x8b\x08") {
-			$i = 10;
+			$i   = 10;
 			$flg = ord(substr($gzData, 3, 1));
 			if ($flg > 0) {
 				if ($flg & 4) {
 					list($xlen) = unpack('v', substr($gzData, $i, 2));
-					$i = $i + 2 + $xlen;
+					$i          = $i + 2 + $xlen;
 				}
 				if ($flg & 8) {
 					$i = strpos($gzData, "\0", $i) + 1;
@@ -900,7 +900,7 @@ class Requests {
 		$huffman_encoded = false;
 
 		// low nibble of first byte should be 0x08
-		list(, $first_nibble)    = unpack('h', $gzData);
+		list(, $first_nibble) = unpack('h', $gzData);
 
 		// First 2 bytes should be divisible by 0x1F
 		list(, $first_two_bytes) = unpack('n', $gzData);

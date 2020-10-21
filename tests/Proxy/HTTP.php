@@ -30,7 +30,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithString($transport) {
 		$this->checkProxyAvailable();
 
-		$options = array(
+		$options  = array(
 			'proxy' => REQUESTS_HTTP_PROXY,
 			'transport' => $transport,
 		);
@@ -47,7 +47,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithArray($transport) {
 		$this->checkProxyAvailable();
 
-		$options = array(
+		$options  = array(
 			'proxy' => array(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
@@ -65,7 +65,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectInvalidParameters($transport) {
 		$this->checkProxyAvailable();
 
-		$options = array(
+		$options  = array(
 			'proxy' => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
 			'transport' => $transport,
 		);
@@ -78,7 +78,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithInstance($transport) {
 		$this->checkProxyAvailable();
 
-		$options = array(
+		$options  = array(
 			'proxy' => new Requests_Proxy_HTTP(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
@@ -95,7 +95,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithAuth($transport) {
 		$this->checkProxyAvailable('auth');
 
-		$options = array(
+		$options  = array(
 			'proxy' => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER,
@@ -117,7 +117,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectWithInvalidAuth($transport) {
 		$this->checkProxyAvailable('auth');
 
-		$options = array(
+		$options  = array(
 			'proxy' => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER . '!',

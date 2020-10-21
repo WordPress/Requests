@@ -147,25 +147,25 @@ class Requests_IDNAEncoder {
 			// One byte sequence:
 			if ((~$value & 0x80) === 0x80) {
 				$character = $value;
-				$length = 1;
+				$length    = 1;
 				$remaining = 0;
 			}
 			// Two byte sequence:
 			elseif (($value & 0xE0) === 0xC0) {
 				$character = ($value & 0x1F) << 6;
-				$length = 2;
+				$length    = 2;
 				$remaining = 1;
 			}
 			// Three byte sequence:
 			elseif (($value & 0xF0) === 0xE0) {
 				$character = ($value & 0x0F) << 12;
-				$length = 3;
+				$length    = 3;
 				$remaining = 2;
 			}
 			// Four byte sequence:
 			elseif (($value & 0xF8) === 0xF0) {
 				$character = ($value & 0x07) << 18;
-				$length = 4;
+				$length    = 4;
 				$remaining = 3;
 			}
 			// Invalid byte:
@@ -236,7 +236,7 @@ class Requests_IDNAEncoder {
 		$h = $b = 0; // see loop
 		// copy them to the output in order
 		$codepoints = self::utf8_to_codepoints($input);
-		$extended = array();
+		$extended   = array();
 
 		foreach ($codepoints as $char) {
 			if ($char < 128) {
@@ -302,7 +302,7 @@ class Requests_IDNAEncoder {
 							break;
 						}
 						// output the code point for digit t + ((q - t) mod (base - t))
-						$digit = $t + (($q - $t) % (self::BOOTSTRAP_BASE - $t));
+						$digit   = $t + (($q - $t) % (self::BOOTSTRAP_BASE - $t));
 						$output .= self::digit_to_char($digit);
 						// let q = (q - t) div (base - t)
 						$q = floor(($q - $t) / (self::BOOTSTRAP_BASE - $t));

@@ -90,9 +90,9 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * Constructor
 	 */
 	public function __construct() {
-		$curl = curl_version();
+		$curl          = curl_version();
 		$this->version = $curl['version_number'];
-		$this->handle = curl_init();
+		$this->handle  = curl_init();
 
 		curl_setopt($this->handle, CURLOPT_HEADER, false);
 		curl_setopt($this->handle, CURLOPT_RETURNTRANSFER, 1);
@@ -138,8 +138,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$this->stream_handle = fopen($options['filename'], 'wb');
 		}
 
-		$this->response_data = '';
-		$this->response_bytes = 0;
+		$this->response_data       = '';
+		$this->response_bytes      = 0;
 		$this->response_byte_limit = false;
 		if ($options['max_bytes'] !== false) {
 			$this->response_byte_limit = $options['max_bytes'];
@@ -168,7 +168,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			// Reset encoding and try again
 			curl_setopt($this->handle, CURLOPT_ENCODING, 'none');
 
-			$this->response_data = '';
+			$this->response_data  = '';
 			$this->response_bytes = 0;
 			curl_exec($this->handle);
 			$response = $this->response_data;
@@ -199,12 +199,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		$multihandle = curl_multi_init();
 		$subrequests = array();
-		$subhandles = array();
+		$subhandles  = array();
 
 		$class = get_class($this);
 		foreach ($requests as $id => $request) {
 			$subrequests[$id] = new $class();
-			$subhandles[$id] = $subrequests[$id]->get_subrequest_handle($request['url'], $request['headers'], $request['data'], $request['options']);
+			$subhandles[$id]  = $subrequests[$id]->get_subrequest_handle($request['url'], $request['headers'], $request['data'], $request['options']);
 			$request['options']['hooks']->dispatch('curl.before_multi_add', array(&$subhandles[$id]));
 			curl_multi_add_handle($multihandle, $subhandles[$id]);
 		}
@@ -237,8 +237,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 				$options = $requests[$key]['options'];
 				if (CURLE_OK !== $done['result']) {
 					//get error string for handle.
-					$reason = curl_error($done['handle']);
-					$exception = new Requests_Exception_Transport_cURL(
+					$reason          = curl_error($done['handle']);
+					$exception       = new Requests_Exception_Transport_cURL(
 						$reason,
 						Requests_Exception_Transport_cURL::EASY,
 						$done['handle'],
@@ -287,8 +287,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$this->stream_handle = fopen($options['filename'], 'wb');
 		}
 
-		$this->response_data = '';
-		$this->response_bytes = 0;
+		$this->response_data       = '';
+		$this->response_bytes      = 0;
 		$this->response_byte_limit = false;
 		if ($options['max_bytes'] !== false) {
 			$this->response_byte_limit = $options['max_bytes'];
@@ -320,7 +320,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$data_format = $options['data_format'];
 
 			if ($data_format === 'query') {
-				$url = self::format_get($url, $data);
+				$url  = self::format_get($url, $data);
 				$data = '';
 			}
 			elseif (!is_string($data)) {
@@ -440,7 +440,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		// interim responses, such as a 100 Continue. We don't need that.
 		// (We may want to keep this somewhere just in case)
 		if ($this->done_headers) {
-			$this->headers = '';
+			$this->headers      = '';
 			$this->done_headers = false;
 		}
 		$this->headers .= $headers;
@@ -474,7 +474,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			if (($this->response_bytes + $data_length) > $this->response_byte_limit) {
 				// Limit the length
 				$limited_length = ($this->response_byte_limit - $this->response_bytes);
-				$data = substr($data, 0, $limited_length);
+				$data           = substr($data, 0, $limited_length);
 			}
 		}
 
@@ -507,7 +507,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			}
 
 			$query .= '&' . http_build_query($data, null, '&');
-			$query = trim($query, '&');
+			$query  = trim($query, '&');
 
 			if (empty($url_parts['query'])) {
 				$url .= '?' . $query;

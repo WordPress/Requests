@@ -64,7 +64,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 			'auth' => new Requests_Auth_Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
-		$data = 'test';
+		$data    = 'test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $options);
 		$this->assertEquals(200, $request->status_code);
 

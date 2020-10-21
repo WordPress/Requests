@@ -168,8 +168,8 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 			$url = new Requests_IRI($url);
 		}
 
-		$cookies = Requests_Cookie::parse_from_headers($return->headers, $url);
-		$this->cookies = array_merge($this->cookies, $cookies);
+		$cookies         = Requests_Cookie::parse_from_headers($return->headers, $url);
+		$this->cookies   = array_merge($this->cookies, $cookies);
 		$return->cookies = $this;
 	}
 }

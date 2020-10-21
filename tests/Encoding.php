@@ -4,7 +4,7 @@ class RequestsTests_Encoding extends PHPUnit_Framework_TestCase {
 	protected static function mapData($type, $data) {
 		$real_data = array();
 		foreach ($data as $value) {
-			$key = $type . ': ' . $value[0];
+			$key             = $type . ': ' . $value[0];
 			$real_data[$key] = $value;
 		}
 		return $real_data;
@@ -56,15 +56,15 @@ class RequestsTests_Encoding extends PHPUnit_Framework_TestCase {
 	}
 
 	public static function encodedData() {
-		$datasets = array();
-		$datasets['gzip'] = self::gzipData();
-		$datasets['deflate'] = self::deflateData();
+		$datasets                                 = array();
+		$datasets['gzip']                         = self::gzipData();
+		$datasets['deflate']                      = self::deflateData();
 		$datasets['deflate without zlib headers'] = self::deflateWithoutHeadersData();
 
 		$data = array();
 		foreach ($datasets as $key => $set) {
 			$real_set = self::mapData($key, $set);
-			$data = array_merge($data, $real_set);
+			$data     = array_merge($data, $real_set);
 		}
 		return $data;
 	}

@@ -64,7 +64,7 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 			}
 			elseif (count($args) == 3) {
 				list($this->proxy, $this->user, $this->pass) = $args;
-				$this->use_authentication = true;
+				$this->use_authentication                    = true;
 			}
 			else {
 				throw new Requests_Exception('Invalid number of arguments', 'proxyhttpbadargs');
