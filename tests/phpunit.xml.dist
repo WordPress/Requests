@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="bootstrap.php" verbose="true">
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.5/phpunit.xsd"
+	backupGlobals="true"
+	bootstrap="bootstrap.php"
+	colors="true"
+	verbose="true"
+	>
 	<testsuites>
 		<testsuite name="Authentication">
 			<directory suffix=".php">Auth</directory>
@@ -24,16 +31,11 @@
 	</testsuites>
 
 	<logging>
-		<log type="coverage-html" target="coverage" title="PHPUnit"
-			charset="UTF-8" yui="true" highlight="true"
-			lowUpperBound="35" highLowerBound="90"/>
+		<log type="coverage-html" target="coverage" lowUpperBound="35" highLowerBound="90"/>
 	</logging>
 
 	<filter>
-		<blacklist>
-			<directory suffix=".php">.</directory>
-		</blacklist>
-		<whitelist>
+		<whitelist addUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">../library</directory>
 		</whitelist>
 	</filter>
