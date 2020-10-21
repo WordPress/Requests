@@ -162,7 +162,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 				$request_body = $data;
 			}
 
-			if (!empty($data)) {
+			// Always include Content-length on POST requests to prevent
+			// 411 errors from some servers when the body is empty.
+			if (!empty($data) || $options['type'] === Requests::POST) {
 				if (!isset($case_insensitive_headers['Content-Length'])) {
 					$headers['Content-Length'] = strlen($request_body);
 				}
