@@ -59,10 +59,10 @@ class Requests_Proxy_HTTP implements Requests_Proxy {
 			$this->proxy = $args;
 		}
 		elseif (is_array($args)) {
-			if (count($args) == 1) {
+			if (count($args) === 1) {
 				list($this->proxy) = $args;
 			}
-			elseif (count($args) == 3) {
+			elseif (count($args) === 3) {
 				list($this->proxy, $this->user, $this->pass) = $args;
 				$this->use_authentication                    = true;
 			}

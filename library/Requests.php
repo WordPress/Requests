@@ -604,7 +604,7 @@ class Requests {
 		$type = strtoupper($type);
 
 		if (!isset($options['data_format'])) {
-			if (in_array($type, array(self::HEAD, self::GET, self::DELETE))) {
+			if (in_array($type, array(self::HEAD, self::GET, self::DELETE), true)) {
 				$options['data_format'] = 'query';
 			}
 			else {
@@ -865,7 +865,7 @@ class Requests {
 	public static function compatible_gzinflate($gzData) {
 		// Compressed data might contain a full zlib header, if so strip it for
 		// gzinflate()
-		if (substr($gzData, 0, 3) == "\x1f\x8b\x08") {
+		if (substr($gzData, 0, 3) === "\x1f\x8b\x08") {
 			$i   = 10;
 			$flg = ord(substr($gzData, 3, 1));
 			if ($flg > 0) {
@@ -905,7 +905,7 @@ class Requests {
 		// First 2 bytes should be divisible by 0x1F
 		list(, $first_two_bytes) = unpack('n', $gzData);
 
-		if (0x08 == $first_nibble && 0 == ($first_two_bytes % 0x1F)) {
+		if (0x08 === $first_nibble && 0 === ($first_two_bytes % 0x1F)) {
 			$huffman_encoded = true;
 		}
 
@@ -915,7 +915,7 @@ class Requests {
 			}
 		}
 
-		if ("\x50\x4b\x03\x04" == substr($gzData, 0, 4)) {
+		if ("\x50\x4b\x03\x04" === substr($gzData, 0, 4)) {
 			// ZIP file format header
 			// Offset 6: 2 bytes, General-purpose field
 			// Offset 26: 2 bytes, filename length
@@ -927,7 +927,7 @@ class Requests {
 			// If the file has been compressed on the fly, 0x08 bit is set of
 			// the general purpose field. We can use this to differentiate
 			// between a compressed document, and a ZIP file
-			$zip_compressed_on_the_fly = (0x08 == (0x08 & $general_purpose_flag));
+			$zip_compressed_on_the_fly = (0x08 === (0x08 & $general_purpose_flag));
 
 			if (!$zip_compressed_on_the_fly) {
 				// Don't attempt to decode a compressed zip file
