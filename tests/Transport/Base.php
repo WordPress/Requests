@@ -61,7 +61,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$limit    = 300;
 		$options  = array(
 			'max_bytes' => $limit,
-			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+			'filename'  => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 		);
 		$response = Requests::get(httpbin('/bytes/482'), array(), $this->getOptions($options));
 		$this->assertEmpty($response->body);
@@ -89,7 +89,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testGETWithData() {
 		$data    = array(
-			'test' => 'true',
+			'test'  => 'true',
 			'test2' => 'test',
 		);
 		$request = Requests::request(httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
@@ -102,7 +102,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testGETWithNestedData() {
 		$data    = array(
-			'test' => 'true',
+			'test'  => 'true',
 			'test2' => array(
 				'test3' => 'test',
 				'test4' => 'test-too',
@@ -201,7 +201,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testPOSTWithArray() {
 		$data    = array(
-			'test' => 'true',
+			'test'  => 'true',
 			'test2' => 'test',
 		);
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
@@ -213,7 +213,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testPOSTWithNestedData() {
 		$data    = array(
-			'test' => 'true',
+			'test'  => 'true',
 			'test2' => array(
 				'test3' => 'test',
 				'test4' => 'test-too',
@@ -246,7 +246,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testPUTWithArray() {
 		$data    = array(
-			'test' => 'true',
+			'test'  => 'true',
 			'test2' => 'test',
 		);
 		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
@@ -276,7 +276,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testPATCHWithArray() {
 		$data    = array(
-			'test' => 'true',
+			'test'  => 'true',
 			'test2' => 'test',
 		);
 		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
@@ -302,7 +302,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testDELETEWithData() {
 		$data    = array(
-			'test' => 'true',
+			'test'  => 'true',
 			'test2' => 'test',
 		);
 		$request = Requests::request(httpbin('/delete'), array(), $data, Requests::DELETE, $this->getOptions());
@@ -320,7 +320,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testLOCKWithData() {
 		$data    = array(
-			'test' => 'true',
+			'test'  => 'true',
 			'test2' => 'test',
 		);
 		$request = Requests::request(httpbin('/lock'), array(), $data, 'LOCK', $this->getOptions());
@@ -415,7 +415,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		$options = array(
 			'follow_redirects' => false,
-			'transport' => $transport,
+			'transport'        => $transport,
 		);
 		$request = Requests::get($url, array(), $options);
 		$this->assertEquals($code, $request->status_code);
@@ -432,7 +432,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$url     = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
-			'transport' => $transport,
+			'transport'        => $transport,
 		);
 
 		if (!$success) {
@@ -457,7 +457,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$url     = sprintf(httpbin('/status/%d'), $code);
 		$options = array(
 			'follow_redirects' => false,
-			'transport' => $transport,
+			'transport'        => $transport,
 		);
 
 		if (!$success) {
@@ -679,7 +679,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'url' => httpbin('/get'),
 			),
 			'post' => array(
-				'url' => httpbin('/post'),
+				'url'  => httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 			),
@@ -704,7 +704,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'url' => httpbin('/get'),
 			),
 			'timeout' => array(
-				'url' => httpbin('/delay/10'),
+				'url'     => httpbin('/delay/10'),
 				'options' => array(
 					'timeout' => 1,
 				),
@@ -721,7 +721,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'url' => httpbin('/get'),
 			),
 			'post' => array(
-				'url' => httpbin('/post'),
+				'url'  => httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 			),
@@ -742,7 +742,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'url' => httpbin('/get'),
 			),
 			'timeout' => array(
-				'url' => httpbin('/delay/10'),
+				'url'     => httpbin('/delay/10'),
 				'options' => array(
 					'timeout' => 1,
 				),
@@ -765,15 +765,15 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultipleToFile() {
 		$requests  = array(
 			'get' => array(
-				'url' => httpbin('/get'),
+				'url'     => httpbin('/get'),
 				'options' => array(
 					'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 				),
 			),
 			'post' => array(
-				'url' => httpbin('/post'),
-				'type' => Requests::POST,
-				'data' => 'test',
+				'url'     => httpbin('/post'),
+				'type'    => Requests::POST,
+				'data'    => 'test',
 				'options' => array(
 					'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
 				),

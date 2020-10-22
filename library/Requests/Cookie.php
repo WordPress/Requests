@@ -69,10 +69,10 @@ class Requests_Cookie {
 		$this->value      = $value;
 		$this->attributes = $attributes;
 		$default_flags    = array(
-			'creation' => time(),
+			'creation'    => time(),
 			'last-access' => time(),
-			'persistent' => false,
-			'host-only' => true,
+			'persistent'  => false,
+			'host-only'   => true,
 		);
 		$this->flags      = array_merge($default_flags, $flags);
 

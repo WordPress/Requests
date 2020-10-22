@@ -31,7 +31,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->checkProxyAvailable();
 
 		$options  = array(
-			'proxy' => REQUESTS_HTTP_PROXY,
+			'proxy'     => REQUESTS_HTTP_PROXY,
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
@@ -48,7 +48,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->checkProxyAvailable();
 
 		$options  = array(
-			'proxy' => array(REQUESTS_HTTP_PROXY),
+			'proxy'     => array(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
@@ -66,7 +66,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->checkProxyAvailable();
 
 		$options  = array(
-			'proxy' => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
+			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
@@ -79,7 +79,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->checkProxyAvailable();
 
 		$options  = array(
-			'proxy' => new Requests_Proxy_HTTP(REQUESTS_HTTP_PROXY),
+			'proxy'     => new Requests_Proxy_HTTP(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
@@ -96,7 +96,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->checkProxyAvailable('auth');
 
 		$options  = array(
-			'proxy' => array(
+			'proxy'     => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER,
 				REQUESTS_HTTP_PROXY_AUTH_PASS
@@ -118,7 +118,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 		$this->checkProxyAvailable('auth');
 
 		$options  = array(
-			'proxy' => array(
+			'proxy'     => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER . '!',
 				REQUESTS_HTTP_PROXY_AUTH_PASS . '!'

@@ -75,7 +75,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			}
 
 			$context_options = array(
-				'verify_peer' => true,
+				'verify_peer'       => true,
 				// 'CN_match' => $host,
 				'capture_peer_cert' => true
 			);

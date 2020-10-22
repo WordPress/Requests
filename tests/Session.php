@@ -144,20 +144,20 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 
 	public function testPropertyUsage() {
 		$headers = array(
-			'X-TestHeader' => 'testing',
+			'X-TestHeader'  => 'testing',
 			'X-TestHeader2' => 'requests-test'
 		);
 		$data    = array(
 			'testdata' => 'value1',
-			'test2' => 'value2',
-			'test3' => array(
+			'test2'    => 'value2',
+			'test3'    => array(
 				'foo' => 'bar',
 				'abc' => 'xyz'
 			)
 		);
 		$options = array(
 			'testoption' => 'test',
-			'foo' => 'bar'
+			'foo'        => 'bar'
 		);
 
 		$session = new Requests_Session('http://example.com/', $headers, $data, $options);
