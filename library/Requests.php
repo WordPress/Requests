@@ -702,7 +702,7 @@ class Requests {
 					&$req_headers,
 					&$req_data,
 					&$options,
-					$return
+					$return,
 				);
 				$options['hooks']->dispatch('requests.before_redirect', $hook_args);
 				$redirected            = self::request($location, $req_headers, $req_data, $options['type'], $options);

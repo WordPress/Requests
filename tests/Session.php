@@ -115,10 +115,10 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$session   = new Requests_Session(httpbin('/'), array('X-Requests-Session' => 'Multiple'));
 		$requests  = array(
 			'test1' => array(
-				'url' => httpbin('/get')
+				'url' => httpbin('/get'),
 			),
 			'test2' => array(
-				'url' => httpbin('/get')
+				'url' => httpbin('/get'),
 			),
 		);
 		$responses = $session->request_multiple($requests);
@@ -145,19 +145,19 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 	public function testPropertyUsage() {
 		$headers = array(
 			'X-TestHeader'  => 'testing',
-			'X-TestHeader2' => 'requests-test'
+			'X-TestHeader2' => 'requests-test',
 		);
 		$data    = array(
 			'testdata' => 'value1',
 			'test2'    => 'value2',
 			'test3'    => array(
 				'foo' => 'bar',
-				'abc' => 'xyz'
-			)
+				'abc' => 'xyz',
+			),
 		);
 		$options = array(
 			'testoption' => 'test',
-			'foo'        => 'bar'
+			'foo'        => 'bar',
 		);
 
 		$session = new Requests_Session('http://example.com/', $headers, $data, $options);
@@ -191,7 +191,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$session = new Requests_Session(httpbin('/'));
 
 		$options  = array(
-			'follow_redirects' => false
+			'follow_redirects' => false,
 		);
 		$response = $session->get('/cookies/set?requests-testcookie=testvalue', array(), $options);
 		$this->assertEquals(302, $response->status_code);
@@ -206,7 +206,7 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey('cookies', $data);
 
 		$cookies = array(
-			'requests-testcookie' => 'testvalue'
+			'requests-testcookie' => 'testvalue',
 		);
 		$this->assertEquals($cookies, $data['cookies']);
 	}
