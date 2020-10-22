@@ -234,7 +234,8 @@ class Requests_IDNAEncoder {
 		// let bias = initial_bias
 		$bias = self::BOOTSTRAP_INITIAL_BIAS;
 		// let h = b = the number of basic code points in the input
-		$h = $b = 0; // see loop
+		$h = 0;
+		$b = 0; // see loop
 		// copy them to the output in order
 		$codepoints = self::utf8_to_codepoints($input);
 		$extended   = array();

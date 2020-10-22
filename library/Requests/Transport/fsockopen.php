@@ -232,7 +232,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 		stream_set_timeout($socket, $timeout_sec, $timeout_msec);
 
-		$response   = $body = $headers = '';
+		$response   = '';
+		$body       = '';
+		$headers    = '';
 		$this->info = stream_get_meta_data($socket);
 		$size       = 0;
 		$doingbody  = false;
