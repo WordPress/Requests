@@ -32,7 +32,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 			"stop\r\n";
 
 		$options               = array(
-			'transport' => $transport
+			'transport' => $transport,
 		);
 		$response              = Requests::get('http://example.com/', array(), $options);
 		$expected              = new Requests_Response_Headers();
@@ -58,7 +58,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 			"Host: localhost\r\n\r\n";
 
 		$options = array(
-			'transport' => $transport
+			'transport' => $transport,
 		);
 
 		$response = Requests::get('http://example.com/', array(), $options);
@@ -73,7 +73,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 			"Test";
 
 		$options  = array(
-			'transport' => $transport
+			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 		$this->assertEquals($transport->data, $response->raw);
@@ -87,7 +87,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport->data = "HTTP/1.0 200 OK\r\nTest: value\nAnother-Test: value\r\n\r\n";
 
 		$options  = array(
-			'transport' => $transport
+			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 		$this->assertEquals('value', $response->headers['test']);
@@ -107,7 +107,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
 
 		$options  = array(
-			'transport' => $transport
+			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 	}
@@ -122,7 +122,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
 
 		$options  = array(
-			'transport' => $transport
+			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 	}
@@ -135,7 +135,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
 
 		$options  = array(
-			'transport' => $transport
+			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 	}
@@ -145,7 +145,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$transport->code = 302;
 
 		$options  = array(
-			'transport' => $transport
+			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 		$this->assertEquals(302, $response->status_code);

@@ -48,7 +48,7 @@ class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
 	protected function fakeCertificate($dnsname, $with_san = true) {
 		$certificate = array(
 			'subject' => array(
-				'CN' => $dnsname
+				'CN' => $dnsname,
 			),
 		);
 

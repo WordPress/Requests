@@ -42,7 +42,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	protected function getOptions($other = array()) {
 		$options = array(
-			'transport' => $this->transport
+			'transport' => $this->transport,
 		);
 		$options = array_merge($options, $other);
 		return $options;
@@ -61,7 +61,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$limit    = 300;
 		$options  = array(
 			'max_bytes' => $limit,
-			'filename'  => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+			'filename'  => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 		);
 		$response = Requests::get(httpbin('/bytes/482'), array(), $this->getOptions($options));
 		$this->assertEmpty($response->body);
@@ -507,7 +507,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testStreamToFile() {
 		$options = array(
-			'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+			'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 		);
 		$request = Requests::get(httpbin('/get'), array(), $this->getOptions($options));
 		$this->assertEquals(200, $request->status_code);
@@ -523,7 +523,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testNonblocking() {
 		$options = array(
-			'blocking' => false
+			'blocking' => false,
 		);
 		$request = Requests::get(httpbin('/get'), array(), $this->getOptions($options));
 		$empty   = new Requests_Response();
@@ -646,10 +646,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testMultiple() {
 		$requests  = array(
 			'test1' => array(
-				'url' => httpbin('/get')
+				'url' => httpbin('/get'),
 			),
 			'test2' => array(
-				'url' => httpbin('/get')
+				'url' => httpbin('/get'),
 			),
 		);
 		$responses = Requests::request_multiple($requests, $this->getOptions());
@@ -767,7 +767,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'get' => array(
 				'url'     => httpbin('/get'),
 				'options' => array(
-					'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+					'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 				),
 			),
 			'post' => array(
@@ -775,7 +775,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				'type'    => Requests::POST,
 				'data'    => 'test',
 				'options' => array(
-					'filename' => tempnam(sys_get_temp_dir(), 'RLT') // RequestsLibraryTest
+					'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 				),
 			),
 		);

@@ -15,7 +15,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 	public function testCookieWithAttributes() {
 		$attributes = array(
 			'httponly',
-			'path' => '/'
+			'path' => '/',
 		);
 		$cookie     = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
 
@@ -239,7 +239,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
 		$flags                = array(
-			'host-only' => false
+			'host-only' => false,
 		);
 		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
 		$this->assertEquals($domain_matches, $cookie->domain_matches($check));
@@ -326,7 +326,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$attributes['domain'] = $domain;
 		$attributes['path']   = $path;
 		$flags                = array(
-			'host-only' => false
+			'host-only' => false,
 		);
 		$check                = new Requests_IRI($check);
 		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
@@ -452,7 +452,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 				'foo=bar; Max-Age=1e6',
 				array('expired' => false),
 				array('max-age' => null),
-			)
+			),
 		);
 	}
 
@@ -621,14 +621,14 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 				'http://test.example.com/',
 				array(),
 				array('domain' => 'test.example.com'),
-				array('host-only' => false)
+				array('host-only' => false),
 			),
 			array(
 				'name=value; domain=example.com',
 				'http://test.example.com/',
 				array(),
 				array('domain' => 'example.com'),
-				array('host-only' => false)
+				array('host-only' => false),
 			),
 		);
 	}

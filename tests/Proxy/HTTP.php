@@ -99,7 +99,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'proxy'     => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER,
-				REQUESTS_HTTP_PROXY_AUTH_PASS
+				REQUESTS_HTTP_PROXY_AUTH_PASS,
 			),
 			'transport' => $transport,
 		);
@@ -121,7 +121,7 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'proxy'     => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER . '!',
-				REQUESTS_HTTP_PROXY_AUTH_PASS . '!'
+				REQUESTS_HTTP_PROXY_AUTH_PASS . '!',
 			),
 			'transport' => $transport,
 		);
