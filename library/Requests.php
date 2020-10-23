@@ -520,7 +520,7 @@ class Requests {
 			'idn'              => true,
 			'hooks'            => null,
 			'transport'        => null,
-			'verify'           => Requests::get_certificate_path(),
+			'verify'           => self::get_certificate_path(),
 			'verifyname'       => true,
 		);
 		if ($multirequest !== false) {
@@ -535,8 +535,8 @@ class Requests {
 	 * @return string Default certificate path.
 	 */
 	public static function get_certificate_path() {
-		if (!empty(Requests::$certificate_path)) {
-			return Requests::$certificate_path;
+		if (!empty(self::$certificate_path)) {
+			return self::$certificate_path;
 		}
 
 		return dirname(__FILE__) . '/Requests/Transport/cacert.pem';
@@ -548,7 +548,7 @@ class Requests {
 	 * @param string $path Certificate path, pointing to a PEM file.
 	 */
 	public static function set_certificate_path($path) {
-		Requests::$certificate_path = $path;
+		self::$certificate_path = $path;
 	}
 
 	/**
