@@ -10,7 +10,7 @@ class RequestsTest_Transport_fsockopen extends RequestsTest_Transport_Base {
 		$hooks = new Requests_Hooks();
 		$hooks->register('fsockopen.after_headers', array($this, 'checkContentLengthHeader'));
 
-		$request = Requests::post(httpbin('/post'), array(), array(), $this->getOptions(array('hooks' => $hooks)));
+		Requests::post(httpbin('/post'), array(), array(), $this->getOptions(array('hooks' => $hooks)));
 	}
 
 	/**

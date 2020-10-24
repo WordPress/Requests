@@ -2,11 +2,10 @@
 
 class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	public static function transportProvider() {
-		$transports = array(
+		return array(
 			array('Requests_Transport_fsockopen'),
 			array('Requests_Transport_cURL'),
 		);
-		return $transports;
 	}
 
 	/**
@@ -81,7 +80,7 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testMissingPassword() {
-		$auth = new Requests_Auth_Basic(array('user'));
+		new Requests_Auth_Basic(array('user'));
 	}
 
 }

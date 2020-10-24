@@ -65,11 +65,11 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 	public function testConnectInvalidParameters($transport) {
 		$this->checkProxyAvailable();
 
-		$options  = array(
+		$options = array(
 			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
 			'transport' => $transport,
 		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		Requests::get(httpbin('/get'), array(), $options);
 	}
 
 	/**
