@@ -60,7 +60,9 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider transportProvider
-	 * @expectedException Requests_Exception
+	 *
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid number of arguments
 	 */
 	public function testConnectInvalidParameters($transport) {
 		$this->checkProxyAvailable();

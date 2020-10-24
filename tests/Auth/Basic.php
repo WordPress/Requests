@@ -77,7 +77,8 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Invalid number of arguments
 	 */
 	public function testMissingPassword() {
 		new Requests_Auth_Basic(array('user'));

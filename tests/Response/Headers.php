@@ -38,7 +38,8 @@ class RequestsTest_Response_Headers extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Object is a dictionary, not a list
 	 */
 	public function testInvalidKey() {
 		$headers   = new Requests_Response_Headers();

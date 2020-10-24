@@ -58,7 +58,8 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Requests_Exception
+	 * @expectedException        Requests_Exception
+	 * @expectedExceptionMessage Object is a dictionary, not a list
 	 */
 	public function testCookieJarAsList() {
 		$cookies   = new Requests_Cookie_Jar();
