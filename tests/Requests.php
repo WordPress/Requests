@@ -17,7 +17,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * Standard response header parsing
 	 */
 	public function testHeaderParsing() {
-		$transport       = new RawTransport();
+		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n" .
@@ -52,7 +52,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testProtocolVersionParsing() {
-		$transport       = new RawTransport();
+		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n";
@@ -66,7 +66,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRawAccess() {
-		$transport       = new RawTransport();
+		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n" .
@@ -83,7 +83,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * Headers with only \n delimiting should be treated as if they're \r\n
 	 */
 	public function testHeaderOnlyLF() {
-		$transport       = new RawTransport();
+		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/1.0 200 OK\r\nTest: value\nAnother-Test: value\r\n\r\n";
 
 		$options  = array(
@@ -103,7 +103,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testInvalidProtocolVersion() {
-		$transport       = new RawTransport();
+		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
 
 		$options  = array(
@@ -118,7 +118,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testSingleCRLFSeparator() {
-		$transport       = new RawTransport();
+		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
 
 		$options  = array(
@@ -131,7 +131,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 * @expectedException Requests_Exception
 	 */
 	public function testInvalidStatus() {
-		$transport       = new RawTransport();
+		$transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
 
 		$options  = array(
@@ -141,7 +141,7 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	}
 
 	public function test30xWithoutLocation() {
-		$transport       = new MockTransport();
+		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = 302;
 
 		$options  = array(
