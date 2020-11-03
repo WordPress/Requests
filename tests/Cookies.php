@@ -409,7 +409,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 				array('expired' => false),
 				array('expires' => gmmktime(4, 50, 12, 12, 5, 2014)),
 			),
-			// asctime()
+			// Test with asctime()
 			array(
 				'foo=bar; Expires=Thu Dec  5 04:50:12 2013',
 				array('expired' => true),
@@ -609,7 +609,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 				array('invalid' => false),
 			),
 
-			# Empty Domain	
+			# Empty Domain
 			array(
 				'name=value; domain=',
 				'http://example.com/test/',

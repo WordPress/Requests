@@ -290,7 +290,7 @@ class Requests_IDNAEncoder {
 					// for k = base to infinity in steps of base do begin
 					for ($k = self::BOOTSTRAP_BASE; ; $k += self::BOOTSTRAP_BASE) {
 						// let t = tmin if k <= bias {+ tmin}, or
-						// 		tmax if k >= bias + tmax, or k - bias otherwise
+						//     tmax if k >= bias + tmax, or k - bias otherwise
 						if ($k <= ($bias + self::BOOTSTRAP_TMIN)) {
 							$t = self::BOOTSTRAP_TMIN;
 						}
