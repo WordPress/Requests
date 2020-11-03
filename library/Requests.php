@@ -374,7 +374,7 @@ class Requests {
 			}
 		}
 		else {
-			$need_ssl     = (0 === stripos($url, 'https://'));
+			$need_ssl     = (stripos($url, 'https://') === 0);
 			$capabilities = array('ssl' => $need_ssl);
 			$transport    = self::get_transport($capabilities);
 		}
@@ -898,7 +898,7 @@ class Requests {
 				}
 			}
 			$decompressed = self::compatible_gzinflate(substr($gz_data, $i));
-			if (false !== $decompressed) {
+			if ($decompressed !== false) {
 				return $decompressed;
 			}
 		}
@@ -919,18 +919,18 @@ class Requests {
 		// First 2 bytes should be divisible by 0x1F
 		list(, $first_two_bytes) = unpack('n', $gz_data);
 
-		if (0x08 === $first_nibble && 0 === ($first_two_bytes % 0x1F)) {
+		if ($first_nibble === 0x08 && ($first_two_bytes % 0x1F) === 0) {
 			$huffman_encoded = true;
 		}
 
 		if ($huffman_encoded) {
 			$decompressed = @gzinflate(substr($gz_data, 2));
-			if (false !== $decompressed) {
+			if ($decompressed !== false) {
 				return $decompressed;
 			}
 		}
 
-		if ("\x50\x4b\x03\x04" === substr($gz_data, 0, 4)) {
+		if (substr($gz_data, 0, 4) === "\x50\x4b\x03\x04") {
 			// ZIP file format header
 			// Offset 6: 2 bytes, General-purpose field
 			// Offset 26: 2 bytes, filename length
@@ -942,7 +942,7 @@ class Requests {
 			// If the file has been compressed on the fly, 0x08 bit is set of
 			// the general purpose field. We can use this to differentiate
 			// between a compressed document, and a ZIP file
-			$zip_compressed_on_the_fly = (0x08 === (0x08 & $general_purpose_flag));
+			$zip_compressed_on_the_fly = ((0x08 & $general_purpose_flag) === 0x08);
 
 			if (!$zip_compressed_on_the_fly) {
 				// Don't attempt to decode a compressed zip file
@@ -953,7 +953,7 @@ class Requests {
 			// offsets:
 			$first_file_start = array_sum(unpack('v2', substr($gz_data, 26, 4)));
 			$decompressed     = @gzinflate(substr($gz_data, 30 + $first_file_start));
-			if (false !== $decompressed) {
+			if ($decompressed !== false) {
 				return $decompressed;
 			}
 			return false;
@@ -961,14 +961,14 @@ class Requests {
 
 		// Finally fall back to straight gzinflate
 		$decompressed = @gzinflate($gz_data);
-		if (false !== $decompressed) {
+		if ($decompressed !== false) {
 			return $decompressed;
 		}
 
 		// Fallback for all above failing, not expected, but included for
 		// debugging and preventing regressions and to track stats
 		$decompressed = @gzinflate(substr($gz_data, 2));
-		if (false !== $decompressed) {
+		if ($decompressed !== false) {
 			return $decompressed;
 		}
 
