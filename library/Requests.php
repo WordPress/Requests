@@ -885,7 +885,7 @@ class Requests {
 			if ($flg > 0) {
 				if ($flg & 4) {
 					list($xlen) = unpack('v', substr($gz_data, $i, 2));
-					$i          = $i + 2 + $xlen;
+					$i         += 2 + $xlen;
 				}
 				if ($flg & 8) {
 					$i = strpos($gz_data, "\0", $i) + 1;
@@ -894,7 +894,7 @@ class Requests {
 					$i = strpos($gz_data, "\0", $i) + 1;
 				}
 				if ($flg & 2) {
-					$i = $i + 2;
+					$i += 2;
 				}
 			}
 			$decompressed = self::compatible_gzinflate(substr($gz_data, $i));
