@@ -60,8 +60,7 @@ class RequestsTest_IDNAEncoder extends RequestsTestCase {
 	}
 
 	public function testFiveByteCharacter() {
-		$this->expectExceptionMessage("Invalid Unicode codepoint");
-		$this->expectException(Requests_Exception::class);
+		$this->setExpectedException('Requests_Exception', 'Invalid Unicode codepoint');
 		Requests_IDNAEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
 	}
 
