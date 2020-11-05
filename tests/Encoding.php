@@ -74,7 +74,7 @@ class RequestsTests_Encoding extends PHPUnit_Framework_TestCase {
 	 */
 	public function testDecompress($original, $encoded) {
 		$decoded = Requests::decompress($encoded);
-		$this->assertEquals($original, $decoded);
+		$this->assertSame($original, $decoded);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class RequestsTests_Encoding extends PHPUnit_Framework_TestCase {
 	 */
 	public function testCompatibleInflate($original, $encoded) {
 		$decoded = Requests::compatible_gzinflate($encoded);
-		$this->assertEquals($original, $decoded);
+		$this->assertSame($original, $decoded);
 	}
 
 	protected function bin2hex($field) {

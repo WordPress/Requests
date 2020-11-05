@@ -35,10 +35,10 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals('http', $response->headers['x-requests-proxied']);
+		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
+		$this->assertSame('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
@@ -52,10 +52,10 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals('http', $response->headers['x-requests-proxied']);
+		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
+		$this->assertSame('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
@@ -85,10 +85,10 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals('http', $response->headers['x-requests-proxied']);
+		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
+		$this->assertSame('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
@@ -106,11 +106,11 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals(200, $response->status_code);
-		$this->assertEquals('http', $response->headers['x-requests-proxied']);
+		$this->assertSame(200, $response->status_code);
+		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
-		$this->assertEquals('http', $data['headers']['x-requests-proxy']);
+		$this->assertSame('http', $data['headers']['x-requests-proxy']);
 	}
 
 	/**
@@ -128,6 +128,6 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);
-		$this->assertEquals(407, $response->status_code);
+		$this->assertSame(407, $response->status_code);
 	}
 }

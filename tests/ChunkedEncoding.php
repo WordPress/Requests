@@ -43,7 +43,7 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 
-		$this->assertEquals($expected, $response->body);
+		$this->assertSame($expected, $response->body);
 	}
 
 	public static function notChunkedProvider() {
@@ -71,7 +71,7 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 
-		$this->assertEquals($transport->body, $response->body);
+		$this->assertSame($transport->body, $response->body);
 	}
 
 
@@ -88,6 +88,6 @@ class RequestsTest_ChunkedDecoding extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
-		$this->assertEquals($transport->body, $response->body);
+		$this->assertSame($transport->body, $response->body);
 	}
 }

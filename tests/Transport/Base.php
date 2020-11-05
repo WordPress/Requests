@@ -54,7 +54,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'max_bytes' => $limit,
 		);
 		$response = Requests::get(httpbin('/bytes/325'), array(), $this->getOptions($options));
-		$this->assertEquals($limit, strlen($response->body));
+		$this->assertSame($limit, strlen($response->body));
 	}
 
 	public function testResponseByteLimitWithFile() {
@@ -65,26 +65,26 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 		$response = Requests::get(httpbin('/bytes/482'), array(), $this->getOptions($options));
 		$this->assertEmpty($response->body);
-		$this->assertEquals($limit, filesize($options['filename']));
+		$this->assertSame($limit, filesize($options['filename']));
 		unlink($options['filename']);
 	}
 
 	public function testSimpleGET() {
 		$request = Requests::get(httpbin('/get'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertSame(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testGETWithArgs() {
 		$request = Requests::get(httpbin('/get?test=true&test2=test'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+		$this->assertSame(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
 	public function testGETWithData() {
@@ -93,11 +93,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test2' => 'test',
 		);
 		$request = Requests::request(httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+		$this->assertSame(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
 	public function testGETWithNestedData() {
@@ -109,11 +109,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			),
 		);
 		$request = Requests::request(httpbin('/get'), array(), $data, Requests::GET, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url']);
-		$this->assertEquals(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['args']);
+		$this->assertSame(httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url']);
+		$this->assertSame(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['args']);
 	}
 
 	public function testGETWithDataAndQuery() {
@@ -121,30 +121,30 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test2' => 'test',
 		);
 		$request = Requests::request(httpbin('/get?test=true'), array(), $data, Requests::GET, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/get?test=true&test2=test'), $result['url']);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+		$this->assertSame(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
 	public function testGETWithHeaders() {
 		$headers = array(
-			'Requested-At' => time(),
+			'Requested-At' => (string) time(),
 		);
 		$request = Requests::get(httpbin('/get'), $headers, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals($headers['Requested-At'], $result['headers']['Requested-At']);
+		$this->assertSame($headers['Requested-At'], $result['headers']['Requested-At']);
 	}
 
 	public function testChunked() {
 		$request = Requests::get(httpbin('/stream/1'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/stream/1'), $result['url']);
+		$this->assertSame(httpbin('/stream/1'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -156,16 +156,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testTRACE() {
 		$request = Requests::trace(httpbin('/trace'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 	}
 
 	public function testRawPOST() {
 		$data    = 'test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertSame('test', $result['data']);
 	}
 
 	/**
@@ -193,10 +193,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testFormPost() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
 	public function testPOSTWithArray() {
@@ -205,10 +205,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test2' => 'test',
 		);
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
 	public function testPOSTWithNestedData() {
@@ -220,28 +220,28 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			),
 		);
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['form']);
+		$this->assertSame(array('test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'), $result['form']);
 	}
 
 	public function testRawPUT() {
 		$data    = 'test';
 		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertSame('test', $result['data']);
 	}
 
 	public function testFormPUT() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
 	public function testPUTWithArray() {
@@ -250,28 +250,28 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test2' => 'test',
 		);
 		$request = Requests::put(httpbin('/put'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
 	public function testRawPATCH() {
 		$data    = 'test';
 		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertSame('test', $result['data']);
 	}
 
 	public function testFormPATCH() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code, $request->body);
+		$this->assertSame(200, $request->status_code, $request->body);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
 	public function testPATCHWithArray() {
@@ -280,23 +280,23 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test2' => 'test',
 		);
 		$request = Requests::patch(httpbin('/patch'), array(), $data, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
 	public function testOPTIONS() {
 		$request = Requests::options(httpbin('/options'), array(), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 	}
 
 	public function testDELETE() {
 		$request = Requests::delete(httpbin('/delete'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/delete'), $result['url']);
+		$this->assertSame(httpbin('/delete'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -306,16 +306,16 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test2' => 'test',
 		);
 		$request = Requests::request(httpbin('/delete'), array(), $data, Requests::DELETE, $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/delete?test=true&test2=test'), $result['url']);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['args']);
+		$this->assertSame(httpbin('/delete?test=true&test2=test'), $result['url']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['args']);
 	}
 
 	public function testLOCK() {
 		$request = Requests::request(httpbin('/lock'), array(), array(), 'LOCK', $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 	}
 
 	public function testLOCKWithData() {
@@ -324,24 +324,24 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'test2' => 'test',
 		);
 		$request = Requests::request(httpbin('/lock'), array(), $data, 'LOCK', $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 
 	public function testRedirects() {
 		$request = Requests::get(httpbin('/redirect/6'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
-		$this->assertEquals(6, $request->redirects);
+		$this->assertSame(6, $request->redirects);
 	}
 
 	public function testRelativeRedirects() {
 		$request = Requests::get(httpbin('/relative-redirect/6'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
-		$this->assertEquals(6, $request->redirects);
+		$this->assertSame(6, $request->redirects);
 	}
 
 	/**
@@ -418,8 +418,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'transport'        => $transport,
 		);
 		$request = Requests::get($url, array(), $options);
-		$this->assertEquals($code, $request->status_code);
-		$this->assertEquals($success, $request->success);
+		$this->assertSame($code, $request->status_code);
+		$this->assertSame($success, $request->success);
 	}
 
 	/**
@@ -478,8 +478,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 
 		$request = Requests::get(httpbin('/status/599'), array(), $options);
-		$this->assertEquals(599, $request->status_code);
-		$this->assertEquals(false, $request->success);
+		$this->assertSame(599, $request->status_code);
+		$this->assertFalse($request->success);
 	}
 
 	/**
@@ -500,10 +500,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testGzipped() {
 		$request = Requests::get(httpbin('/gzip'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body);
-		$this->assertEquals(true, $result->gzipped);
+		$this->assertTrue($result->gzipped);
 	}
 
 	public function testStreamToFile() {
@@ -511,12 +511,12 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 		);
 		$request = Requests::get(httpbin('/get'), array(), $this->getOptions($options));
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 		$this->assertEmpty($request->body);
 
 		$contents = file_get_contents($options['filename']);
 		$result   = json_decode($contents, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertSame(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		unlink($options['filename']);
@@ -545,7 +545,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		}
 
 		$request = Requests::get(httpbin('/get', true), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
 		$this->assertEmpty($result['args']);
@@ -613,7 +613,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		}
 
 		$request = Requests::head('https://badssl.com/', array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 	}
 
 	/**
@@ -629,7 +629,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		}
 
 		$request = Requests::head('https://humanmade.com/', array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 	}
 
 	/**
@@ -657,19 +657,19 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		// test1
 		$this->assertNotEmpty($responses['test1']);
 		$this->assertInstanceOf('Requests_Response', $responses['test1']);
-		$this->assertEquals(200, $responses['test1']->status_code);
+		$this->assertSame(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertSame(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		// test2
 		$this->assertNotEmpty($responses['test2']);
 		$this->assertInstanceOf('Requests_Response', $responses['test2']);
-		$this->assertEquals(200, $responses['test2']->status_code);
+		$this->assertSame(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertSame(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -687,12 +687,12 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$responses = Requests::request_multiple($requests, $this->getOptions());
 
 		// get
-		$this->assertEquals(200, $responses['get']->status_code);
+		$this->assertSame(200, $responses['get']->status_code);
 
 		// post
-		$this->assertEquals(200, $responses['post']->status_code);
+		$this->assertSame(200, $responses['post']->status_code);
 		$result = json_decode($responses['post']->body, true);
-		$this->assertEquals('test', $result['data']);
+		$this->assertSame('test', $result['data']);
 	}
 
 	/**
@@ -711,7 +711,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			),
 		);
 		$responses = Requests::request_multiple($requests, $this->getOptions());
-		$this->assertEquals(200, $responses['success']->status_code);
+		$this->assertSame(200, $responses['success']->status_code);
 		$this->assertInstanceOf('Requests_Exception', $responses['timeout']);
 	}
 
@@ -732,7 +732,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 		$responses       = Requests::request_multiple($requests, $this->getOptions($options));
 
-		$this->assertEquals($this->completed, $responses);
+		$this->assertSame($this->completed, $responses);
 		$this->completed = array();
 	}
 
@@ -754,7 +754,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 		$responses       = Requests::request_multiple($requests, $this->getOptions($options));
 
-		$this->assertEquals($this->completed, $responses);
+		$this->assertSame($this->completed, $responses);
 		$this->completed = array();
 	}
 
@@ -784,15 +784,15 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		// GET request
 		$contents = file_get_contents($requests['get']['options']['filename']);
 		$result   = json_decode($contents, true);
-		$this->assertEquals(httpbin('/get'), $result['url']);
+		$this->assertSame(httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 		unlink($requests['get']['options']['filename']);
 
 		// POST request
 		$contents = file_get_contents($requests['post']['options']['filename']);
 		$result   = json_decode($contents, true);
-		$this->assertEquals(httpbin('/post'), $result['url']);
-		$this->assertEquals('test', $result['data']);
+		$this->assertSame(httpbin('/post'), $result['url']);
+		$this->assertSame('test', $result['data']);
 		unlink($requests['post']['options']['filename']);
 	}
 
@@ -813,10 +813,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			}
 		}
 
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 		$num = preg_match('#You have reached this page on port <b>(\d+)</b>#i', $request->body, $matches);
-		$this->assertEquals(1, $num, 'Response should contain the port number');
-		$this->assertEquals(8080, $matches[1]);
+		$this->assertSame(1, $num, 'Response should contain the port number');
+		$this->assertSame('8080', $matches[1]);
 	}
 
 	public function testProgressCallback() {
@@ -860,14 +860,14 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$request1 = Requests::get(httpbin('/get'), array(), $options);
 		$request2 = Requests::get(httpbin('/get'), array(), $options);
 
-		$this->assertEquals(200, $request1->status_code);
-		$this->assertEquals(200, $request2->status_code);
+		$this->assertSame(200, $request1->status_code);
+		$this->assertSame(200, $request2->status_code);
 
 		$result1 = json_decode($request1->body, true);
 		$result2 = json_decode($request2->body, true);
 
-		$this->assertEquals(httpbin('/get'), $result1['url']);
-		$this->assertEquals(httpbin('/get'), $result2['url']);
+		$this->assertSame(httpbin('/get'), $result1['url']);
+		$this->assertSame(httpbin('/get'), $result2['url']);
 
 		$this->assertEmpty($result1['args']);
 		$this->assertEmpty($result2['args']);
@@ -876,20 +876,20 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 	public function testQueryDataFormat() {
 		$data    = array('test' => 'true', 'test2' => 'test');
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'query')));
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/post') . '?test=true&test2=test', $result['url']);
-		$this->assertEquals('', $result['data']);
+		$this->assertSame(httpbin('/post') . '?test=true&test2=test', $result['url']);
+		$this->assertSame('', $result['data']);
 	}
 
 	public function testBodyDataFormat() {
 		$data    = array('test' => 'true', 'test2' => 'test');
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions(array('data_format' => 'body')));
-		$this->assertEquals(200, $request->status_code);
+		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertEquals(httpbin('/post'), $result['url']);
-		$this->assertEquals(array('test' => 'true', 'test2' => 'test'), $result['form']);
+		$this->assertSame(httpbin('/post'), $result['url']);
+		$this->assertSame(array('test' => 'true', 'test2' => 'test'), $result['form']);
 	}
 }
