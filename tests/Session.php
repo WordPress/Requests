@@ -6,13 +6,21 @@ class RequestsTest_Session extends PHPUnit_Framework_TestCase {
 
 		// Set the cookies up
 		$response = $session->get('/get');
-		$this->assertTrue($response->success);
-		$this->assertEquals(httpbin('/get'), $response->url);
+		$this->assertTrue($response->success, 'Session property "success" is not equal to true');
+		$this->assertSame(
+			httpbin('/get'),
+			$response->url,
+			'Session property "url" is not equal to the expected get URL'
+		);
 
 		$data = json_decode($response->body, true);
-		$this->assertNotNull($data);
-		$this->assertArrayHasKey('url', $data);
-		$this->assertEquals(httpbin('/get'), $data['url']);
+		$this->assertNotNull($data, 'Decoded response body is null');
+		$this->assertArrayHasKey('url', $data, 'Response data array does not have key "url"');
+		$this->assertSame(
+			httpbin('/get'),
+			$data['url'],
+			'The value of the "url" key in the response data array is not equal to the expected get URL'
+		);
 	}
 
 	public function testBasicGET() {
