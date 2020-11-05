@@ -22,12 +22,14 @@ class Requests_Session {
 	 * Base URL for requests
 	 *
 	 * URLs will be made absolute using this as the base
+	 *
 	 * @var string|null
 	 */
 	public $url = null;
 
 	/**
 	 * Base headers for requests
+	 *
 	 * @var array
 	 */
 	public $headers = array();

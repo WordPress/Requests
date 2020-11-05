@@ -51,6 +51,7 @@ class Requests_Response {
 
 	/**
 	 * Protocol version, false if non-blocking
+	 *
 	 * @var float|boolean
 	 */
 	public $protocol_version = false;

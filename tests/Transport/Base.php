@@ -548,8 +548,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		// Disable, since httpbin always returns http
-		// $this->assertEquals(httpbin('/get', true), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
