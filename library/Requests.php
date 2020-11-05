@@ -634,7 +634,7 @@ class Requests {
 		}
 
 		$return->raw  = $headers;
-		$return->url  = $url;
+		$return->url  = (string) $url;
 		$return->body = '';
 
 		if (!$options['filename']) {
