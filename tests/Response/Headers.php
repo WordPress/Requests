@@ -37,9 +37,9 @@ class RequestsTest_Response_Headers extends RequestsTestCase {
 		}
 	}
 
-    public function testInvalidKey() {
-	    $this->setExpectedException('Requests_Exception', 'Object is a dictionary, not a list');
-        $headers   = new Requests_Response_Headers();
+	public function testInvalidKey() {
+		$this->setExpectedException('Requests_Exception', 'Object is a dictionary, not a list');
+		$headers   = new Requests_Response_Headers();
 		$headers[] = 'text/plain';
 	}
 

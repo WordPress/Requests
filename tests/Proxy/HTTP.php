@@ -60,10 +60,10 @@ class RequestsTest_Proxy_HTTP extends RequestsTestCase {
 
 	/**
 	 * @dataProvider transportProvider
-     */
+	 */
 	public function testConnectInvalidParameters($transport) {
-        $this->setExpectedException('Requests_Exception', 'Invalid number of arguments');
-        $this->checkProxyAvailable();
+		$this->setExpectedException('Requests_Exception', 'Invalid number of arguments');
+		$this->checkProxyAvailable();
 
 		$options = array(
 			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),

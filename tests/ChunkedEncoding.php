@@ -74,7 +74,6 @@ class RequestsTest_ChunkedDecoding extends RequestsTestCase {
 		$this->assertSame($transport->body, $response->body);
 	}
 
-
 	/**
 	 * Response says it's chunked and starts looking like it is, but turns out
 	 * that they're lying to us

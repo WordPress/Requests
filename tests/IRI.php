@@ -384,10 +384,10 @@ class RequestsTest_IRI extends RequestsTestCase
 		$this->assertSame('test', $iri->fragment);
 	}
 
-    public function testNonexistantProperty()
+	public function testNonexistantProperty()
 	{
-        $this->setExpectedException(PHPUnit_Framework_Error_Notice::class);
-        $iri = new Requests_IRI();
+		$this->setExpectedException(PHPUnit_Framework_Error_Notice::class);
+		$iri = new Requests_IRI();
 		$this->assertFalse(isset($iri->nonexistant_prop));
 		$should_fail = $iri->nonexistant_prop;
 	}

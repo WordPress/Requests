@@ -76,9 +76,9 @@ class RequestsTest_Auth_Basic extends RequestsTestCase {
 		$this->assertSame('test', $result->data);
 	}
 
-    public function testMissingPassword() {
-	    $this->setExpectedException('Requests_Exception', 'Invalid number of arguments');
-        new Requests_Auth_Basic(array('user'));
+	public function testMissingPassword() {
+		$this->setExpectedException('Requests_Exception', 'Invalid number of arguments');
+		new Requests_Auth_Basic(array('user'));
 	}
 
 }

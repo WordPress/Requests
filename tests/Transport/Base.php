@@ -321,9 +321,9 @@ abstract class RequestsTest_Transport_Base extends RequestsTestCase {
 		$this->assertSame(6, $request->redirects);
 	}
 
-    public function testTooManyRedirects() {
-	    $this->setExpectedException('Requests_Exception', 'Too many redirects');
-        $options = array(
+	public function testTooManyRedirects() {
+		$this->setExpectedException('Requests_Exception', 'Too many redirects');
+		$options = array(
 			'redirects' => 10, // default, but force just in case
 		);
 		Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
@@ -456,9 +456,9 @@ abstract class RequestsTest_Transport_Base extends RequestsTestCase {
 		$this->assertFalse($request->success);
 	}
 
-    public function testStatusCodeThrowUnknown() {
-	    $this->setExpectedException('Requests_Exception_HTTP_Unknown', '599 Unknown');
-        $transport       = new RequestsTest_Mock_Transport();
+	public function testStatusCodeThrowUnknown() {
+		$this->setExpectedException('Requests_Exception_HTTP_Unknown', '599 Unknown');
+		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = 599;
 
 		$options = array(
@@ -502,9 +502,9 @@ abstract class RequestsTest_Transport_Base extends RequestsTestCase {
 		$this->assertEquals($empty, $request);
 	}
 
-    public function testBadIP() {
-        $this->setExpectedException('Requests_Exception');
-        Requests::get('http://256.256.256.0/', array(), $this->getOptions());
+	public function testBadIP() {
+		$this->setExpectedException('Requests_Exception');
+		Requests::get('http://256.256.256.0/', array(), $this->getOptions());
 	}
 
 	public function testHTTPS() {
@@ -520,36 +520,36 @@ abstract class RequestsTest_Transport_Base extends RequestsTestCase {
 		$this->assertEmpty($result['args']);
 	}
 
-    public function testExpiredHTTPS() {
-        if ($this->skip_https) {
+	public function testExpiredHTTPS() {
+		if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
-        $this->setExpectedException('Requests_Exception');
+		$this->setExpectedException('Requests_Exception');
 		Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
-    public function testRevokedHTTPS() {
-        if ($this->skip_https) {
+	public function testRevokedHTTPS() {
+		if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
-        $this->setExpectedException('Requests_Exception');
+		$this->setExpectedException('Requests_Exception');
 		Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
 	/**
 	 * Test that SSL fails with a bad certificate
-     */
+	 */
 	public function testBadDomain() {
-        if ($this->skip_https) {
+		if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
-        $this->setExpectedException('Requests_Exception');
+		$this->setExpectedException('Requests_Exception');
 		Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
@@ -596,9 +596,9 @@ abstract class RequestsTest_Transport_Base extends RequestsTestCase {
 		$this->assertSame(200, $request->status_code);
 	}
 
-    public function testTimeout() {
-        $this->setExpectedException('Requests_Exception', 'timed out');
-        $options = array(
+	public function testTimeout() {
+		$this->setExpectedException('Requests_Exception', 'timed out');
+		$options = array(
 			'timeout' => 1,
 		);
 		Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
