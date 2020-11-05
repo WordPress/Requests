@@ -3,37 +3,26 @@
 class RequestsTest_Transport_cURL extends RequestsTest_Transport_Base {
 	protected $transport = 'Requests_Transport_cURL';
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage t resolve host
-	 */
-	public function testBadIP() {
-		parent::testBadIP();
+    public function testBadIP() {
+        $this->setExpectedException('Requests_Exception', 't resolve host');
+        parent::testBadIP();
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage certificate subject name
-	 */
-	public function testExpiredHTTPS() {
-		parent::testExpiredHTTPS();
+    public function testExpiredHTTPS() {
+        $this->setExpectedException('Requests_Exception', 'certificate subject name');
+        parent::testExpiredHTTPS();
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage certificate subject name
-	 */
-	public function testRevokedHTTPS() {
-		parent::testRevokedHTTPS();
+    public function testRevokedHTTPS() {
+        $this->setExpectedException('Requests_Exception', 'certificate subject name');
+        parent::testRevokedHTTPS();
 	}
 
 	/**
 	 * Test that SSL fails with a bad certificate
-	 *
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage certificate subject name
-	 */
+     */
 	public function testBadDomain() {
-		parent::testBadDomain();
+	    $this->setExpectedException('Reqeusts_Exception', 'certificate subject name');
+        parent::testBadDomain();
 	}
 }

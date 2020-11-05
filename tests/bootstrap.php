@@ -3,9 +3,20 @@
 /**
  * Compatibility with PHPUnit 6+
  */
-if (class_exists('PHPUnit\Runner\Version')) {
-	require_once dirname(__FILE__) . '/phpunit6-compat.php';
+
+$phpunit = class_exists('PHPUnit\Runner\Version') ? call_user_func('PHPUnit\Runner\Version::id') : '5.7';
+
+if (version_compare($phpunit, '6.0', '>=')) {
+    require_once dirname(__FILE__) . '/compat/phpunit6-compat.php';
 }
+
+if (version_compare($phpunit, '8.0', '>=')) {
+    require_once dirname(__FILE__) . '/compat/phpunit8-testcase.php';
+} else {
+    require_once dirname(__FILE__) . '/compat/phpunit5-testcase.php';
+}
+
+require_once dirname(__FILE__) . '/TestCase.php';
 
 date_default_timezone_set('UTC');
 

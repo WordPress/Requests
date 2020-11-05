@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
+class RequestsTest_Proxy_HTTP extends RequestsTestCase {
 	protected function checkProxyAvailable($type = '') {
 		switch ($type) {
 			case 'auth':
@@ -60,12 +60,10 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider transportProvider
-	 *
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Invalid number of arguments
-	 */
+     */
 	public function testConnectInvalidParameters($transport) {
-		$this->checkProxyAvailable();
+        $this->setExpectedException('Requests_Exception', 'Invalid number of arguments');
+        $this->checkProxyAvailable();
 
 		$options = array(
 			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),

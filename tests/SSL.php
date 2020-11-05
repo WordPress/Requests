@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
+class RequestsTest_SSL extends RequestsTestCase {
 	public static function domainMatchProvider() {
 		return array(
 			array('example.com', 'example.com'),

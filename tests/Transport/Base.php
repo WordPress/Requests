@@ -1,7 +1,7 @@
 <?php
 
-abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
-	public function setUp() {
+abstract class RequestsTest_Transport_Base extends RequestsTestCase {
+	public function _setUp() {
 		$callback  = array($this->transport, 'test');
 		$supported = call_user_func($callback);
 
@@ -16,29 +16,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		}
 	}
 	protected $skip_https = false;
-
-	/**
-	 * PHPUnit 6+ compatibility shim.
-	 *
-	 * @param mixed      $exception
-	 * @param string     $message
-	 * @param int|string $code
-	 */
-	public function setExpectedException($exception, $message = '', $code = null) {
-		if (method_exists('PHPUnit_Framework_TestCase', 'setExpectedException')) {
-			parent::setExpectedException($exception, $message, $code);
-		}
-		else {
-			$this->expectException($exception);
-			if ($message !== null) {
-				$this->expectExceptionMessage($message);
-			}
-			if ($code !== null) {
-				$this->expectExceptionCode($code);
-			}
-		}
-	}
-
 
 	protected function getOptions($other = array()) {
 		$options = array(
@@ -344,12 +321,9 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertSame(6, $request->redirects);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Too many redirects
-	 */
-	public function testTooManyRedirects() {
-		$options = array(
+    public function testTooManyRedirects() {
+	    $this->setExpectedException('Requests_Exception', 'Too many redirects');
+        $options = array(
 			'redirects' => 10, // default, but force just in case
 		);
 		Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
@@ -440,7 +414,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->setExpectedException('Requests_Exception_HTTP_' . $code, null, $code);
 			}
 			elseif ($code >= 300 && $code < 400) {
-				$this->setExpectedException('Requests_Exception', null);
+				$this->setExpectedException('Requests_Exception');
 			}
 		}
 		$request = Requests::get($url, array(), $options);
@@ -482,12 +456,9 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($request->success);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception_HTTP_Unknown
-	 * @expectedExceptionMessage 599 Unknown
-	 */
-	public function testStatusCodeThrowUnknown() {
-		$transport       = new RequestsTest_Mock_Transport();
+    public function testStatusCodeThrowUnknown() {
+	    $this->setExpectedException('Requests_Exception_HTTP_Unknown', '599 Unknown');
+        $transport       = new RequestsTest_Mock_Transport();
 		$transport->code = 599;
 
 		$options = array(
@@ -531,11 +502,9 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($empty, $request);
 	}
 
-	/**
-	 * @expectedException Requests_Exception
-	 */
-	public function testBadIP() {
-		Requests::get('http://256.256.256.0/', array(), $this->getOptions());
+    public function testBadIP() {
+        $this->setExpectedException('Requests_Exception');
+        Requests::get('http://256.256.256.0/', array(), $this->getOptions());
 	}
 
 	public function testHTTPS() {
@@ -551,41 +520,36 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEmpty($result['args']);
 	}
 
-	/**
-	 * @expectedException Requests_Exception
-	 */
-	public function testExpiredHTTPS() {
-		if ($this->skip_https) {
+    public function testExpiredHTTPS() {
+        if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
+        $this->setExpectedException('Requests_Exception');
 		Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
-	/**
-	 * @expectedException Requests_Exception
-	 */
-	public function testRevokedHTTPS() {
-		if ($this->skip_https) {
+    public function testRevokedHTTPS() {
+        if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
+        $this->setExpectedException('Requests_Exception');
 		Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
 	/**
 	 * Test that SSL fails with a bad certificate
-	 *
-	 * @expectedException Requests_Exception
-	 */
+     */
 	public function testBadDomain() {
-		if ($this->skip_https) {
+        if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
+        $this->setExpectedException('Requests_Exception');
 		Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
@@ -632,12 +596,9 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertSame(200, $request->status_code);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage timed out
-	 */
-	public function testTimeout() {
-		$options = array(
+    public function testTimeout() {
+        $this->setExpectedException('Requests_Exception', 'timed out');
+        $options = array(
 			'timeout' => 1,
 		);
 		Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));

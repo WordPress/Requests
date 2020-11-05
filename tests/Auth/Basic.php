@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
+class RequestsTest_Auth_Basic extends RequestsTestCase {
 	public static function transportProvider() {
 		return array(
 			array('Requests_Transport_fsockopen'),
@@ -76,12 +76,9 @@ class RequestsTest_Auth_Basic extends PHPUnit_Framework_TestCase {
 		$this->assertSame('test', $result->data);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Invalid number of arguments
-	 */
-	public function testMissingPassword() {
-		new Requests_Auth_Basic(array('user'));
+    public function testMissingPassword() {
+	    $this->setExpectedException('Requests_Exception', 'Invalid number of arguments');
+        new Requests_Auth_Basic(array('user'));
 	}
 
 }

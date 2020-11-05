@@ -1,6 +1,9 @@
 # Ignore coverage report
 tests/coverage/*
 
+# Ignore test cache
+.phpunit.result.cache
+
 # Ignore composer related files
 /composer.lock
 /vendor

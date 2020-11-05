@@ -40,7 +40,7 @@
  *
  */
 
-class RequestsTest_IRI extends PHPUnit_Framework_TestCase
+class RequestsTest_IRI extends RequestsTestCase
 {
 	public static function rfc3986_tests()
 	{
@@ -384,12 +384,10 @@ class RequestsTest_IRI extends PHPUnit_Framework_TestCase
 		$this->assertSame('test', $iri->fragment);
 	}
 
-	/**
-	 * @expectedException PHPUnit_Framework_Error_Notice
-	 */
-	public function testNonexistantProperty()
+    public function testNonexistantProperty()
 	{
-		$iri = new Requests_IRI();
+        $this->setExpectedException(PHPUnit_Framework_Error_Notice::class);
+        $iri = new Requests_IRI();
 		$this->assertFalse(isset($iri->nonexistant_prop));
 		$should_fail = $iri->nonexistant_prop;
 	}

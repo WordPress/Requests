@@ -1,12 +1,9 @@
 <?php
 
-class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Only HTTP(S) requests are handled
-	 */
-	public function testInvalidProtocol() {
-		Requests::request('ftp://128.0.0.1/');
+class RequestsTest_Requests extends RequestsTestCase {
+    public function testInvalidProtocol() {
+        $this->setExpectedException('Requests_Exception', 'Only HTTP(S) requests are handled');
+        Requests::request('ftp://128.0.0.1/');
 	}
 
 	public function testDefaultTransport() {
@@ -100,12 +97,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 	 *
 	 * We do not support HTTP/0.9. If this is really an issue for you, file a
 	 * new issue, and update your server/proxy to support a proper protocol.
-	 *
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Response could not be parsed
-	 */
+     */
 	public function testInvalidProtocolVersion() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+        $this->setExpectedException('Requests_Exception', 'Response could not be parsed');
+        $transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
 
 		$options = array(
@@ -116,12 +111,10 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * HTTP/0.9 also appears to use a single CRLF instead of two
-	 *
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Missing header/body separator
-	 */
+     */
 	public function testSingleCRLFSeparator() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+        $this->setExpectedException('Requests_Exception', 'Missing header/body separator');
+        $transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
 
 		$options = array(
@@ -130,12 +123,9 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		Requests::get('http://example.com/', array(), $options);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Response could not be parsed
-	 */
-	public function testInvalidStatus() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+    public function testInvalidStatus() {
+        $this->setExpectedException('Requests_Exception', 'Response could not be parsed');
+        $transport       = new RequestsTest_Mock_RawTransport();
 		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
 
 		$options = array(
@@ -156,12 +146,9 @@ class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
 		$this->assertSame(0, $response->redirects);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage timed out
-	 */
-	public function testTimeoutException() {
-		$options = array('timeout' => 0.5);
+    public function testTimeoutException() {
+        $this->setExpectedException('Requests_Exception', 'timed out');
+        $options = array('timeout' => 0.5);
 		Requests::get(httpbin('/delay/3'), array(), $options);
 	}
 }

@@ -3,37 +3,27 @@
 class RequestsTest_Transport_fsockopen extends RequestsTest_Transport_Base {
 	protected $transport = 'Requests_Transport_fsockopen';
 
-	/**
-	 * @expectedException Requests_Exception
-	 */
-	public function testBadIP() {
-		parent::testBadIP();
+    public function testBadIP() {
+        $this->setExpectedException('Requests_Exception');
+        parent::testBadIP();
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage SSL certificate did not match the requested domain name
-	 */
-	public function testExpiredHTTPS() {
-		parent::testExpiredHTTPS();
+    public function testExpiredHTTPS() {
+        $this->setExpectedException('Requests_Exception', 'SSL certificate did not match the requested domain name');
+        parent::testExpiredHTTPS();
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage SSL certificate did not match the requested domain name
-	 */
-	public function testRevokedHTTPS() {
-		parent::testRevokedHTTPS();
+    public function testRevokedHTTPS() {
+        $this->setExpectedException('Requests_Exception', 'SSL certificate did not match the requested domain name');
+        parent::testRevokedHTTPS();
 	}
 
 	/**
 	 * Test that SSL fails with a bad certificate
-	 *
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage SSL certificate did not match the requested domain name
-	 */
+     */
 	public function testBadDomain() {
-		parent::testBadDomain();
+        $this->setExpectedException('Requests_Exception', 'SSL certificate did not match the requested domain name');
+        parent::testBadDomain();
 	}
 
 	/**

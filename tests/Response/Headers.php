@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_Response_Headers extends PHPUnit_Framework_TestCase {
+class RequestsTest_Response_Headers extends RequestsTestCase {
 	public function testArrayAccess() {
 		$headers                 = new Requests_Response_Headers();
 		$headers['Content-Type'] = 'text/plain';
@@ -37,12 +37,9 @@ class RequestsTest_Response_Headers extends PHPUnit_Framework_TestCase {
 		}
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Object is a dictionary, not a list
-	 */
-	public function testInvalidKey() {
-		$headers   = new Requests_Response_Headers();
+    public function testInvalidKey() {
+	    $this->setExpectedException('Requests_Exception', 'Object is a dictionary, not a list');
+        $headers   = new Requests_Response_Headers();
 		$headers[] = 'text/plain';
 	}
 
