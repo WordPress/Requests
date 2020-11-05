@@ -46,16 +46,16 @@ class Requests_Utility_FilteredIterator extends ArrayIterator {
 	/**
 	 * @inheritdoc
 	 */
-	public function unserialize( $serialized ) {
-	}
+	public function unserialize($serialized) {}
 
 	/**
 	 * @inheritdoc
+	 *
+	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
 	 */
-	public function __unserialize( $serialized ) { // phpcs:ignore PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.MethodDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
-	}
+	public function __unserialize($serialized) {}
 
-	public function __wakeup() { // phpcs:ignore PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.MethodDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__wakeupFound
-		unset( $this->callback );
+	public function __wakeup() {
+		unset($this->callback);
 	}
 }
