@@ -1173,10 +1173,15 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function test303GETmethod() {
-		$data = array('test' => 'true', 'test2' => 'test');
+		if ($this->skip_https) {
+			$this->markTestSkipped('SSL support is not available.');
+			return;
+		}
+
+		$data    = array('test' => 'true', 'test2' => 'test');
 		$request = Requests::post('https://httpbin.org/status/303', array(), $data, $this->getOptions(array('follow_redirects' => true)));
 
-		$this->assertEquals(200, $request->status_code);
-		$this->assertEquals($request->url, 'https://httpbin.org/get');
+		$this->assertSame(200, $request->status_code);
+		$this->assertSame('https://httpbin.org/get', $request->url);
 	}
 }
