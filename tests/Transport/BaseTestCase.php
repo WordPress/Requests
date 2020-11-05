@@ -1179,9 +1179,9 @@ abstract class BaseTestCase extends TestCase {
 		}
 
 		$data    = array('test' => 'true', 'test2' => 'test');
-		$request = Requests::post('https://httpbin.org/status/303', array(), $data, $this->getOptions(array('follow_redirects' => true)));
+		$request = Requests::post(httpbin('/status/303', true), array(), $data, $this->getOptions(array('follow_redirects' => true)));
 
 		$this->assertSame(200, $request->status_code);
-		$this->assertSame('https://httpbin.org/get', $request->url);
+		$this->assertSame(httpbin('/get'), $request->url);
 	}
 }
