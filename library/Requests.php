@@ -633,8 +633,9 @@ class Requests {
 			return $return;
 		}
 
-		$return->raw = $headers;
-		$return->url = $url;
+		$return->raw  = $headers;
+		$return->url  = $url;
+		$return->body = '';
 
 		if (!$options['filename']) {
 			$pos = strpos($headers, "\r\n\r\n");
@@ -643,11 +644,12 @@ class Requests {
 				throw new Requests_Exception('Missing header/body separator', 'requests.no_crlf_separator');
 			}
 
-			$headers      = substr($return->raw, 0, $pos);
-			$return->body = substr($return->raw, $pos + strlen("\n\r\n\r"));
-		}
-		else {
-			$return->body = '';
+			$headers = substr($return->raw, 0, $pos);
+			// Headers will always be separated from the body by two new lines - `\n\r\n\r`.
+			$body = substr($return->raw, $pos + 4);
+			if (!empty($body)) {
+				$return->body = $body;
+			}
 		}
 		// Pretend CRLF = LF for compatibility (RFC 2616, section 19.3)
 		$headers = str_replace("\r\n", "\n", $headers);

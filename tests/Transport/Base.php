@@ -150,8 +150,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 	public function testHEAD() {
 		$request = Requests::head(httpbin('/get'), array(), $this->getOptions());
-		$this->assertEquals(200, $request->status_code);
-		$this->assertEquals('', $request->body);
+		$this->assertSame(200, $request->status_code);
+		$this->assertSame('', $request->body);
 	}
 
 	public function testTRACE() {
