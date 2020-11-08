@@ -75,7 +75,7 @@ install:
    if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" ]]; then
     # The PHPCS dependencies require PHP 5.4, so would block istall on PHP < 5.4.
     # As they are only needed in the sniff stage, remove them.
-    travis_retry composer remove --dev --no-update phpcompatibility/php-compatibility wp-coding-standards/wpcs dealerdirect/phpcodesniffer-composer-installer
+    travis_retry composer remove --dev --no-update squizlabs/php_codesniffer phpcompatibility/php-compatibility wp-coding-standards/wpcs dealerdirect/phpcodesniffer-composer-installer
    fi
  - travis_retry composer install --dev --no-interaction
  - TESTPHPBIN=$(phpenv which php)

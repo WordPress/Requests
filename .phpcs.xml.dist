@@ -83,6 +83,13 @@
 		<!-- Let spacing before a cast be determined by the operator/parentheses whitespace rule
 			 of the preceding character. -->
 		<exclude name="WordPress.WhiteSpace.CastStructureSpacing"/>
+
+		<!-- ==========================================================================
+			 Forbid "assignments in conditions" instead of enforcing Yoda conditions.
+			 ========================================================================== -->
+		<exclude name="WordPress.PHP.YodaConditions"/>
+		<!-- A while loop is the only valid control structure where an assignment can be justified. -->
+		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
 	</rule>
 
 
@@ -134,5 +141,10 @@
 			<property name="spacing" value="0"/>
 		</properties>
 	</rule>
+
+	<!-- ==========================================================================
+		 Disallow Yoda conditions.
+		 ========================================================================== -->
+	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
 
 </ruleset>
