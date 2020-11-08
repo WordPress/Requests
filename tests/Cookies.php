@@ -379,11 +379,11 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 			// Basic parsing
 			array(
 				'foo=bar',
-				array( 'name' => 'foo', 'value' => 'bar' ),
+				array('name' => 'foo', 'value' => 'bar'),
 			),
 			array(
 				'bar',
-				array( 'name' => '', 'value' => 'bar' ),
+				array('name' => '', 'value' => 'bar'),
 			),
 
 			// Expiration
