@@ -166,4 +166,46 @@
 		 ========================================================================== -->
 	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
 
+
+	<!--
+	#############################################################################
+	SNIFF SPECIFIC CONFIGURATION
+	#############################################################################
+	-->
+
+	<!-- Allow error silencing only for a select group of functions. -->
+	<rule ref="WordPress.PHP.NoSilencedErrors">
+		<properties>
+			<property name="custom_whitelist" type="array">
+				<element value="gzdecode"/>
+				<element value="gzinflate"/>
+				<element value="gzuncompress"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Make sure everything in the global namespace is prefixed. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="Requests"/>
+			</property>
+		</properties>
+		
+		<!-- Only code within the actual distributed package needs to be prefixed. -->
+		<include-pattern>/library/*\.php$</include-pattern>
+	</rule>
+
+	<!-- Simplify alignment rules for multiline arrays. -->
+	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
+		<properties>
+			<!-- No need to adjust alignment of large arrays when the item with the largest key is removed. -->
+			<property name="exact" value="false"/>
+			<!-- Don't align multi-line items if ALL items in the array are multi-line. -->
+			<property name="alignMultilineItems" value="!=100"/>
+			<!-- The array assignment operator should always be on the same line as the array key. -->
+			<property name="ignoreNewlines" value="false"/>
+		</properties>
+	</rule>
+
 </ruleset>
