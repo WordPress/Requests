@@ -90,6 +90,25 @@
 		<exclude name="WordPress.PHP.YodaConditions"/>
 		<!-- A while loop is the only valid control structure where an assignment can be justified. -->
 		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+
+		<!-- ==========================================================================
+			 Miscellaneous other exclusions.
+			 ========================================================================== -->
+
+		<!-- This repo complies with PSR 0 for filename conventions. -->
+		<exclude name="WordPress.Files.FileName"/>
+
+		<!-- This code base consistently has the second keyword of multi-part control structures
+			 on a new line.
+			 Once WPCS 3.0.0 comes out, the style used in this repo can be enforced via the
+			 Universal.ControlStructures.IfElseDeclaration sniff from PHPCSExtra. -->
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
+
+		<!-- Ignore WP specific sniffs as Requests is also used outside of a WP context. -->
+		<exclude name="WordPress.WP"/>
+		<exclude name="WordPress.DateTime"/>
+		<exclude name="WordPress.Security"/>
+		<exclude name="WordPress.PHP.DiscouragedPHPFunctions"/>
 	</rule>
 
 
