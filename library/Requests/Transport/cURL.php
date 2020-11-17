@@ -100,9 +100,11 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->handle, CURLOPT_ENCODING, '');
 		}
 		if (defined('CURLOPT_PROTOCOLS')) {
+			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_protocolsFound
 			curl_setopt($this->handle, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 		}
 		if (defined('CURLOPT_REDIR_PROTOCOLS')) {
+			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_redir_protocolsFound
 			curl_setopt($this->handle, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 		}
 	}
@@ -364,6 +366,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($timeout));
 		}
 		else {
+			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_timeout_msFound
 			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($timeout * 1000));
 		}
 
@@ -371,6 +374,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
 		}
 		else {
+			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttimeout_msFound
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
 		}
 		curl_setopt($this->handle, CURLOPT_URL, $url);

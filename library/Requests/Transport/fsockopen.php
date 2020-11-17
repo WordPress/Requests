@@ -81,6 +81,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			$verifyname      = true;
 
 			// SNI, if enabled (OpenSSL >=0.9.8j)
+			// phpcs:ignore PHPCompatibility.Constants.NewConstants.openssl_tlsext_server_nameFound
 			if (defined('OPENSSL_TLSEXT_SERVER_NAME') && OPENSSL_TLSEXT_SERVER_NAME) {
 				$context_options['SNI_enabled'] = true;
 				if (isset($options['verifyname']) && $options['verifyname'] === false) {
@@ -117,6 +118,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		}
 		$remote_socket .= ':' . $url_parts['port'];
 
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
 		set_error_handler(array($this, 'connect_error_handler'), E_WARNING | E_NOTICE);
 
 		$options['hooks']->dispatch('fsockopen.remote_socket', array(&$remote_socket));

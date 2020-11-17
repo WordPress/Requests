@@ -5,5 +5,6 @@ tests/ export-ignore
 .coveralls.yml export-ignore
 .gitignore export-ignore
 .gitattributes export-ignore
+.phpcs.xml.dist export-ignore
 .travis.yml export-ignore
 package.xml.tpl export-ignore

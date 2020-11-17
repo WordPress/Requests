@@ -1,0 +1,270 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	name="Requests"
+	xsi:noNamespaceSchemaLocation="./vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+	<description>Requests rules for PHP_CodeSniffer</description>
+
+	<!--
+	#############################################################################
+	COMMAND LINE ARGUMENTS
+	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	#############################################################################
+	-->
+
+	<!-- Scan all files. -->
+	<file>.</file>
+
+	<!-- Third party files and build files don't need to comply with these coding standards. -->
+	<exclude-pattern>*/library/Requests/IRI\.php$</exclude-pattern>
+	<exclude-pattern>*/tests/IRI\.php$</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tests/coverage/</exclude-pattern>
+
+	<!-- Only check PHP files. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Show progress, show the error codes for each message (source). -->
+	<arg value="ps"/>
+
+	<!-- Strip the filepaths down to the relevant bit. -->
+	<arg name="basepath" value="./"/>
+
+	<!-- Check up to 8 files simultaneously. -->
+	<arg name="parallel" value="8"/>
+
+
+	<!--
+	#############################################################################
+	CHECK FOR PHP CROSS-VERSION COMPATIBILITY
+	#############################################################################
+	-->
+
+	<config name="testVersion" value="5.2-"/>
+	<rule ref="PHPCompatibility">
+		<!-- The example code may contain code samples targetted at PHP > 5.2. -->
+		<exclude-pattern>/examples/*\.php$</exclude-pattern>
+	</rule>
+
+
+	<!--
+	#############################################################################
+	CODING STYLE RULES
+	#############################################################################
+	-->
+
+	<!-- Use the WordPress Coding Standards as a basis, but with tweaks. -->
+	<rule ref="WordPress-Extra">
+		<!-- No need for this sniff as PHP linting is included in the CI builds against
+			 multiple PHP versions (which is the better solution). -->
+		<exclude name="Generic.PHP.Syntax"/>
+
+		<!-- ==========================================================================
+			 No "nacin-spacing". I.e. don't enforce whitespace on the inside of braces and such.
+			 ========================================================================== -->
+
+		<!-- Replace by the Squiz version of the sniff which is space-poor in contrast
+			 to the space-rich WPCS sniff. -->
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
+
+		<!-- Replaced by the Squiz version of the sniff which doesn't enforce whitespace
+			 around the boolean not `!` operator and enforcement via the Generic sniff. -->
+		<exclude name="WordPress.WhiteSpace.OperatorSpacing"/>
+
+		<!-- Replaced by the Squiz version of the sniff which doesn't enforce whitespace around array index keys. -->
+		<exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions"/>
+
+		<!-- Disabled as the preference for this repo is no spaces on the inside of parentheses.
+			 Once WPCS 3.0.0 comes out, the opposite can be enforced via the
+			 NormalizedArrays.Arrays.ArrayBraceSpacing sniff from PHPCSExtra. -->
+		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener"/>
+		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceBeforeArrayCloser"/>
+
+		<!-- Let spacing before a cast be determined by the operator/parentheses whitespace rule
+			 of the preceding character. -->
+		<exclude name="WordPress.WhiteSpace.CastStructureSpacing"/>
+
+		<!-- ==========================================================================
+			 Forbid "assignments in conditions" instead of enforcing Yoda conditions.
+			 ========================================================================== -->
+		<exclude name="WordPress.PHP.YodaConditions"/>
+		<!-- A while loop is the only valid control structure where an assignment can be justified. -->
+		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+
+		<!-- ==========================================================================
+			 Miscellaneous other exclusions.
+			 ========================================================================== -->
+
+		<!-- This repo complies with PSR 0 for filename conventions. -->
+		<exclude name="WordPress.Files.FileName"/>
+
+		<!-- This code base consistently has the second keyword of multi-part control structures
+			 on a new line.
+			 Once WPCS 3.0.0 comes out, the style used in this repo can be enforced via the
+			 Universal.ControlStructures.IfElseDeclaration sniff from PHPCSExtra. -->
+		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
+
+		<!-- Ignore WP specific sniffs as Requests is also used outside of a WP context. -->
+		<exclude name="WordPress.WP"/>
+		<exclude name="WordPress.DateTime"/>
+		<exclude name="WordPress.Security"/>
+		<exclude name="WordPress.PHP.DiscouragedPHPFunctions"/>
+	</rule>
+
+
+	<!-- ==========================================================================
+		 Enforcement of space-poor code style.
+		 ========================================================================== -->
+
+	<!-- Overrule the properties set in the WP Core ruleset for several sniffs. -->
+	<rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing">
+		<properties>
+			<property name="requiredSpacesAfterOpen" value="0"/>
+			<property name="requiredSpacesBeforeClose" value="0"/>
+		</properties>
+		<!-- Undo the WPCS severity change (exclusion) for spacing before close -->
+		<severity>5</severity>
+	</rule>
+
+	<rule ref="PEAR.Functions.FunctionCallSignature">
+		<properties>
+			<property name="requiredSpacesAfterOpen" value="0"/>
+			<property name="requiredSpacesBeforeClose" value="0"/>
+		</properties>
+	</rule>
+
+	<rule ref="Generic.WhiteSpace.ArbitraryParenthesesSpacing">
+		<properties>
+			<property name="spacing" value="0"/>
+		</properties>
+	</rule>
+
+	<!-- Include replacement sniffs which enforce the opposite of WPCS for several excluded sniffs. -->
+	<rule ref="Squiz.WhiteSpace.ControlStructureSpacing">
+		<!-- Note: These two violations should potentially be addressed at a later point in time. -->
+		<exclude name="Squiz.WhiteSpace.ControlStructureSpacing.NoLineAfterClose"/>
+		<exclude name="Squiz.WhiteSpace.ControlStructureSpacing.LineAfterClose"/>
+	</rule>
+
+	<rule ref="Squiz.WhiteSpace.OperatorSpacing">
+		<properties>
+			<property name="ignoreNewlines" value="true"/>
+		</properties>
+	</rule>
+
+	<rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
+
+	<!-- Enforce no space after the boolean not `!` operator. -->
+	<rule ref="Generic.Formatting.SpaceAfterNot">
+		<properties>
+			<property name="spacing" value="0"/>
+		</properties>
+	</rule>
+
+	<!-- ==========================================================================
+		 Disallow Yoda conditions.
+		 ========================================================================== -->
+	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
+
+	<!--
+	#############################################################################
+	SNIFF SPECIFIC CONFIGURATION
+	#############################################################################
+	-->
+
+	<!-- Allow error silencing only for a select group of functions. -->
+	<rule ref="WordPress.PHP.NoSilencedErrors">
+		<properties>
+			<property name="custom_whitelist" type="array">
+				<element value="gzdecode"/>
+				<element value="gzinflate"/>
+				<element value="gzuncompress"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Make sure everything in the global namespace is prefixed. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="Requests"/>
+			</property>
+		</properties>
+		
+		<!-- Only code within the actual distributed package needs to be prefixed. -->
+		<include-pattern>/library/*\.php$</include-pattern>
+	</rule>
+
+	<!-- Simplify alignment rules for multiline arrays. -->
+	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
+		<properties>
+			<!-- No need to adjust alignment of large arrays when the item with the largest key is removed. -->
+			<property name="exact" value="false"/>
+			<!-- Don't align multi-line items if ALL items in the array are multi-line. -->
+			<property name="alignMultilineItems" value="!=100"/>
+			<!-- The array assignment operator should always be on the same line as the array key. -->
+			<property name="ignoreNewlines" value="false"/>
+		</properties>
+	</rule>
+
+
+	<!--
+	#############################################################################
+	SELECTIVE EXCLUSIONS
+	Exclude specific files for specific sniffs.
+	#############################################################################
+	-->
+
+	<!-- ==========================================================================
+		 Package code
+		 ========================================================================== -->
+
+	<!-- Don't rename existing classes to prevent a BC break. -->
+	<rule ref="PEAR.NamingConventions.ValidClassName.Invalid">
+		<exclude-pattern>*/Transport/cURL\.php$</exclude-pattern>
+		<exclude-pattern>*/Transport/fsockopen\.php$</exclude-pattern>
+	</rule>
+
+	<!-- ==========================================================================
+		 Example code
+		 ========================================================================== -->
+
+	<!-- Using PHP 5.4+ syntax in example code is fine. -->
+	<rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
+		<exclude-pattern>/examples/cookie_jar\.php$</exclude-pattern>
+	</rule>
+
+	<!-- Using var_dump() in example code is fine. -->
+	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_var_dump">
+		<exclude-pattern>/examples/[^/]+\.php$</exclude-pattern>
+	</rule>
+
+	<!-- ==========================================================================
+		 Test code
+		 ========================================================================== -->
+
+	<!-- The PHPUnit6-compat file is only loaded on PHP 7.0 or higher. -->
+	<rule ref="PHPCompatibility.FunctionUse.NewFunctions.class_aliasFound">
+		<exclude-pattern>/tests/phpunit6-compat\.php$</exclude-pattern>
+	</rule>
+	<rule ref="PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound">
+		<exclude-pattern>/tests/phpunit6-compat\.php$</exclude-pattern>
+	</rule>
+
+	<!-- Tests aren't run on PHP 5.2.0 anymore, so just ignore this. -->
+	<rule ref="PHPCompatibility.FunctionUse.NewFunctions.sys_get_temp_dirFound">
+		<exclude-pattern>/tests/Transport/Base\.php$</exclude-pattern>
+	</rule>
+
+	<!-- Overloaded methods to make the expected exceptions more specific. -->
+	<rule ref="Generic.CodeAnalysis.UselessOverridingMethod">
+		<exclude-pattern>/tests/Transport/*\.php$</exclude-pattern>
+	</rule>
+
+	<!-- Allow single-line multi-item associative arrays in the unit tests. -->
+	<rule ref="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound">
+		<exclude-pattern>/tests/*\.php$</exclude-pattern>
+	</rule>
+
+</ruleset>

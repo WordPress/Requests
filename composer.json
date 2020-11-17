@@ -15,10 +15,22 @@
 	},
 	"require-dev": {
 		"requests/test-server": "dev-master",
-		"phpunit/phpunit": "<6.0"
+		"phpunit/phpunit": "<6.0",
+		"squizlabs/php_codesniffer": "^3.5",
+		"phpcompatibility/php-compatibility": "^9.0",
+		"wp-coding-standards/wpcs": "^2.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7"
 	},
 	"type": "library",
 	"autoload": {
 		"psr-0": {"Requests": "library/"}
+	},
+	"scripts" : {
+		"checkcs": [
+			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
+		],
+		"fixcs": [
+			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+		]
 	}
 }
