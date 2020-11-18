@@ -827,6 +827,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertSame('8080', $matches[1]);
 	}
 
+	/**
+	 * This test will be skipped on PHP 8 as it would fail due to the use of an incompatible
+	 * PHPUnit version. Once the test suite is compatible with PHPUnit 9, this "requires" can
+	 * be removed.
+	 *
+	 * @requires PHP < 8
+	 */
 	public function testProgressCallback() {
 		$mock = $this->getMockBuilder('stdClass')->setMethods(array('progress'))->getMock();
 		$mock->expects($this->atLeastOnce())->method('progress');
@@ -840,6 +847,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		Requests::get(httpbin('/get'), array(), $options);
 	}
 
+	/**
+	 * This test will be skipped on PHP 8 as it would fail due to the use of an incompatible
+	 * PHPUnit version. Once the test suite is compatible with PHPUnit 9, this "requires" can
+	 * be removed.
+	 *
+	 * @requires PHP < 8
+	 */
 	public function testAfterRequestCallback() {
 		$mock = $this->getMockBuilder('stdClass')
 			->setMethods(array('after_request'))
