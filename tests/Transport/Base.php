@@ -443,6 +443,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->setExpectedException('Requests_Exception', null);
 			}
 		}
+
+		// Prevent a "test does not perform any assertions" message for all other cases.
+		$this->assertTrue(true);
+
 		$request = Requests::get($url, array(), $options);
 		$request->throw_for_status(false);
 	}
@@ -465,6 +469,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->setExpectedException('Requests_Exception_HTTP_' . $code, null, $code);
 			}
 		}
+
+		// Prevent a "test does not perform any assertions" message for all other cases.
+		$this->assertTrue(true);
+
 		$request = Requests::get($url, array(), $options);
 		$request->throw_for_status(true);
 	}
