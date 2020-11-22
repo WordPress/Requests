@@ -676,7 +676,7 @@ class Requests {
 			$return->body = self::decode_chunked($return->body);
 			unset($return->headers['transfer-encoding']);
 		}
-		if (isset($return->headers['content-encoding'])) {
+		if (isset($return->headers['content-encoding']) && !empty(array_intersect(explode(',', strtolower($return->headers['content-encoding'])), array('gzip','x-gzip','deflate','compress','x-compress')))) {
 			$return->body = self::decompress($return->body);
 		}
 
