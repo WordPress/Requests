@@ -443,6 +443,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->setExpectedException('Requests_Exception', null);
 			}
 		}
+
+		// Prevent a "test does not perform any assertions" message for all other cases.
+		$this->assertTrue(true);
+
 		$request = Requests::get($url, array(), $options);
 		$request->throw_for_status(false);
 	}
@@ -465,6 +469,10 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 				$this->setExpectedException('Requests_Exception_HTTP_' . $code, null, $code);
 			}
 		}
+
+		// Prevent a "test does not perform any assertions" message for all other cases.
+		$this->assertTrue(true);
+
 		$request = Requests::get($url, array(), $options);
 		$request->throw_for_status(true);
 	}
@@ -819,6 +827,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertSame('8080', $matches[1]);
 	}
 
+	/**
+	 * This test will be skipped on PHP 8 as it would fail due to the use of an incompatible
+	 * PHPUnit version. Once the test suite is compatible with PHPUnit 9, this "requires" can
+	 * be removed.
+	 *
+	 * @requires PHP < 8
+	 */
 	public function testProgressCallback() {
 		$mock = $this->getMockBuilder('stdClass')->setMethods(array('progress'))->getMock();
 		$mock->expects($this->atLeastOnce())->method('progress');
@@ -832,6 +847,13 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		Requests::get(httpbin('/get'), array(), $options);
 	}
 
+	/**
+	 * This test will be skipped on PHP 8 as it would fail due to the use of an incompatible
+	 * PHPUnit version. Once the test suite is compatible with PHPUnit 9, this "requires" can
+	 * be removed.
+	 *
+	 * @requires PHP < 8
+	 */
 	public function testAfterRequestCallback() {
 		$mock = $this->getMockBuilder('stdClass')
 			->setMethods(array('after_request'))

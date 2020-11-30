@@ -15,7 +15,7 @@
 	},
 	"require-dev": {
 		"requests/test-server": "dev-master",
-		"phpunit/phpunit": "<6.0",
+		"phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5",
 		"squizlabs/php_codesniffer": "^3.5",
 		"phpcompatibility/php-compatibility": "^9.0",
 		"wp-coding-standards/wpcs": "^2.0",
@@ -31,6 +31,12 @@
 		],
 		"fixcs": [
 			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+		],
+		"test": [
+			"@php ./vendor/phpunit/phpunit/phpunit -c ./tests/phpunit.xml.dist --no-coverage"
+		],
+		"coverage": [
+			"@php ./vendor/phpunit/phpunit/phpunit -c ./tests/phpunit.xml.dist"
 		]
 	}
 }

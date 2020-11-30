@@ -5,6 +5,9 @@ stages:
   - sniff
   - test
 
+env:
+  - COMPOSER_PHPUNIT=true
+
 jobs:
   fast_finish: true
   include:
@@ -33,23 +36,16 @@ jobs:
      dist: trusty
      env: COMPOSER_PHPUNIT=false
    - php: 5.6
-     env: TEST_COVERAGE=1 COMPOSER_PHPUNIT=true
+     env: TEST_COVERAGE=1
    - php: 7.0
-     env: COMPOSER_PHPUNIT=true
    - php: 7.1
-     env: COMPOSER_PHPUNIT=true
    - php: 7.2
-     env: COMPOSER_PHPUNIT=true
    - php: 7.3
-     env: COMPOSER_PHPUNIT=true
    - php: 7.4
-     env: COMPOSER_PHPUNIT=true
    - php: nightly
-     env: COMPOSER_PHPUNIT=true
 
   allow_failures:
     - php: nightly
-      env: COMPOSER_PHPUNIT=true
 
 cache:
   directories:
@@ -66,8 +62,8 @@ install:
  - if [ "$TEST_COVERAGE" != '1' ]; then phpenv config-rm xdebug.ini || echo 'No xdebug config.'; fi
 
  # Setup the test server
- - phpenv local $( phpenv versions | grep 5.6 | tail -1 )
- - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then travis_retry composer remove phpunit/phpunit --dev; fi
+ - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then phpenv local $( phpenv versions | grep 5.6 | tail -1 ); fi
+ - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then travis_retry composer remove --dev --no-update phpunit/phpunit; fi
  - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then export PHPUNIT_BIN="phpunit";
    else export PHPUNIT_BIN="$(pwd)/vendor/bin/phpunit";
    fi
@@ -77,9 +73,14 @@ install:
     # As they are only needed in the sniff stage, remove them.
     travis_retry composer remove --dev --no-update squizlabs/php_codesniffer phpcompatibility/php-compatibility wp-coding-standards/wpcs dealerdirect/phpcodesniffer-composer-installer
    fi
- - travis_retry composer install --dev --no-interaction
+ - |
+   if [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+    travis_retry composer install --no-interaction --ignore-platform-reqs
+   else
+    travis_retry composer install --no-interaction
+   fi
  - TESTPHPBIN=$(phpenv which php)
- - phpenv local --unset
+ - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then phpenv local --unset; fi
 
  # Setup the proxy
  - pip install --user mitmproxy==0.18.2
