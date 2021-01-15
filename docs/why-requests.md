@@ -194,4 +194,5 @@ instead of something else, in our opinion.
 ***
 
 Previous: [Goals](https://github.com/WordPress/Requests/blob/master/docs/goals.md)
+
 Next: [Making a request](https://github.com/WordPress/Requests/blob/master/docs/usage.md)

@@ -25,4 +25,5 @@ Requests::get('http://httpbin.org/ip', array(), $options);
 ***
 
 Previous: [Custom authentification](https://github.com/WordPress/Requests/blob/master/docs/authentication-custom.md)
+
 Next: [Hooking system](https://github.com/WordPress/Requests/blob/master/docs/hooks.md)

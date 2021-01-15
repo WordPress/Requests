@@ -76,4 +76,5 @@ bugs in PHP for more information on Subject Alternate Name field.)
 ***
 
 Previous: [Making a request](https://github.com/WordPress/Requests/blob/master/docs/usage.md)
+
 Next: [Authenticating your request](https://github.com/WordPress/Requests/blob/master/docs/authentication.md)

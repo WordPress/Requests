@@ -156,4 +156,5 @@ If a header isn't set, this will give `null`. You can also check with
 ***
 
 Previous: [Why should I use Requests instead of X?](https://github.com/WordPress/Requests/blob/master/docs/why-requests.md)
+
 Next: [Advanced usage](https://github.com/WordPress/Requests/blob/master/docs/usage-advanced.md)
