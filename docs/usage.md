@@ -152,3 +152,8 @@ Note that this is case-insensitive, so the following are all equivalent:
 
 If a header isn't set, this will give `null`. You can also check with
 `isset($response->headers['date'])`
+
+***
+
+Previous: [Why should I use Requests instead of X?](https://github.com/WordPress/Requests/blob/master/docs/why-requests.md)
+Next: [Advanced usage](https://github.com/WordPress/Requests/blob/master/docs/usage-advanced.md)

@@ -72,3 +72,8 @@ bugs in PHP for more information on Subject Alternate Name field.)
 [Mozilla certificate authority list]: http://www.mozilla.org/projects/security/certs/
 [php-bug-47030]: https://bugs.php.net/bug.php?id=47030
 [php-bug-55820]:https://bugs.php.net/bug.php?id=55820
+
+***
+
+Previous: [Making a request](https://github.com/WordPress/Requests/blob/master/docs/usage.md)
+Next: [Authenticating your request](https://github.com/WordPress/Requests/blob/master/docs/authentication.md)

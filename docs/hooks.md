@@ -94,3 +94,7 @@ $hooks->register('requests.after_request', 'mycallback');
 
 $request = Requests::get('http://httpbin.org/get', array(), array('hooks' => $hooks));
 ```
+
+***
+
+Previous: [Requests through proxy](https://github.com/WordPress/Requests/blob/master/docs/proxy.md)
