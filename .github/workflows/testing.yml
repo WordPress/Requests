@@ -42,6 +42,9 @@ jobs:
       - name: Setup problem matcher to provide annotations for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
+      - name: Install pip requirements
+        run: sudo apt-get install python-dev libxml2-dev libxslt-dev libz-dev
+
       - name: Setup proxy server
         run: pip install --user mitmproxy==0.18.2
 
