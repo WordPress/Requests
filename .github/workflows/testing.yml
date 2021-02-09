@@ -71,7 +71,7 @@ jobs:
       - name: Verify environment
         run: |
           php -v
-          mitmdump -v
+          mitmdump --version
           ping -c1 localhost
           curl http://localhost:9002
 
