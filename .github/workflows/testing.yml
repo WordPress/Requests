@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: COMPOSER_ROOT_VERSION=dev-master composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Setup problem matcher to provide annotations for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"

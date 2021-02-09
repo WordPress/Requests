@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: COMPOSER_ROOT_VERSION=dev-master composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Run Linter
         run: vendor/bin/parallel-lint -j 10 . --exclude vendor --checkstyle | cs2pr
@@ -64,7 +64,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: COMPOSER_ROOT_VERSION=dev-master composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Run PHPCS
         run: vendor/bin/phpcs -q --report=checkstyle | cs2pr
