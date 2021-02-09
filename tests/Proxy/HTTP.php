@@ -126,6 +126,13 @@ class RequestsTest_Proxy_HTTP extends RequestsTest_TestCase {
 			),
 			'transport' => $transport,
 		);
+
+		if ($transport === 'Requests_Transport_fsockopen') {
+			// @TODO fsockopen connection times out on invalid auth instead of returning 407.
+			$this->expectException('Requests_Exception');
+			$this->expectExceptionMessage('fsocket timed out');
+		}
+
 		$response = Requests::get(httpbin('/get'), array(), $options);
 		$this->assertSame(407, $response->status_code);
 	}
