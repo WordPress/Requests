@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 PROXYDIR="$PWD/$(dirname $0)"
 
 PIDFILE="$PROXYDIR/proxy.pid"
