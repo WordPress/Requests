@@ -17,29 +17,6 @@ abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
 	}
 	protected $skip_https = false;
 
-	/**
-	 * PHPUnit 6+ compatibility shim.
-	 *
-	 * @param mixed      $exception
-	 * @param string     $message
-	 * @param int|string $code
-	 */
-	public function setExpectedException($exception, $message = '', $code = null) {
-		if (method_exists('PHPUnit_Framework_TestCase', 'setExpectedException')) {
-			parent::setExpectedException($exception, $message, $code);
-		}
-		else {
-			$this->expectException($exception);
-			if ($message !== null) {
-				$this->expectExceptionMessage($message);
-			}
-			if ($code !== null) {
-				$this->expectExceptionCode($code);
-			}
-		}
-	}
-
-
 	protected function getOptions($other = array()) {
 		$options = array(
 			'transport' => $this->transport,
