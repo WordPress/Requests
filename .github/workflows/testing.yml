@@ -42,8 +42,13 @@ jobs:
       - name: Setup problem matcher to provide annotations for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
       - name: Setup proxy server
-        run: sudo apt-get install mitmproxy
+        run: pip3 install mitmproxy
 
       - name: Start test server
         run: |
@@ -62,6 +67,13 @@ jobs:
 
       - name: Ensure the HTTPS test instance on Heroku is spun up
         run: curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
+
+      - name: Verify environment
+        run: |
+          php -v
+          mitmdump -v
+          ping -c1 localhost
+
 
       - name: Run PHPUnit
         run: composer test
