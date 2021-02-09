@@ -75,10 +75,10 @@ jobs:
         run: ping -c1 localhost
 
       - name: Access localhost on port 8080
-        run: curl http://localhost:8080
+        run: curl -i http://localhost:8080
 
       - name: Access localhost on port 9002
-        run: curl http://localhost:9002
+        run: curl -i http://localhost:9002
 
       - name: Run PHPUnit
         run: composer test
