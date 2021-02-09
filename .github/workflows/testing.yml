@@ -68,12 +68,17 @@ jobs:
       - name: Ensure the HTTPS test instance on Heroku is spun up
         run: curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
 
-      - name: Verify environment
-        run: |
-          php -v
-          mitmdump --version
-          ping -c1 localhost
-          curl http://localhost:9002
+      - name: Check mitmproxy version
+        run: mitmdump --version
+
+      - name: Ping localhost domain
+        run: ping -c1 localhost
+
+      - name: Access localhost on port 8080
+        run: curl http://localhost:8080
+
+      - name: Access localhost on port 9002
+        run: curl http://localhost:9002
 
       - name: Run PHPUnit
         run: composer test
