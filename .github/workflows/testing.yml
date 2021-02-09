@@ -73,7 +73,7 @@ jobs:
           php -v
           mitmdump -v
           ping -c1 localhost
-
+          curl http://localhost:9002
 
       - name: Run PHPUnit
         run: composer test
