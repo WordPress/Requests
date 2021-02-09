@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
+class RequestsTest_Proxy_HTTP extends RequestsTest_TestCase {
 	protected function checkProxyAvailable($type = '') {
 		switch ($type) {
 			case 'auth':
