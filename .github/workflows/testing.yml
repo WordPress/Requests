@@ -48,7 +48,7 @@ jobs:
           pip install wheel
 
       - name: Setup proxy server
-        run: pip install --user mitmproxy==0.18.2
+        run: pip install --user mitmproxy
 
       - name: Start test server
         run: |
