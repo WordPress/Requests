@@ -48,15 +48,15 @@ jobs:
       - name: Start test server
         run: |
           PORT=8080 vendor/bin/start.sh
-          echo "REQUESTS_TEST_HOST_HTTP=localhost:8080" >> $GITHUB_ENV
+          echo "REQUESTS_TEST_HOST_HTTP=127.0.0.1:8080" >> $GITHUB_ENV
 
       - name: Start proxy server
         run: |
           PORT=9002 tests/utils/proxy/start.sh
           PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
-          echo "REQUESTS_HTTP_PROXY=localhost:9002" >> $GITHUB_ENV
-          echo "REQUESTS_HTTP_PROXY=localhost:9002" >> $GITHUB_ENV
-          echo "REQUESTS_HTTP_PROXY_AUTH=localhost:9003" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY=127.0.0.1:9002" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY=127.0.0.1:9002" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY_AUTH=127.0.0.1:9003" >> $GITHUB_ENV
           echo "REQUESTS_HTTP_PROXY_AUTH_USER=test" >> $GITHUB_ENV
           echo "REQUESTS_HTTP_PROXY_AUTH_PASS=pass" >> $GITHUB_ENV
 
