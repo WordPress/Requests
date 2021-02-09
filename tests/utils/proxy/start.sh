@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 PROXYDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PORT=${PORT:-9000}
 
