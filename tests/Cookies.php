@@ -57,11 +57,9 @@ class RequestsTest_Cookies extends RequestsTest_TestCase {
 		$this->assertFalse(isset($jar['requests-testcookie']));
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Object is a dictionary, not a list
-	 */
 	public function testCookieJarAsList() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Object is a dictionary, not a list');
 		$cookies   = new Requests_Cookie_Jar();
 		$cookies[] = 'requests-testcookie1=testvalue1';
 	}
