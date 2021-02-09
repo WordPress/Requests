@@ -40,7 +40,7 @@
 	#############################################################################
 	-->
 
-	<config name="testVersion" value="5.2-"/>
+	<config name="testVersion" value="5.3-"/>
 	<rule ref="PHPCompatibility">
 		<!-- The example code may contain code samples targetted at PHP > 5.2. -->
 		<exclude-pattern>/examples/*\.php$</exclude-pattern>

@@ -118,7 +118,7 @@ class RequestsTest_Proxy_HTTP extends RequestsTest_TestCase {
 	public function testConnectWithInvalidAuth($transport) {
 		$this->checkProxyAvailable('auth');
 
-		$options  = array(
+		$options = array(
 			'proxy'     => array(
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER . '!',
