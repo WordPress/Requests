@@ -111,7 +111,7 @@ class RequestsTest_Cookies extends RequestsTest_TestCase {
 		$response = Requests::get(httpbin('/cookies/set'), array(), $options);
 
 		$data = json_decode($response->body, true);
-		$this->assertInternalType('array', $data);
+		$this->assertIsArray($data);
 		$this->assertArrayHasKey('cookies', $data);
 		return $data['cookies'];
 	}
