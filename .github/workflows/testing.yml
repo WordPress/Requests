@@ -43,7 +43,9 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Install pip requirements
-        run: sudo apt-get install python-dev libxml2-dev libxslt-dev libz-dev
+        run: |
+          sudo apt-get install python-dev libxml2-dev libxslt-dev libz-dev
+          pip install wheel
 
       - name: Setup proxy server
         run: pip install --user mitmproxy==0.18.2
