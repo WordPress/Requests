@@ -15,11 +15,12 @@
 	},
 	"require-dev": {
 		"requests/test-server": "dev-master",
-		"phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5",
+		"phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.5 || ^9.3",
 		"squizlabs/php_codesniffer": "^3.5",
 		"phpcompatibility/php-compatibility": "^9.0",
 		"wp-coding-standards/wpcs": "^2.0",
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.7"
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+		"yoast/phpunit-polyfills": "^0.2.0"
 	},
 	"type": "library",
 	"autoload": {
