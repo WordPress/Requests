@@ -42,13 +42,8 @@ jobs:
       - name: Setup problem matcher to provide annotations for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Install pip requirements
-        run: |
-          sudo apt-get install python-dev libxml2-dev libxslt-dev libz-dev
-          pip install wheel
-
       - name: Setup proxy server
-        run: pip install --user mitmproxy
+        run: sudo apt-get install mitmproxy
 
       - name: Start test server
         run: |
@@ -57,8 +52,8 @@ jobs:
 
       - name: Start proxy server
         run: |
-          PROXYBIN="$HOME/.local/bin/mitmdump" PORT=9002 tests/utils/proxy/start.sh
-          PROXYBIN="$HOME/.local/bin/mitmdump" PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
+          PORT=9002 tests/utils/proxy/start.sh
+          PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
           export REQUESTS_HTTP_PROXY="localhost:9002"
           export REQUESTS_HTTP_PROXY_AUTH="localhost:9003"
           export REQUESTS_HTTP_PROXY_AUTH_USER="test"
