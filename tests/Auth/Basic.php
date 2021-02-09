@@ -76,11 +76,9 @@ class RequestsTest_Auth_Basic extends RequestsTest_TestCase {
 		$this->assertSame('test', $result->data);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Invalid number of arguments
-	 */
 	public function testMissingPassword() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Invalid number of arguments');
 		new Requests_Auth_Basic(array('user'));
 	}
 

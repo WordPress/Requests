@@ -384,11 +384,9 @@ class RequestsTest_IRI extends RequestsTest_TestCase
 		$this->assertSame('test', $iri->fragment);
 	}
 
-	/**
-	 * @expectedException PHPUnit_Framework_Error_Notice
-	 */
 	public function testNonexistantProperty()
 	{
+		$this->expectNotice('Undefined property: Requests_IRI::nonexistant_prop');
 		$iri = new Requests_IRI();
 		$this->assertFalse(isset($iri->nonexistant_prop));
 		$should_fail = $iri->nonexistant_prop;
