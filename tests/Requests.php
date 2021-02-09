@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_Requests extends PHPUnit_Framework_TestCase {
+class RequestsTest_Requests extends RequestsTest_TestCase {
 	/**
 	 * @expectedException        Requests_Exception
 	 * @expectedExceptionMessage Only HTTP(S) requests are handled
