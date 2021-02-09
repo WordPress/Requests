@@ -20,7 +20,8 @@
 		"phpcompatibility/php-compatibility": "^9.0",
 		"wp-coding-standards/wpcs": "^2.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-		"yoast/phpunit-polyfills": "^0.2.0"
+		"yoast/phpunit-polyfills": "^0.2.0",
+		"php-parallel-lint/php-parallel-lint": "^1.2"
 	},
 	"type": "library",
 	"autoload": {
