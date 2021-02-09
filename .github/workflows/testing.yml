@@ -84,7 +84,9 @@ jobs:
         run: composer test
 
       - name: Stop proxy server
-        run: tests/utils/proxy/stop.sh
+        run: |
+          PORT=9002 tests/utils/proxy/stop.sh
+          PORT=9003 tests/utils/proxy/stop.sh
 
       - name: Stop test server
         run: vendor/bin/stop.sh
