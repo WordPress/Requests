@@ -65,7 +65,7 @@ Why should I use Requests?
 [coveralls]: https://coveralls.io/r/rmccue/Requests
 [hooking system]: hooks.md
 [requests_ssl]: https://github.com/WordPress/Requests/blob/master/library/Requests/SSL.php
-[travis]: https://travis-ci.org/rmccue/Requests
+[travis]: https://travis-ci.org/WordPress/Requests
 [wpssl]: http://core.trac.wordpress.org/ticket/25007
 
 
