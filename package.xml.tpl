@@ -30,7 +30,7 @@
 		<release>{{ stability }}</release>
 		<api>{{ stability }}</api>
 	</stability>
-	<license uri="https://github.com/rmccue/Requests/blob/master/LICENSE" filesource="LICENSE">ISC</license>
+	<license uri="https://github.com/WordPress/Requests/blob/master/LICENSE" filesource="LICENSE">ISC</license>
 	<notes>-</notes>
 	<contents>
 		<dir name="/">
