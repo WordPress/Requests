@@ -9,8 +9,8 @@ class RequestsTest_Utility_FilteredIterator extends PHPUnit_Framework_TestCase {
 		if (get_class($value) === 'Requests_Utility_FilteredIterator') {
 			$new_value = unserialize($serialized);
 			if (version_compare(PHP_VERSION, '5.3', '>=')) {
-				// phpcs:ignore PHPCompatibility.Syntax.NewClassMemberAccess.OnNewFound -- Wrapped in version check.
-				$property = (new ReflectionClass('Requests_Utility_FilteredIterator'))->getProperty('callback');
+				$reflection = new ReflectionClass('Requests_Utility_FilteredIterator');
+				$property   = $reflection->getProperty('callback');
 				$property->setAccessible(true);
 				$callback_value = $property->getValue($new_value);
 				$this->assertSame(null, $callback_value);
