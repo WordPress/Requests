@@ -1,0 +1,45 @@
+name: Lint
+
+on:
+  # Run on all pushes and on all pull requests.
+  push:
+  pull_request:
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+jobs:
+  lint: #----------------------------------------------------------------------
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Lint against the high/low versions of each PHP major and select additional versions.
+        # Note: linting against PHP 5.2 , 5.3 and 5.4 is still done via Travis.
+        php: ['5.6', '7.0', '7.4', '8.0']
+        experimental: [false]
+
+        include:
+          - php: '8.1'
+            experimental: true
+
+    name: "Lint: PHP ${{ matrix.php }}"
+    continue-on-error: ${{ matrix.experimental }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: cs2pr
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v1"
+
+      - name: Lint against parse errors
+        run: composer lint -- --checkstyle | cs2pr

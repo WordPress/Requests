@@ -52,9 +52,9 @@ install:
  - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then export PHPUNIT_BIN="phpunit";
    else export PHPUNIT_BIN="$(pwd)/vendor/bin/phpunit";
    fi
- # The PHPCS dependencies require PHP 5.4, so would block istall on PHP < 5.4.
+ # The PHPCS and lint dependencies require PHP 5.3, so would block install on PHP < 5.3.
  # As they are only needed for code sniffing, remove them.
- - travis_retry composer remove --dev --no-update squizlabs/php_codesniffer phpcompatibility/php-compatibility wp-coding-standards/wpcs dealerdirect/phpcodesniffer-composer-installer
+ - travis_retry composer remove --dev --no-update squizlabs/php_codesniffer phpcompatibility/php-compatibility wp-coding-standards/wpcs dealerdirect/phpcodesniffer-composer-installer php-parallel-lint/php-parallel-lint php-parallel-lint/php-console-highlighter
  - |
    if [[ ${TRAVIS_PHP_VERSION:0:1} == "8" || $TRAVIS_PHP_VERSION == "nightly" ]]; then
     travis_retry composer install --no-interaction --ignore-platform-reqs
@@ -85,13 +85,13 @@ before_script:
  - $PHPUNIT_BIN --version
 
 script:
- # Lint PHP files against parse errors.
+ # Lint PHP files against parse errors for PHP 5.2 - 5.4.
  - |
    if [ ${TRAVIS_PHP_VERSION:0:3} == "5.2" ]; then
      if find $(pwd)/ -path $(pwd)/vendor -prune -o -path $(pwd)/ examples/cookie_jar.php -prune -o -path $(pwd)/tests/phpunit6-compat.php -prune -o -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi
    elif [ ${TRAVIS_PHP_VERSION:0:3} == "5.3" ]; then
      if find $(pwd)/ -path $(pwd)/vendor -prune -o -path $(pwd)/ examples/cookie_jar.php -prune -o -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi
-   else
+   elif [ ${TRAVIS_PHP_VERSION:0:3} == "5.4" ]; then
      if find $(pwd)/ -path $(pwd)/vendor -prune -o -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi
    fi
 
