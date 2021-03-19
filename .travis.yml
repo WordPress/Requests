@@ -1,29 +1,13 @@
 dist: xenial
 language: php
 
-stages:
-  - sniff
-  - test
-
 env:
   - COMPOSER_PHPUNIT=true
 
 jobs:
   fast_finish: true
   include:
-   - stage: sniff
-     php: 7.4
-     install:
-       - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
-       - travis_retry composer install --no-interaction
-     before_script: skip
-     script:
-       # Check the code against the coding standards.
-       - composer checkcs
-     after_script: skip
-
-   - stage: test
-     php: 5.2
+   - php: 5.2
      dist: precise
      env: COMPOSER_PHPUNIT=false
    - php: 5.3
@@ -68,12 +52,9 @@ install:
  - if [ "$COMPOSER_PHPUNIT" == 'false' ]; then export PHPUNIT_BIN="phpunit";
    else export PHPUNIT_BIN="$(pwd)/vendor/bin/phpunit";
    fi
- - |
-   if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" ]]; then
-    # The PHPCS dependencies require PHP 5.4, so would block istall on PHP < 5.4.
-    # As they are only needed in the sniff stage, remove them.
-    travis_retry composer remove --dev --no-update squizlabs/php_codesniffer phpcompatibility/php-compatibility wp-coding-standards/wpcs dealerdirect/phpcodesniffer-composer-installer
-   fi
+ # The PHPCS dependencies require PHP 5.4, so would block istall on PHP < 5.4.
+ # As they are only needed for code sniffing, remove them.
+ - travis_retry composer remove --dev --no-update squizlabs/php_codesniffer phpcompatibility/php-compatibility wp-coding-standards/wpcs dealerdirect/phpcodesniffer-composer-installer
  - |
    if [[ ${TRAVIS_PHP_VERSION:0:1} == "8" || $TRAVIS_PHP_VERSION == "nightly" ]]; then
     travis_retry composer install --no-interaction --ignore-platform-reqs
