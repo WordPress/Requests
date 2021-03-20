@@ -27,6 +27,7 @@
 			<file>Response/Headers.php</file>
 			<file>Session.php</file>
 			<file>SSL.php</file>
+			<file>Utility/FilteredIterator.php</file>
 		</testsuite>
 	</testsuites>
 
