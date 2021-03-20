@@ -411,7 +411,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$options['hooks']->dispatch('curl.after_request', array(&$fake_headers));
 			return false;
 		}
-		if ($options['filename'] !== false) {
+		if ($options['filename'] !== false && $this->stream_handle) {
 			fclose($this->stream_handle);
 			$this->headers = trim($this->headers);
 		}
