@@ -27,6 +27,7 @@ class RequestsTest_Utility_FilteredIterator extends PHPUnit_Framework_TestCase {
 		return array(
 			array(new Requests_Utility_FilteredIterator(array(1), 'md5')),
 			array(new Requests_Utility_FilteredIterator(array(1, 2), 'sha1')),
+			array(new Requests_Utility_FilteredIterator(array(1, 2, 3), 'doesnotexist')),
 			array(new ArrayIterator(array(1, 2, 3))),
 		);
 	}
