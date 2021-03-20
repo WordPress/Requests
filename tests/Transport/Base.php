@@ -530,6 +530,29 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		unlink($options['filename']);
 	}
 
+	public function testStreamToNonWritableFile() {
+		// Create an unwritable file.
+		$filename = tempnam(sys_get_temp_dir(), 'RLT'); // RequestsLibraryTest
+		if (file_put_contents($filename, 'foo')) {
+			chmod($filename, 0444);
+		}
+
+		$options = array(
+			'filename' => $filename,
+		);
+
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors -- Silencing "failed to open stream" warning.
+		$request = @Requests::get(httpbin('/get'), array(), $this->getOptions($options));
+		$this->assertSame(200, $request->status_code);
+		$this->assertEmpty($request->body);
+
+		$contents = file_get_contents($options['filename']);
+		$this->assertSame('foo', $contents);
+
+		chmod($filename, 0755);
+		unlink($filename);
+	}
+
 	public function testNonblocking() {
 		$options = array(
 			'blocking' => false,
