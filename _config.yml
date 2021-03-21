@@ -10,8 +10,6 @@ kramdown:
     input: GFM
     parse_block_html: false
 
-exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh', 'Gemfile', 'Gemfile.lock', '.jekyll-metadata']
-
 plugins:
   - jekyll-github-metadata
   - jekyll-sitemap
@@ -22,3 +20,29 @@ requests:
     ci_tests_img: 'https://img.shields.io/travis/WordPress/Requests/master.svg?style=flat-square'
     ci_codecov_url: 'https://app.codecov.io/gh/WordPress/Requests/branch/master'
     ci_codecov_img: 'https://img.shields.io/codecov/c/github/WordPress/Requests/master.svg?style=flat-square'
+
+# Files to exclude when generating the site.
+exclude:
+   - .sass-cache/
+   - .jekyll-cache/
+   - gemfiles/
+   - Gemfile
+   - Gemfile.lock
+   - node_modules/
+   - vendor/bundle/
+   - vendor/cache/
+   - vendor/gems/
+   - vendor/ruby/
+   - CNAME
+   - CONTRIBUTING.md
+   - LICENSE
+   - README.md
+   - apigen.neon
+   - buildtool.py
+   - Vagrantfile
+   - vagrant-provision.sh
+   - .gitignore
+   - .github
+   - .jekyll-metadata
+   - '*.bak'
+   - '*.orig'
