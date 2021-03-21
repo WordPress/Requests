@@ -5,15 +5,15 @@ title: Download
 Download
 ========
 
-The current version of Requests is 1.7, which you can
+The current version of Requests is {{ site.github.latest_release.tag_name }}, which you can
 download from GitHub as a
-[zip](https://github.com/rmccue/Requests/archive/v1.7.0.zip) or a
-[tarball](https://github.com/rmccue/Requests/archive/v1.7.0.tar.gz).
+[zip]({{ site.github.latest_release.zipball_url }}) or a
+[tarball]({{ site.github.latest_release.tarball_url }}).
 
 You can also check out the [releases page][releases] on GitHub for a changelog
 plus more information.
 
-[releases]: https://github.com/rmccue/Requests/releases
+[releases]: {{ site.github.releases_url }}
 
 
 Alternative Methods
@@ -26,7 +26,7 @@ dependencies, you can add Requests with it.
 ```json
 {
     "require": {
-        "rmccue/requests": ">=1.0"
+        "rmccue/requests": "^{{ site.github.latest_release.tag_name | replace_first: 'v', '' }}"
     },
     "autoload": {
         "psr-0": {"Requests": "library/"}
@@ -38,7 +38,7 @@ dependencies, you can add Requests with it.
 To install the source code:
 
 ```bash
-$ git clone git://github.com/rmccue/Requests.git
+$ git clone {{ site.github.clone_url }}
 ```
 
 And include it in your scripts:
@@ -57,8 +57,9 @@ Requests::register_autoloader();
 Previous Versions
 -----------------
 
-* Version 1.6: [Zip](https://github.com/rmccue/Requests/archive/v1.6.0.zip) or
-  [Tarball](https://github.com/rmccue/Requests/archive/v1.6.0.tar.gz)
-
-* Version 1.5: [Zip](https://github.com/rmccue/Requests/archive/v1.5.zip) or
-  [Tarball](https://github.com/rmccue/Requests/archive/v1.5.tar.gz)
+{%- assign ghreleases = site.github.releases | where: "draft", false | sort: 'tag_name' | reverse -%}
+{% for release in ghreleases %}
+    {% if release.tag_name != site.github.latest_release.tag_name %}
+* Version {{ release.tag_name }}: [Zip]({{ release.zipball_url}}) or [Tarball]({{ release.tarball_url}})
+    {%- endif -%}
+{%- endfor -%}

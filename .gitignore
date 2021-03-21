@@ -4,3 +4,4 @@ badreport
 Gemfile.lock
 .sass-cache
 *.gem
+.jekyll-metadata

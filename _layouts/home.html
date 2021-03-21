@@ -10,10 +10,10 @@
 			<p>Never touch cURL again.</p>
 
 			<p>
-				<a href="https://github.com/rmccue/Requests/archive/v1.7.0.zip" class="btn btn-large btn-success">Download Now</a>
+				<a href="{{ site.github.latest_release.zipball_url }}" class="btn btn-large btn-success">Download Now</a>
 			</p>
 			<ul class="aux-links">
-				<li>Version 1.7</li>
+				<li>Version {{ site.github.latest_release.tag_name }}</li>
 				<li><a href="/download/">Previous Versions</a></li>
 			</ul>
 
@@ -33,7 +33,7 @@
 			<div>
 				<p>Made for you by <a href="http://ryanmccue.info/">Ryan McCue</a>.</p>
 				<p>Code licensed under the
-					<a href="https://github.com/rmccue/Requests/blob/master/LICENSE">ISC License</a>.</p>
+					<a href="{{ '/blob/master/LICENSE' | prepend: site.github.repository_url }}">ISC License</a>.</p>
 			</div>
 			<p><a href="#">Back to top</a></p>
 		</footer>

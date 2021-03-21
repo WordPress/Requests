@@ -2,12 +2,16 @@ name: Requests for PHP
 markdown: kramdown
 highlighter: rouge
 
+# GH metadata: only needed to allow for local testing.
+repository: "WordPress/Requests"
+
 kramdown:
     input: GFM
     parse_block_html: false
 
 baseurl: /
-exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh', 'Gemfile', 'Gemfile.lock']
+exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh', 'Gemfile', 'Gemfile.lock', '.jekyll-metadata']
 
-gems:
+plugins:
+  - jekyll-github-metadata
   - jekyll-sitemap
