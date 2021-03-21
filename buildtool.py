@@ -61,7 +61,7 @@ def compile_file(inputfile, outputfile, frontmatter):
 		
 		# Generate frontmatter
 		frontmatter_vars = ['{0}: {1}'.format(key, val) for key, val in frontmatter.iteritems()]
-		frontmatter_content = '---\n{0}\n---\n'.format('\n'.join(frontmatter_vars))
+		frontmatter_content = '---\n{0}\n---\n\n'.format('\n'.join(frontmatter_vars))
 		contents = "{0}{1}".format(frontmatter_content, contents)
 
 		# Write output
