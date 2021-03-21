@@ -63,33 +63,37 @@ composer require rmccue/requests
 ```
 
 or
-
-    {
-        "require": {
-            "rmccue/requests": ">=1.0"
-        }
+```json
+{
+    "require": {
+        "rmccue/requests": ">=1.0"
     }
+}
 
 ### Install source from GitHub
 To install the source code:
-
-    $ git clone git://github.com/WordPress/Requests.git
+```bash
+$ git clone git://github.com/WordPress/Requests.git
+```
 
 And include it in your scripts:
-
-    require_once '/path/to/Requests/library/Requests.php';
+```php
+require_once '/path/to/Requests/library/Requests.php';
+```
 
 You'll probably also want to register an autoloader:
-
+```php
     Requests::register_autoloader();
-
+```
 
 ### Install source from zip/tarball
 Alternatively, you can fetch a [tarball][] or [zipball][]:
 
-    $ curl -L https://github.com/WordPress/Requests/tarball/master | tar xzv
-    (or)
-    $ wget https://github.com/WordPress/Requests/tarball/master -O - | tar xzv
+```bash
+$ curl -L https://github.com/WordPress/Requests/tarball/master | tar xzv
+or)
+$ wget https://github.com/WordPress/Requests/tarball/master -O - | tar xzv
+```
 
 [tarball]: https://github.com/WordPress/Requests/tarball/master
 [zipball]: https://github.com/WordPress/Requests/zipball/master
@@ -98,8 +102,9 @@ Alternatively, you can fetch a [tarball][] or [zipball][]:
 ### Using a Class Loader
 If you're using a class loader (e.g., [Symfony Class Loader][]) for
 [PSR-0][]-style class loading:
-
-    $loader->registerPrefix('Requests', 'path/to/vendor/Requests/library');
+```php
+$loader->registerPrefix('Requests', 'path/to/vendor/Requests/library');
+```
 
 [Symfony Class Loader]: https://github.com/symfony/ClassLoader
 [PSR-0]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md
@@ -132,12 +137,14 @@ set of tests. We're not quite there yet, but [we're getting close][codecov].
 To run the test suite, first check that you have the [PHP
 JSON extension ](http://php.net/manual/en/book.json.php) enabled. Then
 simply:
-
-    $ phpunit
+```bash
+$ phpunit
+```
 
 If you'd like to run a single set of tests, specify just the name:
-
-    $ phpunit Transport/cURL
+```bash
+$ phpunit Transport/cURL
+```
 
 Contribute
 ----------
