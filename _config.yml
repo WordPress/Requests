@@ -10,7 +10,7 @@ kramdown:
         coderay_css: class
 
 baseurl: /
-exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh']
+exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh', 'Gemfile', 'Gemfile.lock']
 
 gems:
   - jekyll-sitemap
