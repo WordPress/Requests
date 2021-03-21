@@ -7,20 +7,20 @@
 		<meta name="description" content="A HTTP request library written for human beings">
 		<meta name="author" content="Ryan McCue">
 
-		<link href="{{ site.baseurl }}assets/css/requests.css" rel="stylesheet">
-		<link href="{{ site.baseurl }}assets/css/syntax.css" rel="stylesheet">
+		<link href="{{ '/assets/css/requests.css' | prepend: site.baseurl }}" rel="stylesheet">
+		<link href="{{ '/assets/css/syntax.css' | prepend: site.baseurl }}" rel="stylesheet">
 	</head>
 
 	<body>
 		<div class="navbar">
 			<div class="navbar-inner">
-				<a href="/" rel="home" class="brand">Requests for PHP</a>
+				<a href="{{ '/' | prepend: site.baseurl }}" rel="home" class="brand">Requests for PHP</a>
 				<ul class="nav">
-					<li><a href="/">About</a></li>
-					<li><a href="/download/">Download</a></li>
-					<li><a href="/docs/">Documentation</a></li>
-					<li><a href="/api/">API Docs</a></li>
-					<li><a href="/support/">Support</a></li>
+					<li><a href="{{ '/' | prepend: site.baseurl }}">About</a></li>
+					<li><a href="{{ '/download/' | prepend: site.baseurl }}">Download</a></li>
+					<li><a href="{{ '/docs/' | prepend: site.baseurl }}">Documentation</a></li>
+					<li><a href="{{ '/api/' | prepend: site.baseurl }}">API Docs</a></li>
+					<li><a href="{{ '/support/' | prepend: site.baseurl }}">Support</a></li>
 					<li class="divider-vertical"></li>
 					<li><a href="{{ site.github.repository_url }}">Contribute</a></li>
 					<li><a href="https://travis-ci.org/rmccue/Requests">Tests</a></li>
