@@ -26,7 +26,7 @@ dependencies, you can add Requests with it.
 ```json
 {
     "require": {
-        "rmccue/requests": "^{{ site.github.latest_release.tag_name | replace_first: 'v', '' }}"
+        "{{ site.requests.packagist }}": "^{{ site.github.latest_release.tag_name | replace_first: 'v', '' }}"
     },
     "autoload": {
         "psr-0": {"Requests": "library/"}
