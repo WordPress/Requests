@@ -43,6 +43,11 @@ li {
 		margin-top: 9px;
 	}
 
+figure,
+div .highlight {
+    margin: 1rem 0.5rem;
+}
+
 pre code {
 	border: none;
 	color: #333;
@@ -51,7 +56,6 @@ pre code {
 pre {
 	background-color: #F7F7F7;
 }
-@import "syntax";
 
 #page-footer {
 	p {

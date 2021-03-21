@@ -23,7 +23,7 @@ Alternative Methods
 If you're using [Composer](https://github.com/composer/composer) to manage
 dependencies, you can add Requests with it.
 
-{% highlight json %}
+```json
 {
     "require": {
         "rmccue/requests": ">=1.0"
@@ -32,26 +32,26 @@ dependencies, you can add Requests with it.
         "psr-0": {"Requests": "library/"}
     }
 }
-{% endhighlight %}
+```
 
 ### Installing via Git
 To install the source code:
 
-{% highlight sh %}
+```bash
 $ git clone git://github.com/rmccue/Requests.git
-{% endhighlight %}
+```
 
 And include it in your scripts:
 
-{% highlight php startinline %}
+```php
 require_once '/path/to/Requests/library/Requests.php';
-{% endhighlight %}
+```
 
 You'll probably also want to register an autoloader:
 
-{% highlight php startinline %}
+```php
 Requests::register_autoloader();
-{% endhighlight %}
+```
 
 
 Previous Versions

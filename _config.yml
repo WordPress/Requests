@@ -1,13 +1,10 @@
 name: Requests for PHP
 markdown: kramdown
+highlighter: rouge
 
 kramdown:
     input: GFM
-    hard_wrap: false
-    use_coderay: true
-    coderay:
-        coderay_line_numbers: nil
-        coderay_css: class
+    parse_block_html: false
 
 baseurl: /
 exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh', 'Gemfile', 'Gemfile.lock']
