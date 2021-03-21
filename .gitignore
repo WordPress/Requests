@@ -2,3 +2,5 @@ _site
 badreport
 .vagrant
 Gemfile.lock
+.sass-cache
+*.gem
