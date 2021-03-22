@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.5', '7.2', 'latest']
+        php: ['5.6', '7.2', 'latest']
 
     name: "Quick Test: PHP ${{ matrix.php }}"
 

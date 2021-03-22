@@ -830,7 +830,6 @@ class Requests {
 		}
 
 		if (function_exists('gzdecode')) {
-			// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.gzdecodeFound -- Wrapped in function_exists() for PHP 5.2.
 			$decoded = @gzdecode($data);
 			if ($decoded !== false) {
 				return $decoded;

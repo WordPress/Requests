@@ -13,8 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        # Lint against the high/low versions of each PHP major and select additional versions.
-        # Note: linting against PHP 5.2 , 5.3 and 5.4 is still done via Travis.
+        # Lint against the high/low versions of each PHP major.
         php: ['5.6', '7.0', '7.4', '8.0']
         experimental: [false]
 
@@ -38,8 +37,16 @@ jobs:
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
-      - name: Install Composer dependencies
+      - name: Install Composer dependencies - normal
+        if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
         uses: "ramsey/composer-install@v1"
+
+      # For PHP 8.0 and "nightly", we need to install with ignore platform reqs.
+      - name: Install Composer dependencies - with ignore platform
+        if: ${{ startsWith( matrix.php, '8' ) || matrix.php == 'latest' }}
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: --ignore-platform-reqs
 
       - name: Lint against parse errors
         run: composer lint -- --checkstyle | cs2pr

@@ -40,11 +40,8 @@
 	#############################################################################
 	-->
 
-	<config name="testVersion" value="5.2-"/>
-	<rule ref="PHPCompatibility">
-		<!-- The example code may contain code samples targetted at PHP > 5.2. -->
-		<exclude-pattern>/examples/*\.php$</exclude-pattern>
-	</rule>
+	<config name="testVersion" value="5.6-"/>
+	<rule ref="PHPCompatibility"/>
 
 
 	<!--
@@ -230,7 +227,7 @@
 		 Example code
 		 ========================================================================== -->
 
-	<!-- Using PHP 5.4+ syntax in example code is fine. -->
+	<!-- Using short arrays in example code is fine. -->
 	<rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
 		<exclude-pattern>/examples/cookie_jar\.php$</exclude-pattern>
 	</rule>
@@ -243,19 +240,6 @@
 	<!-- ==========================================================================
 		 Test code
 		 ========================================================================== -->
-
-	<!-- The PHPUnit6-compat file is only loaded on PHP 7.0 or higher. -->
-	<rule ref="PHPCompatibility.FunctionUse.NewFunctions.class_aliasFound">
-		<exclude-pattern>/tests/phpunit6-compat\.php$</exclude-pattern>
-	</rule>
-	<rule ref="PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound">
-		<exclude-pattern>/tests/phpunit6-compat\.php$</exclude-pattern>
-	</rule>
-
-	<!-- Tests aren't run on PHP 5.2.0 anymore, so just ignore this. -->
-	<rule ref="PHPCompatibility.FunctionUse.NewFunctions.sys_get_temp_dirFound">
-		<exclude-pattern>/tests/Transport/Base\.php$</exclude-pattern>
-	</rule>
 
 	<!-- Overloaded methods to make the expected exceptions more specific. -->
 	<rule ref="Generic.CodeAnalysis.UselessOverridingMethod">
