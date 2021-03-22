@@ -3,7 +3,8 @@ Requests for PHP
 
 [![CS](https://github.com/WordPress/Requests/actions/workflows/cs.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/cs.yml)
 [![Lint](https://github.com/WordPress/Requests/actions/workflows/lint.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/lint.yml)
-[![Build Status](https://travis-ci.org/WordPress/Requests.svg?branch=master)](https://travis-ci.org/WordPress/Requests)
+[![Test](https://github.com/WordPress/Requests/actions/workflows/test.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/test.yml)
+[![CI PHP 5.2-5.4](https://travis-ci.org/WordPress/Requests.svg?branch=master)](https://travis-ci.org/WordPress/Requests)
 [![codecov.io](http://codecov.io/github/WordPress/Requests/coverage.svg?branch=master)](http://codecov.io/github/WordPress/Requests?branch=master)
 
 Requests is a HTTP library written in PHP, for human beings. It is roughly
