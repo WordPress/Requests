@@ -42,3 +42,9 @@ $response = Requests::get('http://hotdogbin.org/admin', array(), $options);
 system documentation][hooks])
 
 [hooks]: hooks.md
+
+***
+
+Previous: [Authenticating your request](authentication.md)
+
+Next: [Requests through proxy](proxy.md)

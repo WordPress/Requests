@@ -190,3 +190,9 @@ instead of something else, in our opinion.
 
    Similar to HTTP_Request2, Zend's client is not fully self-contained and
    requires other components from the framework.
+
+***
+
+Previous: [Goals](goals.md)
+
+Next: [Making a request](usage.md)

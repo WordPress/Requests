@@ -21,3 +21,9 @@ $options = array(
 );
 Requests::get('http://httpbin.org/ip', array(), $options);
 ```
+
+***
+
+Previous: [Custom authentification](authentication-custom.md)
+
+Next: [Hooking system](hooks.md)

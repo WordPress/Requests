@@ -29,3 +29,9 @@ before `$options`:
 ```php
 Requests::post('http://httpbin.org/basic-auth/user/password', array(), null, $options);
 ```
+
+***
+
+Previous: [Advanced usage](usage-advanced.md)
+
+Next: [Custom authentification](authentication-custom.md)

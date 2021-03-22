@@ -27,3 +27,7 @@ Goals
    Requests is designed to be entirely self-contained and doesn't require
    anything else at all. You can run Requests on an entirely stock PHP build
    without any additional extensions outside the standard library.
+
+***
+
+Next: [Why Requests Instead of X?](why-requests.md)
