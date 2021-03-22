@@ -45,6 +45,6 @@ system documentation][hooks])
 
 ***
 
-Previous: [Authenticating your request](https://github.com/WordPress/Requests/blob/master/docs/authentication.md)
+Previous: [Authenticating your request](authentication.md)
 
-Next: [Requests through proxy](https://github.com/WordPress/Requests/blob/master/docs/proxy.md)
+Next: [Requests through proxy](proxy.md)

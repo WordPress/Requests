@@ -32,6 +32,6 @@ Requests::post('http://httpbin.org/basic-auth/user/password', array(), null, $op
 
 ***
 
-Previous: [Advanced usage](https://github.com/WordPress/Requests/blob/master/docs/usage-advanced.md)
+Previous: [Advanced usage](usage-advanced.md)
 
-Next: [Custom authentification](https://github.com/WordPress/Requests/blob/master/docs/authentication-custom.md)
+Next: [Custom authentification](authentication-custom.md)

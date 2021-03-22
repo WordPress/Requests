@@ -97,4 +97,4 @@ $request = Requests::get('http://httpbin.org/get', array(), array('hooks' => $ho
 
 ***
 
-Previous: [Requests through proxy](https://github.com/WordPress/Requests/blob/master/docs/proxy.md)
+Previous: [Requests through proxy](proxy.md)

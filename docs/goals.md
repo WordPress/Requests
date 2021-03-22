@@ -30,4 +30,4 @@ Goals
 
 ***
 
-Next: [Why Requests Instead of X?](https://github.com/WordPress/Requests/blob/master/docs/why-requests.md)
+Next: [Why Requests Instead of X?](why-requests.md)
