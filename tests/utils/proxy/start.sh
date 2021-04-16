@@ -6,8 +6,14 @@ PORT=${PORT:-9000}
 PROXYBIN=${PROXYBIN:-"$(which mitmdump)"}
 ARGS="-s '$PROXYDIR/proxy.py' -p $PORT"
 if [[ ! -z "$AUTH" ]]; then
-	ARGS="$ARGS --singleuser=$AUTH"
+	ARGS="$ARGS --proxyauth $AUTH"
 fi
-PIDFILE="$PROXYDIR/proxy.pid"
+PIDFILE="$PROXYDIR/proxy-$PORT.pid"
 
-start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --exec $PROXYBIN -- $ARGS
+set -x
+
+start-stop-daemon --verbose --start --background --pidfile $PIDFILE --make-pidfile --exec $PROXYBIN -- $ARGS
+
+ps -p $(cat $PIDFILE) -u
+sleep 2
+ps -p $(cat $PIDFILE) -u

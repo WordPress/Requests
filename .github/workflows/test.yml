@@ -1,0 +1,144 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+jobs:
+  #### TEST STAGE ####
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Keys:
+      # - coverage: Whether to run the tests with code coverage.
+      # - experimental: Whether the build is "allowed to fail".
+      matrix:
+        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
+        coverage: [false]
+        experimental: [false]
+
+        include:
+          # Run code coverage on high/low PHP.
+          - php: '5.5'
+            coverage: true
+            experimental: false
+          - php: '8.0'
+            coverage: true
+            experimental: false
+
+          # Test against PHP Nightly.
+          # This should be enabled once the PHPUnit version constraints have been widened.
+          #- php: '8.1'
+          #  coverage: false
+          #  experimental: true
+
+    name: "Test: PHP ${{ matrix.php }}"
+
+    continue-on-error: ${{ matrix.experimental }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set coverage variable
+        id: set_cov
+        run: |
+          if [ ${{ matrix.coverage }} == "true" ]; then
+            echo '::set-output name=COV::xdebug'
+          else
+            echo '::set-output name=COV::none'
+          fi
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: ${{ steps.set_cov.outputs.COV }}
+          tools: cs2pr
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies - normal
+        if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
+        uses: "ramsey/composer-install@v1"
+
+      # For PHP 8.0 and "nightly", we need to install with ignore platform reqs.
+      - name: Install Composer dependencies - with ignore platform
+        if: ${{ startsWith( matrix.php, '8' ) || matrix.php == 'latest' }}
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: --ignore-platform-reqs
+
+      - name: Setup problem matcher to provide annotations for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Setup proxy server
+        run: pip3 install mitmproxy
+
+      - name: Start test server
+        run: |
+          PORT=8080 vendor/bin/start.sh
+          echo "REQUESTS_TEST_HOST_HTTP=localhost:8080" >> $GITHUB_ENV
+
+      - name: Start proxy server
+        run: |
+          PORT=9002 tests/utils/proxy/start.sh
+          PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
+          echo "REQUESTS_HTTP_PROXY=localhost:9002" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY_AUTH=localhost:9003" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY_AUTH_USER=test" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY_AUTH_PASS=pass" >> $GITHUB_ENV
+
+      - name: Ensure the HTTPS test instance on Heroku is spun up
+        run: curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
+
+      - name: Check mitmproxy version
+        run: mitmdump --version
+
+      - name: Ping localhost domain
+        run: ping -c1 localhost
+
+      - name: Access localhost on port 8080
+        run: curl -i http://localhost:8080
+
+      - name: Access localhost on port 9002
+        run: curl -i http://localhost:9002
+
+      - name: Show PHPUnit version
+        run: vendor/bin/phpunit --version
+
+      - name: Run the unit tests, no code coverage
+        if: ${{ matrix.coverage == false }}
+        run: composer test
+
+      - name: Run the unit tests with code coverage
+        if: ${{ matrix.coverage == true }}
+        run: vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: Stop proxy server
+        continue-on-error: true
+        run: |
+          PORT=9002 tests/utils/proxy/stop.sh
+          PORT=9003 tests/utils/proxy/stop.sh
+
+      - name: Stop test server
+        continue-on-error: true
+        run: vendor/bin/stop.sh
+
+      - name: Send coverage report to Codecov
+        if: ${{ success() && matrix.coverage == true }}
+        uses: codecov/codecov-action@v1
+        with:
+          files: ./clover.xml
+          fail_ci_if_error: true
+          verbose: true
