@@ -69,6 +69,7 @@ or
         "rmccue/requests": ">=1.0"
     }
 }
+```
 
 ### Install source from GitHub
 To install the source code:
