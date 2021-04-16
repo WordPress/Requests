@@ -115,7 +115,6 @@ script:
    fi
 
  # Run the unit tests.
- - cd tests
  - |
    if [ "$TEST_COVERAGE" == '1' ]; then
      $PHPUNIT_BIN --coverage-clover clover.xml;
@@ -127,7 +126,6 @@ script:
    fi
 
 after_script:
- - utils/proxy/stop.sh
- - cd ..
+ - tests/utils/proxy/stop.sh
  - PATH=$PATH vendor/bin/stop.sh
  - test $TEST_COVERAGE && bash <(curl -s https://codecov.io/bash)

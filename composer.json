@@ -33,10 +33,10 @@
 			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
 		],
 		"test": [
-			"@php ./vendor/phpunit/phpunit/phpunit -c ./tests/phpunit.xml.dist --no-coverage"
+			"@php ./vendor/phpunit/phpunit/phpunit --no-coverage"
 		],
 		"coverage": [
-			"@php ./vendor/phpunit/phpunit/phpunit -c ./tests/phpunit.xml.dist"
+			"@php ./vendor/phpunit/phpunit/phpunit"
 		]
 	}
 }

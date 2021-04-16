@@ -133,7 +133,6 @@ To run the test suite, first check that you have the [PHP
 JSON extension ](http://php.net/manual/en/book.json.php) enabled. Then
 simply:
 
-    $ cd tests
     $ phpunit
 
 If you'd like to run a single set of tests, specify just the name:
