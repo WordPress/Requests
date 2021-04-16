@@ -75,7 +75,7 @@ install:
     travis_retry composer remove --dev --no-update squizlabs/php_codesniffer phpcompatibility/php-compatibility wp-coding-standards/wpcs dealerdirect/phpcodesniffer-composer-installer
    fi
  - |
-   if [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+   if [[ ${TRAVIS_PHP_VERSION:0:1} == "8" || $TRAVIS_PHP_VERSION == "nightly" ]]; then
     travis_retry composer install --no-interaction --ignore-platform-reqs
    else
     travis_retry composer install --no-interaction
