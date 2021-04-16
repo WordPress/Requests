@@ -1,14 +1,16 @@
 Usage
 =====
 
-Ready to go? Make sure you have Requests installed before attempting any of the
+Ready to go? Make sure you have Requests [installed][download] before attempting any of the
 steps in this guide.
+
+[download]: {{ '/download/' | prepend: site.baseurl }}
 
 
 Loading Requests
 ----------------
 Before we can load Requests up, we'll need to make sure it's loaded. This is a
-simple two-step:
+straight-forward two-step:
 
 ```php
 // First, include Requests
@@ -26,10 +28,10 @@ Make a GET Request
 ------------------
 One of the most basic things you can do with HTTP is make a GET request.
 
-Let's grab GitHub's public timeline:
+Let's grab GitHub's public events:
 
 ```php
-$response = Requests::get('https://github.com/timeline.json');
+$response = Requests::get('https://api.github.com/events');
 ```
 
 `$response` is now a **Requests_Response** object. Response objects are what
@@ -42,7 +44,7 @@ Now that we have the response from GitHub, let's get the body of the response.
 
 ```php
 var_dump($response->body);
-// string(42865) "[{"repository":{"url":"...
+// string(42865) "[{"id":"15624773365","type":"PushEvent","actor":{...
 ```
 
 
@@ -52,7 +54,7 @@ If you want to add custom headers to the request, simply pass them in as an
 associative array as the second parameter:
 
 ```php
-$response = Requests::get('https://github.com/timeline.json', array('X-Requests' => 'Is Awesome!'));
+$response = Requests::get('https://api.github.com/events', array('X-Requests' => 'Is Awesome!'));
 ```
 
 
@@ -78,26 +80,26 @@ var_dump($response->body);
 
 This gives the output:
 
-	string(503) "{
-	  "origin": "124.191.162.147", 
-	  "files": {}, 
-	  "form": {
-	    "key2": "value2", 
-	    "key1": "value1"
-	  }, 
-	  "headers": {
-	    "Content-Length": "23", 
-	    "Accept-Encoding": "deflate;q=1.0, compress;q=0.5, gzip;q=0.5", 
-	    "X-Forwarded-Port": "80", 
-	    "Connection": "keep-alive", 
-	    "User-Agent": "php-requests/1.6-dev", 
-	    "Host": "httpbin.org", 
-	    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-	  }, 
-	  "url": "http://httpbin.org/post", 
-	  "args": {}, 
-	  "data": ""
-	}"
+    string(503) "{
+      "origin": "124.191.162.147",
+      "files": {},
+      "form": {
+        "key2": "value2",
+        "key1": "value1"
+      },
+      "headers": {
+        "Content-Length": "23",
+        "Accept-Encoding": "deflate;q=1.0, compress;q=0.5, gzip;q=0.5",
+        "X-Forwarded-Port": "80",
+        "Connection": "keep-alive",
+        "User-Agent": "php-requests/1.6-dev",
+        "Host": "httpbin.org",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+      },
+      "url": "http://httpbin.org/post",
+      "args": {},
+      "data": ""
+    }"
 
 To send raw data, simply pass in a string instead. You'll probably also want to
 set the Content-Type header to ensure the remote server knows what you're
@@ -140,15 +142,17 @@ We can also grab headers pretty easily:
 
 ```php
 var_dump($response->headers['Date']);
-// string(29) "Thu, 09 Feb 2012 15:22:06 GMT"
+// string(29) "Thu, 09 Feb 2021 15:22:06 GMT"
 ```
 
 Note that this is case-insensitive, so the following are all equivalent:
 
-* `$response->headers['Date']`
-* `$response->headers['date']`
-* `$response->headers['DATE']`
-* `$response->headers['dAtE']`
+```php
+$response->headers['Date']
+$response->headers['date']
+$response->headers['DATE']
+$response->headers['dAtE']
+```
 
 If a header isn't set, this will give `null`. You can also check with
 `isset($response->headers['date'])`

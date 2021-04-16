@@ -47,7 +47,7 @@ accepted by cURL and OpenSSL):
 
 ```php
 $options = array(
-	'verify' => '/path/to/cacert.pem'
+    'verify' => '/path/to/cacert.pem'
 );
 $response = Requests::get('https://httpbin.org/', array(), $options);
 ```
@@ -60,14 +60,11 @@ avoided.
 Requests supports SSL across both cURL and fsockopen in a transparent manner.
 Unlike other PHP HTTP libraries, support for verifying the certificate name is
 built-in; that is, a request for `https://github.com/` will actually verify the
-certificate's name even with the fsockopen transport. This makes Requests the
-first and currently only PHP HTTP library that supports full SSL verification.
+certificate's name even with the fsockopen transport. Requests was the
+first PHP HTTP library to fully support SSL verification.
 
-(Note that WordPress now also supports this verification, thanks to efforts by
-the Requests development team.)
-
-(See also the [related PHP][php-bug-47030] and [OpenSSL-related][php-bug-55820]
-bugs in PHP for more information on Subject Alternate Name field.)
+See also the [related PHP][php-bug-47030] and [OpenSSL-related][php-bug-55820]
+bugs in PHP for more information on Subject Alternate Name field.
 
 [Mozilla certificate authority list]: http://www.mozilla.org/projects/security/certs/
 [php-bug-47030]: https://bugs.php.net/bug.php?id=47030

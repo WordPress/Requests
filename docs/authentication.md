@@ -4,11 +4,11 @@ Many requests that you make will require authentication of some type. Requests
 includes support out of the box for HTTP Basic authentication, with more
 built-ins coming soon.
 
-Making a Basic authenticated call is ridiculously easy:
+A Basic authenticated call can be made like this:
 
 ```php
 $options = array(
-	'auth' => new Requests_Auth_Basic(array('user', 'password'))
+    'auth' => new Requests_Auth_Basic(array('user', 'password'))
 );
 Requests::get('http://httpbin.org/basic-auth/user/password', array(), $options);
 ```
@@ -18,12 +18,12 @@ and password, you can also just pass in an array as a shorthand:
 
 ```php
 $options = array(
-	'auth' => array('user', 'password')
+    'auth' => array('user', 'password')
 );
 Requests::get('http://httpbin.org/basic-auth/user/password', array(), $options);
 ```
 
-Note that POST/PUT can also take a data parameter, so you also need that
+Note that `POST`/`PUT` requests take a `$data` parameter, so you need to pass that
 before `$options`:
 
 ```php

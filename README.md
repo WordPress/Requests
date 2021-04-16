@@ -39,7 +39,7 @@ var_dump($request->body);
 
 Requests allows you to send  **HEAD**, **GET**, **POST**, **PUT**, **DELETE**, 
 and **PATCH** HTTP requests. You can add headers, form data, multipart files, 
-and parameters with simple arrays, and access the response data in the same way. 
+and parameters with basic arrays, and access the response data in the same way.
 Requests uses cURL and fsockopen, depending on what your system has available, 
 but abstracts all the nasty stuff out of your way, providing a consistent API.
 
