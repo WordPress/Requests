@@ -317,6 +317,21 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$headers['Connection'] = 'close';
 		}
 
+		/**
+		 * Add "Expect" header.
+		 *
+		 * By default, cURL adds a "Expect: 100-Continue" to most requests. This header can
+		 * add as much as a second to the time it takes for cURL to perform a request. To
+		 * prevent this, we need to set an empty "Expect" header. To match the behaviour of
+		 * Guzzle, we'll add the empty header to requests that are smaller than 1 MB and use
+		 * HTTP/1.1.
+		 *
+		 * https://curl.se/mail/lib-2017-07/0013.html
+		 */
+		if (!isset($headers['Expect']) && $options['protocol_version'] === 1.1) {
+			$headers['Expect'] = $this->get_expect_header($data);
+		}
+
 		$headers = Requests::flatten($headers);
 
 		if (!empty($data)) {
@@ -545,5 +560,30 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the correct "Expect" header for the given request data.
+	 *
+	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD.
+	 * @return string The "Expect" header.
+	 */
+	protected function get_expect_header($data) {
+		if (!is_array($data)) {
+			return strlen((string) $data) >= 1048576 ? '100-Continue' : '';
+		}
+
+		$bytesize = 0;
+		$iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($data));
+
+		foreach ($iterator as $datum) {
+			$bytesize += strlen((string) $datum);
+
+			if ($bytesize >= 1048576) {
+				return '100-Continue';
+			}
+		}
+
+		return '';
 	}
 }
