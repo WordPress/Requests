@@ -84,7 +84,7 @@ require_once '/path/to/Requests/library/Requests.php';
 
 You'll probably also want to register an autoloader:
 ```php
-    Requests::register_autoloader();
+Requests::register_autoloader();
 ```
 
 ### Install source from zip/tarball
