@@ -92,7 +92,9 @@ Alternatively, you can fetch a [tarball][] or [zipball][]:
 
 ```bash
 $ curl -L https://github.com/WordPress/Requests/tarball/master | tar xzv
-or)
+```
+(or)
+```bash
 $ wget https://github.com/WordPress/Requests/tarball/master -O - | tar xzv
 ```
 
