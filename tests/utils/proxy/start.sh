@@ -14,6 +14,6 @@ set -x
 
 start-stop-daemon --verbose --start --background --pidfile $PIDFILE --make-pidfile --exec $PROXYBIN -- $ARGS
 
-ps -p $(cat $PIDFILE) -u
+ps -p $(cat $PIDFILE) u
 sleep 2
-ps -p $(cat $PIDFILE) -u
+ps -p $(cat $PIDFILE) u
