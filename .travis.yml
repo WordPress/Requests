@@ -36,15 +36,15 @@ install:
  - phpenv local --unset
 
  # Setup the proxy
- - wget https://snapshots.mitmproxy.org/0.18.2/mitmproxy-0.18.2-linux.tar.gz
- - tar -xzf mitmproxy-0.18.2-linux.tar.gz
+ - wget -O /tmp/mitmproxy-0.18.2-linux.tar.gz https://snapshots.mitmproxy.org/0.18.2/mitmproxy-0.18.2-linux.tar.gz
+ - tar -xzf /tmp/mitmproxy-0.18.2-linux.tar.gz --directory /tmp
 
 before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
  - export REQUESTS_TEST_HOST_HTTP="localhost:8080"
 
- - PROXYBIN="$HOME/mitmdump" PORT=9002 tests/utils/proxy/start.sh
- - PROXYBIN="$HOME/mitmdump" PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
+ - PROXYBIN="/tmp/mitmdump" PORT=9002 tests/utils/proxy/start.sh
+ - PROXYBIN="/tmp/mitmdump" PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
  - export REQUESTS_HTTP_PROXY="localhost:9002"
  - export REQUESTS_HTTP_PROXY_AUTH="localhost:9003"
  - export REQUESTS_HTTP_PROXY_AUTH_USER="test"
