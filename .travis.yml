@@ -68,7 +68,13 @@ script:
    fi
 
  # Run the unit tests.
- - $PHPUNIT_BIN;
+ - |
+   # PHPUnit 4.x does not yet support the `no-coverage` flag.
+   if [ ${TRAVIS_PHP_VERSION:0:3} == "5.2" ]; then
+     phpunit
+   else
+     phpunit --no-coverage
+   fi
 
 after_script:
  - tests/utils/proxy/stop.sh
