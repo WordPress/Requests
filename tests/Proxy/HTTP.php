@@ -128,7 +128,9 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			'transport' => $transport,
 		);
 
-		if ($transport === 'Requests_Transport_fsockopen') {
+		if (version_compare(phpversion(), '5.5.0', '>=') === true
+			&& $transport === 'Requests_Transport_fsockopen'
+		) {
 			// @TODO fsockopen connection times out on invalid auth instead of returning 407.
 			if (method_exists($this, 'expectException')) {
 				$this->expectException('Requests_Exception');

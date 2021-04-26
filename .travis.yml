@@ -36,14 +36,15 @@ install:
  - phpenv local --unset
 
  # Setup the proxy
- - pip install --user mitmproxy==0.18.2
+ - wget -O /tmp/mitmproxy-0.18.2-linux.tar.gz https://snapshots.mitmproxy.org/0.18.2/mitmproxy-0.18.2-linux.tar.gz
+ - tar -xzf /tmp/mitmproxy-0.18.2-linux.tar.gz --directory /tmp
 
 before_script:
  - PHPBIN=$TESTPHPBIN PORT=8080 vendor/bin/start.sh
  - export REQUESTS_TEST_HOST_HTTP="localhost:8080"
 
- - PROXYBIN="$HOME/.local/bin/mitmdump" PORT=9002 tests/utils/proxy/start.sh
- - PROXYBIN="$HOME/.local/bin/mitmdump" PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
+ - PROXYBIN="/tmp/mitmdump" PORT=9002 tests/utils/proxy/start-travis.sh
+ - PROXYBIN="/tmp/mitmdump" PORT=9003 AUTH="test:pass" tests/utils/proxy/start-travis.sh
  - export REQUESTS_HTTP_PROXY="localhost:9002"
  - export REQUESTS_HTTP_PROXY_AUTH="localhost:9003"
  - export REQUESTS_HTTP_PROXY_AUTH_USER="test"
@@ -70,9 +71,9 @@ script:
  - |
    # PHPUnit 4.x does not yet support the `no-coverage` flag.
    if [ ${TRAVIS_PHP_VERSION:0:3} == "5.2" ]; then
-     $PHPUNIT_BIN;
+     phpunit
    else
-     $PHPUNIT_BIN --no-coverage;
+     phpunit --no-coverage
    fi
 
 after_script:
