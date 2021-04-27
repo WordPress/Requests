@@ -5,9 +5,9 @@ title: Goals
 Goals
 =====
 
-1. **Simple interface**
+1. **Straight-forward interface**
 
-   Requests is designed to provide a simple, unified interface to making
+   Requests is designed to provide a straight forward, unified interface to making
    requests, regardless of what is available on the system. This means not worrying.
 
 2. **Fully tested code**
@@ -15,8 +15,8 @@ Goals
    Requests strives to have 90%+ code coverage from the unit tests, aiming for
    the ideal 100%. Introducing new features always means introducing new tests
 
-   (Note: some parts of the code are not covered by design. These sections are
-   marked with `@codeCoverageIgnore` tags)
+   Note: some parts of the code are not covered by design. These sections are
+   marked with `@codeCoverageIgnore` tags.
 
 3. **Maximum compatibility**
 
@@ -31,3 +31,7 @@ Goals
    Requests is designed to be entirely self-contained and doesn't require
    anything else at all. You can run Requests on an entirely stock PHP build
    without any additional extensions outside the standard library.
+
+***
+
+Next: [Why Requests Instead of X?](why-requests.html)
