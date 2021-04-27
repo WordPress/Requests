@@ -2,6 +2,7 @@
 layout: documentation
 title: Custom Authentication
 ---
+
 Custom Authentication
 =====================
 Custom authentication handlers are designed to be straight-forward to write.
