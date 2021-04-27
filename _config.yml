@@ -16,8 +16,8 @@ plugins:
 
 requests:
     packagist: rmccue/requests
-    ci_tests_url: 'https://travis-ci.org/WordPress/Requests'
-    ci_tests_img: 'https://img.shields.io/travis/WordPress/Requests/master.svg?style=flat-square'
+    ci_tests_url: 'https://github.com/WordPress/Requests/actions/workflows/test.yml'
+    ci_tests_img: 'https://img.shields.io/github/workflow/status/WordPress/Requests/Test/master?label=build'
     ci_codecov_url: 'https://app.codecov.io/gh/WordPress/Requests/branch/master'
     ci_codecov_img: 'https://img.shields.io/codecov/c/github/WordPress/Requests/master.svg?style=flat-square'
 
