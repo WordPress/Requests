@@ -30,7 +30,7 @@ Why should I use Requests?
 
 3. **Thoroughly tested**
 
-   Requests is [continuously integrated with Travis][travis] and test coverage
+   Requests is [continuously integrated with GH Actions][ghactions] and test coverage
    is [constantly monitored with CodeCov][codecov] to give you confidence in
    the library. We aim for test coverage **over 90%** at all times, and new
    features require new tests to go along with them. This ensures that you can
@@ -61,7 +61,7 @@ Why should I use Requests?
 [codecov]: https://app.codecov.io/gh/WordPress/Requests/branch/master
 [hooking system]: hooks.md
 [requests_ssl]: https://github.com/WordPress/Requests/blob/master/library/Requests/SSL.php
-[travis]: https://travis-ci.org/WordPress/Requests
+[ghactions]: https://github.com/WordPress/Requests/actions
 [wpssl]: http://core.trac.wordpress.org/ticket/25007
 
 
@@ -81,7 +81,7 @@ instead of something else, in our opinion.
    projects indicates that cURL is available on roughly 90% of hosts, but that
    leaves 10% of hosts without it.
 
-2. **cURL's interface sucks**
+2. **cURL's interface is hard to work with**
 
    cURL's interface was designed for PHP 4, and hence uses resources with
    horrible functions such as `curl_setopt()`. Combined with that, it uses 229
