@@ -22,7 +22,9 @@ Changelog
   
   This security vulnerability was first reported to the WordPress project. The security fix applied to WordPress has been ported back into the library.
   
-  GitHub security advisory: [CVE-2021-29476 - Deserialization of Untrusted Data](https://cve.mitre.org/cgi-bin/cvename.cgi?name=2021-29476)
+  GitHub security advisory: [Insecure Deserialization of untrusted data](https://github.com/WordPress/Requests/security/advisories/GHSA-52qp-jpq7-6c54)
+
+  CVE: [CVE-2021-29476 - Deserialization of Untrusted Data](https://cve.mitre.org/cgi-bin/cvename.cgi?name=2021-29476)
 
   Related WordPress CVE: [https://cve.mitre.org/cgi-bin/cvename.cgi?name=2020-28032](https://cve.mitre.org/cgi-bin/cvename.cgi?name=2020-28032)
 
