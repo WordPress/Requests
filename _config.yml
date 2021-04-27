@@ -1,16 +1,48 @@
+baseurl:
 name: Requests for PHP
 markdown: kramdown
+highlighter: rouge
+
+# GH metadata: only needed to allow for local testing.
+repository: "WordPress/Requests"
 
 kramdown:
     input: GFM
-    hard_wrap: false
-    use_coderay: true
-    coderay:
-        coderay_line_numbers: nil
-        coderay_css: class
+    parse_block_html: false
 
-baseurl: /
-exclude: ['buildtool.py', 'README.md', 'Vagrantfile', 'vagrant-provision.sh']
-
-gems:
+plugins:
+  - jekyll-github-metadata
   - jekyll-sitemap
+
+requests:
+    packagist: rmccue/requests
+    ci_tests_url: 'https://github.com/WordPress/Requests/actions/workflows/test.yml'
+    ci_tests_img: 'https://img.shields.io/github/workflow/status/WordPress/Requests/Test/master?label=build'
+    ci_codecov_url: 'https://app.codecov.io/gh/WordPress/Requests/branch/master'
+    ci_codecov_img: 'https://img.shields.io/codecov/c/github/WordPress/Requests/master.svg?style=flat-square'
+
+# Files to exclude when generating the site.
+exclude:
+   - .sass-cache/
+   - .jekyll-cache/
+   - gemfiles/
+   - Gemfile
+   - Gemfile.lock
+   - node_modules/
+   - vendor/bundle/
+   - vendor/cache/
+   - vendor/gems/
+   - vendor/ruby/
+   - CNAME
+   - CONTRIBUTING.md
+   - LICENSE
+   - README.md
+   - apigen.neon
+   - buildtool.py
+   - Vagrantfile
+   - vagrant-provision.sh
+   - .gitignore
+   - .github
+   - .jekyll-metadata
+   - '*.bak'
+   - '*.orig'

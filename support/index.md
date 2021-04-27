@@ -14,5 +14,5 @@ ways to get in contact with me:
   My email address is [available via my site](http://ryanmccue.info/).
 
 If you think you've found a problem in Requests, please
-[file an issue on GitHub](https://github.com/rmccue/Requests/issues) rather than
+[file an issue on GitHub]({{ site.github.issues_url }}) rather than
 contacting me.

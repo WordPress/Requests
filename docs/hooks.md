@@ -10,72 +10,78 @@ process along with internal transport hooks.
 Check out the [API documentation for `Requests_Hooks`][requests_hooks] for more
 information on how to use the hook system.
 
+[requests_hooks]: {{ '/api/class-Requests_Hooks.html' | prepend: site.baseurl }}
+
 Available Hooks
 ---------------
 
-* `requests.before_request`
+* **`requests.before_request`**
 
-    Alter the request before it's sent to the transport.
+    Alter the request before it is sent to the transport.
 
     Parameters: `string &$url`, `array &$headers`, `array|string &$data`,
     `string &$type`, `array &$options`
 
-* `requests.before_parse`
+* **`requests.before_parse`**
 
-    Alter the raw HTTP response before parsing
+    Alter the raw HTTP response before parsing.
 
     Parameters: `string &$response`
 
-* `requests.after_request`
+* **`requests.after_request`**
 
-    Alter the response object before it's returned to the user
+    Alter the response object before it is returned to the user.
 
     Parameters: `Requests_Response &$return`
 
-* `curl.before_request`
+* **`curl.before_request`**
 
     Set cURL options before the transport sets any (note that Requests may
-    override these)
+    override these).
 
     Parameters: `cURL resource &$fp`
 
-* `curl.before_send`
+* **`curl.before_send`**
 
-    Set cURL options just before the request is actually sent via `curl_exec`
+    Set cURL options just before the request is actually sent via `curl_exec()`.
 
     Parameters: `cURL resource &$fp`
 
-* `curl.after_request`
+* **`curl.after_request`**
 
-    Alter the raw HTTP response before returning for parsing
+    Alter the raw HTTP response before returning for parsing.
 
-    Parameters: `string &$response`
+    Parameters: `string &$response, array &$info`
 
-* `fsockopen.before_request`
+    `$info` contains the associated array as defined in [curl-getinfo-returnvalues](http://php.net/manual/en/function.curl-getinfo.php#refsect1-function.curl-getinfo-returnvalues)
 
-    Run events before the transport does anything
+* **`fsockopen.before_request`**
 
-* `fsockopen.after_headers`
+    Run events before the transport does anything.
 
-    Add extra headers before the body begins (i.e. before `\r\n\r\n`)
+* **`fsockopen.after_headers`**
 
-    Parameters: `string &$out`
-
-* `fsockopen.before_send`
-
-    Add body data before sending the request
+    Add extra headers before the body begins (i.e. before `\r\n\r\n`).
 
     Parameters: `string &$out`
 
-* `fsockopen.after_send`
+* **`fsockopen.before_send`**
 
-   Run events after writing the data to the socket
+    Add body data before sending the request.
 
-* `fsockopen.after_request`
+    Parameters: `string &$out`
 
-    Alter the raw HTTP response before returning for parsing
+* **`fsockopen.after_send`**
 
-    Parameters: `string &$response`
+   Run events after writing the data to the socket.
+
+* **`fsockopen.after_request`**
+
+    Alter the raw HTTP response before returning for parsing.
+
+    Parameters: `string &$response, array &$info`
+
+    `$info` contains the associated array as defined in [stream-get-meta-data-returnvalues](http://php.net/manual/en/function.stream-get-meta-data.php#refsect1-function.stream-get-meta-data-returnvalues)
 
 
 Registering Hooks
@@ -86,11 +92,15 @@ Authentication guide][authentication-custom] instead.
 [authentication-custom]: authentication-custom.html
 
 In order to register your own hooks, you need to instantiate `Requests_hooks`
-and pass this in via the 'hooks' option.
+and pass the object in via the 'hooks' option.
 
-{% highlight php startinline %}
+```php
 $hooks = new Requests_Hooks();
 $hooks->register('requests.after_request', 'mycallback');
 
 $request = Requests::get('http://httpbin.org/get', array(), array('hooks' => $hooks));
-{% endhighlight %}
+```
+
+***
+
+Previous: [Requests through proxy](proxy.html)

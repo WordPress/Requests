@@ -12,7 +12,7 @@ charset: ['UTF-8']
 main: 'Requests'
 
 # Title of generated documentation
-title: 'Requests 1.7 API Documentation'
+title: 'Requests 1.8 API Documentation'
 # Documentation base URL
 baseUrl: ''
 #templateConfig: 'F:\Projects\PHP\ApiGen\templates\simplepie\config.neon'
@@ -38,7 +38,7 @@ sourceCode: Yes
 # Add a link to download documentation as a ZIP archive
 download: No
 
-# Don't display scaning and generating messages
+# Don't display scanning and generating messages
 quiet: No
 # Display additional information in case of an error
 debug: No

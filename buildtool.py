@@ -6,7 +6,6 @@ import shutil
 
 frontmatter = "---\n{0}\n---\n"
 
-replacer = re.compile('```php(.+?)```', re.I | re.DOTALL)
 title_finder = re.compile('(.+)\n=+\n', re.I)
 linkfinder = re.compile('\S+\.md', re.I)
 
@@ -45,9 +44,6 @@ def compile_file(inputfile, outputfile, frontmatter):
 	with open(inputfile, 'r') as content_file:
 		contents = content_file.read()
 
-		# Correct highlighter
-		contents = replacer.sub(r'{% highlight php startinline %}\1{% endhighlight %}', contents)
-
 		# Replace internal links
 		links = linkfinder.findall(contents)
 		for link in links:
@@ -65,7 +61,7 @@ def compile_file(inputfile, outputfile, frontmatter):
 		
 		# Generate frontmatter
 		frontmatter_vars = ['{0}: {1}'.format(key, val) for key, val in frontmatter.iteritems()]
-		frontmatter_content = '---\n{0}\n---\n'.format('\n'.join(frontmatter_vars))
+		frontmatter_content = '---\n{0}\n---\n\n'.format('\n'.join(frontmatter_vars))
 		contents = "{0}{1}".format(frontmatter_content, contents)
 
 		# Write output

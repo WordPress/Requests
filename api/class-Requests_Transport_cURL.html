@@ -3,9 +3,9 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Requests_Transport_cURL | Requests 1.7 API Documentation</title>
+	<title>Class Requests_Transport_cURL | Requests 1.8 API Documentation</title>
 
-	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
 </head>
 
@@ -145,7 +145,7 @@
 		
 		<b>Package:</b> <a href="package-Requests.html">Requests</a>\<a href="package-Requests.Transport.html">Transport</a><br>
 
-			<b>Located at</b> <a href="source-class-Requests_Transport_cURL.html#9-542" title="Go to source code">Requests/Transport/cURL.php</a>
+			<b>Located at</b> <a href="source-class-Requests_Transport_cURL.html#9-589" title="Go to source code">Requests/Transport/cURL.php</a>
 		<br>
 	</div>
 
@@ -165,7 +165,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#89-108" title="Go to source code">__construct</a>( )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#89-110" title="Go to source code">__construct</a>( )</code>
 
 		<div class="description short">
 			<p>Constructor</p>
@@ -195,7 +195,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___destruct">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#110-117" title="Go to source code">__destruct</a>( )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#112-119" title="Go to source code">__destruct</a>( )</code>
 
 		<div class="description short">
 			<p>Destructor</p>
@@ -225,7 +225,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_request">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#119-185" title="Go to source code">request</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>string|array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#121-187" title="Go to source code">request</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>string|array <var>$data</var> = <span class="php-keyword1">array</span>()</span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>Perform a request</p>
@@ -276,7 +276,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_request_multiple">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#187-272" title="Go to source code">request_multiple</a>( <span>array <var>$requests</var></span>, <span>array <var>$options</var></span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#189-275" title="Go to source code">request_multiple</a>( <span>array <var>$requests</var></span>, <span>array <var>$options</var></span> )</code>
 
 		<div class="description short">
 			<p>Send multiple requests simultaneously</p>
@@ -319,7 +319,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_subrequest_handle">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#274-299" title="Go to source code">get_subrequest_handle</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var></span>, <span>string|array <var>$data</var></span>, <span>array <var>$options</var></span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#277-302" title="Go to source code">get_subrequest_handle</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var></span>, <span>string|array <var>$data</var></span>, <span>array <var>$options</var></span> )</code>
 
 		<div class="description short">
 			<p>Get the cURL handle for use in a multi-request</p>
@@ -364,7 +364,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setup_handle">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#301-393" title="Go to source code">setup_handle</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var></span>, <span>string|array <var>$data</var></span>, <span>array <var>$options</var></span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#304-413" title="Go to source code">setup_handle</a>( <span>string <var>$url</var></span>, <span>array <var>$headers</var></span>, <span>string|array <var>$data</var></span>, <span>array <var>$options</var></span> )</code>
 
 		<div class="description short">
 			<p>Setup the cURL handle for the given data</p>
@@ -398,14 +398,14 @@
 		<td class="attributes"><code>
 			 public 
 
-			string
+			string|false
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_process_response">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#395-428" title="Go to source code">process_response</a>( <span>string <var>$response</var></span>, <span>array <var>$options</var></span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#415-449" title="Go to source code">process_response</a>( <span>string <var>$response</var></span>, <span>array <var>$options</var></span> )</code>
 
 		<div class="description short">
 			<p>Process a response</p>
@@ -425,9 +425,13 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					string<br>HTTP response data including headers
+					string|false<br>HTTP response data including headers. False if non-blocking.
 				</div>
 
+				<h4>Throws</h4>
+				<div class="list">
+					<code><a href="class-Requests_Exception.html">Requests_Exception</a></code>
+				</div>
 
 
 
@@ -446,7 +450,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_stream_headers">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#430-451" title="Go to source code">stream_headers</a>( <span>resource <var>$handle</var></span>, <span>string <var>$headers</var></span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#451-472" title="Go to source code">stream_headers</a>( <span>resource <var>$handle</var></span>, <span>string <var>$headers</var></span> )</code>
 
 		<div class="description short">
 			<p>Collect the headers as they are received</p>
@@ -487,7 +491,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_stream_body">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#453-489" title="Go to source code">stream_body</a>( <span>resource <var>$handle</var></span>, <span>string <var>$data</var></span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#474-510" title="Go to source code">stream_body</a>( <span>resource <var>$handle</var></span>, <span>string <var>$data</var></span> )</code>
 
 		<div class="description short">
 			<p>Collect data as it's received</p>
@@ -532,7 +536,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_format_get">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#491-519" title="Go to source code">format_get</a>( <span>string <var>$url</var></span>, <span>array|object <var>$data</var></span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#512-541" title="Go to source code">format_get</a>( <span>string <var>$url</var></span>, <span>array|object <var>$data</var></span> )</code>
 
 		<div class="description short">
 			<p>Format a URL given GET data</p>
@@ -573,7 +577,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_test">#</a>
-		<code><a href="source-class-Requests_Transport_cURL.html#521-541" title="Go to source code">test</a>( <span> <var>$capabilities</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Requests_Transport_cURL.html#543-563" title="Go to source code">test</a>( <span> <var>$capabilities</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>Whether this transport is valid</p>
@@ -597,6 +601,45 @@
 
 				<h4>Implementation of</h4>
 				<div class="list"><code><a href="class-Requests_Transport.html#_test">Requests_Transport::test()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_expect_header" id="_get_expect_header">
+
+		<td class="attributes"><code>
+			 protected 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_expect_header">#</a>
+		<code><a href="source-class-Requests_Transport_cURL.html#565-588" title="Go to source code">get_expect_header</a>( <span>string|array <var>$data</var></span> )</code>
+
+		<div class="description short">
+			<p>Get the correct "Expect" header for the given request data.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Get the correct "Expect" header for the given request data.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$data</var></dt>
+					<dd>Data to send either as the POST body, or as parameters in the URL for a GET/HEAD.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>The "Expect" header.
+				</div>
+
+
+
+
 		</div>
 		</div></td>
 	</tr>
@@ -744,18 +787,18 @@
 	<tr data-order="version" id="$version">
 		<td class="attributes"><code>
 			public  
-			long
+			integer
 		</code></td>
 
 		<td class="name">
 				<a href="source-class-Requests_Transport_cURL.html#40-45" title="Go to source code"><var>$version</var></a>
 
 			<div class="description short">
-				<p>Version string</p>
+				<p>cURL version number</p>
 			</div>
 
 			<div class="description detailed hidden">
-				<p>Version string</p>
+				<p>cURL version number</p>
 
 			</div>
 		</td>
@@ -926,11 +969,11 @@
 </div>
 
 	<div id="footer">
-		Requests 1.7 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		Requests 1.8 API Documentation API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
 </div>
-<script src="resources/combined.js"></script>
-<script src="elementlist.js"></script>
+<script src="resources/combined.js?acc6a13dca3b9a5d4aa12faeacb0215044dac88d"></script>
+<script src="elementlist.js?aa9ec570e6976e98ef84950ea5d12015b7befca8"></script>
 </body>
 </html>
