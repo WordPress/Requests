@@ -60,14 +60,14 @@ If you're using [Composer](https://github.com/composer/composer) to manage
 dependencies, you can add Requests with it.
 
 ```sh
-composer require rmccue/requests
+composer require {{ site.requests.packagist }}
 ```
 
 or
 ```json
 {
     "require": {
-        "rmccue/requests": ">=1.0"
+        "{{ site.requests.packagist }}": "^{{ site.github.latest_release.tag_name | replace_first: 'v', '' }}"
     }
 }
 ```
@@ -75,7 +75,7 @@ or
 ### Install source from GitHub
 To install the source code:
 ```bash
-$ git clone git://github.com/WordPress/Requests.git
+$ git clone {{ site.github.clone_url }}
 ```
 
 And include it in your scripts:
