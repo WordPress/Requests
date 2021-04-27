@@ -1,27 +1,11 @@
 Usage
 =====
 
-Ready to go? Make sure you have Requests [installed][download] before attempting any of the
+Ready to go? Make sure you have Requests [installed][download] and bootstrapped either the
+Composer `autoload.php` file, the Requests autoload function or your autoloader, before attempting any of the
 steps in this guide.
 
 [download]: {{ '/download/' | prepend: site.baseurl }}
-
-
-Loading Requests
-----------------
-Before we can load Requests up, we'll need to make sure it's loaded. This is a
-straight-forward two-step:
-
-```php
-// First, include Requests
-include('/path/to/library/Requests.php');
-
-// Next, make sure Requests can load internal classes
-Requests::register_autoloader();
-```
-
-If you'd like to bring along your own autoloader, you can forget about this
-completely.
 
 
 Make a GET Request
@@ -63,7 +47,7 @@ Make a POST Request
 Making a POST request is very similar to making a GET:
 
 ```php
-$response = Requests::post('http://httpbin.org/post');
+$response = Requests::post('https://httpbin.org/post');
 ```
 
 You'll probably also want to pass in some data. You can pass in either a
@@ -74,7 +58,7 @@ internally) as the third parameter (after the URL and headers):
 
 ```php
 $data = array('key1' => 'value1', 'key2' => 'value2');
-$response = Requests::post('http://httpbin.org/post', array(), $data);
+$response = Requests::post('https://httpbin.org/post', array(), $data);
 var_dump($response->body);
 ```
 
@@ -96,7 +80,7 @@ This gives the output:
         "Host": "httpbin.org",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
-      "url": "http://httpbin.org/post",
+      "url": "https://httpbin.org/post",
       "args": {},
       "data": ""
     }"

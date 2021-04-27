@@ -49,7 +49,7 @@ Available Hooks
 
     Parameters: `string &$response, array &$info`
 
-    `$info` contains the associated array as defined in [curl-getinfo-returnvalues](http://php.net/manual/en/function.curl-getinfo.php#refsect1-function.curl-getinfo-returnvalues)
+    `$info` contains the associated array as defined in the return value for [curl_getinfo()](http://php.net/manual/en/function.curl-getinfo.php#refsect1-function.curl-getinfo-returnvalues).
 
 * **`fsockopen.before_request`**
 
@@ -77,7 +77,8 @@ Available Hooks
 
     Parameters: `string &$response, array &$info`
 
-    `$info` contains the associated array as defined in [stream-get-meta-data-returnvalues](http://php.net/manual/en/function.stream-get-meta-data.php#refsect1-function.stream-get-meta-data-returnvalues)
+    `$info` contains the associated array as defined in the return value for [stream_get_meta_data()](http://php.net/manual/en/function.stream-get-meta-data.php#refsect1-function.stream-get-meta-data-returnvalues).
+
 
 
 Registering Hooks
@@ -87,14 +88,14 @@ Authentication guide][authentication-custom] instead.
 
 [authentication-custom]: authentication-custom.md
 
-In order to register your own hooks, you need to instantiate `Requests_hooks`
-and pass the object in via the 'hooks' option.
+In order to register your own hooks, you need to instantiate `Requests_Hooks`
+and pass the object in via the `'hooks'` option.
 
 ```php
 $hooks = new Requests_Hooks();
 $hooks->register('requests.after_request', 'mycallback');
 
-$request = Requests::get('http://httpbin.org/get', array(), array('hooks' => $hooks));
+$request = Requests::get('https://httpbin.org/get', array(), array('hooks' => $hooks));
 ```
 
 ***

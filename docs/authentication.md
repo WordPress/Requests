@@ -10,7 +10,7 @@ A Basic authenticated call can be made like this:
 $options = array(
     'auth' => new Requests_Auth_Basic(array('user', 'password'))
 );
-Requests::get('http://httpbin.org/basic-auth/user/password', array(), $options);
+Requests::get('https://httpbin.org/basic-auth/user/password', array(), $options);
 ```
 
 As Basic authentication is usually what you want when you specify a username
@@ -20,14 +20,14 @@ and password, you can also just pass in an array as a shorthand:
 $options = array(
     'auth' => array('user', 'password')
 );
-Requests::get('http://httpbin.org/basic-auth/user/password', array(), $options);
+Requests::get('https://httpbin.org/basic-auth/user/password', array(), $options);
 ```
 
 Note that `POST`/`PUT` requests take a `$data` parameter, so you need to pass that
 before `$options`:
 
 ```php
-Requests::post('http://httpbin.org/basic-auth/user/password', array(), null, $options);
+Requests::post('https://httpbin.org/basic-auth/user/password', array(), null, $options);
 ```
 
 ***
