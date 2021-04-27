@@ -2,6 +2,7 @@
 layout: home
 title: 
 ---
+
 Requests for PHP
 ================
 
@@ -56,7 +57,7 @@ Installation
 ------------
 
 ### Install with Composer
-If you're using [Composer](https://github.com/composer/composer) to manage
+If you're using [Composer](https://getcomposer.org/) to manage
 dependencies, you can add Requests with it.
 
 ```sh
@@ -125,7 +126,7 @@ Requests is [100% documented with PHPDoc](http://requests.ryanmccue.info/api/).
 If you find any problems with it, [create a new
 issue](https://github.com/WordPress/Requests/issues/new)!
 
-[prose-based documentation]: https://github.com/WordPress/Requests/blob/master/docs/README.md
+[prose-based documentation]: {{ '/docs/' | prepend: site.baseurl }}
 [request_method]: http://requests.ryanmccue.info/api/class-Requests.html#_request
 
 Testing

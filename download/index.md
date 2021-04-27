@@ -2,6 +2,7 @@
 layout: page
 title: Download
 ---
+
 Download
 ========
 
@@ -23,16 +24,24 @@ Alternative Methods
 If you're using [Composer](https://getcomposer.org/) to manage
 dependencies, you can add Requests with it.
 
+```sh
+composer require {{ site.requests.packagist }}
+```
+
+or
 ```json
 {
     "require": {
         "{{ site.requests.packagist }}": "^{{ site.github.latest_release.tag_name | replace_first: 'v', '' }}"
-    },
-    "autoload": {
-        "psr-0": {"Requests": "library/"}
     }
 }
 ```
+
+And if you don't do so already, make sure you load the Composer autoload file.
+```php
+require_once dirname(__FILE__) . '/vendor/autoload.php';
+```
+
 
 ### Installing via Git
 To install the source code:

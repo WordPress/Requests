@@ -2,6 +2,7 @@
 layout: documentation
 title: Goals
 ---
+
 Goals
 =====
 
