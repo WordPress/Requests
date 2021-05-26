@@ -385,6 +385,79 @@ class Requests {
 		return self::parse_response($response, $url, $headers, $data, $options);
 	}
 
+	public static function request_pool($requests, $options = array(), $pool_size = 2) {
+		$options = array_merge(self::get_default_options(true), $options);
+
+		if (!empty($options['hooks'])) {
+			$options['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+			if (!empty($options['complete'])) {
+				$options['hooks']->register('multiple.request.complete', $options['complete']);
+			}
+		}
+
+		foreach ($requests as $id => &$request) {
+			if (!isset($request['headers'])) {
+				$request['headers'] = array();
+			}
+			if (!isset($request['data'])) {
+				$request['data'] = array();
+			}
+			if (!isset($request['type'])) {
+				$request['type'] = self::GET;
+			}
+			if (!isset($request['options'])) {
+				$request['options']         = $options;
+				$request['options']['type'] = $request['type'];
+			}
+			else {
+				if (empty($request['options']['type'])) {
+					$request['options']['type'] = $request['type'];
+				}
+				$request['options'] = array_merge($options, $request['options']);
+			}
+
+			self::set_defaults($request['url'], $request['headers'], $request['data'], $request['type'], $request['options']);
+
+			// Ensure we only hook in once
+			if ($request['options']['hooks'] !== $options['hooks']) {
+				$request['options']['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+				if (!empty($request['options']['complete'])) {
+					$request['options']['hooks']->register('multiple.request.complete', $request['options']['complete']);
+				}
+			}
+		}
+		unset($request);
+
+		if (!empty($options['transport'])) {
+			$transport = $options['transport'];
+
+			if (is_string($options['transport'])) {
+				$transport = new $transport();
+			}
+		}
+		else {
+			$transport = self::get_transport();
+		}
+
+		if (get_class($transport) !== 'Requests_Transport_cURL') {
+			return array();
+		}
+
+		$responses = $transport->request_pool($requests, $options, $pool_size);
+
+		foreach ($responses as $id => &$response) {
+			// If our hook got messed with somehow, ensure we end up with the
+			// correct response
+			if (is_string($response)) {
+				$request = $requests[$id];
+				self::parse_multiple($response, $request);
+				$request['options']['hooks']->dispatch('multiple.request.complete', array(&$response, $id));
+			}
+		}
+
+		return $responses;
+	}
+
 	/**
 	 * Send multiple HTTP requests simultaneously
 	 *
