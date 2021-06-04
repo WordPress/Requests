@@ -12,7 +12,7 @@ charset: ['UTF-8']
 main: 'Requests'
 
 # Title of generated documentation
-title: 'Requests 1.8 API Documentation'
+title: 'Requests 1.8.1 API Documentation'
 # Documentation base URL
 baseUrl: ''
 #templateConfig: 'F:\Projects\PHP\ApiGen\templates\simplepie\config.neon'
