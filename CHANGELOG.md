@@ -1,6 +1,25 @@
 Changelog
 =========
 
+1.8.1
+-----
+
+### Overview of changes
+- The `Requests::VERSION` constant has been updated to reflect the actual version for the release. [@jrfnl][gh-jrfnl], [#485][gh-485]
+- Update the `.gitattributes` file to include fewer files in the distribution. [@mbabker][gh-mbabker], [#484][gh-484]
+- Added a release checklist. [@jrfnl][gh-jrfnl], [#483][gh-483]
+- Various minor updates to the documentation and the website. [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#477][gh-477], [#478][gh-478], [#479][gh-479], [#481][gh-481], [#482][gh-482]
+
+[gh-477]: https://github.com/WordPress/Requests/issues/477
+[gh-478]: https://github.com/WordPress/Requests/issues/478
+[gh-479]: https://github.com/WordPress/Requests/issues/479
+[gh-481]: https://github.com/WordPress/Requests/issues/481
+[gh-482]: https://github.com/WordPress/Requests/issues/482
+[gh-483]: https://github.com/WordPress/Requests/issues/483
+[gh-484]: https://github.com/WordPress/Requests/issues/484
+[gh-485]: https://github.com/WordPress/Requests/issues/485
+
+
 1.8.0
 -----
 
@@ -573,6 +592,7 @@ Initial release!
 [gh-KasperFranz]: https://github.com/KasperFranz
 [gh-kwuerl]: https://github.com/kwuerl
 [gh-laurentmartelli]: https://github.com/laurentmartelli
+[gh-mbabker]: https://github.com/mbabker
 [gh-mishan]: https://github.com/mishan
 [gh-ntwb]: https://github.com/ntwb
 [gh-ocean90]: https://github.com/ocean90
