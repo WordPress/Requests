@@ -132,12 +132,8 @@ class RequestsTest_Proxy_HTTP extends PHPUnit_Framework_TestCase {
 			&& $transport === 'Requests_Transport_fsockopen'
 		) {
 			// @TODO fsockopen connection times out on invalid auth instead of returning 407.
-			if (method_exists($this, 'expectException')) {
-				$this->expectException('Requests_Exception');
-				$this->expectExceptionMessage('fsocket timed out');
-			} else {
-				$this->setExpectedException('Requests_Exception', 'fsocket timed out');
-			}
+			$this->expectException('Requests_Exception');
+			$this->expectExceptionMessage('fsocket timed out');
 		}
 
 		$response = Requests::get(httpbin('/get'), array(), $options);

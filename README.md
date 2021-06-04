@@ -4,14 +4,13 @@ Requests for PHP
 [![CS](https://github.com/WordPress/Requests/actions/workflows/cs.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/cs.yml)
 [![Lint](https://github.com/WordPress/Requests/actions/workflows/lint.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/lint.yml)
 [![Test](https://github.com/WordPress/Requests/actions/workflows/test.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/test.yml)
-[![CI PHP 5.2-5.4](https://travis-ci.org/WordPress/Requests.svg?branch=master)](https://travis-ci.org/WordPress/Requests)
 [![codecov.io](http://codecov.io/github/WordPress/Requests/coverage.svg?branch=master)](http://codecov.io/github/WordPress/Requests?branch=master)
 
 Requests is a HTTP library written in PHP, for human beings. It is roughly
 based on the API from the excellent [Requests Python
 library](http://python-requests.org/). Requests is [ISC
 Licensed](https://github.com/WordPress/Requests/blob/master/LICENSE) (similar to
-the new BSD license) and has no dependencies, except for PHP 5.2+.
+the new BSD license) and has no dependencies, except for PHP 5.6+.
 
 Despite PHP's use as a language for the web, its tools for sending HTTP requests
 are severely lacking. cURL has an

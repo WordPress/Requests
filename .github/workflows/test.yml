@@ -18,13 +18,13 @@ jobs:
       # - coverage: Whether to run the tests with code coverage.
       # - experimental: Whether the build is "allowed to fail".
       matrix:
-        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
+        php: ['7.0', '7.1', '7.2', '7.3', '7.4']
         coverage: [false]
         experimental: [false]
 
         include:
           # Run code coverage on high/low PHP.
-          - php: '5.5'
+          - php: '5.6'
             coverage: true
             experimental: false
           - php: '8.0'
