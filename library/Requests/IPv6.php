@@ -30,7 +30,7 @@ class Requests_IPv6 {
 	 * @author elfrink at introweb dot nl
 	 * @author Josh Peck <jmp at joshpeck dot org>
 	 * @copyright 2003-2005 The PHP Group
-	 * @license http://www.opensource.org/licenses/bsd-license.php
+	 * @license https://opensource.org/licenses/bsd-license.php
 	 * @param string $ip An IPv6 address
 	 * @return string The uncompressed IPv6 address
 	 */

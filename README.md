@@ -4,7 +4,7 @@ Requests for PHP
 [![CS](https://github.com/WordPress/Requests/actions/workflows/cs.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/cs.yml)
 [![Lint](https://github.com/WordPress/Requests/actions/workflows/lint.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/lint.yml)
 [![Test](https://github.com/WordPress/Requests/actions/workflows/test.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/test.yml)
-[![codecov.io](http://codecov.io/github/WordPress/Requests/coverage.svg?branch=stable)](http://codecov.io/github/WordPress/Requests?branch=stable)
+[![codecov.io](https://codecov.io/gh/WordPress/Requests/branch/stable/graph/badge.svg?token=AfpxK7WMxj&branch=stable)](https://codecov.io/gh/WordPress/Requests?branch=stable)
 
 Requests is a HTTP library written in PHP, for human beings. It is roughly
 based on the API from the excellent [Requests Python
@@ -135,7 +135,7 @@ Testing
 Requests strives to have 100% code-coverage of the library with an extensive
 set of tests. We're not quite there yet, but [we're getting close][codecov].
 
-[codecov]: http://codecov.io/github/WordPress/Requests
+[codecov]: https://codecov.io/github/WordPress/Requests/
 
 To run the test suite, first check that you have the [PHP
 JSON extension ](https://www.php.net/book.json) enabled. Then

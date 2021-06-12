@@ -97,7 +97,7 @@ class RequestsTest_SSL extends PHPUnit_Framework_TestCase {
 	 * As per RFC2818, if the SAN field exists, we should parse that and ignore
 	 * the value of the CN field.
 	 *
-	 * @link http://tools.ietf.org/html/rfc2818#section-3.1
+	 * @link https://tools.ietf.org/html/rfc2818#section-3.1
 	 */
 	public function testIgnoreCNWithSAN() {
 		$certificate = $this->fakeCertificate('example.net', 'example.com');
