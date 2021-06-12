@@ -58,9 +58,9 @@ Why should I use Requests?
    authentication handlers and cookie support is actually handled internally
    with hooks.
 
-[codecov]: https://app.codecov.io/gh/WordPress/Requests/branch/master
+[codecov]: https://app.codecov.io/gh/WordPress/Requests/branch/stable
 [hooking system]: hooks.md
-[requests_ssl]: https://github.com/WordPress/Requests/blob/master/library/Requests/SSL.php
+[requests_ssl]: https://github.com/WordPress/Requests/blob/stable/library/Requests/SSL.php
 [ghactions]: https://github.com/WordPress/Requests/actions
 [wpssl]: http://core.trac.wordpress.org/ticket/25007
 

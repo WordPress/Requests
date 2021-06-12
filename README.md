@@ -4,12 +4,12 @@ Requests for PHP
 [![CS](https://github.com/WordPress/Requests/actions/workflows/cs.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/cs.yml)
 [![Lint](https://github.com/WordPress/Requests/actions/workflows/lint.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/lint.yml)
 [![Test](https://github.com/WordPress/Requests/actions/workflows/test.yml/badge.svg)](https://github.com/WordPress/Requests/actions/workflows/test.yml)
-[![codecov.io](http://codecov.io/github/WordPress/Requests/coverage.svg?branch=master)](http://codecov.io/github/WordPress/Requests?branch=master)
+[![codecov.io](http://codecov.io/github/WordPress/Requests/coverage.svg?branch=stable)](http://codecov.io/github/WordPress/Requests?branch=stable)
 
 Requests is a HTTP library written in PHP, for human beings. It is roughly
 based on the API from the excellent [Requests Python
 library](http://python-requests.org/). Requests is [ISC
-Licensed](https://github.com/WordPress/Requests/blob/master/LICENSE) (similar to
+Licensed](https://github.com/WordPress/Requests/blob/stable/LICENSE) (similar to
 the new BSD license) and has no dependencies, except for PHP 5.6+.
 
 Despite PHP's use as a language for the web, its tools for sending HTTP requests
@@ -93,13 +93,13 @@ Requests::register_autoloader();
 Alternatively, you can fetch a [tarball][] or [zipball][]:
 
 ```bash
-$ curl -L https://github.com/WordPress/Requests/tarball/master | tar xzv
+$ curl -L https://github.com/WordPress/Requests/tarball/stable | tar xzv
 (or)
-$ wget https://github.com/WordPress/Requests/tarball/master -O - | tar xzv
+$ wget https://github.com/WordPress/Requests/tarball/stable -O - | tar xzv
 ```
 
-[tarball]: https://github.com/WordPress/Requests/tarball/master
-[zipball]: https://github.com/WordPress/Requests/zipball/master
+[tarball]: https://github.com/WordPress/Requests/tarball/stable
+[zipball]: https://github.com/WordPress/Requests/zipball/stable
 
 
 ### Using a Class Loader
@@ -126,7 +126,7 @@ Requests is [100% documented with PHPDoc](https://requests.ryanmccue.info/api/).
 If you find any problems with it, [create a new
 issue](https://github.com/WordPress/Requests/issues/new)!
 
-[prose-based documentation]: https://github.com/WordPress/Requests/blob/master/docs/README.md
+[prose-based documentation]: https://github.com/WordPress/Requests/blob/stable/docs/README.md
 [request_method]: https://requests.ryanmccue.info/api/class-Requests.html#_request
 
 Testing
@@ -154,7 +154,7 @@ Contribute
 
 1. Check for open issues or open a new issue for a feature request or a bug
 2. Fork [the repository][] on Github to start making your changes to the
-    `master` branch (or branch off of it)
+    `develop` branch (or branch off of it)
 3. Write a test which shows that the bug was fixed or that the feature works as expected
 4. Send a pull request and bug me until I merge it
 
