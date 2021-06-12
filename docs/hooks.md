@@ -49,7 +49,7 @@ Available Hooks
 
     Parameters: `string &$response, array &$info`
 
-    `$info` contains the associated array as defined in the return value for [curl_getinfo()](http://php.net/manual/en/function.curl-getinfo.php#refsect1-function.curl-getinfo-returnvalues).
+    `$info` contains the associated array as defined in the return value for [curl_getinfo()](https://www.php.net/curl-getinfo#refsect1-function.curl-getinfo-returnvalues).
 
 * **`fsockopen.before_request`**
 
@@ -77,7 +77,7 @@ Available Hooks
 
     Parameters: `string &$response, array &$info`
 
-    `$info` contains the associated array as defined in the return value for [stream_get_meta_data()](http://php.net/manual/en/function.stream-get-meta-data.php#refsect1-function.stream-get-meta-data-returnvalues).
+    `$info` contains the associated array as defined in the return value for [stream_get_meta_data()](https://www.php.net/stream-get-meta-data#refsect1-function.stream-get-meta-data-returnvalues).
 
 
 

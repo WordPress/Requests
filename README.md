@@ -14,7 +14,7 @@ the new BSD license) and has no dependencies, except for PHP 5.6+.
 
 Despite PHP's use as a language for the web, its tools for sending HTTP requests
 are severely lacking. cURL has an
-[interesting API](http://php.net/manual/en/function.curl-setopt.php), to say the
+[interesting API](https://www.php.net/curl-setopt), to say the
 least, and you can't always rely on it being available. Sockets provide only low
 level access, and require you to build most of the HTTP response parsing
 yourself.
@@ -138,7 +138,7 @@ set of tests. We're not quite there yet, but [we're getting close][codecov].
 [codecov]: http://codecov.io/github/WordPress/Requests
 
 To run the test suite, first check that you have the [PHP
-JSON extension ](http://php.net/manual/en/book.json.php) enabled. Then
+JSON extension ](https://www.php.net/book.json) enabled. Then
 simply:
 ```bash
 $ phpunit
