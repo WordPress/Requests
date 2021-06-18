@@ -54,6 +54,11 @@
       "Requests": "library/"
     }
   },
+  "autoload-dev": {
+    "files": [
+      "tests/bootstrap.php"
+    ]
+  },
   "scripts": {
     "lint": [
       "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
