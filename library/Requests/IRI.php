@@ -43,7 +43,7 @@
  * @author Geoffrey Sneddon
  * @author Steve Minutillo
  * @copyright 2007-2009 Geoffrey Sneddon and Steve Minutillo
- * @license http://www.opensource.org/licenses/bsd-license.php
+ * @license https://opensource.org/licenses/bsd-license.php
  * @link http://hg.gsnedders.com/iri/
  *
  * @property string $iri IRI we're working with

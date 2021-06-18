@@ -555,8 +555,8 @@ default
 - [Add Composer support][#6] - You can now install Requests via the
   `rmccue/requests` package on Composer
 
-[docs/proxy]: http://requests.ryanmccue.info/docs/proxy.html
-[docs/usage-advanced]: http://requests.ryanmccue.info/docs/usage-advanced.html
+[docs/proxy]: https://requests.ryanmccue.info/docs/proxy.html
+[docs/usage-advanced]: https://requests.ryanmccue.info/docs/usage-advanced.html
 
 [#1]: https://github.com/WordPress/Requests/issues/1
 [#2]: https://github.com/WordPress/Requests/issues/2

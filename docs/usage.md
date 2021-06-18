@@ -54,7 +54,7 @@ You'll probably also want to pass in some data. You can pass in either a
 string, an array or an object (Requests uses [`http_build_query`][build_query]
 internally) as the third parameter (after the URL and headers):
 
-[build_query]: http://php.net/http_build_query
+[build_query]: https://www.php.net/http_build_query
 
 ```php
 $data = array('key1' => 'value1', 'key2' => 'value2');

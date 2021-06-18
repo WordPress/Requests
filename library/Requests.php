@@ -872,8 +872,8 @@ class Requests {
 	 *
 	 * @since 2.8.1
 	 * @link https://core.trac.wordpress.org/ticket/18273
-	 * @link https://secure.php.net/manual/en/function.gzinflate.php#70875
-	 * @link https://secure.php.net/manual/en/function.gzinflate.php#77336
+	 * @link https://www.php.net/gzinflate#70875
+	 * @link https://www.php.net/gzinflate#77336
 	 *
 	 * @param string $gz_data String to decompress.
 	 * @return string|bool False on failure.

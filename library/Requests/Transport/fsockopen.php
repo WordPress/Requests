@@ -30,7 +30,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	/**
 	 * Stream metadata
 	 *
-	 * @var array Associative array of properties, see {@see https://secure.php.net/stream_get_meta_data}
+	 * @var array Associative array of properties, see {@see https://www.php.net/stream_get_meta_data}
 	 */
 	public $info;
 
@@ -351,7 +351,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * Format a URL given GET data
 	 *
 	 * @param array $url_parts
-	 * @param array|object $data Data to build query using, see {@see https://secure.php.net/http_build_query}
+	 * @param array|object $data Data to build query using, see {@see https://www.php.net/http_build_query}
 	 * @return string URL with data
 	 */
 	protected static function format_get($url_parts, $data) {

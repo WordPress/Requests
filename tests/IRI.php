@@ -35,7 +35,7 @@
  * @package IRI
  * @author Geoffrey Sneddon
  * @copyright 2008-2010 Geoffrey Sneddon
- * @license http://www.opensource.org/licenses/bsd-license.php
+ * @license https://opensource.org/licenses/bsd-license.php
  * @link http://hg.gsnedders.com/iri/
  *
  */

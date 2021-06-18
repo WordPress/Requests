@@ -62,7 +62,7 @@ Why should I use Requests?
 [hooking system]: hooks.md
 [requests_ssl]: https://github.com/WordPress/Requests/blob/stable/library/Requests/SSL.php
 [ghactions]: https://github.com/WordPress/Requests/actions
-[wpssl]: http://core.trac.wordpress.org/ticket/25007
+[wpssl]: https://core.trac.wordpress.org/ticket/25007
 
 
 Why shouldn't I use...

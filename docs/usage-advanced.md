@@ -66,9 +66,9 @@ first PHP HTTP library to fully support SSL verification.
 See also the [related PHP][php-bug-47030] and [OpenSSL-related][php-bug-55820]
 bugs in PHP for more information on Subject Alternate Name field.
 
-[Mozilla certificate authority list]: http://www.mozilla.org/projects/security/certs/
-[php-bug-47030]: https://bugs.php.net/bug.php?id=47030
-[php-bug-55820]:https://bugs.php.net/bug.php?id=55820
+[Mozilla certificate authority list]: https://www.mozilla.org/projects/security/certs/
+[php-bug-47030]: https://php.net/47030
+[php-bug-55820]: https://php.net/55820
 
 ***
 
