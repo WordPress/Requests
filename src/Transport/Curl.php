@@ -206,7 +206,14 @@ final class Curl implements Transport {
 
 		$options['hooks']->dispatch('curl.after_send', []);
 
-		if (curl_errno($this->handle) === CURLE_WRITE_ERROR || curl_errno($this->handle) === CURLE_BAD_CONTENT_ENCODING) {
+		$curl_errno = curl_errno($this->handle);
+
+		if ($curl_errno === CURLE_WRITE_ERROR && $this->response_byte_limit && $this->response_byte_limit === $this->response_bytes) {
+			// Not actually an error in this case. We've drained as much data from the request that we want.
+			$curl_errno = false;
+		}
+
+		if ($curl_errno === CURLE_WRITE_ERROR || $curl_errno === CURLE_BAD_CONTENT_ENCODING) {
 			// Reset encoding and try again
 			curl_setopt($this->handle, CURLOPT_ENCODING, 'none');
 
@@ -484,7 +491,13 @@ final class Curl implements Transport {
 			$this->headers .= $response;
 		}
 
-		if (curl_errno($this->handle)) {
+		$curl_errno = curl_errno($this->handle);
+		if ($curl_errno === CURLE_WRITE_ERROR && $this->response_byte_limit && $this->response_byte_limit === $this->response_bytes) {
+			// Not actually an error in this case. We've drained as much data from the request that we want.
+			$curl_errno = false;
+		}
+
+		if ($curl_errno) {
 			$error = sprintf(
 				'cURL error %s: %s',
 				curl_errno($this->handle),
@@ -539,15 +552,10 @@ final class Curl implements Transport {
 
 		// Are we limiting the response size?
 		if ($this->response_byte_limit) {
-			if ($this->response_bytes === $this->response_byte_limit) {
-				// Already at maximum, move on
-				return $data_length;
-			}
-
 			if (($this->response_bytes + $data_length) > $this->response_byte_limit) {
 				// Limit the length
-				$limited_length = ($this->response_byte_limit - $this->response_bytes);
-				$data           = substr($data, 0, $limited_length);
+				$data_length = ($this->response_byte_limit - $this->response_bytes);
+				$data        = substr($data, 0, $data_length);
 			}
 		}
 
@@ -557,7 +565,7 @@ final class Curl implements Transport {
 			$this->response_data .= $data;
 		}
 
-		$this->response_bytes += strlen($data);
+		$this->response_bytes += $data_length;
 		return $data_length;
 	}
 
