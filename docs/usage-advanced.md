@@ -56,6 +56,16 @@ Alternatively, if you want to disable verification completely, this is possible
 with `'verify' => false`, but note that this is extremely insecure and should be
 avoided.
 
+Note that SSL verification might not be available depending on what extensions
+are enabled for your PHP environment. You can test whether Requests has
+access to a transport with SSL capabilities with the following call:
+
+```php
+use WpOrg\Requests\Capability;
+
+$ssl_available = WpOrg\Requests\Requests::test(array(Capability::SSL => true));
+```
+
 ### Security Note
 Requests supports SSL across both cURL and fsockopen in a transparent manner.
 Unlike other PHP HTTP libraries, support for verifying the certificate name is

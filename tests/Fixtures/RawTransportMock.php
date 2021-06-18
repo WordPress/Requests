@@ -18,7 +18,7 @@ final class RawTransportMock implements Transport {
 
 		return $requests;
 	}
-	public static function test() {
+	public static function test($capabilities = array()) {
 		return true;
 	}
 }

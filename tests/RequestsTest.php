@@ -2,12 +2,14 @@
 
 namespace WpOrg\Requests\Tests;
 
+use ReflectionProperty;
+use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\Fixtures\RawTransportMock;
+use WpOrg\Requests\Tests\Fixtures\TestTransportMock;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
-use WpOrg\Requests\Tests\TestCase;
 
 final class RequestsTest extends TestCase {
 
@@ -168,5 +170,31 @@ final class RequestsTest extends TestCase {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('timed out');
 		Requests::get(httpbin('/delay/3'), array(), $options);
+	}
+
+	/**
+	 * @covers \WpOrg\Requests\Requests::has_capabilities
+	 */
+	public function testHasCapabilitiesSucceedsForDetectingSsl() {
+		if (!extension_loaded('curl') && !extension_loaded('openssl')) {
+			$this->markTestSkipped('Testing for SSL requires either the curl or the openssl extension');
+		}
+		$this->assertTrue(Requests::has_capabilities(array(Capability::SSL => true)));
+	}
+
+	/**
+	 * @covers \WpOrg\Requests\Requests::has_capabilities
+	 */
+	public function testHasCapabilitiesFailsForUnsupportedCapabilities() {
+		$transports = new ReflectionProperty(Requests::class, 'transports');
+		$transports->setAccessible(true);
+		$transports->setValue(array(TestTransportMock::class));
+
+		$result = Requests::has_capabilities(array('time-travel' => true));
+
+		$transports->setValue(array());
+		$transports->setAccessible(false);
+
+		$this->assertFalse($result);
 	}
 }
