@@ -21,7 +21,7 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
-require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
+require_once dirname(__DIR__) . '/library/Requests.php';
 Requests::register_autoloader();
 
 $polyfill_autoloader = dirname(__DIR__) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
@@ -39,8 +39,8 @@ function autoload_tests($class) {
 
 	$class = substr($class, 13);
 	$file  = str_replace('_', '/', $class);
-	if (file_exists(dirname(__FILE__) . '/' . $file . '.php')) {
-		require_once dirname(__FILE__) . '/' . $file . '.php';
+	if (file_exists(__DIR__ . '/' . $file . '.php')) {
+		require_once __DIR__ . '/' . $file . '.php';
 	}
 }
 
