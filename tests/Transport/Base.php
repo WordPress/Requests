@@ -412,10 +412,11 @@ abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
 
 		if (!$success) {
 			if ($code >= 400) {
-				$this->expectException('Requests_Exception_HTTP_' . $code, null, $code);
+				$this->expectException('Requests_Exception_HTTP_' . $code);
+				$this->expectExceptionCode($code);
 			}
 			elseif ($code >= 300 && $code < 400) {
-				$this->expectException('Requests_Exception', null);
+				$this->expectException('Requests_Exception');
 			}
 		}
 
@@ -441,7 +442,8 @@ abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
 
 		if (!$success) {
 			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
-				$this->expectException('Requests_Exception_HTTP_' . $code, null, $code);
+				$this->expectException('Requests_Exception_HTTP_' . $code);
+				$this->expectExceptionCode($code);
 			}
 		}
 
