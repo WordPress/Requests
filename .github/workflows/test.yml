@@ -32,10 +32,9 @@ jobs:
             experimental: false
 
           # Test against PHP Nightly.
-          # This should be enabled once the PHPUnit version constraints have been widened.
-          #- php: '8.1'
-          #  coverage: false
-          #  experimental: true
+          - php: '8.1'
+            coverage: false
+            experimental: true
 
     name: "Test: PHP ${{ matrix.php }}"
 
