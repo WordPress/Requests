@@ -8,3 +8,6 @@ tests/coverage/*
 # Ignore local overrides of the PHPCS config file.
 .phpcs.xml
 phpcs.xml
+
+# Ignore PHPUnit results cache file.
+.phpunit.result.cache
