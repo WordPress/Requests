@@ -24,6 +24,14 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
 Requests::register_autoloader();
 
+$polyfill_autoloader = dirname(__DIR__) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+if (file_exists($polyfill_autoloader)) {
+	require_once $polyfill_autoloader;
+} else {
+	echo 'Please run `composer install` before attempting to run the tests.', PHP_EOL;
+	die(1);
+}
+
 function autoload_tests($class) {
 	if (strpos($class, 'RequestsTest_') !== 0) {
 		return;
