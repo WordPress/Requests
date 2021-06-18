@@ -56,6 +56,25 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	 * @return string Raw HTTP result
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
+		if (!is_array($data) && !is_string($data)) {
+			if ($data === null) {
+				$data = '';
+			} elseif (is_int($data) || is_float($data)) {
+				$data = (string) $data;
+			} else {
+				throw new Requests_Exception_InvalidArgument(
+					sprintf(
+						'%s: Argument #%d (%s) must be of type %s, %s given',
+						__METHOD__,
+						3,
+						'$data',
+						'array|string',
+						gettype($data)
+					)
+				);
+			}
+		}
+
 		$options['hooks']->dispatch('fsockopen.before_request');
 
 		$url_parts = parse_url($url);
