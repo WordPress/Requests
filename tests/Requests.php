@@ -114,7 +114,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	}
 
 	/**
-	 * HTTP/0.9 also appears to use a single CRLF instead of two4
+	 * HTTP/0.9 also appears to use a single CRLF instead of two.
 	 */
 	public function testSingleCRLFSeparator() {
 		$transport       = new RequestsTest_Mock_RawTransport();
