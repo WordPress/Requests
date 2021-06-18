@@ -1,4 +1,4 @@
-Template to use for release PRs from `develop` to `master`
+Template to use for release PRs from `develop` to `stable`
 ===========================================================
 
 :warning: **DO NOT MERGE (YET)** :warning:
