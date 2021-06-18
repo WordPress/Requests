@@ -84,11 +84,4 @@ class RequestsTests_Encoding extends RequestsTest_TestCase {
 		$decoded = Requests::compatible_gzinflate($encoded);
 		$this->assertSame($original, $decoded);
 	}
-
-	protected function bin2hex($field) {
-		$field = bin2hex($field);
-		$field = chunk_split($field, 2, "\\x");
-		$field = "\\x" . substr($field, 0, -2);
-		return $field;
-	}
 }
