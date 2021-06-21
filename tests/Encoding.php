@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTests_Encoding extends PHPUnit_Framework_TestCase {
+class RequestsTests_Encoding extends RequestsTest_TestCase {
 	protected static function mapData($type, $data) {
 		$real_data = array();
 		foreach ($data as $value) {
@@ -83,12 +83,5 @@ class RequestsTests_Encoding extends PHPUnit_Framework_TestCase {
 	public function testCompatibleInflate($original, $encoded) {
 		$decoded = Requests::compatible_gzinflate($encoded);
 		$this->assertSame($original, $decoded);
-	}
-
-	protected function bin2hex($field) {
-		$field = bin2hex($field);
-		$field = chunk_split($field, 2, "\\x");
-		$field = "\\x" . substr($field, 0, -2);
-		return $field;
 	}
 }

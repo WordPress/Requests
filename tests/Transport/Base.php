@@ -1,7 +1,7 @@
 <?php
 
-abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
-	public function setUp() {
+abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
+	public function set_up() {
 		$callback  = array($this->transport, 'test');
 		$supported = call_user_func($callback);
 
@@ -16,29 +16,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		}
 	}
 	protected $skip_https = false;
-
-	/**
-	 * PHPUnit 6+ compatibility shim.
-	 *
-	 * @param mixed      $exception
-	 * @param string     $message
-	 * @param int|string $code
-	 */
-	public function setExpectedException($exception, $message = '', $code = null) {
-		if (method_exists('PHPUnit_Framework_TestCase', 'setExpectedException')) {
-			parent::setExpectedException($exception, $message, $code);
-		}
-		else {
-			$this->expectException($exception);
-			if ($message !== null) {
-				$this->expectExceptionMessage($message);
-			}
-			if ($code !== null) {
-				$this->expectExceptionCode($code);
-			}
-		}
-	}
-
 
 	protected function getOptions($other = array()) {
 		$options = array(
@@ -344,14 +321,12 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertSame(6, $request->redirects);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Too many redirects
-	 */
 	public function testTooManyRedirects() {
 		$options = array(
 			'redirects' => 10, // default, but force just in case
 		);
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Too many redirects');
 		Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
 	}
 
@@ -437,10 +412,11 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, null, $code);
+				$this->expectException('Requests_Exception_HTTP_' . $code);
+				$this->expectExceptionCode($code);
 			}
 			elseif ($code >= 300 && $code < 400) {
-				$this->setExpectedException('Requests_Exception', null);
+				$this->expectException('Requests_Exception');
 			}
 		}
 
@@ -466,7 +442,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 
 		if (!$success) {
 			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
-				$this->setExpectedException('Requests_Exception_HTTP_' . $code, null, $code);
+				$this->expectException('Requests_Exception_HTTP_' . $code);
+				$this->expectExceptionCode($code);
 			}
 		}
 
@@ -490,10 +467,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($request->success);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception_HTTP_Unknown
-	 * @expectedExceptionMessage 599 Unknown
-	 */
 	public function testStatusCodeThrowUnknown() {
 		$transport       = new RequestsTest_Mock_Transport();
 		$transport->code = 599;
@@ -503,6 +476,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		);
 
 		$request = Requests::get(httpbin('/status/599'), array(), $options);
+		$this->expectException('Requests_Exception_HTTP_Unknown');
+		$this->expectExceptionMessage('599 Unknown');
 		$request->throw_for_status(true);
 	}
 
@@ -562,10 +537,8 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($empty, $request);
 	}
 
-	/**
-	 * @expectedException Requests_Exception
-	 */
 	public function testBadIP() {
+		$this->expectException('Requests_Exception');
 		Requests::get('http://256.256.256.0/', array(), $this->getOptions());
 	}
 
@@ -582,34 +555,28 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertEmpty($result['args']);
 	}
 
-	/**
-	 * @expectedException Requests_Exception
-	 */
 	public function testExpiredHTTPS() {
 		if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
+		$this->expectException('Requests_Exception');
 		Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
-	/**
-	 * @expectedException Requests_Exception
-	 */
 	public function testRevokedHTTPS() {
 		if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
+		$this->expectException('Requests_Exception');
 		Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
 	/**
 	 * Test that SSL fails with a bad certificate
-	 *
-	 * @expectedException Requests_Exception
 	 */
 	public function testBadDomain() {
 		if ($this->skip_https) {
@@ -617,6 +584,7 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 			return;
 		}
 
+		$this->expectException('Requests_Exception');
 		Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
@@ -663,14 +631,12 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertSame(200, $request->status_code);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage timed out
-	 */
 	public function testTimeout() {
 		$options = array(
 			'timeout' => 1,
 		);
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('timed out');
 		Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
 	}
 
@@ -850,13 +816,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		$this->assertSame('8080', $matches[1]);
 	}
 
-	/**
-	 * This test will be skipped on PHP 8 as it would fail due to the use of an incompatible
-	 * PHPUnit version. Once the test suite is compatible with PHPUnit 9, this "requires" can
-	 * be removed.
-	 *
-	 * @requires PHP < 8
-	 */
 	public function testProgressCallback() {
 		$mock = $this->getMockBuilder('stdClass')->setMethods(array('progress'))->getMock();
 		$mock->expects($this->atLeastOnce())->method('progress');
@@ -870,13 +829,6 @@ abstract class RequestsTest_Transport_Base extends PHPUnit_Framework_TestCase {
 		Requests::get(httpbin('/get'), array(), $options);
 	}
 
-	/**
-	 * This test will be skipped on PHP 8 as it would fail due to the use of an incompatible
-	 * PHPUnit version. Once the test suite is compatible with PHPUnit 9, this "requires" can
-	 * be removed.
-	 *
-	 * @requires PHP < 8
-	 */
 	public function testAfterRequestCallback() {
 		$mock = $this->getMockBuilder('stdClass')
 			->setMethods(array('after_request'))

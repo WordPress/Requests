@@ -40,13 +40,13 @@
   },
   "require-dev": {
     "requests/test-server": "dev-master",
-    "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5",
     "squizlabs/php_codesniffer": "^3.5",
     "phpcompatibility/php-compatibility": "^9.0",
     "wp-coding-standards/wpcs": "^2.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
     "php-parallel-lint/php-parallel-lint": "^1.3",
-    "php-parallel-lint/php-console-highlighter": "^0.5.0"
+    "php-parallel-lint/php-console-highlighter": "^0.5.0",
+    "yoast/phpunit-polyfills": "^1.0.0"
   },
   "type": "library",
   "autoload": {

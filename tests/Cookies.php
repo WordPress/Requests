@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
+class RequestsTest_Cookies extends RequestsTest_TestCase {
 	public function testBasicCookie() {
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue');
 
@@ -57,11 +57,9 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$this->assertFalse(isset($jar['requests-testcookie']));
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Object is a dictionary, not a list
-	 */
 	public function testCookieJarAsList() {
+		$this->expectException(Requests_Exception::class);
+		$this->expectExceptionMessage('Object is a dictionary, not a list');
 		$cookies   = new Requests_Cookie_Jar();
 		$cookies[] = 'requests-testcookie1=testvalue1';
 	}
@@ -111,7 +109,7 @@ class RequestsTest_Cookies extends PHPUnit_Framework_TestCase {
 		$response = Requests::get(httpbin('/cookies/set'), array(), $options);
 
 		$data = json_decode($response->body, true);
-		$this->assertInternalType('array', $data);
+		$this->assertIsArray($data);
 		$this->assertArrayHasKey('cookies', $data);
 		return $data['cookies'];
 	}

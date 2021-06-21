@@ -1,6 +1,6 @@
 <?php
 
-class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
+class RequestsTest_IDNAEncoder extends RequestsTest_TestCase {
 	public static function specExamples() {
 		return array(
 			array(
@@ -22,29 +22,23 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 		$this->assertSame($expected, $result);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Provided string is too long
-	 */
 	public function testASCIITooLong() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Provided string is too long');
 		$data = str_repeat('abcd', 20);
 		Requests_IDNAEncoder::encode($data);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Encoded string is too long
-	 */
 	public function testEncodedTooLong() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Encoded string is too long');
 		$data = str_repeat("\xe4\xbb\x96", 60);
 		Requests_IDNAEncoder::encode($data);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Provided string begins with ACE prefix
-	 */
 	public function testAlreadyPrefixed() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Provided string begins with ACE prefix');
 		Requests_IDNAEncoder::encode("xn--\xe4\xbb\x96");
 	}
 
@@ -68,43 +62,33 @@ class RequestsTest_IDNAEncoder extends PHPUnit_Framework_TestCase {
 		$this->assertSame('xn--ww6j', $result);
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Invalid Unicode codepoint
-	 */
 	public function testFiveByteCharacter() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Invalid Unicode codepoint');
 		Requests_IDNAEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Invalid Unicode codepoint
-	 */
 	public function testSixByteCharacter() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Invalid Unicode codepoint');
 		Requests_IDNAEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Invalid Unicode codepoint
-	 */
 	public function testInvalidASCIICharacterWithMultibyte() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Invalid Unicode codepoint');
 		Requests_IDNAEncoder::encode("\0\xc2\xb6");
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Invalid Unicode codepoint
-	 */
 	public function testUnfinishedMultibyte() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Invalid Unicode codepoint');
 		Requests_IDNAEncoder::encode("\xc2");
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage Invalid Unicode codepoint
-	 */
 	public function testPartialMultibyte() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('Invalid Unicode codepoint');
 		Requests_IDNAEncoder::encode("\xc2\xc2\xb6");
 	}
 }

@@ -3,36 +3,29 @@
 class RequestsTest_Transport_fsockopen extends RequestsTest_Transport_Base {
 	protected $transport = 'Requests_Transport_fsockopen';
 
-	/**
-	 * @expectedException Requests_Exception
-	 */
 	public function testBadIP() {
+		$this->expectException('Requests_Exception');
 		parent::testBadIP();
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage SSL certificate did not match the requested domain name
-	 */
 	public function testExpiredHTTPS() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('SSL certificate did not match the requested domain name');
 		parent::testExpiredHTTPS();
 	}
 
-	/**
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage SSL certificate did not match the requested domain name
-	 */
 	public function testRevokedHTTPS() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('SSL certificate did not match the requested domain name');
 		parent::testRevokedHTTPS();
 	}
 
 	/**
 	 * Test that SSL fails with a bad certificate
-	 *
-	 * @expectedException        Requests_Exception
-	 * @expectedExceptionMessage SSL certificate did not match the requested domain name
 	 */
 	public function testBadDomain() {
+		$this->expectException('Requests_Exception');
+		$this->expectExceptionMessage('SSL certificate did not match the requested domain name');
 		parent::testBadDomain();
 	}
 
@@ -50,6 +43,6 @@ class RequestsTest_Transport_fsockopen extends RequestsTest_Transport_Base {
 	 * Issue #248.
 	 */
 	public function checkContentLengthHeader($headers) {
-		$this->assertContains('Content-Length: 0', $headers);
+		$this->assertStringContainsString('Content-Length: 0', $headers);
 	}
 }
