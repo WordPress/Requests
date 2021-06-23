@@ -15,6 +15,135 @@ class RequestsTest_Transport_cURL extends RequestsTest_Transport_Base {
 		parent::testExpiredHTTPS();
 	}
 
+	public function testPoolMultiple() {
+		$requests  = array(
+			'test1' => array(
+				'url' => httpbin('/get'),
+			),
+			'test2' => array(
+				'url' => httpbin('/get'),
+			),
+		);
+		$responses = Requests::request_pool($requests, $this->getOptions());
+
+		// test1
+		$this->assertNotEmpty($responses['test1']);
+		$this->assertInstanceOf('Requests_Response', $responses['test1']);
+		$this->assertSame(200, $responses['test1']->status_code);
+
+		$result = json_decode($responses['test1']->body, true);
+		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertEmpty($result['args']);
+
+		// test2
+		$this->assertNotEmpty($responses['test2']);
+		$this->assertInstanceOf('Requests_Response', $responses['test2']);
+		$this->assertSame(200, $responses['test2']->status_code);
+
+		$result = json_decode($responses['test2']->body, true);
+		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertEmpty($result['args']);
+	}
+
+	public function testPoolWithDifferingMethods() {
+		$requests  = array(
+			'get' => array(
+				'url' => httpbin('/get'),
+			),
+			'post' => array(
+				'url'  => httpbin('/post'),
+				'type' => Requests::POST,
+				'data' => 'test',
+			),
+		);
+		$responses = Requests::request_pool($requests, $this->getOptions());
+
+		// get
+		$this->assertSame(200, $responses['get']->status_code);
+
+		// post
+		$this->assertSame(200, $responses['post']->status_code);
+		$result = json_decode($responses['post']->body, true);
+		$this->assertSame('test', $result['data']);
+	}
+
+	public function testPoolUsingCallbackAndFailure() {
+		$requests        = array(
+			'success' => array(
+				'url' => httpbin('/get'),
+			),
+			'timeout' => array(
+				'url'     => httpbin('/delay/10'),
+				'options' => array(
+					'timeout' => 1,
+				),
+			),
+		);
+		$this->completed = array();
+		$options         = array(
+			'complete' => array($this, 'completeCallback'),
+		);
+		$responses       = Requests::request_pool($requests, $this->getOptions($options));
+
+		$this->assertSame($this->completed, $responses);
+		$this->completed = array();
+	}
+
+	public function testPoolUsingCallback() {
+		$requests        = array(
+			'get' => array(
+				'url' => httpbin('/get'),
+			),
+			'post' => array(
+				'url'  => httpbin('/post'),
+				'type' => Requests::POST,
+				'data' => 'test',
+			),
+		);
+		$this->completed = array();
+		$options         = array(
+			'complete' => array($this, 'completeCallback'),
+		);
+		$responses       = Requests::request_pool($requests, $this->getOptions($options));
+
+		$this->assertSame($this->completed, $responses);
+		$this->completed = array();
+	}
+
+	public function testPoolToFile() {
+		$requests = array(
+			'get' => array(
+				'url'     => httpbin('/get'),
+				'options' => array(
+					'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
+				),
+			),
+			'post' => array(
+				'url'     => httpbin('/post'),
+				'type'    => Requests::POST,
+				'data'    => 'test',
+				'options' => array(
+					'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
+				),
+			),
+		);
+		Requests::request_pool($requests, $this->getOptions());
+
+		// GET request
+		$contents = file_get_contents($requests['get']['options']['filename']);
+		$result   = json_decode($contents, true);
+		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertEmpty($result['args']);
+		unlink($requests['get']['options']['filename']);
+
+		// POST request
+		$contents = file_get_contents($requests['post']['options']['filename']);
+		$result   = json_decode($contents, true);
+		$this->assertSame(httpbin('/post'), $result['url']);
+		$this->assertSame('test', $result['data']);
+		unlink($requests['post']['options']['filename']);
+	}
+
 	public function testRevokedHTTPS() {
 		$this->expectException('Requests_Exception');
 		$this->expectExceptionMessage('certificate subject name');
