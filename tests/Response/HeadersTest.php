@@ -1,8 +1,11 @@
 <?php
 
-use Requests\Tests\TestCase;
+namespace Requests\Tests\Response;
 
-class RequestsTest_Response_Headers extends TestCase {
+use Requests\Tests\TestCase;
+use Requests_Response_Headers;
+
+class HeadersTest extends TestCase {
 	public function testArrayAccess() {
 		$headers                 = new Requests_Response_Headers();
 		$headers['Content-Type'] = 'text/plain';
