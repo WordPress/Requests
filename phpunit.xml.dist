@@ -17,9 +17,6 @@
 		<testsuite name="Proxies">
 			<directory suffix=".php">tests/Proxy</directory>
 		</testsuite>
-		<testsuite name="General">
-			<file>tests/Utility/FilteredIterator.php</file>
-		</testsuite>
 		<testsuite name="RequestsTests">
 			<directory suffix="Test.php">tests</directory>
 		</testsuite>
