@@ -6,8 +6,10 @@ use Requests;
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
 use Requests_Exception;
+use Requests_Exception_HTTP_Unknown;
 use Requests_Hooks;
 use Requests_Response;
+use stdClass;
 
 abstract class BaseTestCase extends TestCase {
 	public function set_up() {
@@ -334,7 +336,7 @@ abstract class BaseTestCase extends TestCase {
 		$options = array(
 			'redirects' => 10, // default, but force just in case
 		);
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('Too many redirects');
 		Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
 	}
@@ -425,7 +427,7 @@ abstract class BaseTestCase extends TestCase {
 				$this->expectExceptionCode($code);
 			}
 			elseif ($code >= 300 && $code < 400) {
-				$this->expectException('Requests_Exception');
+				$this->expectException(Requests_Exception::class);
 			}
 		}
 
@@ -485,7 +487,7 @@ abstract class BaseTestCase extends TestCase {
 		);
 
 		$request = Requests::get(httpbin('/status/599'), array(), $options);
-		$this->expectException('Requests_Exception_HTTP_Unknown');
+		$this->expectException(Requests_Exception_HTTP_Unknown::class);
 		$this->expectExceptionMessage('599 Unknown');
 		$request->throw_for_status(true);
 	}
@@ -547,7 +549,7 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testBadIP() {
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		Requests::get('http://256.256.256.0/', array(), $this->getOptions());
 	}
 
@@ -570,7 +572,7 @@ abstract class BaseTestCase extends TestCase {
 			return;
 		}
 
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
@@ -580,7 +582,7 @@ abstract class BaseTestCase extends TestCase {
 			return;
 		}
 
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
@@ -593,7 +595,7 @@ abstract class BaseTestCase extends TestCase {
 			return;
 		}
 
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
@@ -644,7 +646,7 @@ abstract class BaseTestCase extends TestCase {
 		$options = array(
 			'timeout' => 1,
 		);
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('timed out');
 		Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
 	}
@@ -662,7 +664,7 @@ abstract class BaseTestCase extends TestCase {
 
 		// test1
 		$this->assertNotEmpty($responses['test1']);
-		$this->assertInstanceOf('Requests_Response', $responses['test1']);
+		$this->assertInstanceOf(Requests_Response::class, $responses['test1']);
 		$this->assertSame(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
@@ -671,7 +673,7 @@ abstract class BaseTestCase extends TestCase {
 
 		// test2
 		$this->assertNotEmpty($responses['test2']);
-		$this->assertInstanceOf('Requests_Response', $responses['test2']);
+		$this->assertInstanceOf(Requests_Response::class, $responses['test2']);
 		$this->assertSame(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
@@ -718,7 +720,7 @@ abstract class BaseTestCase extends TestCase {
 		);
 		$responses = Requests::request_multiple($requests, $this->getOptions());
 		$this->assertSame(200, $responses['success']->status_code);
-		$this->assertInstanceOf('Requests_Exception', $responses['timeout']);
+		$this->assertInstanceOf(Requests_Exception::class, $responses['timeout']);
 	}
 
 	public function testMultipleUsingCallback() {
@@ -826,7 +828,7 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testProgressCallback() {
-		$mock = $this->getMockBuilder('stdClass')->setMethods(array('progress'))->getMock();
+		$mock = $this->getMockBuilder(stdClass::class)->setMethods(array('progress'))->getMock();
 		$mock->expects($this->atLeastOnce())->method('progress');
 		$hooks = new Requests_Hooks();
 		$hooks->register('request.progress', array($mock, 'progress'));
@@ -839,7 +841,7 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testAfterRequestCallback() {
-		$mock = $this->getMockBuilder('stdClass')
+		$mock = $this->getMockBuilder(stdClass::class)
 			->setMethods(array('after_request'))
 			->getMock();
 

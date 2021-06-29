@@ -13,9 +13,9 @@ class FilteredIteratorTest extends TestCase {
 	 */
 	public function testDeserializeRequestUtilityFilteredIteratorObjects($value) {
 		$serialized = serialize($value);
-		if (get_class($value) === 'Requests_Utility_FilteredIterator') {
+		if (get_class($value) === Requests_Utility_FilteredIterator::class) {
 			$new_value  = unserialize($serialized);
-			$reflection = new ReflectionClass('Requests_Utility_FilteredIterator');
+			$reflection = new ReflectionClass(Requests_Utility_FilteredIterator::class);
 			$property   = $reflection->getProperty('callback');
 			$property->setAccessible(true);
 			$callback_value = $property->getValue($new_value);

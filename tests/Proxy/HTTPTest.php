@@ -4,7 +4,10 @@ namespace Requests\Tests\Proxy;
 
 use Requests;
 use Requests\Tests\TestCase;
+use Requests_Exception;
 use Requests_Proxy_HTTP;
+use Requests_Transport_cURL;
+use Requests_Transport_fsockopen;
 
 class HTTPTest extends TestCase {
 	protected function checkProxyAvailable($type = '') {
@@ -25,8 +28,8 @@ class HTTPTest extends TestCase {
 
 	public function transportProvider() {
 		return array(
-			array('Requests_Transport_cURL'),
-			array('Requests_Transport_fsockopen'),
+			array(Requests_Transport_cURL::class),
+			array(Requests_Transport_fsockopen::class),
 		);
 	}
 
@@ -74,7 +77,7 @@ class HTTPTest extends TestCase {
 			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
 			'transport' => $transport,
 		);
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('Invalid number of arguments');
 		Requests::get(httpbin('/get'), array(), $options);
 	}
@@ -134,10 +137,10 @@ class HTTPTest extends TestCase {
 		);
 
 		if (version_compare(phpversion(), '5.5.0', '>=') === true
-			&& $transport === 'Requests_Transport_fsockopen'
+			&& $transport === Requests_Transport_fsockopen::class
 		) {
 			// @TODO fsockopen connection times out on invalid auth instead of returning 407.
-			$this->expectException('Requests_Exception');
+			$this->expectException(Requests_Exception::class);
 			$this->expectExceptionMessage('fsocket timed out');
 		}
 

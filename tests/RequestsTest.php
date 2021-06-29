@@ -6,12 +6,13 @@ use Requests;
 use Requests\Tests\Mock\RawTransportMock;
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
+use Requests_Exception;
 use Requests_Response_Headers;
 
 class RequestsTest extends TestCase {
 
 	public function testInvalidProtocol() {
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('Only HTTP(S) requests are handled');
 		Requests::request('ftp://128.0.0.1/');
 	}
@@ -116,7 +117,7 @@ class RequestsTest extends TestCase {
 			'transport' => $transport,
 		);
 
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('Response could not be parsed');
 		Requests::get('http://example.com/', array(), $options);
 	}
@@ -132,7 +133,7 @@ class RequestsTest extends TestCase {
 			'transport' => $transport,
 		);
 
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('Missing header/body separator');
 		Requests::get('http://example.com/', array(), $options);
 	}
@@ -145,7 +146,7 @@ class RequestsTest extends TestCase {
 			'transport' => $transport,
 		);
 
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('Response could not be parsed');
 		Requests::get('http://example.com/', array(), $options);
 	}
@@ -164,7 +165,7 @@ class RequestsTest extends TestCase {
 
 	public function testTimeoutException() {
 		$options = array('timeout' => 0.5);
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('timed out');
 		Requests::get(httpbin('/delay/3'), array(), $options);
 	}

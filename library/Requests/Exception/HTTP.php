@@ -58,7 +58,7 @@ class Requests_Exception_HTTP extends Requests_Exception {
 	 */
 	public static function get_class($code) {
 		if (!$code) {
-			return 'Requests_Exception_HTTP_Unknown';
+			return Requests_Exception_HTTP_Unknown::class;
 		}
 
 		$class = sprintf('Requests_Exception_HTTP_%d', $code);
@@ -66,6 +66,6 @@ class Requests_Exception_HTTP extends Requests_Exception {
 			return $class;
 		}
 
-		return 'Requests_Exception_HTTP_Unknown';
+		return Requests_Exception_HTTP_Unknown::class;
 	}
 }

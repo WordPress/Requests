@@ -153,7 +153,7 @@ class Requests {
 	 * @codeCoverageIgnore
 	 */
 	public static function register_autoloader() {
-		spl_autoload_register(array('Requests', 'autoloader'));
+		spl_autoload_register(array(static::class, 'autoloader'));
 	}
 
 	/**
@@ -164,8 +164,8 @@ class Requests {
 	public static function add_transport($transport) {
 		if (empty(self::$transports)) {
 			self::$transports = array(
-				'Requests_Transport_cURL',
-				'Requests_Transport_fsockopen',
+				Requests_Transport_cURL::class,
+				Requests_Transport_fsockopen::class,
 			);
 		}
 
@@ -194,8 +194,8 @@ class Requests {
 
 		if (empty(self::$transports)) {
 			self::$transports = array(
-				'Requests_Transport_cURL',
-				'Requests_Transport_fsockopen',
+				Requests_Transport_cURL::class,
+				Requests_Transport_fsockopen::class,
 			);
 		}
 
@@ -430,7 +430,7 @@ class Requests {
 		$options = array_merge(self::get_default_options(true), $options);
 
 		if (!empty($options['hooks'])) {
-			$options['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+			$options['hooks']->register('transport.internal.parse_response', array(static::class, 'parse_multiple'));
 			if (!empty($options['complete'])) {
 				$options['hooks']->register('multiple.request.complete', $options['complete']);
 			}
@@ -461,7 +461,7 @@ class Requests {
 
 			// Ensure we only hook in once
 			if ($request['options']['hooks'] !== $options['hooks']) {
-				$request['options']['hooks']->register('transport.internal.parse_response', array('Requests', 'parse_multiple'));
+				$request['options']['hooks']->register('transport.internal.parse_response', array(static::class, 'parse_multiple'));
 				if (!empty($request['options']['complete'])) {
 					$request['options']['hooks']->register('multiple.request.complete', $request['options']['complete']);
 				}
