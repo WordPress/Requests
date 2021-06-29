@@ -36,43 +36,39 @@ You can still run the tests using a PHPUnit phar file, but some test dependencie
 	die(1);
 }
 
-// Load the PHPUnit Polyfills autoloader.
-require_once $vendor_dir . '/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+if (defined('__PHPUNIT_PHAR__')) {
+	// Testing via a PHPUnit phar.
 
-// New autoloader.
-spl_autoload_register(
-	function ($class_name) {
-		// Only try & load our own classes.
-		if (stripos($class_name, 'Requests\\Tests\\') !== 0) {
-			return false;
+	// Load the PHPUnit Polyfills autoloader.
+	require_once $vendor_dir . '/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+
+	/*
+	 * Autoloader specifically for the test files.
+	 * Fixes issues with PHPUnit not being able to find test classes being extended when running
+	 * in a non-Composer context.
+	 */
+	spl_autoload_register(
+		function ($class_name) {
+			// Only try & load our own classes.
+			if (stripos($class_name, 'Requests\\Tests\\') !== 0) {
+				return false;
+			}
+
+			// Strip namespace prefix 'Requests\Tests\'.
+			$relative_class = substr($class_name, 15);
+			$file           = realpath(__DIR__ . '/' . strtr($relative_class, '\\', '/') . '.php');
+
+			if (file_exists($file)) {
+				include_once $file;
+			}
+
+			return true;
 		}
-
-		// Strip namespace prefix 'Requests\Tests\'.
-		$relative_class = substr($class_name, 15);
-		$file           = realpath(__DIR__ . '/' . strtr($relative_class, '\\', '/') . '.php');
-
-		if (file_exists($file)) {
-			include_once $file;
-		}
-
-		return true;
-	}
-);
-
-// Old autoloader.
-function autoload_tests($class) {
-	if (strpos($class, 'RequestsTest_') !== 0) {
-		return;
-	}
-
-	$class = substr($class, 13);
-	$file  = str_replace('_', '/', $class);
-	if (file_exists(__DIR__ . '/' . $file . '.php')) {
-		require_once __DIR__ . '/' . $file . '.php';
-	}
+	);
+} else {
+	// Testing via a Composer setup.
+	require_once $vendor_dir . '/autoload.php';
 }
-
-spl_autoload_register('autoload_tests');
 
 function httpbin($suffix = '', $ssl = false) {
 	$host = $ssl ? 'https://' . REQUESTS_TEST_HOST_HTTPS : 'http://' . REQUESTS_TEST_HOST_HTTP;

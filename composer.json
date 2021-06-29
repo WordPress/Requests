@@ -54,6 +54,11 @@
       "Requests": "library/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Requests\\Tests\\": "tests/"
+    }
+  },
   "scripts": {
     "lint": [
       "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
