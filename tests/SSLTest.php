@@ -1,8 +1,11 @@
 <?php
 
-use Requests\Tests\TestCase;
+namespace Requests\Tests;
 
-class RequestsTest_SSL extends TestCase {
+use Requests\Tests\TestCase;
+use Requests_SSL;
+
+class SSLTest extends TestCase {
 	public static function domainMatchProvider() {
 		return array(
 			array('example.com', 'example.com'),
