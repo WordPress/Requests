@@ -18,7 +18,6 @@
 			<directory suffix=".php">tests/Proxy</directory>
 		</testsuite>
 		<testsuite name="General">
-			<file>tests/Encoding.php</file>
 			<file>tests/IDNAEncoder.php</file>
 			<file>tests/IRI.php</file>
 			<file>tests/Requests.php</file>
