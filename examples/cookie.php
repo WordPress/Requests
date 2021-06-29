@@ -1,7 +1,7 @@
 <?php
 
 // First, include Requests
-require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
+require_once dirname(__DIR__) . '/library/Requests.php';
 
 // Next, make sure Requests can load internal classes
 Requests::register_autoloader();
