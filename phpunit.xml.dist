@@ -29,6 +29,9 @@
 			<file>tests/SSL.php</file>
 			<file>tests/Utility/FilteredIterator.php</file>
 		</testsuite>
+		<testsuite name="RequestsTests">
+			<directory suffix="Test.php">tests</directory>
+		</testsuite>
 	</testsuites>
 
 	<logging>
