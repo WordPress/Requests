@@ -1,8 +1,11 @@
 <?php
 
+namespace Requests\Tests\Transport;
+
+use Requests;
 use Requests\Tests\Transport\BaseTestCase;
 
-class RequestsTest_Transport_cURL extends BaseTestCase {
+class CurlTest extends BaseTestCase {
 	protected $transport = 'Requests_Transport_cURL';
 
 	public function testBadIP() {
