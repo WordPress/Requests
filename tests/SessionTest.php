@@ -1,8 +1,11 @@
 <?php
 
-use Requests\Tests\TestCase;
+namespace Requests\Tests;
 
-class RequestsTest_Session extends TestCase {
+use Requests\Tests\TestCase;
+use Requests_Session;
+
+class SessionTest extends TestCase {
 	public function testURLResolution() {
 		$session = new Requests_Session(httpbin('/'));
 
