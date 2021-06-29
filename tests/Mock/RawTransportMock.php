@@ -1,6 +1,10 @@
 <?php
 
-class RequestsTest_Mock_RawTransport implements Requests_Transport {
+namespace Requests\Tests\Mock;
+
+use Requests_Transport;
+
+class RawTransportMock implements Requests_Transport {
 	public $data = '';
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		return $this->data;
