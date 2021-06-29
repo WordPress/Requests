@@ -1,8 +1,17 @@
 <?php
 
-use Requests\Tests\TestCase;
+namespace Requests\Tests;
 
-class RequestsTest_Cookies extends TestCase {
+use Requests;
+use Requests\Tests\TestCase;
+use Requests_Cookie;
+use Requests_Cookie_Jar;
+use Requests_Exception;
+use Requests_IRI;
+use Requests_Response_Headers;
+use Requests_Utility_CaseInsensitiveDictionary;
+
+class CookiesTest extends TestCase {
 	public function testBasicCookie() {
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue');
 
