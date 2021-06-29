@@ -142,8 +142,8 @@ class Requests {
 		}
 
 		$file = str_replace('_', '/', $class);
-		if (file_exists(dirname(__FILE__) . '/' . $file . '.php')) {
-			require_once dirname(__FILE__) . '/' . $file . '.php';
+		if (file_exists(__DIR__ . '/' . $file . '.php')) {
+			require_once __DIR__ . '/' . $file . '.php';
 		}
 	}
 
@@ -539,7 +539,7 @@ class Requests {
 			return self::$certificate_path;
 		}
 
-		return dirname(__FILE__) . '/Requests/Transport/cacert.pem';
+		return __DIR__ . '/Requests/Transport/cacert.pem';
 	}
 
 	/**
