@@ -1,8 +1,12 @@
 <?php
 
-use Requests\Tests\TestCase;
+namespace Requests\Tests;
 
-class RequestsTest_ChunkedDecoding extends TestCase {
+use Requests;
+use Requests\Tests\TestCase;
+use RequestsTest_Mock_Transport;
+
+class ChunkedDecodingTest extends TestCase {
 	public static function chunkedProvider() {
 		return array(
 			array(
