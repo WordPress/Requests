@@ -3,10 +3,10 @@
 namespace Requests\Tests;
 
 use Requests;
+use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
 use Requests_Response_Headers;
 use RequestsTest_Mock_RawTransport;
-use RequestsTest_Mock_Transport;
 
 class RequestsTest extends TestCase {
 
@@ -151,7 +151,7 @@ class RequestsTest extends TestCase {
 	}
 
 	public function test30xWithoutLocation() {
-		$transport       = new RequestsTest_Mock_Transport();
+		$transport       = new TransportMock();
 		$transport->code = 302;
 
 		$options  = array(

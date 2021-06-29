@@ -1,6 +1,10 @@
 <?php
 
-class RequestsTest_Mock_Transport implements Requests_Transport {
+namespace Requests\Tests\Mock;
+
+use Requests_Transport;
+
+class TransportMock implements Requests_Transport {
 	public $code        = 200;
 	public $chunked     = false;
 	public $body        = 'Test Body';
