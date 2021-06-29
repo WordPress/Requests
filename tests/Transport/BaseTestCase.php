@@ -1,8 +1,15 @@
 <?php
 
-use Requests\Tests\TestCase;
+namespace Requests\Tests\Transport;
 
-abstract class RequestsTest_Transport_Base extends TestCase {
+use Requests;
+use Requests\Tests\TestCase;
+use Requests_Exception;
+use Requests_Hooks;
+use Requests_Response;
+use RequestsTest_Mock_Transport;
+
+abstract class BaseTestCase extends TestCase {
 	public function set_up() {
 		$callback  = array($this->transport, 'test');
 		$supported = call_user_func($callback);
