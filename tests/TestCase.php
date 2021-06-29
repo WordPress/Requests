@@ -1,7 +1,9 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+namespace Requests\Tests;
 
-class RequestsTest_TestCase extends TestCase {
+use Yoast\PHPUnitPolyfills\TestCases\TestCase as Polyfill_TestCase;
+
+class TestCase extends Polyfill_TestCase {
 
 }

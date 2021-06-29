@@ -1,6 +1,8 @@
 <?php
 
-class RequestsTest_SSL extends RequestsTest_TestCase {
+use Requests\Tests\TestCase;
+
+class RequestsTest_SSL extends TestCase {
 	public static function domainMatchProvider() {
 		return array(
 			array('example.com', 'example.com'),

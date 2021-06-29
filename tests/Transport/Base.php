@@ -1,6 +1,8 @@
 <?php
 
-abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
+use Requests\Tests\TestCase;
+
+abstract class RequestsTest_Transport_Base extends TestCase {
 	public function set_up() {
 		$callback  = array($this->transport, 'test');
 		$supported = call_user_func($callback);

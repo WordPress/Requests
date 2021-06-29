@@ -1,6 +1,8 @@
 <?php
 
-class RequestsTest_Utility_FilteredIterator extends RequestsTest_TestCase {
+use Requests\Tests\TestCase;
+
+class RequestsTest_Utility_FilteredIterator extends TestCase {
 	/**
 	 * @dataProvider dataSerializeDeserializeObjects
 	 */

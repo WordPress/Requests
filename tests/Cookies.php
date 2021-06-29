@@ -1,6 +1,8 @@
 <?php
 
-class RequestsTest_Cookies extends RequestsTest_TestCase {
+use Requests\Tests\TestCase;
+
+class RequestsTest_Cookies extends TestCase {
 	public function testBasicCookie() {
 		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue');
 

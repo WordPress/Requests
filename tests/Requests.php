@@ -1,6 +1,8 @@
 <?php
 
-class RequestsTest_Requests extends RequestsTest_TestCase {
+use Requests\Tests\TestCase;
+
+class RequestsTest_Requests extends TestCase {
 
 	public function testInvalidProtocol() {
 		$this->expectException('Requests_Exception');

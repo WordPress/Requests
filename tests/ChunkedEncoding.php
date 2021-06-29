@@ -1,6 +1,8 @@
 <?php
 
-class RequestsTest_ChunkedDecoding extends RequestsTest_TestCase {
+use Requests\Tests\TestCase;
+
+class RequestsTest_ChunkedDecoding extends TestCase {
 	public static function chunkedProvider() {
 		return array(
 			array(

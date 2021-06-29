@@ -1,6 +1,8 @@
 <?php
 
-class RequestsTest_Auth_Basic extends RequestsTest_TestCase {
+use Requests\Tests\TestCase;
+
+class RequestsTest_Auth_Basic extends TestCase {
 	public static function transportProvider() {
 		return array(
 			array('Requests_Transport_fsockopen'),

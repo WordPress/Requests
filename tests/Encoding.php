@@ -1,6 +1,8 @@
 <?php
 
-class RequestsTests_Encoding extends RequestsTest_TestCase {
+use Requests\Tests\TestCase;
+
+class RequestsTests_Encoding extends TestCase {
 	protected static function mapData($type, $data) {
 		$real_data = array();
 		foreach ($data as $value) {
