@@ -1,8 +1,14 @@
 <?php
 
-use Requests\Tests\TestCase;
+namespace Requests\Tests;
 
-class RequestsTest_Requests extends TestCase {
+use Requests;
+use Requests\Tests\TestCase;
+use Requests_Response_Headers;
+use RequestsTest_Mock_RawTransport;
+use RequestsTest_Mock_Transport;
+
+class RequestsTest extends TestCase {
 
 	public function testInvalidProtocol() {
 		$this->expectException('Requests_Exception');
