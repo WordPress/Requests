@@ -29,6 +29,19 @@ class RequestsTest_Transport_fsockopen extends RequestsTest_Transport_Base {
 		parent::testBadDomain();
 	}
 
+	public function testPoolNotImplementedInFsock() {
+		$requests  = array(
+			'test1' => array(
+				'url' => httpbin('/get'),
+			),
+			'test2' => array(
+				'url' => httpbin('/get'),
+			),
+		);
+		$responses = Requests::request_pool($requests, $this->getOptions());
+		$this->assertSame(array(), $responses);
+	}
+
 	/**
 	 * Issue #248.
 	 */
