@@ -37,6 +37,7 @@ class Requests_Utility_FilteredIterator extends ArrayIterator {
 	 *
 	 * @return string
 	 */
+	#[ReturnTypeWillChange]
 	public function current() {
 		$value = parent::current();
 
@@ -50,6 +51,7 @@ class Requests_Utility_FilteredIterator extends ArrayIterator {
 	/**
 	 * @inheritdoc
 	 */
+	#[ReturnTypeWillChange]
 	public function unserialize($serialized) {}
 
 	/**
@@ -57,6 +59,7 @@ class Requests_Utility_FilteredIterator extends ArrayIterator {
 	 *
 	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
 	 */
+	#[ReturnTypeWillChange]
 	public function __unserialize($serialized) {}
 
 	public function __wakeup() {
