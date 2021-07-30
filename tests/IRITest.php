@@ -40,7 +40,12 @@
  *
  */
 
-class RequestsTest_IRI extends RequestsTest_TestCase
+namespace Requests\Tests;
+
+use Requests_IRI;
+use Requests\Tests\TestCase;
+
+class IRITest extends TestCase
 {
 	public static function rfc3986_tests()
 	{

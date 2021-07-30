@@ -1,6 +1,15 @@
 <?php
 
-abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
+namespace Requests\Tests\Transport;
+
+use Requests;
+use Requests\Tests\Mock\TransportMock;
+use Requests\Tests\TestCase;
+use Requests_Exception;
+use Requests_Hooks;
+use Requests_Response;
+
+abstract class BaseTestCase extends TestCase {
 	public function set_up() {
 		$callback  = array($this->transport, 'test');
 		$supported = call_user_func($callback);
@@ -383,7 +392,7 @@ abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCode($code, $success) {
-		$transport       = new RequestsTest_Mock_Transport();
+		$transport       = new TransportMock();
 		$transport->code = $code;
 
 		$url = sprintf(httpbin('/status/%d'), $code);
@@ -401,7 +410,7 @@ abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrow($code, $success) {
-		$transport       = new RequestsTest_Mock_Transport();
+		$transport       = new TransportMock();
 		$transport->code = $code;
 
 		$url     = sprintf(httpbin('/status/%d'), $code);
@@ -431,7 +440,7 @@ abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
 	 * @dataProvider statusCodeSuccessProvider
 	 */
 	public function testStatusCodeThrowAllowRedirects($code, $success) {
-		$transport       = new RequestsTest_Mock_Transport();
+		$transport       = new TransportMock();
 		$transport->code = $code;
 
 		$url     = sprintf(httpbin('/status/%d'), $code);
@@ -455,7 +464,7 @@ abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
 	}
 
 	public function testStatusCodeUnknown() {
-		$transport       = new RequestsTest_Mock_Transport();
+		$transport       = new TransportMock();
 		$transport->code = 599;
 
 		$options = array(
@@ -468,7 +477,7 @@ abstract class RequestsTest_Transport_Base extends RequestsTest_TestCase {
 	}
 
 	public function testStatusCodeThrowUnknown() {
-		$transport       = new RequestsTest_Mock_Transport();
+		$transport       = new TransportMock();
 		$transport->code = 599;
 
 		$options = array(

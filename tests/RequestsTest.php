@@ -1,6 +1,14 @@
 <?php
 
-class RequestsTest_Requests extends RequestsTest_TestCase {
+namespace Requests\Tests;
+
+use Requests;
+use Requests\Tests\Mock\RawTransportMock;
+use Requests\Tests\Mock\TransportMock;
+use Requests\Tests\TestCase;
+use Requests_Response_Headers;
+
+class RequestsTest extends TestCase {
 
 	public function testInvalidProtocol() {
 		$this->expectException('Requests_Exception');
@@ -17,7 +25,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	 * Standard response header parsing
 	 */
 	public function testHeaderParsing() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+		$transport       = new RawTransportMock();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n" .
@@ -52,7 +60,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	}
 
 	public function testProtocolVersionParsing() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+		$transport       = new RawTransportMock();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n";
@@ -66,7 +74,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	}
 
 	public function testRawAccess() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+		$transport       = new RawTransportMock();
 		$transport->data =
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n" .
@@ -83,7 +91,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	 * Headers with only \n delimiting should be treated as if they're \r\n
 	 */
 	public function testHeaderOnlyLF() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+		$transport       = new RawTransportMock();
 		$transport->data = "HTTP/1.0 200 OK\r\nTest: value\nAnother-Test: value\r\n\r\n";
 
 		$options  = array(
@@ -101,7 +109,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	 * new issue, and update your server/proxy to support a proper protocol.
 	 */
 	public function testInvalidProtocolVersion() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+		$transport       = new RawTransportMock();
 		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
 
 		$options = array(
@@ -117,7 +125,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	 * HTTP/0.9 also appears to use a single CRLF instead of two.
 	 */
 	public function testSingleCRLFSeparator() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+		$transport       = new RawTransportMock();
 		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
 
 		$options = array(
@@ -130,7 +138,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	}
 
 	public function testInvalidStatus() {
-		$transport       = new RequestsTest_Mock_RawTransport();
+		$transport       = new RawTransportMock();
 		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
 
 		$options = array(
@@ -143,7 +151,7 @@ class RequestsTest_Requests extends RequestsTest_TestCase {
 	}
 
 	public function test30xWithoutLocation() {
-		$transport       = new RequestsTest_Mock_Transport();
+		$transport       = new TransportMock();
 		$transport->code = 302;
 
 		$options  = array(

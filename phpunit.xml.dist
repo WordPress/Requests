@@ -8,26 +8,8 @@
 	verbose="true"
 	>
 	<testsuites>
-		<testsuite name="Authentication">
-			<directory suffix=".php">tests/Auth</directory>
-		</testsuite>
-		<testsuite name="Transports">
-			<directory suffix=".php">tests/Transport</directory>
-		</testsuite>
-		<testsuite name="Proxies">
-			<directory suffix=".php">tests/Proxy</directory>
-		</testsuite>
-		<testsuite name="General">
-			<file>tests/ChunkedEncoding.php</file>
-			<file>tests/Cookies.php</file>
-			<file>tests/Encoding.php</file>
-			<file>tests/IDNAEncoder.php</file>
-			<file>tests/IRI.php</file>
-			<file>tests/Requests.php</file>
-			<file>tests/Response/Headers.php</file>
-			<file>tests/Session.php</file>
-			<file>tests/SSL.php</file>
-			<file>tests/Utility/FilteredIterator.php</file>
+		<testsuite name="RequestsTests">
+			<directory suffix="Test.php">tests</directory>
 		</testsuite>
 	</testsuites>
 

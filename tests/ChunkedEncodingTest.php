@@ -1,6 +1,12 @@
 <?php
 
-class RequestsTest_ChunkedDecoding extends RequestsTest_TestCase {
+namespace Requests\Tests;
+
+use Requests;
+use Requests\Tests\Mock\TransportMock;
+use Requests\Tests\TestCase;
+
+class ChunkedDecodingTest extends TestCase {
 	public static function chunkedProvider() {
 		return array(
 			array(
@@ -34,7 +40,7 @@ class RequestsTest_ChunkedDecoding extends RequestsTest_TestCase {
 	 * @dataProvider chunkedProvider
 	 */
 	public function testChunked($body, $expected) {
-		$transport          = new RequestsTest_Mock_Transport();
+		$transport          = new TransportMock();
 		$transport->body    = $body;
 		$transport->chunked = true;
 
@@ -62,7 +68,7 @@ class RequestsTest_ChunkedDecoding extends RequestsTest_TestCase {
 	 * @dataProvider notChunkedProvider
 	 */
 	public function testNotActuallyChunked($body) {
-		$transport          = new RequestsTest_Mock_Transport();
+		$transport          = new TransportMock();
 		$transport->body    = $body;
 		$transport->chunked = true;
 
@@ -80,7 +86,7 @@ class RequestsTest_ChunkedDecoding extends RequestsTest_TestCase {
 	 * that they're lying to us
 	 */
 	public function testMixedChunkiness() {
-		$transport          = new RequestsTest_Mock_Transport();
+		$transport          = new TransportMock();
 		$transport->body    = "02\r\nab\r\nNot actually chunked!";
 		$transport->chunked = true;
 

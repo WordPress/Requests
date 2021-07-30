@@ -24,27 +24,51 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 require_once dirname(__DIR__) . '/library/Requests.php';
 Requests::register_autoloader();
 
-$polyfill_autoloader = dirname(__DIR__) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
-if (file_exists($polyfill_autoloader)) {
-	require_once $polyfill_autoloader;
+if (is_dir(dirname(__DIR__) . '/vendor')
+	&& file_exists(dirname(__DIR__) . '/vendor/autoload.php')
+	&& file_exists(dirname(__DIR__) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php')
+) {
+	$vendor_dir = dirname(__DIR__) . '/vendor';
 } else {
-	echo 'Please run `composer install` before attempting to run the tests.', PHP_EOL;
+	echo 'Please run `composer install` before attempting to run the unit tests.
+You can still run the tests using a PHPUnit phar file, but some test dependencies need to be available.
+';
 	die(1);
 }
 
-function autoload_tests($class) {
-	if (strpos($class, 'RequestsTest_') !== 0) {
-		return;
-	}
+if (defined('__PHPUNIT_PHAR__')) {
+	// Testing via a PHPUnit phar.
 
-	$class = substr($class, 13);
-	$file  = str_replace('_', '/', $class);
-	if (file_exists(__DIR__ . '/' . $file . '.php')) {
-		require_once __DIR__ . '/' . $file . '.php';
-	}
+	// Load the PHPUnit Polyfills autoloader.
+	require_once $vendor_dir . '/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+
+	/*
+	 * Autoloader specifically for the test files.
+	 * Fixes issues with PHPUnit not being able to find test classes being extended when running
+	 * in a non-Composer context.
+	 */
+	spl_autoload_register(
+		function ($class_name) {
+			// Only try & load our own classes.
+			if (stripos($class_name, 'Requests\\Tests\\') !== 0) {
+				return false;
+			}
+
+			// Strip namespace prefix 'Requests\Tests\'.
+			$relative_class = substr($class_name, 15);
+			$file           = realpath(__DIR__ . '/' . strtr($relative_class, '\\', '/') . '.php');
+
+			if (file_exists($file)) {
+				include_once $file;
+			}
+
+			return true;
+		}
+	);
+} else {
+	// Testing via a Composer setup.
+	require_once $vendor_dir . '/autoload.php';
 }
-
-spl_autoload_register('autoload_tests');
 
 function httpbin($suffix = '', $ssl = false) {
 	$host = $ssl ? 'https://' . REQUESTS_TEST_HOST_HTTPS : 'http://' . REQUESTS_TEST_HOST_HTTP;

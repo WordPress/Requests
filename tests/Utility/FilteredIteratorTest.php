@@ -1,6 +1,13 @@
 <?php
 
-class RequestsTest_Utility_FilteredIterator extends RequestsTest_TestCase {
+namespace Requests\Tests\Utility;
+
+use ArrayIterator;
+use ReflectionClass;
+use Requests\Tests\TestCase;
+use Requests_Utility_FilteredIterator;
+
+class FilteredIteratorTest extends TestCase {
 	/**
 	 * @dataProvider dataSerializeDeserializeObjects
 	 */

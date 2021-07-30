@@ -1,6 +1,11 @@
 <?php
 
-class RequestsTest_IDNAEncoder extends RequestsTest_TestCase {
+namespace Requests\Tests;
+
+use Requests\Tests\TestCase;
+use Requests_IDNAEncoder;
+
+class IDNAEncoderTest extends TestCase {
 	public static function specExamples() {
 		return array(
 			array(
