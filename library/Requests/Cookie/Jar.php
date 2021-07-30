@@ -60,6 +60,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 * @param string $key Item key
 	 * @return boolean Does the item exist?
 	 */
+	#[ReturnTypeWillChange]
 	public function offsetExists($key) {
 		return isset($this->cookies[$key]);
 	}
@@ -70,6 +71,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 * @param string $key Item key
 	 * @return string|null Item value (null if offsetExists is false)
 	 */
+	#[ReturnTypeWillChange]
 	public function offsetGet($key) {
 		if (!isset($this->cookies[$key])) {
 			return null;
@@ -86,6 +88,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 * @param string $key Item name
 	 * @param string $value Item value
 	 */
+	#[ReturnTypeWillChange]
 	public function offsetSet($key, $value) {
 		if ($key === null) {
 			throw new Requests_Exception('Object is a dictionary, not a list', 'invalidset');
@@ -99,6 +102,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @param string $key
 	 */
+	#[ReturnTypeWillChange]
 	public function offsetUnset($key) {
 		unset($this->cookies[$key]);
 	}
@@ -108,6 +112,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @return ArrayIterator
 	 */
+	#[ReturnTypeWillChange]
 	public function getIterator() {
 		return new ArrayIterator($this->cookies);
 	}
