@@ -5,12 +5,15 @@ namespace Requests\Tests\Auth;
 use Requests;
 use Requests\Tests\TestCase;
 use Requests_Auth_Basic;
+use Requests_Exception;
+use Requests_Transport_cURL;
+use Requests_Transport_fsockopen;
 
 class BasicTest extends TestCase {
 	public static function transportProvider() {
 		return array(
-			array('Requests_Transport_fsockopen'),
-			array('Requests_Transport_cURL'),
+			array(Requests_Transport_fsockopen::class),
+			array(Requests_Transport_cURL::class),
 		);
 	}
 
@@ -83,7 +86,7 @@ class BasicTest extends TestCase {
 	}
 
 	public function testMissingPassword() {
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('Invalid number of arguments');
 		new Requests_Auth_Basic(array('user'));
 	}

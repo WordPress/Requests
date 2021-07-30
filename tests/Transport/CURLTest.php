@@ -4,24 +4,26 @@ namespace Requests\Tests\Transport;
 
 use Requests;
 use Requests\Tests\Transport\BaseTestCase;
+use Requests_Exception;
+use Requests_Transport_cURL;
 
 class CurlTest extends BaseTestCase {
-	protected $transport = 'Requests_Transport_cURL';
+	protected $transport = Requests_Transport_cURL::class;
 
 	public function testBadIP() {
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('t resolve host');
 		parent::testBadIP();
 	}
 
 	public function testExpiredHTTPS() {
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('certificate subject name');
 		parent::testExpiredHTTPS();
 	}
 
 	public function testRevokedHTTPS() {
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('certificate subject name');
 		parent::testRevokedHTTPS();
 	}
@@ -30,7 +32,7 @@ class CurlTest extends BaseTestCase {
 	 * Test that SSL fails with a bad certificate
 	 */
 	public function testBadDomain() {
-		$this->expectException('Requests_Exception');
+		$this->expectException(Requests_Exception::class);
 		$this->expectExceptionMessage('certificate subject name');
 		parent::testBadDomain();
 	}
