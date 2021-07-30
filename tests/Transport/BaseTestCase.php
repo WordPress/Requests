@@ -178,6 +178,76 @@ abstract class BaseTestCase extends TestCase {
 		}
 	}
 
+	/**
+	 * Test that when a $data parameter of an incorrect type gets passed, it gets handled correctly.
+	 *
+	 * Only string/array are officially supported as accepted data types, but null, integers and floats
+	 * will also be handled (cast to string).
+	 *
+	 * This test safeguards handling of data types in response to changes in PHP 8.1.
+	 *
+	 * @dataProvider dataIncorrectDataTypeAccepted
+	 *
+	 * @param mixed  $data     Input to be used as the $data parameter.
+	 * @param string $expected Expected value for the Json decoded request body data key.
+	 *
+	 * @return void
+	 */
+	public function testIncorrectDataTypeAcceptedPOST($data, $expected) {
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		$this->assertIsObject($request, 'POST request did not return an object');
+		$this->assertObjectHasAttribute('status_code', $request, 'POST request object does not have a "status_code" property');
+		$this->assertSame(200, $request->status_code, 'POST request status code is not 200');
+
+		$this->assertObjectHasAttribute('body', $request, 'POST request object does not have a "body" property');
+		$result = json_decode($request->body, true);
+
+		$this->assertIsArray($result, 'Json decoded POST request body is not an array');
+		$this->assertArrayHasKey('data', $result, 'Json decoded POST request body does not contain array key "data"');
+		$this->assertSame($expected, $result['data'], 'Json decoded POST request body "data" key did not match expected contents');
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataIncorrectDataTypeAccepted() {
+		return array(
+			'null'    => array(null, ''),
+			'integer' => array(12345, '12345'),
+			'float'   => array(12.345, '12.345'),
+		);
+	}
+
+	/**
+	 * Test that when a $data parameter of an unhandled incorrect type gets passed, an exception gets thrown.
+	 *
+	 * @dataProvider dataIncorrectDataTypeException
+	 *
+	 * @param mixed $data Input to be used as the $data parameter.
+	 *
+	 * @return void
+	 */
+	public function testIncorrectDataTypeExceptionPOST($data) {
+		$this->expectException('Requests_Exception_InvalidArgument');
+		$this->expectExceptionMessage('Argument #3 ($data) must be of type array|string');
+
+		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataIncorrectDataTypeException() {
+		return array(
+			'boolean' => array(true),
+			'object'  => array(new stdClass()),
+		);
+	}
+
 	public function testFormPost() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
