@@ -7,6 +7,7 @@
  */
 
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Ipv6;
 
 /**
  * IRI parser/serialiser/normaliser
@@ -865,8 +866,8 @@ class Requests_IRI {
 			return true;
 		}
 		if (substr($ihost, 0, 1) === '[' && substr($ihost, -1) === ']') {
-			if (Requests_IPv6::check_ipv6(substr($ihost, 1, -1))) {
-				$this->ihost = '[' . Requests_IPv6::compress(substr($ihost, 1, -1)) . ']';
+			if (Ipv6::check_ipv6(substr($ihost, 1, -1))) {
+				$this->ihost = '[' . Ipv6::compress(substr($ihost, 1, -1)) . ']';
 			}
 			else {
 				$this->ihost = null;

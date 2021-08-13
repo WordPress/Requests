@@ -6,6 +6,8 @@
  * @subpackage Utilities
  */
 
+namespace WpOrg\Requests;
+
 /**
  * Class to validate and to work with IPv6 addresses
  *
@@ -15,7 +17,7 @@
  * @package Requests
  * @subpackage Utilities
  */
-class Requests_IPv6 {
+class Ipv6 {
 	/**
 	 * Uncompresses an IPv6 address
 	 *
