@@ -9,7 +9,7 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Hooks;
+use WpOrg\Requests\Hooks;
 
 /**
  * Proxy connection interface
@@ -19,7 +19,7 @@ use Requests_Hooks;
  * Parameters should be passed via the constructor where possible, as this
  * makes it much easier for users to use your provider.
  *
- * @see Requests_Hooks
+ * @see \WpOrg\Requests\Hooks
  * @package Requests
  * @subpackage Proxy
  * @since 1.6
@@ -32,8 +32,8 @@ interface Proxy {
 	 * has set an instance as the 'auth' option. Use this callback to register all the
 	 * hooks you'll need.
 	 *
-	 * @see Requests_Hooks::register
-	 * @param Requests_Hooks $hooks Hook system
+	 * @see \WpOrg\Requests\Hooks::register
+	 * @param \WpOrg\Requests\Hooks $hooks Hook system
 	 */
-	public function register(Requests_Hooks $hooks);
+	public function register(Hooks $hooks);
 }

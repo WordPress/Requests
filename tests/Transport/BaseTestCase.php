@@ -5,10 +5,10 @@ namespace Requests\Tests\Transport;
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
 use Requests_Exception_HTTP_Unknown;
-use Requests_Hooks;
 use Requests_Response;
 use stdClass;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
 
 abstract class BaseTestCase extends TestCase {
@@ -921,7 +921,7 @@ abstract class BaseTestCase extends TestCase {
 	public function testProgressCallback() {
 		$mock = $this->getMockBuilder(stdClass::class)->setMethods(array('progress'))->getMock();
 		$mock->expects($this->atLeastOnce())->method('progress');
-		$hooks = new Requests_Hooks();
+		$hooks = new Hooks();
 		$hooks->register('request.progress', array($mock, 'progress'));
 		$options = array(
 			'hooks' => $hooks,
@@ -942,7 +942,7 @@ abstract class BaseTestCase extends TestCase {
 				$this->isType('string'),
 				$this->logicalAnd($this->isType('array'), $this->logicalNot($this->isEmpty()))
 			);
-		$hooks = new Requests_Hooks();
+		$hooks = new Hooks();
 		$hooks->register('curl.after_request', array($mock, 'after_request'));
 		$hooks->register('fsockopen.after_request', array($mock, 'after_request'));
 		$options = array(

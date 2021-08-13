@@ -19,7 +19,7 @@ class MySoftware_Auth_Hotdog implements WpOrg\Requests\Auth {
         $this->password = $password;
     }
 
-    public function register(Requests_Hooks &$hooks) {
+    public function register(WpOrg\Requests\Hooks &$hooks) {
         $hooks->register('requests.before_request', array($this, 'before_request'));
     }
 

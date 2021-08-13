@@ -6,6 +6,8 @@
  * @subpackage Utilities
  */
 
+namespace WpOrg\Requests;
+
 use WpOrg\Requests\Hooker;
 
 /**
@@ -14,7 +16,7 @@ use WpOrg\Requests\Hooker;
  * @package Requests
  * @subpackage Utilities
  */
-class Requests_Hooks implements Hooker {
+class Hooks implements Hooker {
 	/**
 	 * Registered callbacks for each hook
 	 *

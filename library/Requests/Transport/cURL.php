@@ -58,7 +58,7 @@ class Requests_Transport_cURL implements Transport {
 	/**
 	 * Hook dispatcher instance
 	 *
-	 * @var Requests_Hooks
+	 * @var \WpOrg\Requests\Hooks
 	 */
 	protected $hooks;
 

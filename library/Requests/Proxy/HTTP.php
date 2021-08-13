@@ -8,6 +8,7 @@
  */
 
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Proxy;
 
 /**
@@ -83,9 +84,9 @@ class Requests_Proxy_HTTP implements Proxy {
 	 * @see fsockopen_remote_socket
 	 * @see fsockopen_remote_host_path
 	 * @see fsockopen_header
-	 * @param Requests_Hooks $hooks Hook system
+	 * @param \WpOrg\Requests\Hooks $hooks Hook system
 	 */
-	public function register(Requests_Hooks $hooks) {
+	public function register(Hooks $hooks) {
 		$hooks->register('curl.before_send', array($this, 'curl_before_send'));
 
 		$hooks->register('fsockopen.remote_socket', array($this, 'fsockopen_remote_socket'));
