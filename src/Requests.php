@@ -139,7 +139,7 @@ class Requests {
 	/**
 	 * Register a transport
 	 *
-	 * @param string $transport Transport class to add, must support the Requests_Transport interface
+	 * @param string $transport Transport class to add, must support the \WpOrg\Requests\Transport interface
 	 */
 	public static function add_transport($transport) {
 		if (empty(self::$transports)) {
@@ -156,7 +156,7 @@ class Requests {
 	 * Get a working transport
 	 *
 	 * @throws Requests_Exception If no valid transport is found (`notransport`)
-	 * @return Requests_Transport
+	 * @return \WpOrg\Requests\Transport
 	 */
 	protected static function get_transport($capabilities = array()) {
 		// Caching code, don't bother testing coverage
@@ -313,7 +313,7 @@ class Requests {
 	 * - `transport`: Custom transport. Either a class name, or a
 	 *    transport object. Defaults to the first working transport from
 	 *    {@see getTransport()}
-	 *    (string|Requests_Transport, default: {@see getTransport()})
+	 *    (string|\WpOrg\Requests\Transport, default: {@see getTransport()})
 	 * - `hooks`: Hooks handler.
 	 *    (\WpOrg\Requests\Hooker, default: new Requests_Hooks())
 	 * - `verify`: Should we verify SSL certificates? Allows passing in a custom

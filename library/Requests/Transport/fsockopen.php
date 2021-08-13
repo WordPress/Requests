@@ -7,6 +7,7 @@
  */
 
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Transport;
 
 /**
  * fsockopen HTTP transport
@@ -14,7 +15,7 @@ use WpOrg\Requests\Requests;
  * @package Requests
  * @subpackage Transport
  */
-class Requests_Transport_fsockopen implements Requests_Transport {
+class Requests_Transport_fsockopen implements Transport {
 	/**
 	 * Second to microsecond conversion
 	 *
@@ -327,7 +328,7 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 	/**
 	 * Send multiple requests simultaneously
 	 *
-	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see Requests_Transport::request}
+	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see \WpOrg\Requests\Transport::request}
 	 * @param array $options Global options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return array Array of Requests_Response objects (may contain Requests_Exception or string responses as well)
 	 */

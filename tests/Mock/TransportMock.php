@@ -2,9 +2,9 @@
 
 namespace Requests\Tests\Mock;
 
-use Requests_Transport;
+use WpOrg\Requests\Transport;
 
-class TransportMock implements Requests_Transport {
+class TransportMock implements Transport {
 	public $code        = 200;
 	public $chunked     = false;
 	public $body        = 'Test Body';

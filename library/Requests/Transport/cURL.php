@@ -7,6 +7,7 @@
  */
 
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Transport;
 
 /**
  * cURL HTTP transport
@@ -14,7 +15,7 @@ use WpOrg\Requests\Requests;
  * @package Requests
  * @subpackage Transport
  */
-class Requests_Transport_cURL implements Requests_Transport {
+class Requests_Transport_cURL implements Transport {
 	const CURL_7_10_5 = 0x070A05;
 	const CURL_7_16_2 = 0x071002;
 

@@ -6,13 +6,15 @@
  * @subpackage Transport
  */
 
+namespace WpOrg\Requests;
+
 /**
  * Base HTTP transport
  *
  * @package Requests
  * @subpackage Transport
  */
-interface Requests_Transport {
+interface Transport {
 	/**
 	 * Perform a request
 	 *
@@ -27,7 +29,7 @@ interface Requests_Transport {
 	/**
 	 * Send multiple requests simultaneously
 	 *
-	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see Requests_Transport::request}
+	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see \WpOrg\Requests\Transport::request}
 	 * @param array $options Global options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return array Array of Requests_Response objects (may contain Requests_Exception or string responses as well)
 	 */
