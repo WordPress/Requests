@@ -194,7 +194,7 @@ class Requests_Session {
 	 *
 	 * @see \WpOrg\Requests\Requests::request()
 	 *
-	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
+	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
@@ -216,7 +216,7 @@ class Requests_Session {
 	 *
 	 * @param array $requests Requests data (see {@see \WpOrg\Requests\Requests::request_multiple})
 	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
-	 * @return array Responses (either Requests_Response or a Requests_Exception object)
+	 * @return array Responses (either Requests_Response or a \WpOrg\Requests\Exception object)
 	 */
 	public function request_multiple($requests, $options = array()) {
 		foreach ($requests as $key => $request) {

@@ -3,10 +3,10 @@
 namespace Requests\Tests\Proxy;
 
 use Requests\Tests\TestCase;
-use Requests_Exception;
 use Requests_Proxy_HTTP;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 
 class HTTPTest extends TestCase {
@@ -77,7 +77,7 @@ class HTTPTest extends TestCase {
 			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
 			'transport' => $transport,
 		);
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid number of arguments');
 		Requests::get(httpbin('/get'), array(), $options);
 	}
@@ -140,7 +140,7 @@ class HTTPTest extends TestCase {
 			&& $transport === Requests_Transport_fsockopen::class
 		) {
 			// @TODO fsockopen connection times out on invalid auth instead of returning 407.
-			$this->expectException(Requests_Exception::class);
+			$this->expectException(Exception::class);
 			$this->expectExceptionMessage('fsocket timed out');
 		}
 

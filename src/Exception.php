@@ -5,12 +5,16 @@
  * @package Requests
  */
 
+namespace WpOrg\Requests;
+
+use Exception as PHPException;
+
 /**
  * Exception for HTTP requests
  *
  * @package Requests
  */
-class Requests_Exception extends Exception {
+class Exception extends PHPException {
 	/**
 	 * Type of exception
 	 *

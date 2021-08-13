@@ -7,6 +7,7 @@
  */
 
 use WpOrg\Requests\Auth;
+use WpOrg\Requests\Exception;
 
 /**
  * Basic Authentication provider
@@ -35,13 +36,13 @@ class Requests_Auth_Basic implements Auth {
 	/**
 	 * Constructor
 	 *
-	 * @throws Requests_Exception On incorrect number of arguments (`authbasicbadargs`)
+	 * @throws \WpOrg\Requests\Exception On incorrect number of arguments (`authbasicbadargs`)
 	 * @param array|null $args Array of user and password. Must have exactly two elements
 	 */
 	public function __construct($args = null) {
 		if (is_array($args)) {
 			if (count($args) !== 2) {
-				throw new Requests_Exception('Invalid number of arguments', 'authbasicbadargs');
+				throw new Exception('Invalid number of arguments', 'authbasicbadargs');
 			}
 
 			list($this->user, $this->pass) = $args;

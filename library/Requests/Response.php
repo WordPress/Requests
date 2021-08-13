@@ -6,6 +6,8 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception;
+
 /**
  * HTTP response class
  *
@@ -104,14 +106,14 @@ class Requests_Response {
 	/**
 	 * Throws an exception if the request was not successful
 	 *
-	 * @throws Requests_Exception If `$allow_redirects` is false, and code is 3xx (`response.no_redirects`)
+	 * @throws \WpOrg\Requests\Exception If `$allow_redirects` is false, and code is 3xx (`response.no_redirects`)
 	 * @throws Requests_Exception_HTTP On non-successful status code. Exception class corresponds to code (e.g. {@see Requests_Exception_HTTP_404})
 	 * @param boolean $allow_redirects Set to false to throw on a 3xx as well
 	 */
 	public function throw_for_status($allow_redirects = true) {
 		if ($this->is_redirect()) {
 			if (!$allow_redirects) {
-				throw new Requests_Exception('Redirection not allowed', 'response.no_redirects', $this);
+				throw new Exception('Redirection not allowed', 'response.no_redirects', $this);
 			}
 		}
 		elseif (!$this->success) {

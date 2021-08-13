@@ -6,6 +6,7 @@
  * @subpackage Transport
  */
 
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Transport;
 
@@ -49,8 +50,8 @@ class Requests_Transport_fsockopen implements Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @throws Requests_Exception On failure to connect to socket (`fsockopenerror`)
-	 * @throws Requests_Exception On socket timeout (`timeout`)
+	 * @throws \WpOrg\Requests\Exception On failure to connect to socket (`fsockopenerror`)
+	 * @throws \WpOrg\Requests\Exception On socket timeout (`timeout`)
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Associative array of request headers
@@ -82,7 +83,7 @@ class Requests_Transport_fsockopen implements Transport {
 
 		$url_parts = parse_url($url);
 		if (empty($url_parts)) {
-			throw new Requests_Exception('Invalid URL.', 'invalidurl', $url);
+			throw new Exception('Invalid URL.', 'invalidurl', $url);
 		}
 		$host                     = $url_parts['host'];
 		$context                  = stream_context_create();
@@ -150,16 +151,16 @@ class Requests_Transport_fsockopen implements Transport {
 		restore_error_handler();
 
 		if ($verifyname && !$this->verify_certificate_from_context($host, $context)) {
-			throw new Requests_Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
+			throw new Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
 		}
 
 		if (!$socket) {
 			if ($errno === 0) {
 				// Connection issue
-				throw new Requests_Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
+				throw new Exception(rtrim($this->connect_error), 'fsockopen.connect_error');
 			}
 
-			throw new Requests_Exception($errstr, 'fsockopenerror', null, $errno);
+			throw new Exception($errstr, 'fsockopenerror', null, $errno);
 		}
 
 		$data_format = $options['data_format'];
@@ -267,14 +268,14 @@ class Requests_Transport_fsockopen implements Transport {
 			$download = @fopen($options['filename'], 'wb');
 			if ($download === false) {
 				$error = error_get_last();
-				throw new Requests_Exception($error['message'], 'fopen');
+				throw new Exception($error['message'], 'fopen');
 			}
 		}
 
 		while (!feof($socket)) {
 			$this->info = stream_get_meta_data($socket);
 			if ($this->info['timed_out']) {
-				throw new Requests_Exception('fsocket timed out', 'timeout');
+				throw new Exception('fsocket timed out', 'timeout');
 			}
 
 			$block = fread($socket, Requests::BUFFER_SIZE);
@@ -330,7 +331,7 @@ class Requests_Transport_fsockopen implements Transport {
 	 *
 	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see \WpOrg\Requests\Transport::request}
 	 * @param array $options Global options, see {@see \WpOrg\Requests\Requests::response()} for documentation
-	 * @return array Array of Requests_Response objects (may contain Requests_Exception or string responses as well)
+	 * @return array Array of Requests_Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
 	 */
 	public function request_multiple($requests, $options) {
 		$responses = array();
@@ -342,7 +343,7 @@ class Requests_Transport_fsockopen implements Transport {
 
 				$request['options']['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$id], $request));
 			}
-			catch (Requests_Exception $e) {
+			catch (Exception $e) {
 				$responses[$id] = $e;
 			}
 
@@ -430,8 +431,8 @@ class Requests_Transport_fsockopen implements Transport {
 	 *
 	 * @see https://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
 	 *
-	 * @throws Requests_Exception On failure to connect via TLS (`fsockopen.ssl.connect_error`)
-	 * @throws Requests_Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
+	 * @throws \WpOrg\Requests\Exception On failure to connect via TLS (`fsockopen.ssl.connect_error`)
+	 * @throws \WpOrg\Requests\Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
 	 * @param string $host Host name to verify against
 	 * @param resource $context Stream context
 	 * @return bool
@@ -442,7 +443,7 @@ class Requests_Transport_fsockopen implements Transport {
 		// If we don't have SSL options, then we couldn't make the connection at
 		// all
 		if (empty($meta) || empty($meta['ssl']) || empty($meta['ssl']['peer_certificate'])) {
-			throw new Requests_Exception(rtrim($this->connect_error), 'ssl.connect_error');
+			throw new Exception(rtrim($this->connect_error), 'ssl.connect_error');
 		}
 
 		$cert = openssl_x509_parse($meta['ssl']['peer_certificate']);

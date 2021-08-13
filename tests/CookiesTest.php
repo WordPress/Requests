@@ -4,11 +4,11 @@ namespace Requests\Tests;
 
 use Requests\Tests\TestCase;
 use Requests_Cookie_Jar;
-use Requests_Exception;
 use Requests_IRI;
 use Requests_Response_Headers;
 use Requests_Utility_CaseInsensitiveDictionary;
 use WpOrg\Requests\Cookie;
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 
 class CookiesTest extends TestCase {
@@ -69,7 +69,7 @@ class CookiesTest extends TestCase {
 	}
 
 	public function testCookieJarAsList() {
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Object is a dictionary, not a list');
 		$cookies   = new Requests_Cookie_Jar();
 		$cookies[] = 'requests-testcookie1=testvalue1';

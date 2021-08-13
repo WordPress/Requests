@@ -4,11 +4,11 @@ namespace Requests\Tests\Transport;
 
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
-use Requests_Exception;
 use Requests_Exception_HTTP_Unknown;
 use Requests_Hooks;
 use Requests_Response;
 use stdClass;
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 
 abstract class BaseTestCase extends TestCase {
@@ -406,7 +406,7 @@ abstract class BaseTestCase extends TestCase {
 		$options = array(
 			'redirects' => 10, // default, but force just in case
 		);
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Too many redirects');
 		Requests::get(httpbin('/redirect/11'), array(), $this->getOptions($options));
 	}
@@ -497,7 +497,7 @@ abstract class BaseTestCase extends TestCase {
 				$this->expectExceptionCode($code);
 			}
 			elseif ($code >= 300 && $code < 400) {
-				$this->expectException(Requests_Exception::class);
+				$this->expectException(Exception::class);
 			}
 		}
 
@@ -604,7 +604,7 @@ abstract class BaseTestCase extends TestCase {
 			Requests::get(httpbin('/get'), array(), $this->getOptions($options));
 
 			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-		} catch (Requests_Exception $e) {
+		} catch (Exception $e) {
 			// This "Failed to open stream" exception is expected.
 		}
 
@@ -623,7 +623,7 @@ abstract class BaseTestCase extends TestCase {
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT') . '/missing/directory', // RequestsLibraryTest
 		);
 
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		// First character (F) can be upper or lowercase depending on PHP version.
 		$this->expectExceptionMessage('ailed to open stream');
 
@@ -640,7 +640,7 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testBadIP() {
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		Requests::get('http://256.256.256.0/', array(), $this->getOptions());
 	}
 
@@ -663,7 +663,7 @@ abstract class BaseTestCase extends TestCase {
 			return;
 		}
 
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		Requests::get('https://testssl-expire.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
@@ -673,7 +673,7 @@ abstract class BaseTestCase extends TestCase {
 			return;
 		}
 
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		Requests::get('https://testssl-revoked.disig.sk/index.en.html', array(), $this->getOptions());
 	}
 
@@ -686,7 +686,7 @@ abstract class BaseTestCase extends TestCase {
 			return;
 		}
 
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		Requests::head('https://wrong.host.badssl.com/', array(), $this->getOptions());
 	}
 
@@ -737,7 +737,7 @@ abstract class BaseTestCase extends TestCase {
 		$options = array(
 			'timeout' => 1,
 		);
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('timed out');
 		Requests::get(httpbin('/delay/10'), array(), $this->getOptions($options));
 	}
@@ -811,7 +811,7 @@ abstract class BaseTestCase extends TestCase {
 		);
 		$responses = Requests::request_multiple($requests, $this->getOptions());
 		$this->assertSame(200, $responses['success']->status_code);
-		$this->assertInstanceOf(Requests_Exception::class, $responses['timeout']);
+		$this->assertInstanceOf(Exception::class, $responses['timeout']);
 	}
 
 	public function testMultipleUsingCallback() {
@@ -899,12 +899,12 @@ abstract class BaseTestCase extends TestCase {
 		try {
 			$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
 		}
-		catch (Requests_Exception $e) {
+		catch (Exception $e) {
 			// Retry the request as it often times-out.
 			try {
 				$request = Requests::get('http://portquiz.net:8080/', array(), $this->getOptions());
 			}
-			catch (Requests_Exception $e) {
+			catch (Exception $e) {
 				// If it still times out, mark the test as skipped.
 				$this->markTestSkipped(
 					$e->getMessage()

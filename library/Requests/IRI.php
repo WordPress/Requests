@@ -6,6 +6,8 @@
  * @subpackage Utilities
  */
 
+use WpOrg\Requests\Exception;
+
 /**
  * IRI parser/serialiser/normaliser
  *
@@ -330,7 +332,7 @@ class Requests_IRI {
 		$iri = trim($iri, "\x20\x09\x0A\x0C\x0D");
 		$has_match = preg_match('/^((?P<scheme>[^:\/?#]+):)?(\/\/(?P<authority>[^\/?#]*))?(?P<path>[^?#]*)(\?(?P<query>[^#]*))?(#(?P<fragment>.*))?$/', $iri, $match);
 		if (!$has_match) {
-			throw new Requests_Exception('Cannot parse supplied IRI', 'iri.cannot_parse', $iri);
+			throw new Exception('Cannot parse supplied IRI', 'iri.cannot_parse', $iri);
 		}
 
 		if ($match[1] === '') {

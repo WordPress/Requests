@@ -31,7 +31,7 @@ interface Transport {
 	 *
 	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see \WpOrg\Requests\Transport::request}
 	 * @param array $options Global options, see {@see \WpOrg\Requests\Requests::response()} for documentation
-	 * @return array Array of Requests_Response objects (may contain Requests_Exception or string responses as well)
+	 * @return array Array of Requests_Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
 	 */
 	public function request_multiple($requests, $options);
 

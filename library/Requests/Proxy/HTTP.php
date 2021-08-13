@@ -7,6 +7,7 @@
  * @since 1.6
  */
 
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Proxy;
 
 /**
@@ -53,7 +54,7 @@ class Requests_Proxy_HTTP implements Proxy {
 	 * Constructor
 	 *
 	 * @since 1.6
-	 * @throws Requests_Exception On incorrect number of arguments (`authbasicbadargs`)
+	 * @throws \WpOrg\Requests\Exception On incorrect number of arguments (`authbasicbadargs`)
 	 * @param array|null $args Array of user and password. Must have exactly two elements
 	 */
 	public function __construct($args = null) {
@@ -69,7 +70,7 @@ class Requests_Proxy_HTTP implements Proxy {
 				$this->use_authentication                    = true;
 			}
 			else {
-				throw new Requests_Exception('Invalid number of arguments', 'proxyhttpbadargs');
+				throw new Exception('Invalid number of arguments', 'proxyhttpbadargs');
 			}
 		}
 	}

@@ -13,7 +13,6 @@ namespace WpOrg\Requests;
 
 use Requests_Auth_Basic;
 use Requests_Cookie_Jar;
-use Requests_Exception;
 use Requests_Hooks;
 use Requests_IDNAEncoder;
 use Requests_IRI;
@@ -21,6 +20,7 @@ use Requests_Proxy_HTTP;
 use Requests_Response;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
+use WpOrg\Requests\Exception;
 
 /**
  * Requests for PHP
@@ -155,7 +155,7 @@ class Requests {
 	/**
 	 * Get a working transport
 	 *
-	 * @throws Requests_Exception If no valid transport is found (`notransport`)
+	 * @throws \WpOrg\Requests\Exception If no valid transport is found (`notransport`)
 	 * @return \WpOrg\Requests\Transport
 	 */
 	protected static function get_transport($capabilities = array()) {
@@ -192,7 +192,7 @@ class Requests {
 			}
 		}
 		if (self::$transport[$cap_string] === null) {
-			throw new Requests_Exception('No working transports found', 'notransport', self::$transports);
+			throw new Exception('No working transports found', 'notransport', self::$transports);
 		}
 
 		$class = self::$transport[$cap_string];
@@ -327,7 +327,7 @@ class Requests {
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
 	 *
-	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
+	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
@@ -397,14 +397,14 @@ class Requests {
 	 * In addition, the `$options` parameter takes the following global options:
 	 *
 	 * - `complete`: A callback for when a request is complete. Takes two
-	 *    parameters, a Requests_Response/Requests_Exception reference, and the
+	 *    parameters, a Requests_Response/\WpOrg\Requests\Exception reference, and the
 	 *    ID from the request array (Note: this can also be overridden on a
 	 *    per-request basis, although that's a little silly)
 	 *    (callback)
 	 *
 	 * @param array $requests Requests data (see description for more information)
 	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
-	 * @return array Responses (either Requests_Response or a Requests_Exception object)
+	 * @return array Responses (either Requests_Response or a \WpOrg\Requests\Exception object)
 	 */
 	public static function request_multiple($requests, $options = array()) {
 		$options = array_merge(self::get_default_options(true), $options);
@@ -543,7 +543,7 @@ class Requests {
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
-			throw new Requests_Exception('Only HTTP(S) requests are handled.', 'nonhttp', $url);
+			throw new Exception('Only HTTP(S) requests are handled.', 'nonhttp', $url);
 		}
 
 		if (empty($options['hooks'])) {
@@ -596,9 +596,9 @@ class Requests {
 	/**
 	 * HTTP response parser
 	 *
-	 * @throws Requests_Exception On missing head/body separator (`requests.no_crlf_separator`)
-	 * @throws Requests_Exception On missing head/body separator (`noversion`)
-	 * @throws Requests_Exception On missing head/body separator (`toomanyredirects`)
+	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`requests.no_crlf_separator`)
+	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`noversion`)
+	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`toomanyredirects`)
 	 *
 	 * @param string $headers Full response text including headers and body
 	 * @param string $url Original request URL
@@ -621,7 +621,7 @@ class Requests {
 			$pos = strpos($headers, "\r\n\r\n");
 			if ($pos === false) {
 				// Crap!
-				throw new Requests_Exception('Missing header/body separator', 'requests.no_crlf_separator');
+				throw new Exception('Missing header/body separator', 'requests.no_crlf_separator');
 			}
 
 			$headers = substr($return->raw, 0, $pos);
@@ -638,7 +638,7 @@ class Requests {
 		$headers = explode("\n", $headers);
 		preg_match('#^HTTP/(1\.\d)[ \t]+(\d+)#i', array_shift($headers), $matches);
 		if (empty($matches)) {
-			throw new Requests_Exception('Response could not be parsed', 'noversion', $headers);
+			throw new Exception('Response could not be parsed', 'noversion', $headers);
 		}
 		$return->protocol_version = (float) $matches[1];
 		$return->status_code      = (int) $matches[2];
@@ -693,7 +693,7 @@ class Requests {
 				return $redirected;
 			}
 			elseif ($options['redirected'] >= $options['redirects']) {
-				throw new Requests_Exception('Too many redirects', 'toomanyredirects', $return);
+				throw new Exception('Too many redirects', 'toomanyredirects', $return);
 			}
 		}
 
@@ -711,7 +711,7 @@ class Requests {
 	 *
 	 * @param string $response Full response text including headers and body (will be overwritten with Response instance)
 	 * @param array $request Request data as passed into {@see \WpOrg\Requests\Requests::request_multiple()}
-	 * @return null `$response` is either set to a Requests_Response instance, or a Requests_Exception object
+	 * @return null `$response` is either set to a Requests_Response instance, or a \WpOrg\Requests\Exception object
 	 */
 	public static function parse_multiple(&$response, $request) {
 		try {
@@ -721,7 +721,7 @@ class Requests {
 			$options  = $request['options'];
 			$response = self::parse_response($response, $url, $headers, $data, $options);
 		}
-		catch (Requests_Exception $e) {
+		catch (Exception $e) {
 			$response = $e;
 		}
 	}

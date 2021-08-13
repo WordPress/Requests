@@ -7,6 +7,7 @@
  */
 
 use WpOrg\Requests\Cookie;
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooker;
 
 /**
@@ -75,7 +76,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Set the given item
 	 *
-	 * @throws Requests_Exception On attempting to use dictionary as list (`invalidset`)
+	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 *
 	 * @param string $key Item name
 	 * @param string $value Item value
@@ -83,7 +84,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	#[ReturnTypeWillChange]
 	public function offsetSet($key, $value) {
 		if ($key === null) {
-			throw new Requests_Exception('Object is a dictionary, not a list', 'invalidset');
+			throw new Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
 		$this->cookies[$key] = $value;

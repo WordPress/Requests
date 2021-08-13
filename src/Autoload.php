@@ -41,6 +41,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 
 			// Classes.
 			'requests_cookie'    => '\WpOrg\Requests\Cookie',
+			'requests_exception' => '\WpOrg\Requests\Exception',
 		);
 
 		/**

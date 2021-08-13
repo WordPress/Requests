@@ -6,6 +6,7 @@
  * @subpackage Transport
  */
 
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Transport;
 
@@ -124,7 +125,7 @@ class Requests_Transport_cURL implements Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @throws Requests_Exception On a cURL error (`curlerror`)
+	 * @throws \WpOrg\Requests\Exception On a cURL error (`curlerror`)
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Associative array of request headers
@@ -163,7 +164,7 @@ class Requests_Transport_cURL implements Transport {
 			$this->stream_handle = @fopen($options['filename'], 'wb');
 			if ($this->stream_handle === false) {
 				$error = error_get_last();
-				throw new Requests_Exception($error['message'], 'fopen');
+				throw new Exception($error['message'], 'fopen');
 			}
 		}
 
@@ -218,7 +219,7 @@ class Requests_Transport_cURL implements Transport {
 	 *
 	 * @param array $requests Request data
 	 * @param array $options Global options
-	 * @return array Array of Requests_Response objects (may contain Requests_Exception or string responses as well)
+	 * @return array Array of Requests_Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
 	 */
 	public function request_multiple($requests, $options) {
 		// If you're not requesting, we can't get any responses ¯\_(ツ)_/¯
@@ -444,7 +445,7 @@ class Requests_Transport_cURL implements Transport {
 	 * @param string $response Response data from the body
 	 * @param array $options Request options
 	 * @return string|false HTTP response data including headers. False if non-blocking.
-	 * @throws Requests_Exception
+	 * @throws \WpOrg\Requests\Exception
 	 */
 	public function process_response($response, $options) {
 		if ($options['blocking'] === false) {
@@ -466,7 +467,7 @@ class Requests_Transport_cURL implements Transport {
 				curl_errno($this->handle),
 				curl_error($this->handle)
 			);
-			throw new Requests_Exception($error, 'curlerror', $this->handle);
+			throw new Exception($error, 'curlerror', $this->handle);
 		}
 		$this->info = curl_getinfo($this->handle);
 

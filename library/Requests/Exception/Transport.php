@@ -1,5 +1,7 @@
 <?php
 
-class Requests_Exception_Transport extends Requests_Exception {
+use WpOrg\Requests\Exception;
+
+class Requests_Exception_Transport extends Exception {
 
 }

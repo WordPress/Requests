@@ -3,8 +3,8 @@
 namespace Requests\Tests\Response;
 
 use Requests\Tests\TestCase;
-use Requests_Exception;
 use Requests_Response_Headers;
+use WpOrg\Requests\Exception;
 
 class HeadersTest extends TestCase {
 	public function testArrayAccess() {
@@ -44,7 +44,7 @@ class HeadersTest extends TestCase {
 	}
 
 	public function testInvalidKey() {
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Object is a dictionary, not a list');
 		$headers   = new Requests_Response_Headers();
 		$headers[] = 'text/plain';

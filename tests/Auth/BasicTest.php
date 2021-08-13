@@ -4,9 +4,9 @@ namespace Requests\Tests\Auth;
 
 use Requests\Tests\TestCase;
 use Requests_Auth_Basic;
-use Requests_Exception;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 
 class BasicTest extends TestCase {
@@ -86,7 +86,7 @@ class BasicTest extends TestCase {
 	}
 
 	public function testMissingPassword() {
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid number of arguments');
 		new Requests_Auth_Basic(array('user'));
 	}
