@@ -7,6 +7,8 @@
  * @since 1.6
  */
 
+use WpOrg\Requests\Proxy;
+
 /**
  * HTTP Proxy connection interface
  *
@@ -16,7 +18,7 @@
  * @subpackage Proxy
  * @since 1.6
  */
-class Requests_Proxy_HTTP implements Requests_Proxy {
+class Requests_Proxy_HTTP implements Proxy {
 	/**
 	 * Proxy host and port
 	 *

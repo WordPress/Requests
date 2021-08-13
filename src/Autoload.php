@@ -36,6 +36,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			// Interfaces.
 			'requests_auth'   => '\WpOrg\Requests\Auth',
 			'requests_hooker' => '\WpOrg\Requests\Hooker',
+			'requests_proxy'  => '\WpOrg\Requests\Proxy',
 		);
 
 		/**

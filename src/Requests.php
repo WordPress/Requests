@@ -305,7 +305,7 @@ class Requests {
 	 *    for Basic authentication
 	 *    (\WpOrg\Requests\Auth|array|boolean, default: false)
 	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
-	 *    (Requests_Proxy|array|string|boolean, default: false)
+	 *    (\WpOrg\Requests\Proxy|array|string|boolean, default: false)
 	 * - `max_bytes`: Limit for the response body size.
 	 *    (integer|boolean, default: false)
 	 * - `idn`: Enable IDN parsing

@@ -7,6 +7,10 @@
  * @since 1.6
  */
 
+namespace WpOrg\Requests;
+
+use Requests_Hooks;
+
 /**
  * Proxy connection interface
  *
@@ -20,7 +24,7 @@
  * @subpackage Proxy
  * @since 1.6
  */
-interface Requests_Proxy {
+interface Proxy {
 	/**
 	 * Register hooks as needed
 	 *
