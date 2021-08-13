@@ -6,13 +6,15 @@
  * @subpackage Utilities
  */
 
+namespace WpOrg\Requests;
+
 /**
  * Event dispatcher
  *
  * @package Requests
  * @subpackage Utilities
  */
-interface Requests_Hooker {
+interface Hooker {
 	/**
 	 * Register a callback for a hook
 	 *

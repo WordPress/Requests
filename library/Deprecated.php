@@ -28,3 +28,4 @@ if (!defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS') || REQUESTS_SILENCE_PSR0_DEPR
 }
 
 interface Requests_Auth extends WpOrg\Requests\Auth {}
+interface Requests_Hooker extends WpOrg\Requests\Hooker {}

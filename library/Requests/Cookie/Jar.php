@@ -6,6 +6,8 @@
  * @subpackage Cookies
  */
 
+use WpOrg\Requests\Hooker;
+
 /**
  * Cookie holder object
  *
@@ -109,9 +111,9 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Register the cookie handler with the request's hooking system
 	 *
-	 * @param Requests_Hooker $hooks Hooking system
+	 * @param \WpOrg\Requests\Hooker $hooks Hooking system
 	 */
-	public function register(Requests_Hooker $hooks) {
+	public function register(Hooker $hooks) {
 		$hooks->register('requests.before_request', array($this, 'before_request'));
 		$hooks->register('requests.before_redirect_check', array($this, 'before_redirect_check'));
 	}
