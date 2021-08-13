@@ -21,6 +21,8 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
+// Temporarily silence the PSR-0 deprecations while the code is being switched to PSR-4.
+define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
 
 if (is_dir(dirname(__DIR__) . '/vendor')
 	&& file_exists(dirname(__DIR__) . '/vendor/autoload.php')
