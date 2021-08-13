@@ -13,7 +13,6 @@ namespace WpOrg\Requests;
 
 use Requests_Auth_Basic;
 use Requests_Cookie_Jar;
-use Requests_IDNAEncoder;
 use Requests_IRI;
 use Requests_Proxy_HTTP;
 use Requests_Response;
@@ -21,6 +20,7 @@ use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
+use WpOrg\Requests\IdnaEncoder;
 
 /**
  * Requests for PHP
@@ -576,7 +576,7 @@ class Requests {
 
 		if ($options['idn'] !== false) {
 			$iri       = new Requests_IRI($url);
-			$iri->host = Requests_IDNAEncoder::encode($iri->ihost);
+			$iri->host = IdnaEncoder::encode($iri->ihost);
 			$url       = $iri->uri;
 		}
 

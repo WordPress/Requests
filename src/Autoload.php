@@ -34,15 +34,16 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		 */
 		private static $deprecated_classes = array(
 			// Interfaces.
-			'requests_auth'      => '\WpOrg\Requests\Auth',
-			'requests_hooker'    => '\WpOrg\Requests\Hooker',
-			'requests_proxy'     => '\WpOrg\Requests\Proxy',
-			'requests_transport' => '\WpOrg\Requests\Transport',
+			'requests_auth'        => '\WpOrg\Requests\Auth',
+			'requests_hooker'      => '\WpOrg\Requests\Hooker',
+			'requests_proxy'       => '\WpOrg\Requests\Proxy',
+			'requests_transport'   => '\WpOrg\Requests\Transport',
 
 			// Classes.
-			'requests_cookie'    => '\WpOrg\Requests\Cookie',
-			'requests_exception' => '\WpOrg\Requests\Exception',
-			'requests_hooks'     => '\WpOrg\Requests\Hooks',
+			'requests_cookie'      => '\WpOrg\Requests\Cookie',
+			'requests_exception'   => '\WpOrg\Requests\Exception',
+			'requests_hooks'       => '\WpOrg\Requests\Hooks',
+			'requests_idnaencoder' => '\WpOrg\Requests\IdnaEncoder',
 		);
 
 		/**

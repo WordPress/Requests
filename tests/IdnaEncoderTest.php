@@ -3,10 +3,10 @@
 namespace Requests\Tests;
 
 use Requests\Tests\TestCase;
-use Requests_IDNAEncoder;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\IdnaEncoder;
 
-class IDNAEncoderTest extends TestCase {
+class IdnaEncoderTest extends TestCase {
 	public static function specExamples() {
 		return array(
 			array(
@@ -24,7 +24,7 @@ class IDNAEncoderTest extends TestCase {
 	 * @dataProvider specExamples
 	 */
 	public function testEncoding($data, $expected) {
-		$result = Requests_IDNAEncoder::encode($data);
+		$result = IdnaEncoder::encode($data);
 		$this->assertSame($expected, $result);
 	}
 
@@ -32,69 +32,69 @@ class IDNAEncoderTest extends TestCase {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Provided string is too long');
 		$data = str_repeat('abcd', 20);
-		Requests_IDNAEncoder::encode($data);
+		IdnaEncoder::encode($data);
 	}
 
 	public function testEncodedTooLong() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Encoded string is too long');
 		$data = str_repeat("\xe4\xbb\x96", 60);
-		Requests_IDNAEncoder::encode($data);
+		IdnaEncoder::encode($data);
 	}
 
 	public function testAlreadyPrefixed() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Provided string begins with ACE prefix');
-		Requests_IDNAEncoder::encode("xn--\xe4\xbb\x96");
+		IdnaEncoder::encode("xn--\xe4\xbb\x96");
 	}
 
 	public function testASCIICharacter() {
-		$result = Requests_IDNAEncoder::encode('a');
+		$result = IdnaEncoder::encode('a');
 		$this->assertSame('a', $result);
 	}
 
 	public function testTwoByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xc2\xb6"); // Pilcrow character
+		$result = IdnaEncoder::encode("\xc2\xb6"); // Pilcrow character
 		$this->assertSame('xn--tba', $result);
 	}
 
 	public function testThreeByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xe2\x82\xac"); // Euro symbol
+		$result = IdnaEncoder::encode("\xe2\x82\xac"); // Euro symbol
 		$this->assertSame('xn--lzg', $result);
 	}
 
 	public function testFourByteCharacter() {
-		$result = Requests_IDNAEncoder::encode("\xf0\xa4\xad\xa2"); // Chinese symbol?
+		$result = IdnaEncoder::encode("\xf0\xa4\xad\xa2"); // Chinese symbol?
 		$this->assertSame('xn--ww6j', $result);
 	}
 
 	public function testFiveByteCharacter() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		Requests_IDNAEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
+		IdnaEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
 	}
 
 	public function testSixByteCharacter() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		Requests_IDNAEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
+		IdnaEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
 	}
 
 	public function testInvalidASCIICharacterWithMultibyte() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		Requests_IDNAEncoder::encode("\0\xc2\xb6");
+		IdnaEncoder::encode("\0\xc2\xb6");
 	}
 
 	public function testUnfinishedMultibyte() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		Requests_IDNAEncoder::encode("\xc2");
+		IdnaEncoder::encode("\xc2");
 	}
 
 	public function testPartialMultibyte() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		Requests_IDNAEncoder::encode("\xc2\xc2\xb6");
+		IdnaEncoder::encode("\xc2\xc2\xb6");
 	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace WpOrg\Requests;
+
 use WpOrg\Requests\Exception;
 
 /**
@@ -12,7 +14,7 @@ use WpOrg\Requests\Exception;
  * @see https://tools.ietf.org/html/rfc3490 IDNA specification
  * @see https://tools.ietf.org/html/rfc3492 Punycode/Bootstrap specification
  */
-class Requests_IDNAEncoder {
+class IdnaEncoder {
 	/**
 	 * ACE prefix used for IDNA
 	 *

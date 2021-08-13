@@ -35,3 +35,4 @@ interface Requests_Transport extends WpOrg\Requests\Transport {}
 class Requests_Cookie extends WpOrg\Requests\Cookie {}
 class Requests_Exception extends WpOrg\Requests\Exception {}
 class Requests_Hooks extends WpOrg\Requests\Hooks {}
+class Requests_IDNAEncoder extends WpOrg\Requests\IdnaEncoder {}
