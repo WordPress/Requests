@@ -1,7 +1,7 @@
 Custom Authentication
 =====================
 Custom authentication handlers are designed to be straight-forward to write.
-In order to write a handler, you'll need to implement the `Requests_Auth`
+In order to write a handler, you'll need to implement the `WpOrg\Requests\Auth`
 interface.
 
 An instance of this handler can then be passed to Requests via the `auth`
@@ -12,7 +12,7 @@ authenticates the call if said header is set to `Yummy`. (I don't know of any
 services that do this; perhaps this is a market waiting to be tapped?)
 
 ```php
-class MySoftware_Auth_Hotdog implements Requests_Auth {
+class MySoftware_Auth_Hotdog implements WpOrg\Requests\Auth {
     protected $password;
 
     public function __construct($password) {

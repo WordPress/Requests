@@ -303,7 +303,7 @@ class Requests {
 	 *    (string|boolean, default: false)
 	 * - `auth`: Authentication handler or array of user/password details to use
 	 *    for Basic authentication
-	 *    (Requests_Auth|array|boolean, default: false)
+	 *    (\WpOrg\Requests\Auth|array|boolean, default: false)
 	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
 	 *    (Requests_Proxy|array|string|boolean, default: false)
 	 * - `max_bytes`: Limit for the response body size.

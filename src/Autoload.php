@@ -32,7 +32,10 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		 *
 		 * @var array
 		 */
-		private static $deprecated_classes = array();
+		private static $deprecated_classes = array(
+			// Interfaces.
+			'requests_auth' => '\WpOrg\Requests\Auth',
+		);
 
 		/**
 		 * Whether or not a deprecation notice has been thrown for calling a deprecated class.

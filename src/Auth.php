@@ -6,6 +6,10 @@
  * @subpackage Authentication
  */
 
+namespace WpOrg\Requests;
+
+use Requests_Hooks;
+
 /**
  * Authentication provider interface
  *
@@ -18,7 +22,7 @@
  * @package Requests
  * @subpackage Authentication
  */
-interface Requests_Auth {
+interface Auth {
 	/**
 	 * Register hooks as needed
 	 *

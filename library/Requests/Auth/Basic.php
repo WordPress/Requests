@@ -6,6 +6,8 @@
  * @subpackage Authentication
  */
 
+use WpOrg\Requests\Auth;
+
 /**
  * Basic Authentication provider
  *
@@ -15,7 +17,7 @@
  * @package Requests
  * @subpackage Authentication
  */
-class Requests_Auth_Basic implements Requests_Auth {
+class Requests_Auth_Basic implements Auth {
 	/**
 	 * Username
 	 *
