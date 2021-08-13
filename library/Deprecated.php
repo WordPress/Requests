@@ -31,3 +31,5 @@ interface Requests_Auth extends WpOrg\Requests\Auth {}
 interface Requests_Hooker extends WpOrg\Requests\Hooker {}
 interface Requests_Proxy extends WpOrg\Requests\Proxy {}
 interface Requests_Transport extends WpOrg\Requests\Transport {}
+
+class Requests_Cookie extends WpOrg\Requests\Cookie {}

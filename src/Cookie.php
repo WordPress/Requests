@@ -6,13 +6,19 @@
  * @subpackage Cookies
  */
 
+namespace WpOrg\Requests;
+
+use Requests_IRI;
+use Requests_Response_Headers;
+use Requests_Utility_CaseInsensitiveDictionary;
+
 /**
  * Cookie storage object
  *
  * @package Requests
  * @subpackage Cookies
  */
-class Requests_Cookie {
+class Cookie {
 	/**
 	 * Cookie name.
 	 *
@@ -360,7 +366,7 @@ class Requests_Cookie {
 	 * specifies some of this handling, but not in a thorough manner.
 	 *
 	 * @param string Cookie header value (from a Set-Cookie header)
-	 * @return Requests_Cookie Parsed cookie object
+	 * @return \WpOrg\Requests\Cookie Parsed cookie object
 	 */
 	public static function parse($string, $name = '', $reference_time = null) {
 		$parts   = explode(';', $string);
@@ -403,7 +409,7 @@ class Requests_Cookie {
 			}
 		}
 
-		return new Requests_Cookie($name, $value, $attributes, array(), $reference_time);
+		return new static($name, $value, $attributes, array(), $reference_time);
 	}
 
 	/**

@@ -6,6 +6,7 @@
  * @subpackage Cookies
  */
 
+use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Hooker;
 
 /**
@@ -32,17 +33,17 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	}
 
 	/**
-	 * Normalise cookie data into a Requests_Cookie
+	 * Normalise cookie data into a \WpOrg\Requests\Cookie
 	 *
-	 * @param string|Requests_Cookie $cookie
-	 * @return Requests_Cookie
+	 * @param string|\WpOrg\Requests\Cookie $cookie
+	 * @return \WpOrg\Requests\Cookie
 	 */
 	public function normalize_cookie($cookie, $key = null) {
-		if ($cookie instanceof Requests_Cookie) {
+		if ($cookie instanceof Cookie) {
 			return $cookie;
 		}
 
-		return Requests_Cookie::parse($cookie, $key);
+		return Cookie::parse($cookie, $key);
 	}
 
 	/**
@@ -164,7 +165,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 			$url = new Requests_IRI($url);
 		}
 
-		$cookies         = Requests_Cookie::parse_from_headers($return->headers, $url);
+		$cookies         = Cookie::parse_from_headers($return->headers, $url);
 		$this->cookies   = array_merge($this->cookies, $cookies);
 		$return->cookies = $this;
 	}

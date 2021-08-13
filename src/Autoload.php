@@ -38,6 +38,9 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_hooker'    => '\WpOrg\Requests\Hooker',
 			'requests_proxy'     => '\WpOrg\Requests\Proxy',
 			'requests_transport' => '\WpOrg\Requests\Transport',
+
+			// Classes.
+			'requests_cookie'    => '\WpOrg\Requests\Cookie',
 		);
 
 		/**
