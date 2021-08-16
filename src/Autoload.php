@@ -50,6 +50,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_session'     => '\WpOrg\Requests\Session',
 			'requests_ssl'         => '\WpOrg\Requests\Ssl',
 			'requests_auth_basic'  => '\WpOrg\Requests\Auth\Basic',
+			'requests_cookie_jar'  => '\WpOrg\Requests\Cookie\Jar',
 		);
 
 		/**

@@ -11,11 +11,11 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Cookie_Jar;
 use Requests_Proxy_HTTP;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
 use WpOrg\Requests\Auth\Basic;
+use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\IdnaEncoder;
@@ -388,7 +388,7 @@ class Requests {
 	 *    parameter to {@see \WpOrg\Requests\Requests::request}
 	 *    (string, default: `\WpOrg\Requests\Requests::GET`)
 	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
-	 *    (array|Requests_Cookie_Jar)
+	 *    (array|\WpOrg\Requests\Cookie\Jar)
 	 *
 	 * If the `$options` parameter is specified, individual requests will
 	 * inherit options from it. This can be used to use a single hooking system,
@@ -565,10 +565,10 @@ class Requests {
 		}
 
 		if (is_array($options['cookies'])) {
-			$options['cookies'] = new Requests_Cookie_Jar($options['cookies']);
+			$options['cookies'] = new Jar($options['cookies']);
 		}
 		elseif (empty($options['cookies'])) {
-			$options['cookies'] = new Requests_Cookie_Jar();
+			$options['cookies'] = new Jar();
 		}
 		if ($options['cookies'] !== false) {
 			$options['cookies']->register($options['hooks']);

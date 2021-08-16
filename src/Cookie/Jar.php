@@ -6,6 +6,12 @@
  * @subpackage Cookies
  */
 
+namespace WpOrg\Requests\Cookie;
+
+use ArrayAccess;
+use ArrayIterator;
+use IteratorAggregate;
+use ReturnTypeWillChange;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooker;
@@ -18,7 +24,7 @@ use WpOrg\Requests\Response;
  * @package Requests
  * @subpackage Cookies
  */
-class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
+class Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Actual item data
 	 *
@@ -105,7 +111,7 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Get an iterator for the data
 	 *
-	 * @return ArrayIterator
+	 * @return \ArrayIterator
 	 */
 	#[ReturnTypeWillChange]
 	public function getIterator() {

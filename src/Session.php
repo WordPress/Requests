@@ -8,7 +8,7 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Cookie_Jar;
+use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 
@@ -78,7 +78,7 @@ class Session {
 		$this->options = $options;
 
 		if (empty($this->options['cookies'])) {
-			$this->options['cookies'] = new Requests_Cookie_Jar();
+			$this->options['cookies'] = new Jar();
 		}
 	}
 

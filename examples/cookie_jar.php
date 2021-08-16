@@ -7,7 +7,7 @@ require_once dirname(__DIR__) . '/src/Autoload.php';
 WpOrg\Requests\Autoload::register();
 
 // Say you need to fake a login cookie
-$c = new Requests_Cookie_Jar(['login_uid' => 'something']);
+$c = new WpOrg\Requests\Cookie\Jar(['login_uid' => 'something']);
 
 // Now let's make a request!
 $request = WpOrg\Requests\Requests::get(

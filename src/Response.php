@@ -8,9 +8,9 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Cookie_Jar;
 use Requests_Exception_HTTP;
 use Requests_Response_Headers;
+use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
 
 /**
@@ -25,7 +25,7 @@ class Response {
 	 */
 	public function __construct() {
 		$this->headers = new Requests_Response_Headers();
-		$this->cookies = new Requests_Cookie_Jar();
+		$this->cookies = new Jar();
 	}
 
 	/**
@@ -94,7 +94,7 @@ class Response {
 	/**
 	 * Cookies from the request
 	 *
-	 * @var Requests_Cookie_Jar Array-like object representing a cookie jar
+	 * @var \WpOrg\Requests\Cookie\Jar Array-like object representing a cookie jar
 	 */
 	public $cookies = array();
 
