@@ -3,17 +3,17 @@
 namespace Requests\Tests\Auth;
 
 use Requests\Tests\TestCase;
-use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
 use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Transport\Curl;
 
 class BasicTest extends TestCase {
 	public static function transportProvider() {
 		return array(
 			array(Requests_Transport_fsockopen::class),
-			array(Requests_Transport_cURL::class),
+			array(Curl::class),
 		);
 	}
 

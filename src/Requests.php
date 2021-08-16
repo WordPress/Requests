@@ -11,7 +11,6 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
 use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Cookie\Jar;
@@ -21,6 +20,7 @@ use WpOrg\Requests\IdnaEncoder;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Response;
+use WpOrg\Requests\Transport\Curl;
 
 /**
  * Requests for PHP
@@ -144,7 +144,7 @@ class Requests {
 	public static function add_transport($transport) {
 		if (empty(self::$transports)) {
 			self::$transports = array(
-				Requests_Transport_cURL::class,
+				Curl::class,
 				Requests_Transport_fsockopen::class,
 			);
 		}
@@ -174,7 +174,7 @@ class Requests {
 
 		if (empty(self::$transports)) {
 			self::$transports = array(
-				Requests_Transport_cURL::class,
+				Curl::class,
 				Requests_Transport_fsockopen::class,
 			);
 		}

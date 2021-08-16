@@ -3,12 +3,12 @@
 namespace Requests\Tests\Transport;
 
 use Requests\Tests\Transport\BaseTestCase;
-use Requests_Transport_cURL;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Transport\Curl;
 
 class CurlTest extends BaseTestCase {
-	protected $transport = Requests_Transport_cURL::class;
+	protected $transport = Curl::class;
 
 	public function testBadIP() {
 		$this->expectException(Exception::class);

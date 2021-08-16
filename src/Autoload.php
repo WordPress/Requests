@@ -53,6 +53,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_cookie_jar'       => '\WpOrg\Requests\Cookie\Jar',
 			'requests_proxy_http'       => '\WpOrg\Requests\Proxy\Http',
 			'requests_response_headers' => '\WpOrg\Requests\Response\Headers',
+			'requests_transport_curl'   => '\WpOrg\Requests\Transport\Curl',
 		);
 
 		/**
