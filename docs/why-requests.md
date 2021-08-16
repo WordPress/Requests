@@ -60,7 +60,7 @@ Why should I use Requests?
 
 [codecov]: https://app.codecov.io/gh/WordPress/Requests/branch/stable
 [hooking system]: hooks.md
-[requests_ssl]: https://github.com/WordPress/Requests/blob/stable/library/Requests/SSL.php
+[requests_ssl]: https://github.com/WordPress/Requests/blob/stable/src/Ssl.php
 [ghactions]: https://github.com/WordPress/Requests/actions
 [wpssl]: https://core.trac.wordpress.org/ticket/25007
 

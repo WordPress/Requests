@@ -6,6 +6,8 @@
  * @subpackage Utilities
  */
 
+namespace WpOrg\Requests;
+
 /**
  * SSL utilities for Requests
  *
@@ -14,7 +16,7 @@
  * @package Requests
  * @subpackage Utilities
  */
-class Requests_SSL {
+class Ssl {
 	/**
 	 * Verify the certificate against common name and subject alternative names
 	 *

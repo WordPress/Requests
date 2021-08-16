@@ -40,3 +40,4 @@ class Requests_IPv6 extends WpOrg\Requests\Ipv6 {}
 class Requests_IRI extends WpOrg\Requests\Iri {}
 class Requests_Response extends WpOrg\Requests\Response {}
 class Requests_Session extends WpOrg\Requests\Session {}
+class Requests_SSL extends WpOrg\Requests\Ssl {}

@@ -48,6 +48,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_iri'         => '\WpOrg\Requests\Iri',
 			'requests_response'    => '\WpOrg\Requests\Response',
 			'requests_session'     => '\WpOrg\Requests\Session',
+			'requests_ssl'         => '\WpOrg\Requests\Ssl',
 		);
 
 		/**
