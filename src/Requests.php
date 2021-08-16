@@ -11,7 +11,6 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Transport_fsockopen;
 use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
@@ -21,6 +20,7 @@ use WpOrg\Requests\Iri;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Transport\Curl;
+use WpOrg\Requests\Transport\Fsockopen;
 
 /**
  * Requests for PHP
@@ -145,7 +145,7 @@ class Requests {
 		if (empty(self::$transports)) {
 			self::$transports = array(
 				Curl::class,
-				Requests_Transport_fsockopen::class,
+				Fsockopen::class,
 			);
 		}
 
@@ -175,7 +175,7 @@ class Requests {
 		if (empty(self::$transports)) {
 			self::$transports = array(
 				Curl::class,
-				Requests_Transport_fsockopen::class,
+				Fsockopen::class,
 			);
 		}
 

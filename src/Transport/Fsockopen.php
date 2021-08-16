@@ -6,6 +6,10 @@
  * @subpackage Transport
  */
 
+namespace WpOrg\Requests\Transport;
+
+use Requests_Exception_InvalidArgument;
+use Requests_Utility_CaseInsensitiveDictionary;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Ssl;
@@ -17,7 +21,7 @@ use WpOrg\Requests\Transport;
  * @package Requests
  * @subpackage Transport
  */
-class Requests_Transport_fsockopen implements Transport {
+class Fsockopen implements Transport {
 	/**
 	 * Second to microsecond conversion
 	 *

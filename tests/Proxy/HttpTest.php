@@ -3,11 +3,11 @@
 namespace Requests\Tests\Proxy;
 
 use Requests\Tests\TestCase;
-use Requests_Transport_fsockopen;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Transport\Curl;
+use WpOrg\Requests\Transport\Fsockopen;
 
 class HttpTest extends TestCase {
 	protected function checkProxyAvailable($type = '') {
@@ -29,7 +29,7 @@ class HttpTest extends TestCase {
 	public function transportProvider() {
 		return array(
 			array(Curl::class),
-			array(Requests_Transport_fsockopen::class),
+			array(Fsockopen::class),
 		);
 	}
 
@@ -137,7 +137,7 @@ class HttpTest extends TestCase {
 		);
 
 		if (version_compare(phpversion(), '5.5.0', '>=') === true
-			&& $transport === Requests_Transport_fsockopen::class
+			&& $transport === Fsockopen::class
 		) {
 			// @TODO fsockopen connection times out on invalid auth instead of returning 407.
 			$this->expectException(Exception::class);

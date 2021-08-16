@@ -222,7 +222,6 @@
 	<rule ref="PEAR.NamingConventions.ValidClassName.Invalid">
 		<exclude-pattern>*/library/Deprecated\.php$</exclude-pattern>
 		<exclude-pattern>*/Transport/cURL\.php$</exclude-pattern>
-		<exclude-pattern>*/Transport/fsockopen\.php$</exclude-pattern>
 	</rule>
 
 	<rule ref="Generic.Files.OneObjectStructurePerFile.MultipleFound">

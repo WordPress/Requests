@@ -47,3 +47,4 @@ class Requests_Cookie_Jar extends WpOrg\Requests\Cookie\Jar {}
 class Requests_Proxy_HTTP extends WpOrg\Requests\Proxy\Http {}
 class Requests_Response_Headers extends WpOrg\Requests\Response\Headers {}
 class Requests_Transport_cURL extends WpOrg\Requests\Transport\Curl {}
+class Requests_Transport_fsockopen extends WpOrg\Requests\Transport\Fsockopen {}
