@@ -6,13 +6,18 @@
  * @subpackage Utilities
  */
 
+namespace WpOrg\Requests\Utility;
+
+use ArrayIterator;
+use ReturnTypeWillChange;
+
 /**
  * Iterator for arrays requiring filtered values
  *
  * @package Requests
  * @subpackage Utilities
  */
-class Requests_Utility_FilteredIterator extends ArrayIterator {
+class FilteredIterator extends ArrayIterator {
 	/**
 	 * Callback to run as a filter
 	 *

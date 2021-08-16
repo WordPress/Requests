@@ -56,6 +56,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_transport_curl'                    => '\WpOrg\Requests\Transport\Curl',
 			'requests_transport_fsockopen'               => '\WpOrg\Requests\Transport\Fsockopen',
 			'requests_utility_caseinsensitivedictionary' => '\WpOrg\Requests\Utility\CaseInsensitiveDictionary',
+			'requests_utility_filterediterator'          => '\WpOrg\Requests\Utility\FilteredIterator',
 		);
 
 		/**

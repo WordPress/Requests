@@ -7,9 +7,9 @@
 
 namespace WpOrg\Requests\Response;
 
-use Requests_Utility_FilteredIterator;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
+use WpOrg\Requests\Utility\FilteredIterator;
 
 /**
  * Case-insensitive dictionary, suitable for HTTP headers
@@ -99,6 +99,6 @@ class Headers extends CaseInsensitiveDictionary {
 	 * @return \ArrayIterator
 	 */
 	public function getIterator() {
-		return new Requests_Utility_FilteredIterator($this->data, array($this, 'flatten'));
+		return new FilteredIterator($this->data, array($this, 'flatten'));
 	}
 }

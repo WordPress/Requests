@@ -49,3 +49,4 @@ class Requests_Response_Headers extends WpOrg\Requests\Response\Headers {}
 class Requests_Transport_cURL extends WpOrg\Requests\Transport\Curl {}
 class Requests_Transport_fsockopen extends WpOrg\Requests\Transport\Fsockopen {}
 class Requests_Utility_CaseInsensitiveDictionary extends WpOrg\Requests\Utility\CaseInsensitiveDictionary {}
+class Requests_Utility_FilteredIterator extends WpOrg\Requests\Utility\FilteredIterator {}
