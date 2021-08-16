@@ -9,11 +9,11 @@
 namespace WpOrg\Requests\Transport;
 
 use Requests_Exception_InvalidArgument;
-use Requests_Utility_CaseInsensitiveDictionary;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Transport;
+use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 /**
  * fsockopen HTTP transport
@@ -93,7 +93,7 @@ class Fsockopen implements Transport {
 		$host                     = $url_parts['host'];
 		$context                  = stream_context_create();
 		$verifyname               = false;
-		$case_insensitive_headers = new Requests_Utility_CaseInsensitiveDictionary($headers);
+		$case_insensitive_headers = new CaseInsensitiveDictionary($headers);
 
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {

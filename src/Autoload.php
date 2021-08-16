@@ -34,27 +34,28 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		 */
 		private static $deprecated_classes = array(
 			// Interfaces.
-			'requests_auth'                => '\WpOrg\Requests\Auth',
-			'requests_hooker'              => '\WpOrg\Requests\Hooker',
-			'requests_proxy'               => '\WpOrg\Requests\Proxy',
-			'requests_transport'           => '\WpOrg\Requests\Transport',
+			'requests_auth'                              => '\WpOrg\Requests\Auth',
+			'requests_hooker'                            => '\WpOrg\Requests\Hooker',
+			'requests_proxy'                             => '\WpOrg\Requests\Proxy',
+			'requests_transport'                         => '\WpOrg\Requests\Transport',
 
 			// Classes.
-			'requests_cookie'              => '\WpOrg\Requests\Cookie',
-			'requests_exception'           => '\WpOrg\Requests\Exception',
-			'requests_hooks'               => '\WpOrg\Requests\Hooks',
-			'requests_idnaencoder'         => '\WpOrg\Requests\IdnaEncoder',
-			'requests_ipv6'                => '\WpOrg\Requests\Ipv6',
-			'requests_iri'                 => '\WpOrg\Requests\Iri',
-			'requests_response'            => '\WpOrg\Requests\Response',
-			'requests_session'             => '\WpOrg\Requests\Session',
-			'requests_ssl'                 => '\WpOrg\Requests\Ssl',
-			'requests_auth_basic'          => '\WpOrg\Requests\Auth\Basic',
-			'requests_cookie_jar'          => '\WpOrg\Requests\Cookie\Jar',
-			'requests_proxy_http'          => '\WpOrg\Requests\Proxy\Http',
-			'requests_response_headers'    => '\WpOrg\Requests\Response\Headers',
-			'requests_transport_curl'      => '\WpOrg\Requests\Transport\Curl',
-			'requests_transport_fsockopen' => '\WpOrg\Requests\Transport\Fsockopen',
+			'requests_cookie'                            => '\WpOrg\Requests\Cookie',
+			'requests_exception'                         => '\WpOrg\Requests\Exception',
+			'requests_hooks'                             => '\WpOrg\Requests\Hooks',
+			'requests_idnaencoder'                       => '\WpOrg\Requests\IdnaEncoder',
+			'requests_ipv6'                              => '\WpOrg\Requests\Ipv6',
+			'requests_iri'                               => '\WpOrg\Requests\Iri',
+			'requests_response'                          => '\WpOrg\Requests\Response',
+			'requests_session'                           => '\WpOrg\Requests\Session',
+			'requests_ssl'                               => '\WpOrg\Requests\Ssl',
+			'requests_auth_basic'                        => '\WpOrg\Requests\Auth\Basic',
+			'requests_cookie_jar'                        => '\WpOrg\Requests\Cookie\Jar',
+			'requests_proxy_http'                        => '\WpOrg\Requests\Proxy\Http',
+			'requests_response_headers'                  => '\WpOrg\Requests\Response\Headers',
+			'requests_transport_curl'                    => '\WpOrg\Requests\Transport\Curl',
+			'requests_transport_fsockopen'               => '\WpOrg\Requests\Transport\Fsockopen',
+			'requests_utility_caseinsensitivedictionary' => '\WpOrg\Requests\Utility\CaseInsensitiveDictionary',
 		);
 
 		/**

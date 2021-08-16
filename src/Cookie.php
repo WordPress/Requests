@@ -8,9 +8,9 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Utility_CaseInsensitiveDictionary;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 /**
  * Cookie storage object
@@ -39,7 +39,7 @@ class Cookie {
 	 * Valid keys are (currently) path, domain, expires, max-age, secure and
 	 * httponly.
 	 *
-	 * @var Requests_Utility_CaseInsensitiveDictionary|array Array-like object
+	 * @var \WpOrg\Requests\Utility\CaseInsensitiveDictionary|array Array-like object
 	 */
 	public $attributes = array();
 
@@ -68,7 +68,7 @@ class Cookie {
 	 *
 	 * @param string $name
 	 * @param string $value
-	 * @param array|Requests_Utility_CaseInsensitiveDictionary $attributes Associative array of attribute data
+	 * @param array|\WpOrg\Requests\Utility\CaseInsensitiveDictionary $attributes Associative array of attribute data
 	 */
 	public function __construct($name, $value, $attributes = array(), $flags = array(), $reference_time = null) {
 		$this->name       = $name;
@@ -391,7 +391,7 @@ class Cookie {
 		$value = trim($value);
 
 		// Attribute key are handled case-insensitively
-		$attributes = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes = new CaseInsensitiveDictionary();
 
 		if (!empty($parts)) {
 			foreach ($parts as $part) {

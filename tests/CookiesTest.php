@@ -3,13 +3,13 @@
 namespace Requests\Tests;
 
 use Requests\Tests\TestCase;
-use Requests_Utility_CaseInsensitiveDictionary;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 class CookiesTest extends TestCase {
 	public function testBasicCookie() {
@@ -236,7 +236,7 @@ class CookiesTest extends TestCase {
 	 * @dataProvider domainMatchProvider
 	 */
 	public function testDomainExactMatch($original, $check, $matches, $domain_matches) {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
 		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes);
 		$this->assertSame($matches, $cookie->domain_matches($check));
@@ -246,7 +246,7 @@ class CookiesTest extends TestCase {
 	 * @dataProvider domainMatchProvider
 	 */
 	public function testDomainMatch($original, $check, $matches, $domain_matches) {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
 		$flags                = array(
 			'host-only' => false,
@@ -279,7 +279,7 @@ class CookiesTest extends TestCase {
 	 * @dataProvider pathMatchProvider
 	 */
 	public function testPathMatch($original, $check, $matches) {
-		$attributes         = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes         = new CaseInsensitiveDictionary();
 		$attributes['path'] = $original;
 		$cookie             = new Cookie('requests-testcookie', 'testvalue', $attributes);
 		$this->assertSame($matches, $cookie->path_matches($check));
@@ -318,7 +318,7 @@ class CookiesTest extends TestCase {
 	 * @dataProvider urlMatchProvider
 	 */
 	public function testUrlExactMatch($domain, $path, $check, $matches, $domain_matches) {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $domain;
 		$attributes['path']   = $path;
 		$check                = new Iri($check);
@@ -332,7 +332,7 @@ class CookiesTest extends TestCase {
 	 * @dataProvider urlMatchProvider
 	 */
 	public function testUrlMatch($domain, $path, $check, $matches, $domain_matches) {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $domain;
 		$attributes['path']   = $path;
 		$flags                = array(
@@ -344,7 +344,7 @@ class CookiesTest extends TestCase {
 	}
 
 	public function testUrlMatchSecure() {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = 'example.com';
 		$attributes['path']   = '/';
 		$attributes['secure'] = true;

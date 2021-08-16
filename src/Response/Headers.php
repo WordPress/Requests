@@ -7,16 +7,16 @@
 
 namespace WpOrg\Requests\Response;
 
-use Requests_Utility_CaseInsensitiveDictionary;
 use Requests_Utility_FilteredIterator;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 /**
  * Case-insensitive dictionary, suitable for HTTP headers
  *
  * @package Requests
  */
-class Headers extends Requests_Utility_CaseInsensitiveDictionary {
+class Headers extends CaseInsensitiveDictionary {
 	/**
 	 * Get the given header
 	 *
