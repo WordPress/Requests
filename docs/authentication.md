@@ -8,7 +8,7 @@ A Basic authenticated call can be made like this:
 
 ```php
 $options = array(
-    'auth' => new Requests_Auth_Basic(array('user', 'password'))
+    'auth' => new WpOrg\Requests\Auth\Basic(array('user', 'password'))
 );
 WpOrg\Requests\Requests::get('https://httpbin.org/basic-auth/user/password', array(), $options);
 ```

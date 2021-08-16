@@ -11,11 +11,11 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Auth_Basic;
 use Requests_Cookie_Jar;
 use Requests_Proxy_HTTP;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
+use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\IdnaEncoder;
@@ -551,7 +551,7 @@ class Requests {
 		}
 
 		if (is_array($options['auth'])) {
-			$options['auth'] = new Requests_Auth_Basic($options['auth']);
+			$options['auth'] = new Basic($options['auth']);
 		}
 		if ($options['auth'] !== false) {
 			$options['auth']->register($options['hooks']);

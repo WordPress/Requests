@@ -6,6 +6,8 @@
  * @subpackage Authentication
  */
 
+namespace WpOrg\Requests\Auth;
+
 use WpOrg\Requests\Auth;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
@@ -19,7 +21,7 @@ use WpOrg\Requests\Hooks;
  * @package Requests
  * @subpackage Authentication
  */
-class Requests_Auth_Basic implements Auth {
+class Basic implements Auth {
 	/**
 	 * Username
 	 *

@@ -41,3 +41,5 @@ class Requests_IRI extends WpOrg\Requests\Iri {}
 class Requests_Response extends WpOrg\Requests\Response {}
 class Requests_Session extends WpOrg\Requests\Session {}
 class Requests_SSL extends WpOrg\Requests\Ssl {}
+
+class Requests_Auth_Basic extends WpOrg\Requests\Auth\Basic {}
