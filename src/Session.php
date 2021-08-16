@@ -6,6 +6,9 @@
  * @subpackage Session Handler
  */
 
+namespace WpOrg\Requests;
+
+use Requests_Cookie_Jar;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 
@@ -20,7 +23,7 @@ use WpOrg\Requests\Requests;
  * @package Requests
  * @subpackage Session Handler
  */
-class Requests_Session {
+class Session {
 	/**
 	 * Base URL for requests
 	 *

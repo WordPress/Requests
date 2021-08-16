@@ -7,7 +7,7 @@ require_once dirname(__DIR__) . '/src/Autoload.php';
 WpOrg\Requests\Autoload::register();
 
 // Set up our session
-$session                    = new Requests_Session('http://httpbin.org/');
+$session                    = new WpOrg\Requests\Session('http://httpbin.org/');
 $session->headers['Accept'] = 'application/json';
 $session->useragent         = 'Awesomesauce';
 

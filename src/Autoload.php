@@ -47,6 +47,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_ipv6'        => '\WpOrg\Requests\Ipv6',
 			'requests_iri'         => '\WpOrg\Requests\Iri',
 			'requests_response'    => '\WpOrg\Requests\Response',
+			'requests_session'     => '\WpOrg\Requests\Session',
 		);
 
 		/**
