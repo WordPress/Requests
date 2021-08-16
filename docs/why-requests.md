@@ -162,7 +162,7 @@ instead of something else, in our opinion.
    using PEAR for your project.
 
    Requests is entirely self-contained, and includes all the libraries it needs
-   (for example, `Requests_IRI` is based on `ComplexPie_IRI` by Geoffrey Sneddon).
+   (for example, `WpOrg\Requests\Iri` is based on `ComplexPie_IRI` by Geoffrey Sneddon).
 
 
 ### Zend Framework's Zend\_Http\_Client

@@ -4,11 +4,11 @@ namespace Requests\Tests;
 
 use Requests\Tests\TestCase;
 use Requests_Cookie_Jar;
-use Requests_IRI;
 use Requests_Response_Headers;
 use Requests_Utility_CaseInsensitiveDictionary;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 
 class CookiesTest extends TestCase {
@@ -321,7 +321,7 @@ class CookiesTest extends TestCase {
 		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
 		$attributes['domain'] = $domain;
 		$attributes['path']   = $path;
-		$check                = new Requests_IRI($check);
+		$check                = new Iri($check);
 		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes);
 		$this->assertSame($matches, $cookie->uri_matches($check));
 	}
@@ -338,7 +338,7 @@ class CookiesTest extends TestCase {
 		$flags                = array(
 			'host-only' => false,
 		);
-		$check                = new Requests_IRI($check);
+		$check                = new Iri($check);
 		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
 		$this->assertSame($domain_matches, $cookie->uri_matches($check));
 	}
@@ -353,12 +353,12 @@ class CookiesTest extends TestCase {
 		);
 		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
 
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('https://example.com/')));
-		$this->assertFalse($cookie->uri_matches(new Requests_IRI('http://example.com/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('https://example.com/')));
+		$this->assertFalse($cookie->uri_matches(new Iri('http://example.com/')));
 
 		// Double-check host-only
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('https://www.example.com/')));
-		$this->assertFalse($cookie->uri_matches(new Requests_IRI('http://www.example.com/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('https://www.example.com/')));
+		$this->assertFalse($cookie->uri_matches(new Iri('http://www.example.com/')));
 	}
 
 	/**
@@ -375,12 +375,12 @@ class CookiesTest extends TestCase {
 		$this->assertTrue($cookie->path_matches('/'));
 		$this->assertTrue($cookie->path_matches('/test'));
 		$this->assertTrue($cookie->path_matches('/test/'));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.com/')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.com/test')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.com/test/')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.net/')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.net/test')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.net/test/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test/')));
 	}
 
 	public static function parseResultProvider() {
@@ -647,7 +647,7 @@ class CookiesTest extends TestCase {
 	 * @dataProvider parseFromHeadersProvider
 	 */
 	public function testParsingHeaderWithOrigin($header, $origin, $expected, $expected_attributes = array(), $expected_flags = array()) {
-		$origin                = new Requests_IRI($origin);
+		$origin                = new Iri($origin);
 		$headers               = new Requests_Response_Headers();
 		$headers['Set-Cookie'] = $header;
 

@@ -133,7 +133,7 @@ class IdnaEncoder {
 	/**
 	 * Convert a UTF-8 string to a UCS-4 codepoint array
 	 *
-	 * Based on Requests_IRI::replace_invalid_with_pct_encoding()
+	 * Based on \WpOrg\Requests\Iri::replace_invalid_with_pct_encoding()
 	 *
 	 * @throws \WpOrg\Requests\Exception Invalid UTF-8 codepoint (`idna.invalidcodepoint`)
 	 * @param string $input

@@ -6,6 +6,7 @@
  * @subpackage Session Handler
  */
 
+use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 
 /**
@@ -240,7 +241,7 @@ class Requests_Session {
 	 */
 	protected function merge_request($request, $merge_options = true) {
 		if ($this->url !== null) {
-			$request['url'] = Requests_IRI::absolutize($this->url, $request['url']);
+			$request['url'] = Iri::absolutize($this->url, $request['url']);
 			$request['url'] = $request['url']->uri;
 		}
 

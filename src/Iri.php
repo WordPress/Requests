@@ -6,6 +6,8 @@
  * @subpackage Utilities
  */
 
+namespace WpOrg\Requests;
+
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Ipv6;
 
@@ -66,7 +68,7 @@ use WpOrg\Requests\Ipv6;
  * @property string $fragment Fragment, formatted for a URI (after '#')
  * @property string $ifragment Fragment part of the IRI (after '#')
  */
-class Requests_IRI {
+class Iri {
 	/**
 	 * Scheme
 	 *
@@ -254,13 +256,13 @@ class Requests_IRI {
 	 *
 	 * Returns false if $base is not absolute, otherwise an IRI.
 	 *
-	 * @param Requests_IRI|string $base (Absolute) Base IRI
-	 * @param Requests_IRI|string $relative Relative IRI
-	 * @return Requests_IRI|false
+	 * @param \WpOrg\Requests\Iri|string $base (Absolute) Base IRI
+	 * @param \WpOrg\Requests\Iri|string $relative Relative IRI
+	 * @return \WpOrg\Requests\Iri|false
 	 */
 	public static function absolutize($base, $relative) {
-		if (!($relative instanceof Requests_IRI)) {
-			$relative = new Requests_IRI($relative);
+		if (!($relative instanceof self)) {
+			$relative = new self($relative);
 		}
 		if (!$relative->is_valid()) {
 			return false;
@@ -269,8 +271,8 @@ class Requests_IRI {
 			return clone $relative;
 		}
 
-		if (!($base instanceof Requests_IRI)) {
-			$base = new Requests_IRI($base);
+		if (!($base instanceof self)) {
+			$base = new self($base);
 		}
 		if ($base->scheme === null || !$base->is_valid()) {
 			return false;
@@ -282,7 +284,7 @@ class Requests_IRI {
 				$target->scheme = $base->scheme;
 			}
 			else {
-				$target = new Requests_IRI;
+				$target = new self;
 				$target->scheme = $base->scheme;
 				$target->iuserinfo = $base->iuserinfo;
 				$target->ihost = $base->ihost;
