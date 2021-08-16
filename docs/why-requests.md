@@ -89,7 +89,7 @@ instead of something else, in our opinion.
 
    Requests, on the other hand, exposes only a handful of classes to the
    global namespace, most of which are for internal use. You can learn to use
-   the `WpOrg\Requests\Requests::request()` method and the `Requests_Response`
+   the `WpOrg\Requests\Requests::request()` method and the `WpOrg\Requests\Response`
    object in the space of 10 minutes and you already know how to use Requests.
 
 

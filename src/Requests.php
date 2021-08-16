@@ -14,13 +14,13 @@ namespace WpOrg\Requests;
 use Requests_Auth_Basic;
 use Requests_Cookie_Jar;
 use Requests_Proxy_HTTP;
-use Requests_Response;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\IdnaEncoder;
 use WpOrg\Requests\Iri;
+use WpOrg\Requests\Response;
 
 /**
  * Requests for PHP
@@ -204,7 +204,7 @@ class Requests {
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $options
-	 * @return Requests_Response
+	 * @return \WpOrg\Requests\Response
 	 */
 	/**
 	 * Send a GET request
@@ -241,7 +241,7 @@ class Requests {
 	 * @param array $headers
 	 * @param array $data
 	 * @param array $options
-	 * @return Requests_Response
+	 * @return \WpOrg\Requests\Response
 	 */
 	/**
 	 * Send a POST request
@@ -334,7 +334,7 @@ class Requests {
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use Requests constants)
 	 * @param array $options Options for the request (see description for more information)
-	 * @return Requests_Response
+	 * @return \WpOrg\Requests\Response
 	 */
 	public static function request($url, $headers = array(), $data = array(), $type = self::GET, $options = array()) {
 		if (empty($options['type'])) {
@@ -397,14 +397,14 @@ class Requests {
 	 * In addition, the `$options` parameter takes the following global options:
 	 *
 	 * - `complete`: A callback for when a request is complete. Takes two
-	 *    parameters, a Requests_Response/\WpOrg\Requests\Exception reference, and the
+	 *    parameters, a \WpOrg\Requests\Response/\WpOrg\Requests\Exception reference, and the
 	 *    ID from the request array (Note: this can also be overridden on a
 	 *    per-request basis, although that's a little silly)
 	 *    (callback)
 	 *
 	 * @param array $requests Requests data (see description for more information)
 	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
-	 * @return array Responses (either Requests_Response or a \WpOrg\Requests\Exception object)
+	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
 	 */
 	public static function request_multiple($requests, $options = array()) {
 		$options = array_merge(self::get_default_options(true), $options);
@@ -605,10 +605,10 @@ class Requests {
 	 * @param array $req_headers Original $headers array passed to {@link request()}, in case we need to follow redirects
 	 * @param array $req_data Original $data array passed to {@link request()}, in case we need to follow redirects
 	 * @param array $options Original $options array passed to {@link request()}, in case we need to follow redirects
-	 * @return Requests_Response
+	 * @return \WpOrg\Requests\Response
 	 */
 	protected static function parse_response($headers, $url, $req_headers, $req_data, $options) {
-		$return = new Requests_Response();
+		$return = new Response();
 		if (!$options['blocking']) {
 			return $return;
 		}
@@ -706,12 +706,12 @@ class Requests {
 	/**
 	 * Callback for `transport.internal.parse_response`
 	 *
-	 * Internal use only. Converts a raw HTTP response to a Requests_Response
+	 * Internal use only. Converts a raw HTTP response to a \WpOrg\Requests\Response
 	 * while still executing a multiple request.
 	 *
 	 * @param string $response Full response text including headers and body (will be overwritten with Response instance)
 	 * @param array $request Request data as passed into {@see \WpOrg\Requests\Requests::request_multiple()}
-	 * @return null `$response` is either set to a Requests_Response instance, or a \WpOrg\Requests\Exception object
+	 * @return null `$response` is either set to a \WpOrg\Requests\Response instance, or a \WpOrg\Requests\Exception object
 	 */
 	public static function parse_multiple(&$response, $request) {
 		try {

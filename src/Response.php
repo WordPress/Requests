@@ -6,6 +6,11 @@
  * @package Requests
  */
 
+namespace WpOrg\Requests;
+
+use Requests_Cookie_Jar;
+use Requests_Exception_HTTP;
+use Requests_Response_Headers;
 use WpOrg\Requests\Exception;
 
 /**
@@ -14,7 +19,7 @@ use WpOrg\Requests\Exception;
  * Contains a response from \WpOrg\Requests\Requests::request()
  * @package Requests
  */
-class Requests_Response {
+class Response {
 	/**
 	 * Constructor
 	 */
@@ -82,7 +87,7 @@ class Requests_Response {
 	/**
 	 * Previous requests (from redirects)
 	 *
-	 * @var array Array of Requests_Response objects
+	 * @var array Array of \WpOrg\Requests\Response objects
 	 */
 	public $history = array();
 

@@ -18,7 +18,7 @@ Let's grab GitHub's public events:
 $response = WpOrg\Requests\Requests::get('https://api.github.com/events');
 ```
 
-`$response` is now a **Requests_Response** object. Response objects are what
+`$response` is now a **WpOrg\Requests\Response** object. Response objects are what
 you'll be working with whenever you want to get data back from your request.
 
 

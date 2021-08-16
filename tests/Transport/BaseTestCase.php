@@ -5,11 +5,11 @@ namespace Requests\Tests\Transport;
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
 use Requests_Exception_HTTP_Unknown;
-use Requests_Response;
 use stdClass;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response;
 
 abstract class BaseTestCase extends TestCase {
 	public function set_up() {
@@ -635,7 +635,7 @@ abstract class BaseTestCase extends TestCase {
 			'blocking' => false,
 		);
 		$request = Requests::get(httpbin('/get'), array(), $this->getOptions($options));
-		$empty   = new Requests_Response();
+		$empty   = new Response();
 		$this->assertEquals($empty, $request);
 	}
 
@@ -755,7 +755,7 @@ abstract class BaseTestCase extends TestCase {
 
 		// test1
 		$this->assertNotEmpty($responses['test1']);
-		$this->assertInstanceOf(Requests_Response::class, $responses['test1']);
+		$this->assertInstanceOf(Response::class, $responses['test1']);
 		$this->assertSame(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
@@ -764,7 +764,7 @@ abstract class BaseTestCase extends TestCase {
 
 		// test2
 		$this->assertNotEmpty($responses['test2']);
-		$this->assertInstanceOf(Requests_Response::class, $responses['test2']);
+		$this->assertInstanceOf(Response::class, $responses['test2']);
 		$this->assertSame(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);

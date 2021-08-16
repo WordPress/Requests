@@ -219,7 +219,7 @@ class Requests_Transport_cURL implements Transport {
 	 *
 	 * @param array $requests Request data
 	 * @param array $options Global options
-	 * @return array Array of Requests_Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
+	 * @return array Array of \WpOrg\Requests\Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
 	 */
 	public function request_multiple($requests, $options) {
 		// If you're not requesting, we can't get any responses ¯\_(ツ)_/¯

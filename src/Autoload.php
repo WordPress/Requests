@@ -46,6 +46,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_idnaencoder' => '\WpOrg\Requests\IdnaEncoder',
 			'requests_ipv6'        => '\WpOrg\Requests\Ipv6',
 			'requests_iri'         => '\WpOrg\Requests\Iri',
+			'requests_response'    => '\WpOrg\Requests\Response',
 		);
 
 		/**

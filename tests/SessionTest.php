@@ -3,8 +3,8 @@
 namespace Requests\Tests;
 
 use Requests\Tests\TestCase;
-use Requests_Response;
 use Requests_Session;
+use WpOrg\Requests\Response;
 
 class SessionTest extends TestCase {
 	public function testURLResolution() {
@@ -139,7 +139,7 @@ class SessionTest extends TestCase {
 
 		// test1
 		$this->assertNotEmpty($responses['test1']);
-		$this->assertInstanceOf(Requests_Response::class, $responses['test1']);
+		$this->assertInstanceOf(Response::class, $responses['test1']);
 		$this->assertSame(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
@@ -148,7 +148,7 @@ class SessionTest extends TestCase {
 
 		// test2
 		$this->assertNotEmpty($responses['test2']);
-		$this->assertInstanceOf(Requests_Response::class, $responses['test2']);
+		$this->assertInstanceOf(Response::class, $responses['test2']);
 		$this->assertSame(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);

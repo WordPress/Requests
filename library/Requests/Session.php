@@ -128,7 +128,7 @@ class Requests_Session {
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $options
-	 * @return Requests_Response
+	 * @return \WpOrg\Requests\Response
 	 */
 	/**
 	 * Send a GET request
@@ -158,7 +158,7 @@ class Requests_Session {
 	 * @param array $headers
 	 * @param array $data
 	 * @param array $options
-	 * @return Requests_Response
+	 * @return \WpOrg\Requests\Response
 	 */
 	/**
 	 * Send a POST request
@@ -202,7 +202,7 @@ class Requests_Session {
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use \WpOrg\Requests\Requests constants)
 	 * @param array $options Options for the request (see {@see \WpOrg\Requests\Requests::request})
-	 * @return Requests_Response
+	 * @return \WpOrg\Requests\Response
 	 */
 	public function request($url, $headers = array(), $data = array(), $type = Requests::GET, $options = array()) {
 		$request = $this->merge_request(compact('url', 'headers', 'data', 'options'));
@@ -217,7 +217,7 @@ class Requests_Session {
 	 *
 	 * @param array $requests Requests data (see {@see \WpOrg\Requests\Requests::request_multiple})
 	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
-	 * @return array Responses (either Requests_Response or a \WpOrg\Requests\Exception object)
+	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
 	 */
 	public function request_multiple($requests, $options = array()) {
 		foreach ($requests as $key => $request) {
