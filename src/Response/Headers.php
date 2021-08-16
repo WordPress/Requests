@@ -5,6 +5,10 @@
  * @package Requests
  */
 
+namespace WpOrg\Requests\Response;
+
+use Requests_Utility_CaseInsensitiveDictionary;
+use Requests_Utility_FilteredIterator;
 use WpOrg\Requests\Exception;
 
 /**
@@ -12,7 +16,7 @@ use WpOrg\Requests\Exception;
  *
  * @package Requests
  */
-class Requests_Response_Headers extends Requests_Utility_CaseInsensitiveDictionary {
+class Headers extends Requests_Utility_CaseInsensitiveDictionary {
 	/**
 	 * Get the given header
 	 *
@@ -92,7 +96,7 @@ class Requests_Response_Headers extends Requests_Utility_CaseInsensitiveDictiona
 	 * Get an iterator for the data
 	 *
 	 * Converts the internal
-	 * @return ArrayIterator
+	 * @return \ArrayIterator
 	 */
 	public function getIterator() {
 		return new Requests_Utility_FilteredIterator($this->data, array($this, 'flatten'));

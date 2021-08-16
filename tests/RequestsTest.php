@@ -5,9 +5,9 @@ namespace Requests\Tests;
 use Requests\Tests\Mock\RawTransportMock;
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
-use Requests_Response_Headers;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response\Headers;
 
 class RequestsTest extends TestCase {
 
@@ -44,7 +44,7 @@ class RequestsTest extends TestCase {
 			'transport' => $transport,
 		);
 		$response              = Requests::get('http://example.com/', array(), $options);
-		$expected              = new Requests_Response_Headers();
+		$expected              = new Headers();
 		$expected['host']      = 'localhost,ambiguous';
 		$expected['nospace']   = 'here';
 		$expected['muchspace'] = 'there';

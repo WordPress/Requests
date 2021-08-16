@@ -3,13 +3,13 @@
 namespace Requests\Tests;
 
 use Requests\Tests\TestCase;
-use Requests_Response_Headers;
 use Requests_Utility_CaseInsensitiveDictionary;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response\Headers;
 
 class CookiesTest extends TestCase {
 	public function testBasicCookie() {
@@ -520,7 +520,7 @@ class CookiesTest extends TestCase {
 	 * @dataProvider parseResultProvider
 	 */
 	public function testParsingHeaderObject($header, $expected, $expected_attributes = array(), $expected_flags = array()) {
-		$headers               = new Requests_Response_Headers();
+		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
 		// Set the reference time to 2014-01-01 00:00:00
@@ -648,7 +648,7 @@ class CookiesTest extends TestCase {
 	 */
 	public function testParsingHeaderWithOrigin($header, $origin, $expected, $expected_attributes = array(), $expected_flags = array()) {
 		$origin                = new Iri($origin);
-		$headers               = new Requests_Response_Headers();
+		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
 		// Set the reference time to 2014-01-01 00:00:00

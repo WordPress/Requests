@@ -8,9 +8,9 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Response_Headers;
 use Requests_Utility_CaseInsensitiveDictionary;
 use WpOrg\Requests\Iri;
+use WpOrg\Requests\Response\Headers;
 
 /**
  * Cookie storage object
@@ -415,12 +415,12 @@ class Cookie {
 	/**
 	 * Parse all Set-Cookie headers from request headers
 	 *
-	 * @param Requests_Response_Headers $headers Headers to parse from
+	 * @param \WpOrg\Requests\Response\Headers $headers Headers to parse from
 	 * @param \WpOrg\Requests\Iri|null $origin URI for comparing cookie origins
 	 * @param int|null $time Reference time for expiration calculation
 	 * @return array
 	 */
-	public static function parse_from_headers(Requests_Response_Headers $headers, Iri $origin = null, $time = null) {
+	public static function parse_from_headers(Headers $headers, Iri $origin = null, $time = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
 			return array();
