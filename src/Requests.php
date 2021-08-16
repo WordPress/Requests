@@ -11,7 +11,6 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Proxy_HTTP;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
 use WpOrg\Requests\Auth\Basic;
@@ -20,6 +19,7 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\IdnaEncoder;
 use WpOrg\Requests\Iri;
+use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Response;
 
 /**
@@ -558,7 +558,7 @@ class Requests {
 		}
 
 		if (is_string($options['proxy']) || is_array($options['proxy'])) {
-			$options['proxy'] = new Requests_Proxy_HTTP($options['proxy']);
+			$options['proxy'] = new Http($options['proxy']);
 		}
 		if ($options['proxy'] !== false) {
 			$options['proxy']->register($options['hooks']);

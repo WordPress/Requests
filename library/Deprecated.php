@@ -44,3 +44,4 @@ class Requests_SSL extends WpOrg\Requests\Ssl {}
 
 class Requests_Auth_Basic extends WpOrg\Requests\Auth\Basic {}
 class Requests_Cookie_Jar extends WpOrg\Requests\Cookie\Jar {}
+class Requests_Proxy_HTTP extends WpOrg\Requests\Proxy\Http {}

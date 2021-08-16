@@ -3,13 +3,13 @@
 namespace Requests\Tests\Proxy;
 
 use Requests\Tests\TestCase;
-use Requests_Proxy_HTTP;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Requests;
 
-class HTTPTest extends TestCase {
+class HttpTest extends TestCase {
 	protected function checkProxyAvailable($type = '') {
 		switch ($type) {
 			case 'auth':
@@ -89,7 +89,7 @@ class HTTPTest extends TestCase {
 		$this->checkProxyAvailable();
 
 		$options  = array(
-			'proxy'     => new Requests_Proxy_HTTP(REQUESTS_HTTP_PROXY),
+			'proxy'     => new Http(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		);
 		$response = Requests::get(httpbin('/get'), array(), $options);

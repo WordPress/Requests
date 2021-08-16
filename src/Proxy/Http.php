@@ -7,6 +7,8 @@
  * @since 1.6
  */
 
+namespace WpOrg\Requests\Proxy;
+
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Proxy;
@@ -20,7 +22,7 @@ use WpOrg\Requests\Proxy;
  * @subpackage Proxy
  * @since 1.6
  */
-class Requests_Proxy_HTTP implements Proxy {
+class Http implements Proxy {
 	/**
 	 * Proxy host and port
 	 *
