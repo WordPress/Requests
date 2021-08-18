@@ -10,7 +10,7 @@ Requests::register_autoloader();
 $c = new Requests_Cookie('login_uid', 'something');
 
 // Now let's make a request!
-$request = Requests::get('http://httpbin.org/cookies', array('Cookie' => $c->formatForHeader()));
+$request = Requests::get('http://httpbin.org/cookies', array('Cookie' => $c->format_for_header()));
 
 // Check what we received
 var_dump($request);
