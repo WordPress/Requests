@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 417 Expectation Failed responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_417 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_417 extends Http {
 	/**
 	 * HTTP status code
 	 *

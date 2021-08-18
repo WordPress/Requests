@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 400 Bad Request responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_400 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_400 extends Http {
 	/**
 	 * HTTP status code
 	 *

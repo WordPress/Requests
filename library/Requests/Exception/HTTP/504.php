@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 504 Gateway Timeout responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_504 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_504 extends Http {
 	/**
 	 * HTTP status code
 	 *

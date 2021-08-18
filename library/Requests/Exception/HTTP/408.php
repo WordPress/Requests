@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 408 Request Timeout responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_408 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_408 extends Http {
 	/**
 	 * HTTP status code
 	 *

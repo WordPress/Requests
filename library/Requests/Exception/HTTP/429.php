@@ -6,13 +6,15 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 429 Too Many Requests responses
  *
  * @see https://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
-class Requests_Exception_HTTP_429 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_429 extends Http {
 	/**
 	 * HTTP status code
 	 *

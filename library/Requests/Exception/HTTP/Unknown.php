@@ -5,6 +5,7 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
 use WpOrg\Requests\Response;
 
 /**
@@ -12,7 +13,7 @@ use WpOrg\Requests\Response;
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_Unknown extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_Unknown extends Http {
 	/**
 	 * HTTP status code
 	 *

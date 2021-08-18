@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 501 Not Implemented responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_501 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_501 extends Http {
 	/**
 	 * HTTP status code
 	 *

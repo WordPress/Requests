@@ -8,9 +8,9 @@
 
 namespace WpOrg\Requests;
 
-use Requests_Exception_HTTP;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\Http;
 use WpOrg\Requests\Response\Headers;
 
 /**
@@ -112,7 +112,7 @@ class Response {
 	 * Throws an exception if the request was not successful
 	 *
 	 * @throws \WpOrg\Requests\Exception If `$allow_redirects` is false, and code is 3xx (`response.no_redirects`)
-	 * @throws Requests_Exception_HTTP On non-successful status code. Exception class corresponds to code (e.g. {@see Requests_Exception_HTTP_404})
+	 * @throws \WpOrg\Requests\Exception\Http On non-successful status code. Exception class corresponds to code (e.g. {@see Requests_Exception_HTTP_404})
 	 * @param boolean $allow_redirects Set to false to throw on a 3xx as well
 	 */
 	public function throw_for_status($allow_redirects = true) {
@@ -122,7 +122,7 @@ class Response {
 			}
 		}
 		elseif (!$this->success) {
-			$exception = Requests_Exception_HTTP::get_class($this->status_code);
+			$exception = Http::get_class($this->status_code);
 			throw new $exception(null, $this);
 		}
 	}

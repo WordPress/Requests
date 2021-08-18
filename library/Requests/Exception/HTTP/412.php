@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 412 Precondition Failed responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_412 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_412 extends Http {
 	/**
 	 * HTTP status code
 	 *

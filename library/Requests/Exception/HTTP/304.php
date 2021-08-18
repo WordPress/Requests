@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 304 Not Modified responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_304 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_304 extends Http {
 	/**
 	 * HTTP status code
 	 *

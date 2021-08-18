@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 401 Unauthorized responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_401 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_401 extends Http {
 	/**
 	 * HTTP status code
 	 *

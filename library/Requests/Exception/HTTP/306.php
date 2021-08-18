@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 306 Switch Proxy responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_306 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_306 extends Http {
 	/**
 	 * HTTP status code
 	 *

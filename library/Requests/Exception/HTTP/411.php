@@ -5,12 +5,14 @@
  * @package Requests
  */
 
+use WpOrg\Requests\Exception\Http;
+
 /**
  * Exception for 411 Length Required responses
  *
  * @package Requests
  */
-class Requests_Exception_HTTP_411 extends Requests_Exception_HTTP {
+class Requests_Exception_HTTP_411 extends Http {
 	/**
 	 * HTTP status code
 	 *
