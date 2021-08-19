@@ -7,8 +7,8 @@
 
 namespace WpOrg\Requests\Exception;
 
-use Requests_Exception_HTTP_Unknown;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\Http\StatusUnknown;
 
 /**
  * Exception based on HTTP response
@@ -63,14 +63,14 @@ class Http extends Exception {
 	 */
 	public static function get_class($code) {
 		if (!$code) {
-			return Requests_Exception_HTTP_Unknown::class;
+			return StatusUnknown::class;
 		}
 
-		$class = sprintf('Requests_Exception_HTTP_%d', $code);
+		$class = sprintf('\WpOrg\Requests\Exception\Http\Status%d', $code);
 		if (class_exists($class)) {
 			return $class;
 		}
 
-		return Requests_Exception_HTTP_Unknown::class;
+		return StatusUnknown::class;
 	}
 }

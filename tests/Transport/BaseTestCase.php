@@ -4,9 +4,9 @@ namespace Requests\Tests\Transport;
 
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
-use Requests_Exception_HTTP_Unknown;
 use stdClass;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\Http\StatusUnknown;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
@@ -494,7 +494,7 @@ abstract class BaseTestCase extends TestCase {
 
 		if (!$success) {
 			if ($code >= 400) {
-				$this->expectException('Requests_Exception_HTTP_' . $code);
+				$this->expectException('\WpOrg\Requests\Exception\Http\Status' . $code);
 				$this->expectExceptionCode($code);
 			}
 			elseif ($code >= 300 && $code < 400) {
@@ -524,7 +524,7 @@ abstract class BaseTestCase extends TestCase {
 
 		if (!$success) {
 			if ($code >= 400 || $code === 304 || $code === 305 || $code === 306) {
-				$this->expectException('Requests_Exception_HTTP_' . $code);
+				$this->expectException('\WpOrg\Requests\Exception\Http\Status' . $code);
 				$this->expectExceptionCode($code);
 			}
 		}
@@ -558,7 +558,7 @@ abstract class BaseTestCase extends TestCase {
 		);
 
 		$request = Requests::get(httpbin('/status/599'), array(), $options);
-		$this->expectException(Requests_Exception_HTTP_Unknown::class);
+		$this->expectException(StatusUnknown::class);
 		$this->expectExceptionMessage('599 Unknown');
 		$request->throw_for_status(true);
 	}
