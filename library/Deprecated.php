@@ -53,3 +53,4 @@ class Requests_Utility_FilteredIterator extends WpOrg\Requests\Utility\FilteredI
 
 class Requests_Exception_HTTP extends WpOrg\Requests\Exception\Http {}
 class Requests_Exception_Transport extends WpOrg\Requests\Exception\Transport {}
+class Requests_Exception_Transport_cURL extends WpOrg\Requests\Exception\Transport\Curl {}

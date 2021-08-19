@@ -10,9 +10,9 @@ namespace WpOrg\Requests\Transport;
 
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
-use Requests_Exception_Transport_cURL;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Exception\Transport\Curl as CurlException;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Transport;
 
@@ -275,9 +275,9 @@ class Curl implements Transport {
 				if ($done['result'] !== CURLE_OK) {
 					//get error string for handle.
 					$reason          = curl_error($done['handle']);
-					$exception       = new Requests_Exception_Transport_cURL(
+					$exception       = new CurlException(
 						$reason,
-						Requests_Exception_Transport_cURL::EASY,
+						CurlException::EASY,
 						$done['handle'],
 						$done['result']
 					);
