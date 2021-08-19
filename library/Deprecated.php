@@ -52,3 +52,4 @@ class Requests_Utility_CaseInsensitiveDictionary extends WpOrg\Requests\Utility\
 class Requests_Utility_FilteredIterator extends WpOrg\Requests\Utility\FilteredIterator {}
 
 class Requests_Exception_HTTP extends WpOrg\Requests\Exception\Http {}
+class Requests_Exception_Transport extends WpOrg\Requests\Exception\Transport {}

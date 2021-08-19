@@ -58,6 +58,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_utility_caseinsensitivedictionary' => '\WpOrg\Requests\Utility\CaseInsensitiveDictionary',
 			'requests_utility_filterediterator'          => '\WpOrg\Requests\Utility\FilteredIterator',
 			'requests_exception_http'                    => '\WpOrg\Requests\Exception\Http',
+			'requests_exception_transport'               => '\WpOrg\Requests\Exception\Transport',
 		);
 
 		/**

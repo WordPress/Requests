@@ -1,6 +1,8 @@
 <?php
 
-class Requests_Exception_Transport_cURL extends Requests_Exception_Transport {
+use WpOrg\Requests\Exception\Transport;
+
+class Requests_Exception_Transport_cURL extends Transport {
 
 	const EASY  = 'cURLEasy';
 	const MULTI = 'cURLMulti';
