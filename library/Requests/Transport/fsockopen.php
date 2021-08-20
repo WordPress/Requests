@@ -260,8 +260,9 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 		$doingbody  = false;
 		$download   = false;
 		if ($options['filename']) {
-			@$download = fopen($options['filename'], 'wb');
-			if($download===false) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors -- Silenced the PHP native warning in favour of throwing an exception.
+			$download = @fopen($options['filename'], 'wb');
+			if ($download === false) {
 				$error = error_get_last();
 				throw new Requests_Exception($error['message'], 'fopen');
 			}
