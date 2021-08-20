@@ -44,17 +44,6 @@ class Requests_Cookie_Jar implements ArrayAccess, IteratorAggregate {
 	}
 
 	/**
-	 * Normalise cookie data into a Requests_Cookie
-	 *
-	 * @codeCoverageIgnore
-	 * @deprecated Use {@see Requests_Cookie_Jar::normalize_cookie}
-	 * @return Requests_Cookie
-	 */
-	public function normalizeCookie($cookie, $key = null) {
-		return $this->normalize_cookie($cookie, $key);
-	}
-
-	/**
 	 * Check if the given item exists
 	 *
 	 * @param string $key Item key
