@@ -21,8 +21,6 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
-require_once dirname(__DIR__) . '/library/Requests.php';
-Requests::register_autoloader();
 
 if (is_dir(dirname(__DIR__) . '/vendor')
 	&& file_exists(dirname(__DIR__) . '/vendor/autoload.php')
@@ -41,6 +39,10 @@ if (defined('__PHPUNIT_PHAR__')) {
 
 	// Load the PHPUnit Polyfills autoloader.
 	require_once $vendor_dir . '/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+
+	// Load the library autoloader.
+	require_once dirname(__DIR__) . '/library/Requests.php';
+	Requests::register_autoloader();
 
 	/*
 	 * Autoloader specifically for the test files.
