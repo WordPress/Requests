@@ -14,7 +14,7 @@ coverage:
           - "library"
     patch:
       default:
-        threshold: 0%
+        threshold: 3%
         paths:
           - "library"
 
