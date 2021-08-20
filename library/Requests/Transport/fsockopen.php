@@ -458,11 +458,6 @@ class Requests_Transport_fsockopen implements Requests_Transport {
 			if (!extension_loaded('openssl') || !function_exists('openssl_x509_parse')) {
 				return false;
 			}
-
-			// Currently broken, thanks to https://github.com/facebook/hhvm/issues/2156
-			if (defined('HHVM_VERSION')) {
-				return false;
-			}
 		}
 
 		return true;
