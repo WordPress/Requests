@@ -586,6 +586,9 @@ abstract class BaseTestCase extends TestCase {
 		unlink($options['filename']);
 	}
 
+	/**
+	 * Verify that a stream to a non-writable file fails and leaves the file unchanged.
+	 */
 	public function testStreamToNonWritableFile() {
 		// Create an unwritable file.
 		$filename = tempnam(sys_get_temp_dir(), 'RLT'); // RequestsLibraryTest
@@ -597,16 +600,34 @@ abstract class BaseTestCase extends TestCase {
 			'filename' => $filename,
 		);
 
-		// phpcs:ignore WordPress.PHP.NoSilencedErrors -- Silencing "failed to open stream" warning.
-		$request = @Requests::get(httpbin('/get'), array(), $this->getOptions($options));
-		$this->assertSame(200, $request->status_code);
-		$this->assertEmpty($request->body);
+		try {
+			Requests::get(httpbin('/get'), array(), $this->getOptions($options));
+
+			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		} catch (Requests_Exception $e) {
+			// This "Failed to open stream" exception is expected.
+		}
 
 		$contents = file_get_contents($options['filename']);
 		$this->assertSame('foo', $contents);
 
 		chmod($filename, 0755);
 		unlink($filename);
+	}
+
+	/**
+	 * Verify that a stream to an invalid file fails.
+	 */
+	public function testStreamToInvalidFile() {
+		$options = array(
+			'filename' => tempnam(sys_get_temp_dir(), 'RLT') . '/missing/directory', // RequestsLibraryTest
+		);
+
+		$this->expectException(Requests_Exception::class);
+		// First character (F) can be upper or lowercase depending on PHP version.
+		$this->expectExceptionMessage('ailed to open stream');
+
+		Requests::get(httpbin('/get'), array(), $this->getOptions($options));
 	}
 
 	public function testNonblocking() {

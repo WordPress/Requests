@@ -156,7 +156,12 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$options['hooks']->dispatch('curl.before_send', array(&$this->handle));
 
 		if ($options['filename'] !== false) {
-			$this->stream_handle = fopen($options['filename'], 'wb');
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors -- Silenced the PHP native warning in favour of throwing an exception.
+			$this->stream_handle = @fopen($options['filename'], 'wb');
+			if ($this->stream_handle === false) {
+				$error = error_get_last();
+				throw new Requests_Exception($error['message'], 'fopen');
+			}
 		}
 
 		$this->response_data       = '';
