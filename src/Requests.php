@@ -320,7 +320,7 @@ class Requests {
 	 *    certificate file as a string. (Using true uses the system-wide root
 	 *    certificate store instead, but this may have different behaviour
 	 *    across transports.)
-	 *    (string|boolean, default: library/Requests/Transport/cacert.pem)
+	 *    (string|boolean, default: src/Transport/cacert.pem)
 	 * - `verifyname`: Should we verify the common name in the SSL certificate?
 	 *    (boolean, default: true)
 	 * - `data_format`: How should we send the `$data` parameter?
@@ -519,7 +519,7 @@ class Requests {
 			return self::$certificate_path;
 		}
 
-		return dirname(__DIR__) . '/library/Requests/Transport/cacert.pem';
+		return __DIR__ . '/Transport/cacert.pem';
 	}
 
 	/**
