@@ -8,8 +8,8 @@
 
 namespace WpOrg\Requests\Transport;
 
-use Requests_Exception_InvalidArgument;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Transport;
@@ -71,7 +71,7 @@ class Fsockopen implements Transport {
 			} elseif (is_int($data) || is_float($data)) {
 				$data = (string) $data;
 			} else {
-				throw new Requests_Exception_InvalidArgument(
+				throw new InvalidArgument(
 					sprintf(
 						'%s: Argument #%d (%s) must be of type %s, %s given',
 						__METHOD__,

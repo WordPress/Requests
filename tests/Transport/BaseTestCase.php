@@ -7,6 +7,7 @@ use Requests\Tests\TestCase;
 use Requests_Exception_HTTP_Unknown;
 use stdClass;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
@@ -230,7 +231,7 @@ abstract class BaseTestCase extends TestCase {
 	 * @return void
 	 */
 	public function testIncorrectDataTypeExceptionPOST($data) {
-		$this->expectException('Requests_Exception_InvalidArgument');
+		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #3 ($data) must be of type array|string');
 
 		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
