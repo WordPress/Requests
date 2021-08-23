@@ -21,8 +21,6 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
-// Temporarily silence the PSR-0 deprecations while the code is being switched to PSR-4.
-define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
 
 if (is_dir(dirname(__DIR__) . '/vendor')
 	&& file_exists(dirname(__DIR__) . '/vendor/autoload.php')
@@ -43,8 +41,8 @@ if (defined('__PHPUNIT_PHAR__')) {
 	require_once $vendor_dir . '/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 	// Load the library autoloader.
-	require_once dirname(__DIR__) . '/library/Requests.php';
-	Requests::register_autoloader();
+	require_once dirname(__DIR__) . '/src/Autoload.php';
+	WpOrg\Requests\Autoload::register();
 
 	/*
 	 * Autoloader specifically for the test files.
