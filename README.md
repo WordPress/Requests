@@ -79,14 +79,14 @@ To install the source code:
 $ git clone git://github.com/WordPress/Requests.git
 ```
 
-And include it in your scripts:
+Next, include the autoloader in your scripts:
 ```php
-require_once '/path/to/Requests/library/Requests.php';
+require_once '/path/to/Requests/src/Autoload.php';
 ```
 
-You'll probably also want to register an autoloader:
+You'll probably also want to register the autoloader:
 ```php
-Requests::register_autoloader();
+WpOrg\Requests\Autoload::register();
 ```
 
 ### Install source from zip/tarball
