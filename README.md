@@ -24,7 +24,7 @@ We all have better things to do. That's why Requests was born.
 ```php
 $headers = array('Accept' => 'application/json');
 $options = array('auth' => array('user', 'pass'));
-$request = Requests::get('https://api.github.com/gists', $headers, $options);
+$request = WpOrg\Requests\Requests::get('https://api.github.com/gists', $headers, $options);
 
 var_dump($request->status_code);
 // int(200)
@@ -119,7 +119,7 @@ The best place to start is our [prose-based documentation][], which will guide
 you through using Requests.
 
 After that, take a look at [the documentation for
-`Requests::request()`][request_method], where all the parameters are fully
+`\WpOrg\Requests\Requests::request()`][request_method], where all the parameters are fully
 documented.
 
 Requests is [100% documented with PHPDoc](https://requests.ryanmccue.info/api/).

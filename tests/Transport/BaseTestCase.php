@@ -2,7 +2,6 @@
 
 namespace Requests\Tests\Transport;
 
-use Requests;
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
 use Requests_Exception;
@@ -10,6 +9,7 @@ use Requests_Exception_HTTP_Unknown;
 use Requests_Hooks;
 use Requests_Response;
 use stdClass;
+use WpOrg\Requests\Requests;
 
 abstract class BaseTestCase extends TestCase {
 	public function set_up() {

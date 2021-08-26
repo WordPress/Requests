@@ -10,7 +10,7 @@ WpOrg\Requests\Autoload::register();
 $c = new Requests_Cookie_Jar(['login_uid' => 'something']);
 
 // Now let's make a request!
-$request = Requests::get(
+$request = WpOrg\Requests\Requests::get(
 	'http://httpbin.org/cookies', // Url
 	[],  // No need to set the headers the Jar does this for us
 	['cookies' => $c] // Pass in the Jar as an option

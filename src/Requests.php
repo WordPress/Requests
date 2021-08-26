@@ -122,8 +122,8 @@ class Requests {
 	/**
 	 * Default certificate path.
 	 *
-	 * @see Requests::get_certificate_path()
-	 * @see Requests::set_certificate_path()
+	 * @see \WpOrg\Requests\Requests::get_certificate_path()
+	 * @see \WpOrg\Requests\Requests::set_certificate_path()
 	 *
 	 * @var string
 	 */
@@ -376,23 +376,23 @@ class Requests {
 	 * The request fields value is an associative array with the following keys:
 	 *
 	 * - `url`: Request URL Same as the `$url` parameter to
-	 *    {@see Requests::request}
+	 *    {@see \WpOrg\Requests\Requests::request}
 	 *    (string, required)
 	 * - `headers`: Associative array of header fields. Same as the `$headers`
-	 *    parameter to {@see Requests::request}
+	 *    parameter to {@see \WpOrg\Requests\Requests::request}
 	 *    (array, default: `array()`)
 	 * - `data`: Associative array of data fields or a string. Same as the
-	 *    `$data` parameter to {@see Requests::request}
+	 *    `$data` parameter to {@see \WpOrg\Requests\Requests::request}
 	 *    (array|string, default: `array()`)
-	 * - `type`: HTTP request type (use Requests constants). Same as the `$type`
-	 *    parameter to {@see Requests::request}
-	 *    (string, default: `Requests::GET`)
+	 * - `type`: HTTP request type (use \WpOrg\Requests\Requests constants). Same as the `$type`
+	 *    parameter to {@see \WpOrg\Requests\Requests::request}
+	 *    (string, default: `\WpOrg\Requests\Requests::GET`)
 	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
 	 *    (array|Requests_Cookie_Jar)
 	 *
 	 * If the `$options` parameter is specified, individual requests will
 	 * inherit options from it. This can be used to use a single hooking system,
-	 * or set all the types to `Requests::POST`, for example.
+	 * or set all the types to `\WpOrg\Requests\Requests::POST`, for example.
 	 *
 	 * In addition, the `$options` parameter takes the following global options:
 	 *
@@ -403,7 +403,7 @@ class Requests {
 	 *    (callback)
 	 *
 	 * @param array $requests Requests data (see description for more information)
-	 * @param array $options Global and default options (see {@see Requests::request})
+	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
 	 * @return array Responses (either Requests_Response or a Requests_Exception object)
 	 */
 	public static function request_multiple($requests, $options = array()) {
@@ -477,7 +477,7 @@ class Requests {
 	/**
 	 * Get the default options
 	 *
-	 * @see Requests::request() for values returned by this method
+	 * @see \WpOrg\Requests\Requests::request() for values returned by this method
 	 * @param boolean $multirequest Is this a multirequest?
 	 * @return array Default option values
 	 */
@@ -710,7 +710,7 @@ class Requests {
 	 * while still executing a multiple request.
 	 *
 	 * @param string $response Full response text including headers and body (will be overwritten with Response instance)
-	 * @param array $request Request data as passed into {@see Requests::request_multiple()}
+	 * @param array $request Request data as passed into {@see \WpOrg\Requests\Requests::request_multiple()}
 	 * @return null `$response` is either set to a Requests_Response instance, or a Requests_Exception object
 	 */
 	public static function parse_multiple(&$response, $request) {

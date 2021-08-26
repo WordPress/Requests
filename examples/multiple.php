@@ -35,7 +35,7 @@ $options = array(
 );
 
 // Send the request!
-$responses = Requests::request_multiple($requests, $options);
+$responses = WpOrg\Requests\Requests::request_multiple($requests, $options);
 
 // Note: the response from the above call will be an associative array matching
 // $requests with the response data, however we've already handled it in

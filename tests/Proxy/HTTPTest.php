@@ -2,12 +2,12 @@
 
 namespace Requests\Tests\Proxy;
 
-use Requests;
 use Requests\Tests\TestCase;
 use Requests_Exception;
 use Requests_Proxy_HTTP;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
+use WpOrg\Requests\Requests;
 
 class HTTPTest extends TestCase {
 	protected function checkProxyAvailable($type = '') {

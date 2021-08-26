@@ -95,7 +95,7 @@ and pass the object in via the `'hooks'` option.
 $hooks = new Requests_Hooks();
 $hooks->register('requests.after_request', 'mycallback');
 
-$request = Requests::get('https://httpbin.org/get', array(), array('hooks' => $hooks));
+$request = WpOrg\Requests\Requests::get('https://httpbin.org/get', array(), array('hooks' => $hooks));
 ```
 
 ***

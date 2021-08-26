@@ -19,7 +19,7 @@ $response = $session->get('/zen');
 
 You can use the `url`, `headers`, `data` and `options` properties of the Session
 object to set the defaults for this session, and the constructor also takes
-parameters in the same order as `Requests::request()`. Accessing any other
+parameters in the same order as `WpOrg\Requests\Requests::request()`. Accessing any other
 properties will set the corresponding key in the options array; that is:
 
 ```php
@@ -36,7 +36,7 @@ Secure Requests with SSL
 By default, HTTPS requests will use the most secure options available:
 
 ```php
-$response = Requests::get('https://httpbin.org/');
+$response = WpOrg\Requests\Requests::get('https://httpbin.org/');
 ```
 
 Requests bundles certificates from the [Mozilla certificate authority list][],
@@ -49,7 +49,7 @@ accepted by cURL and OpenSSL):
 $options = array(
     'verify' => '/path/to/cacert.pem'
 );
-$response = Requests::get('https://httpbin.org/', array(), $options);
+$response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
 ```
 
 Alternatively, if you want to disable verification completely, this is possible

@@ -6,6 +6,8 @@
  * @subpackage Session Handler
  */
 
+use WpOrg\Requests\Requests;
+
 /**
  * Session handler for persistent requests and default parameters
  *
@@ -190,15 +192,15 @@ class Requests_Session {
 	 * This method initiates a request and sends it via a transport before
 	 * parsing.
 	 *
-	 * @see Requests::request()
+	 * @see \WpOrg\Requests\Requests::request()
 	 *
 	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
 	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
-	 * @param string $type HTTP request type (use Requests constants)
-	 * @param array $options Options for the request (see {@see Requests::request})
+	 * @param string $type HTTP request type (use \WpOrg\Requests\Requests constants)
+	 * @param array $options Options for the request (see {@see \WpOrg\Requests\Requests::request})
 	 * @return Requests_Response
 	 */
 	public function request($url, $headers = array(), $data = array(), $type = Requests::GET, $options = array()) {
@@ -210,10 +212,10 @@ class Requests_Session {
 	/**
 	 * Send multiple HTTP requests simultaneously
 	 *
-	 * @see Requests::request_multiple()
+	 * @see \WpOrg\Requests\Requests::request_multiple()
 	 *
-	 * @param array $requests Requests data (see {@see Requests::request_multiple})
-	 * @param array $options Global and default options (see {@see Requests::request})
+	 * @param array $requests Requests data (see {@see \WpOrg\Requests\Requests::request_multiple})
+	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
 	 * @return array Responses (either Requests_Response or a Requests_Exception object)
 	 */
 	public function request_multiple($requests, $options = array()) {

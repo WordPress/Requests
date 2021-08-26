@@ -6,6 +6,8 @@
  * @subpackage Transport
  */
 
+use WpOrg\Requests\Requests;
+
 /**
  * cURL HTTP transport
  *
@@ -126,7 +128,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param string $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
-	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return string Raw HTTP result
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
@@ -304,7 +306,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param string $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
-	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return resource Subrequest's cURL handle
 	 */
 	public function &get_subrequest_handle($url, $headers, $data, $options) {
@@ -331,7 +333,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 	 * @param string $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
-	 * @param array $options Request options, see {@see Requests::response()} for documentation
+	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 */
 	protected function setup_handle($url, $headers, $data, $options) {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->handle));

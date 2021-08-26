@@ -22,8 +22,8 @@ interface Requests_Auth {
 	/**
 	 * Register hooks as needed
 	 *
-	 * This method is called in {@see Requests::request} when the user has set
-	 * an instance as the 'auth' option. Use this callback to register all the
+	 * This method is called in {@see \WpOrg\Requests\Requests::request} when the user
+	 * has set an instance as the 'auth' option. Use this callback to register all the
 	 * hooks you'll need.
 	 *
 	 * @see Requests_Hooks::register

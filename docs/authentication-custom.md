@@ -35,7 +35,7 @@ We then use this in our request calls like this:
 $options = array(
     'auth' => new MySoftware_Auth_Hotdog('yummy')
 );
-$response = Requests::get('http://hotdogbin.org/admin', array(), $options);
+$response = WpOrg\Requests\Requests::get('http://hotdogbin.org/admin', array(), $options);
 ```
 
 For more information on how to register and use hooks, see the [hooking

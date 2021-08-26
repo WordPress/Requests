@@ -2,12 +2,12 @@
 
 namespace Requests\Tests;
 
-use Requests;
 use Requests\Tests\Mock\RawTransportMock;
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
 use Requests_Exception;
 use Requests_Response_Headers;
+use WpOrg\Requests\Requests;
 
 class RequestsTest extends TestCase {
 

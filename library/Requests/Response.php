@@ -2,14 +2,14 @@
 /**
  * HTTP response class
  *
- * Contains a response from Requests::request()
+ * Contains a response from \WpOrg\Requests\Requests::request()
  * @package Requests
  */
 
 /**
  * HTTP response class
  *
- * Contains a response from Requests::request()
+ * Contains a response from \WpOrg\Requests\Requests::request()
  * @package Requests
  */
 class Requests_Response {

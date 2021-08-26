@@ -2,10 +2,10 @@
 
 namespace Requests\Tests\Transport;
 
-use Requests;
 use Requests\Tests\Transport\BaseTestCase;
 use Requests_Exception;
 use Requests_Transport_cURL;
+use WpOrg\Requests\Requests;
 
 class CurlTest extends BaseTestCase {
 	protected $transport = Requests_Transport_cURL::class;

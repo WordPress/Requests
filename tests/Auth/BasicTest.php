@@ -2,12 +2,12 @@
 
 namespace Requests\Tests\Auth;
 
-use Requests;
 use Requests\Tests\TestCase;
 use Requests_Auth_Basic;
 use Requests_Exception;
 use Requests_Transport_cURL;
 use Requests_Transport_fsockopen;
+use WpOrg\Requests\Requests;
 
 class BasicTest extends TestCase {
 	public static function transportProvider() {

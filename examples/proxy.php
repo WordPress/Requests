@@ -12,7 +12,7 @@ $options = array(
 	// If you need to authenticate, use the following syntax:
 	// 'proxy' => array( '127.0.0.1:8080', 'username', 'password' ),
 );
-$request = Requests::get('http://httpbin.org/ip', array(), $options);
+$request = WpOrg\Requests\Requests::get('http://httpbin.org/ip', array(), $options);
 
 // See result
 var_dump($request->body);

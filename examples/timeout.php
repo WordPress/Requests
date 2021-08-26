@@ -12,6 +12,6 @@ $options = array(
 );
 
 // Now let's make a request to a page that will delay its response by 3 seconds
-$request = Requests::get('http://httpbin.org/delay/3', array(), $options);
+$request = WpOrg\Requests\Requests::get('http://httpbin.org/delay/3', array(), $options);
 
 // An exception will be thrown, stating a timeout of the request !

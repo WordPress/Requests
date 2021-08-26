@@ -2,8 +2,8 @@
 
 namespace Requests\Tests;
 
-use Requests;
 use Requests\Tests\TestCase;
+use WpOrg\Requests\Requests;
 
 class EncodingTest extends TestCase {
 	protected static function mapData($type, $data) {

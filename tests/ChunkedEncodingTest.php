@@ -2,9 +2,9 @@
 
 namespace Requests\Tests;
 
-use Requests;
 use Requests\Tests\Mock\TransportMock;
 use Requests\Tests\TestCase;
+use WpOrg\Requests\Requests;
 
 class ChunkedDecodingTest extends TestCase {
 	public static function chunkedProvider() {
