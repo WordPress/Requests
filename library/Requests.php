@@ -124,36 +124,33 @@ class Requests {
 	private function __construct() {}
 
 	/**
-	 * Autoloader for Requests
+	 * Deprecated autoloader for Requests.
 	 *
-	 * Register this with {@see register_autoloader()} if you'd like to avoid
-	 * having to create your own.
-	 *
-	 * (You can also use `spl_autoload_register` directly if you'd prefer.)
+	 * @deprecated 2.0.0 Use the `WpOrg\Requests\Autoload::load()` method instead.
 	 *
 	 * @codeCoverageIgnore
 	 *
 	 * @param string $class Class name to load
 	 */
 	public static function autoloader($class) {
-		// Check that the class starts with "Requests"
-		if (strpos($class, 'Requests') !== 0) {
-			return;
+		if (class_exists('WpOrg\Requests\Autoload') === false) {
+			require_once dirname(__DIR__) . '/src/Autoload.php';
 		}
 
-		$file = str_replace('_', '/', $class);
-		if (file_exists(__DIR__ . '/' . $file . '.php')) {
-			require_once __DIR__ . '/' . $file . '.php';
-		}
+		return WpOrg\Requests\Autoload::load($class);
 	}
 
 	/**
 	 * Register the built-in autoloader
 	 *
+	 * @deprecated 2.0.0 Include the `WpOrg\Requests\Autoload` class and
+	 *                   call `WpOrg\Requests\Autoload::register()` instead.
+	 *
 	 * @codeCoverageIgnore
 	 */
 	public static function register_autoloader() {
-		spl_autoload_register(array(static::class, 'autoloader'));
+		require_once dirname(__DIR__) . '/src/Autoload.php';
+		WpOrg\Requests\Autoload::register();
 	}
 
 	/**
