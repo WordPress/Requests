@@ -28,6 +28,27 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 	class Autoload {
 
 		/**
+		 * List of the old PSR-0 class names in lowercase as keys with their PSR-4 case-sensitive name as a value.
+		 *
+		 * @var array
+		 */
+		private static $deprecated_classes = array();
+
+		/**
+		 * Whether or not a deprecation notice has been thrown for calling a deprecated class.
+		 *
+		 * @var bool
+		 */
+		private static $deprecation_thrown = false;
+
+		/**
+		 * Whether or not a deprecation notice should be thrown for calling a deprecated class.
+		 *
+		 * @var bool
+		 */
+		private static $throw_notice = true;
+
+		/**
 		 * Register the autoloader.
 		 *
 		 * Note: the autoloader is *prepended* in the autoload queue.
@@ -52,17 +73,69 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		 * Autoloader.
 		 *
 		 * @param string $class_name Name of the class name to load.
+		 *
+		 * @return bool Whether a class was loaded or not.
 		 */
 		public static function load($class_name) {
-			// Check that the class starts with "Requests".
-			if (strpos($class_name, 'Requests') !== 0) {
-				return;
+			// Check that the class starts with "Requests" (PSR-0) or "WpOrg\Requests" (PSR-4).
+			$psr_0_prefix_pos = stripos($class_name, 'Requests');
+			$psr_4_prefix_pos = stripos($class_name, 'WpOrg\\Requests\\');
+
+			if ($psr_0_prefix_pos !== 0 && $psr_4_prefix_pos !== 0) {
+				return false;
 			}
 
-			$file = str_replace('_', '/', $class_name);
-			if (file_exists(dirname(__DIR__) . '/library/' . $file . '.php')) {
-				require_once dirname(__DIR__) . '/library/' . $file . '.php';
+			if ($class_name === 'Requests') {
+				// Original PSR-0 Requests class.
+				$file = dirname(__DIR__) . '/library/Requests.php';
+			} elseif ($psr_0_prefix_pos === 0) {
+				// PSR-0 classname.
+				$file = dirname(__DIR__) . '/library/' . str_replace('_', '/', $class_name) . '.php';
+			} elseif ($psr_4_prefix_pos === 0) {
+				// PSR-4 classname.
+				$file = __DIR__ . '/' . strtr(substr($class_name, 15), '\\', '/') . '.php';
 			}
+
+			if (isset($file) && file_exists($file)) {
+				include $file;
+				return true;
+			}
+
+			/*
+			 * Okay, so the class starts with "Requests", but we couldn't find the file.
+			 * If this is one of the deprecated/renamed PSR-0 classes being requested,
+			 * let's alias it to the new name and throw a deprecation notice.
+			 */
+			$class_lower = strtolower($class_name);
+
+			if (isset(self::$deprecated_classes[$class_lower])) {
+				if (self::$throw_notice === true) {
+					/*
+					 * Integrators who cannot yet upgrade to the PSR-4 class names can silence deprecations
+					 * by defining a `REQUESTS_SILENCE_PSR0_DEPRECATIONS` constant and setting it to `true`.
+					 * The constant needs to be defined before the first deprecated class is requested
+					 * via this autoloader.
+					 */
+					if (defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS') && REQUESTS_SILENCE_PSR0_DEPRECATIONS === true) {
+						self::$throw_notice = false;
+					}
+
+					if (self::$throw_notice === true && self::$deprecation_thrown === false) {
+						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+						trigger_error(
+							'The PSR-0 `Requests_...` class names in the Request library are deprecated.'
+							. ' Switch to the PSR-4 `WpOrg\Requests\...` class names at your earliest convenience.',
+							E_USER_DEPRECATED
+						);
+						self::$deprecation_thrown = true;
+					}
+				}
+
+				// Create an alias and let the autoloader recursively kick in to load the PSR-4 class.
+				return class_alias(self::$deprecated_classes[$class_lower], $class_name, true);
+			}
+
+			return false;
 		}
 	}
 }

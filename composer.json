@@ -53,6 +53,9 @@
   "autoload": {
     "psr-0": {
       "Requests": "library/"
+    },
+    "psr-4": {
+      "WpOrg\\Requests\\": "src/"
     }
   },
   "autoload-dev": {
