@@ -51,13 +51,10 @@
   },
   "type": "library",
   "autoload": {
-    "psr-0": {
-      "Requests": "library/"
-    },
     "psr-4": {
       "WpOrg\\Requests\\": "src/"
     },
-    "classmap": ["library/Deprecated.php"]
+    "classmap": ["library/Deprecated.php", "library/Requests.php"]
   },
   "autoload-dev": {
     "psr-4": {

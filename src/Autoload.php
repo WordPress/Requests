@@ -139,10 +139,9 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		 */
 		public static function load($class_name) {
 			// Check that the class starts with "Requests" (PSR-0) or "WpOrg\Requests" (PSR-4).
-			$psr_0_prefix_pos = stripos($class_name, 'Requests');
 			$psr_4_prefix_pos = stripos($class_name, 'WpOrg\\Requests\\');
 
-			if ($psr_0_prefix_pos !== 0 && $psr_4_prefix_pos !== 0) {
+			if (stripos($class_name, 'Requests') !== 0 && $psr_4_prefix_pos !== 0) {
 				return false;
 			}
 
@@ -153,9 +152,6 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 				 */
 				$file                     = dirname(__DIR__) . '/library/Requests.php';
 				self::$deprecation_thrown = true;
-			} elseif ($psr_0_prefix_pos === 0) {
-				// PSR-0 classname.
-				$file = dirname(__DIR__) . '/library/' . str_replace('_', '/', $class_name) . '.php';
 			} elseif ($psr_4_prefix_pos === 0) {
 				// PSR-4 classname.
 				$file = __DIR__ . '/' . strtr(substr($class_name, 15), '\\', '/') . '.php';
