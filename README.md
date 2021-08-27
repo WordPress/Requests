@@ -104,13 +104,15 @@ $ wget https://github.com/WordPress/Requests/tarball/stable -O - | tar xzv
 
 ### Using a Class Loader
 If you're using a class loader (e.g., [Symfony Class Loader][]) for
-[PSR-0][]-style class loading:
+[PSR-4][]-style class loading:
 ```php
-$loader->registerPrefix('Requests', 'path/to/vendor/Requests/library');
+$loader = new Psr4ClassLoader();
+$loader->addPrefix('WpOrg\\Requests\\', 'path/to/vendor/Requests/src');
+$loader->register();
 ```
 
 [Symfony Class Loader]: https://github.com/symfony/ClassLoader
-[PSR-0]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md
+[PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4.md
 
 
 Documentation
