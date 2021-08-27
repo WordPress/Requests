@@ -11,11 +11,11 @@ coverage:
       default:
         threshold: 1%
         paths:
-          - "library"
+          - "src"
     patch:
       default:
         threshold: 3%
         paths:
-          - "library"
+          - "src"
 
 comment: false

@@ -19,7 +19,7 @@
 
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">library</directory>
+			<directory suffix=".php">src</directory>
 		</whitelist>
 	</filter>
 </phpunit>
