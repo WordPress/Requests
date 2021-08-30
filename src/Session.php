@@ -127,7 +127,7 @@ class Session {
 	}
 
 	/**#@+
-	 * @see request()
+	 * @see \WpOrg\Requests\Session::request()
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $options
@@ -156,7 +156,7 @@ class Session {
 	/**#@-*/
 
 	/**#@+
-	 * @see request()
+	 * @see \WpOrg\Requests\Session::request()
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $data
@@ -180,8 +180,8 @@ class Session {
 	/**
 	 * Send a PATCH request
 	 *
-	 * Note: Unlike {@see post} and {@see put}, `$headers` is required, as the
-	 * specification recommends that should send an ETag
+	 * Note: Unlike {@see \WpOrg\Requests\Session::post()} and {@see \WpOrg\Requests\Session::put()},
+	 * `$headers` is required, as the specification recommends that should send an ETag
 	 *
 	 * @link https://tools.ietf.org/html/rfc5789
 	 */
@@ -238,7 +238,7 @@ class Session {
 	/**
 	 * Merge a request's data with the default data
 	 *
-	 * @param array $request Request data (same form as {@see request_multiple})
+	 * @param array $request Request data (same form as {@see \WpOrg\Requests\Session::request_multiple()})
 	 * @param boolean $merge_options Should we merge options as well?
 	 * @return array Request data
 	 */

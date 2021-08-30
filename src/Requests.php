@@ -106,7 +106,7 @@ class Requests {
 	/**
 	 * Selected transport name
 	 *
-	 * Use {@see get_transport()} instead
+	 * Use {@see \WpOrg\Requests\Requests::get_transport()} instead
 	 *
 	 * @var array
 	 */
@@ -200,7 +200,7 @@ class Requests {
 	}
 
 	/**#@+
-	 * @see request()
+	 * @see \WpOrg\Requests\Requests::request()
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $options
@@ -236,7 +236,7 @@ class Requests {
 	/**#@-*/
 
 	/**#@+
-	 * @see request()
+	 * @see \WpOrg\Requests\Requests::request()
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $data
@@ -266,8 +266,8 @@ class Requests {
 	/**
 	 * Send a PATCH request
 	 *
-	 * Note: Unlike {@see post} and {@see put}, `$headers` is required, as the
-	 * specification recommends that should send an ETag
+	 * Note: Unlike {@see \WpOrg\Requests\Requests::post()} and {@see \WpOrg\Requests\Requests::put()},
+	 * `$headers` is required, as the specification recommends that should send an ETag
 	 *
 	 * @link https://tools.ietf.org/html/rfc5789
 	 */
@@ -312,8 +312,8 @@ class Requests {
 	 *    (boolean, default: true)
 	 * - `transport`: Custom transport. Either a class name, or a
 	 *    transport object. Defaults to the first working transport from
-	 *    {@see getTransport()}
-	 *    (string|\WpOrg\Requests\Transport, default: {@see getTransport()})
+	 *    {@see \WpOrg\Requests\Requests::getTransport()}
+	 *    (string|\WpOrg\Requests\Transport, default: {@see \WpOrg\Requests\Requests::getTransport()})
 	 * - `hooks`: Hooks handler.
 	 *    (\WpOrg\Requests\Hooker, default: new WpOrg\Requests\Hooks())
 	 * - `verify`: Should we verify SSL certificates? Allows passing in a custom

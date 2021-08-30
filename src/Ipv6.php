@@ -80,7 +80,7 @@ class Ipv6 {
 	 * Example:  FF01:0:0:0:0:0:0:101   ->  FF01::101
 	 *           0:0:0:0:0:0:0:1        ->  ::1
 	 *
-	 * @see uncompress()
+	 * @see \WpOrg\Requests\IPv6::uncompress()
 	 * @param string $ip An IPv6 address
 	 * @return string The compressed IPv6 address
 	 */

@@ -20,7 +20,7 @@ class Headers extends CaseInsensitiveDictionary {
 	/**
 	 * Get the given header
 	 *
-	 * Unlike {@see self::getValues()}, this returns a string. If there are
+	 * Unlike {@see \WpOrg\Requests\Response\Headers::getValues()}, this returns a string. If there are
 	 * multiple values, it concatenates them with a comma as per RFC2616.
 	 *
 	 * Avoid using this where commas may be used unquoted in values, such as
