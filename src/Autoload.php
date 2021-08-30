@@ -25,7 +25,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 	 *
 	 * @package Requests
 	 */
-	class Autoload {
+	final class Autoload {
 
 		/**
 		 * List of the old PSR-0 class names in lowercase as keys with their PSR-4 case-sensitive name as a value.

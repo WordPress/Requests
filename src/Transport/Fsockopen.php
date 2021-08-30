@@ -21,7 +21,7 @@ use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
  * @package Requests
  * @subpackage Transport
  */
-class Fsockopen implements Transport {
+final class Fsockopen implements Transport {
 	/**
 	 * Second to microsecond conversion
 	 *
@@ -48,9 +48,9 @@ class Fsockopen implements Transport {
 	 *
 	 * @var int|bool Byte count, or false if no limit.
 	 */
-	protected $max_bytes = false;
+	private $max_bytes = false;
 
-	protected $connect_error = '';
+	private $connect_error = '';
 
 	/**
 	 * Perform a request
@@ -365,7 +365,7 @@ class Fsockopen implements Transport {
 	 *
 	 * @return string Accept-Encoding header value
 	 */
-	protected static function accept_encoding() {
+	private static function accept_encoding() {
 		$type = array();
 		if (function_exists('gzinflate')) {
 			$type[] = 'deflate;q=1.0';
@@ -387,7 +387,7 @@ class Fsockopen implements Transport {
 	 * @param array|object $data Data to build query using, see {@see https://www.php.net/http_build_query}
 	 * @return string URL with data
 	 */
-	protected static function format_get($url_parts, $data) {
+	private static function format_get($url_parts, $data) {
 		if (!empty($data)) {
 			if (empty($url_parts['query'])) {
 				$url_parts['query'] = '';

@@ -16,7 +16,7 @@ namespace WpOrg\Requests;
  * @package Requests
  * @subpackage Utilities
  */
-class Ssl {
+final class Ssl {
 	/**
 	 * Verify the certificate against common name and subject alternative names
 	 *

@@ -17,13 +17,13 @@ use ReturnTypeWillChange;
  * @package Requests
  * @subpackage Utilities
  */
-class FilteredIterator extends ArrayIterator {
+final class FilteredIterator extends ArrayIterator {
 	/**
 	 * Callback to run as a filter
 	 *
 	 * @var callable
 	 */
-	protected $callback;
+	private $callback;
 
 	/**
 	 * Create a new iterator

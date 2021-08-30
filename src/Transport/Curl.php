@@ -22,7 +22,7 @@ use WpOrg\Requests\Transport;
  * @package Requests
  * @subpackage Transport
  */
-class Curl implements Transport {
+final class Curl implements Transport {
 	const CURL_7_10_5 = 0x070A05;
 	const CURL_7_16_2 = 0x071002;
 
@@ -59,42 +59,42 @@ class Curl implements Transport {
 	 *
 	 * @var resource
 	 */
-	protected $handle;
+	private $handle;
 
 	/**
 	 * Hook dispatcher instance
 	 *
 	 * @var \WpOrg\Requests\Hooks
 	 */
-	protected $hooks;
+	private $hooks;
 
 	/**
 	 * Have we finished the headers yet?
 	 *
 	 * @var boolean
 	 */
-	protected $done_headers = false;
+	private $done_headers = false;
 
 	/**
 	 * If streaming to a file, keep the file pointer
 	 *
 	 * @var resource
 	 */
-	protected $stream_handle;
+	private $stream_handle;
 
 	/**
 	 * How many bytes are in the response body?
 	 *
 	 * @var int
 	 */
-	protected $response_bytes;
+	private $response_bytes;
 
 	/**
 	 * What's the maximum number of bytes we should keep?
 	 *
 	 * @var int|bool Byte count, or false if no limit.
 	 */
-	protected $response_byte_limit;
+	private $response_byte_limit;
 
 	/**
 	 * Constructor
@@ -343,7 +343,7 @@ class Curl implements Transport {
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 */
-	protected function setup_handle($url, $headers, $data, $options) {
+	private function setup_handle($url, $headers, $data, $options) {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->handle));
 
 		// Force closing the connection for old versions of cURL (<7.22).
@@ -549,7 +549,7 @@ class Curl implements Transport {
 	 * @param array|object $data Data to build query using, see {@see https://www.php.net/http_build_query}
 	 * @return string URL with data
 	 */
-	protected static function format_get($url, $data) {
+	private static function format_get($url, $data) {
 		if (!empty($data)) {
 			$query     = '';
 			$url_parts = parse_url($url);
@@ -601,7 +601,7 @@ class Curl implements Transport {
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD.
 	 * @return string The "Expect" header.
 	 */
-	protected function get_expect_header($data) {
+	private function get_expect_header($data) {
 		if (!is_array($data)) {
 			return strlen((string) $data) >= 1048576 ? '100-Continue' : '';
 		}
