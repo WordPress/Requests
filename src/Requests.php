@@ -97,6 +97,17 @@ class Requests {
 	const BUFFER_SIZE = 1160;
 
 	/**
+	 * Default certificate path.
+	 *
+	 * @see \WpOrg\Requests\Requests::get_certificate_path()
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string
+	 */
+	const DEFAULT_CERT_PATH = __DIR__ . '/../certificates/cacert.pem';
+
+	/**
 	 * Current version of Requests
 	 *
 	 * @var string
@@ -320,7 +331,7 @@ class Requests {
 	 *    certificate file as a string. (Using true uses the system-wide root
 	 *    certificate store instead, but this may have different behaviour
 	 *    across transports.)
-	 *    (string|boolean, default: src/Transport/cacert.pem)
+	 *    (string|boolean, default: certificates/cacert.pem)
 	 * - `verifyname`: Should we verify the common name in the SSL certificate?
 	 *    (boolean, default: true)
 	 * - `data_format`: How should we send the `$data` parameter?
@@ -519,7 +530,7 @@ class Requests {
 			return self::$certificate_path;
 		}
 
-		return __DIR__ . '/Transport/cacert.pem';
+		return self::DEFAULT_CERT_PATH;
 	}
 
 	/**
