@@ -9,7 +9,7 @@ use WpOrg\Requests\Tests\Mock\RawTransportMock;
 use WpOrg\Requests\Tests\Mock\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
-class RequestsTest extends TestCase {
+final class RequestsTest extends TestCase {
 
 	public function testInvalidProtocol() {
 		$this->expectException(Exception::class);

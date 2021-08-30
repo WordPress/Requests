@@ -5,7 +5,7 @@ namespace WpOrg\Requests\Tests;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Tests\TestCase;
 
-class SslTest extends TestCase {
+final class SslTest extends TestCase {
 	public static function domainMatchProvider() {
 		return array(
 			array('example.com', 'example.com'),
@@ -50,7 +50,7 @@ class SslTest extends TestCase {
 		$this->assertFalse(Ssl::match_domain($base, $dnsname));
 	}
 
-	protected function fakeCertificate($dnsname, $with_san = true) {
+	private function fakeCertificate($dnsname, $with_san = true) {
 		$certificate = array(
 			'subject' => array(
 				'CN' => $dnsname,

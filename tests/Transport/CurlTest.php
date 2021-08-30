@@ -7,7 +7,7 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\Transport\BaseTestCase;
 use WpOrg\Requests\Transport\Curl;
 
-class CurlTest extends BaseTestCase {
+final class CurlTest extends BaseTestCase {
 	protected $transport = Curl::class;
 
 	public function testBadIP() {

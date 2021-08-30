@@ -4,7 +4,7 @@ namespace WpOrg\Requests\Tests\Mock;
 
 use WpOrg\Requests\Transport;
 
-class TransportMock implements Transport {
+final class TransportMock implements Transport {
 	public $code        = 200;
 	public $chunked     = false;
 	public $body        = 'Test Body';
