@@ -376,16 +376,16 @@ class Requests {
 	 * The request fields value is an associative array with the following keys:
 	 *
 	 * - `url`: Request URL Same as the `$url` parameter to
-	 *    {@see \WpOrg\Requests\Requests::request}
+	 *    {@see \WpOrg\Requests\Requests::request()}
 	 *    (string, required)
 	 * - `headers`: Associative array of header fields. Same as the `$headers`
-	 *    parameter to {@see \WpOrg\Requests\Requests::request}
+	 *    parameter to {@see \WpOrg\Requests\Requests::request()}
 	 *    (array, default: `array()`)
 	 * - `data`: Associative array of data fields or a string. Same as the
-	 *    `$data` parameter to {@see \WpOrg\Requests\Requests::request}
+	 *    `$data` parameter to {@see \WpOrg\Requests\Requests::request()}
 	 *    (array|string, default: `array()`)
 	 * - `type`: HTTP request type (use \WpOrg\Requests\Requests constants). Same as the `$type`
-	 *    parameter to {@see \WpOrg\Requests\Requests::request}
+	 *    parameter to {@see \WpOrg\Requests\Requests::request()}
 	 *    (string, default: `\WpOrg\Requests\Requests::GET`)
 	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
 	 *    (array|\WpOrg\Requests\Cookie\Jar)
@@ -403,7 +403,7 @@ class Requests {
 	 *    (callback)
 	 *
 	 * @param array $requests Requests data (see description for more information)
-	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
+	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
 	 */
 	public static function request_multiple($requests, $options = array()) {

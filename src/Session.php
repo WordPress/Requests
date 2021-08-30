@@ -204,7 +204,7 @@ class Session {
 	 * @param array $headers Extra headers to send with the request
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use \WpOrg\Requests\Requests constants)
-	 * @param array $options Options for the request (see {@see \WpOrg\Requests\Requests::request})
+	 * @param array $options Options for the request (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return \WpOrg\Requests\Response
 	 */
 	public function request($url, $headers = array(), $data = array(), $type = Requests::GET, $options = array()) {
@@ -218,8 +218,8 @@ class Session {
 	 *
 	 * @see \WpOrg\Requests\Requests::request_multiple()
 	 *
-	 * @param array $requests Requests data (see {@see \WpOrg\Requests\Requests::request_multiple})
-	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
+	 * @param array $requests Requests data (see {@see \WpOrg\Requests\Requests::request_multiple()})
+	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
 	 */
 	public function request_multiple($requests, $options = array()) {

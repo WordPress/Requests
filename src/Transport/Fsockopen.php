@@ -334,7 +334,7 @@ class Fsockopen implements Transport {
 	/**
 	 * Send multiple requests simultaneously
 	 *
-	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see \WpOrg\Requests\Transport::request}
+	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see \WpOrg\Requests\Transport::request()}
 	 * @param array $options Global options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return array Array of \WpOrg\Requests\Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
 	 */
