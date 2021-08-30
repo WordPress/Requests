@@ -10,6 +10,7 @@ namespace WpOrg\Requests\Transport;
 
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Port;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Transport;
@@ -90,7 +91,7 @@ final class Fsockopen implements Transport {
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
 			$remote_socket = 'ssl://' . $host;
 			if (!isset($url_parts['port'])) {
-				$url_parts['port'] = 443;
+				$url_parts['port'] = Port::HTTPS;
 			}
 
 			$context_options = array(
@@ -133,7 +134,7 @@ final class Fsockopen implements Transport {
 		$this->max_bytes = $options['max_bytes'];
 
 		if (!isset($url_parts['port'])) {
-			$url_parts['port'] = 80;
+			$url_parts['port'] = Port::HTTP;
 		}
 		$remote_socket .= ':' . $url_parts['port'];
 
@@ -196,9 +197,10 @@ final class Fsockopen implements Transport {
 		}
 
 		if (!isset($case_insensitive_headers['Host'])) {
-			$out .= sprintf('Host: %s', $url_parts['host']);
+			$out         .= sprintf('Host: %s', $url_parts['host']);
+			$scheme_lower = strtolower($url_parts['scheme']);
 
-			if ((strtolower($url_parts['scheme']) === 'http' && $url_parts['port'] !== 80) || (strtolower($url_parts['scheme']) === 'https' && $url_parts['port'] !== 443)) {
+			if (($scheme_lower === 'http' && $url_parts['port'] !== Port::HTTP) || ($scheme_lower === 'https' && $url_parts['port'] !== Port::HTTPS)) {
 				$out .= ':' . $url_parts['port'];
 			}
 			$out .= "\r\n";
