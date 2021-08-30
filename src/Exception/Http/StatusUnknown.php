@@ -15,7 +15,7 @@ use WpOrg\Requests\Response;
  *
  * @package Requests
  */
-class StatusUnknown extends Http {
+final class StatusUnknown extends Http {
 	/**
 	 * HTTP status code
 	 *

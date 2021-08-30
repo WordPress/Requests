@@ -10,4 +10,4 @@ use InvalidArgumentException;
  * @package Requests
  * @since   2.0.0
  */
-class InvalidArgument extends InvalidArgumentException {}
+final class InvalidArgument extends InvalidArgumentException {}
