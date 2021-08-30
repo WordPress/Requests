@@ -79,6 +79,9 @@ jobs:
       - name: Access localhost on port 9002
         run: curl -i http://localhost:9002
 
+      - name: Show available locales
+        run: locale -a
+
       - name: Show PHPUnit version
         run: vendor/bin/phpunit --version
 
