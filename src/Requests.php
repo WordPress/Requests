@@ -104,13 +104,6 @@ class Requests {
 	const VERSION = '1.8.1';
 
 	/**
-	 * Registered transport classes
-	 *
-	 * @var array
-	 */
-	protected static $transports = array();
-
-	/**
 	 * Selected transport name
 	 *
 	 * Use {@see get_transport()} instead
@@ -118,6 +111,13 @@ class Requests {
 	 * @var array
 	 */
 	public static $transport = array();
+
+	/**
+	 * Registered transport classes
+	 *
+	 * @var array
+	 */
+	protected static $transports = array();
 
 	/**
 	 * Default certificate path.

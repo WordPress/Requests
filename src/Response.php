@@ -20,13 +20,6 @@ use WpOrg\Requests\Response\Headers;
  * @package Requests
  */
 class Response {
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->headers = new Headers();
-		$this->cookies = new Jar();
-	}
 
 	/**
 	 * Response body
@@ -97,6 +90,14 @@ class Response {
 	 * @var \WpOrg\Requests\Cookie\Jar Array-like object representing a cookie jar
 	 */
 	public $cookies = array();
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->headers = new Headers();
+		$this->cookies = new Jar();
+	}
 
 	/**
 	 * Is the response a redirect?

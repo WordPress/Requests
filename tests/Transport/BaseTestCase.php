@@ -13,6 +13,9 @@ use WpOrg\Requests\Tests\Mock\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
 abstract class BaseTestCase extends TestCase {
+
+	protected $skip_https = false;
+
 	public function set_up() {
 		$callback  = array($this->transport, 'test');
 		$supported = call_user_func($callback);
@@ -27,7 +30,6 @@ abstract class BaseTestCase extends TestCase {
 			$this->skip_https = true;
 		}
 	}
-	protected $skip_https = false;
 
 	protected function getOptions($other = array()) {
 		$options = array(
