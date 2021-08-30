@@ -43,7 +43,7 @@ class Curl implements Transport {
 	/**
 	 * Information on the current request
 	 *
-	 * @var array cURL information array, see {@see https://www.php.net/curl_getinfo}
+	 * @var array cURL information array, see {@link https://www.php.net/curl_getinfo}
 	 */
 	public $info;
 
@@ -546,7 +546,7 @@ class Curl implements Transport {
 	 * Format a URL given GET data
 	 *
 	 * @param string $url
-	 * @param array|object $data Data to build query using, see {@see https://www.php.net/http_build_query}
+	 * @param array|object $data Data to build query using, see {@link https://www.php.net/http_build_query}
 	 * @return string URL with data
 	 */
 	protected static function format_get($url, $data) {

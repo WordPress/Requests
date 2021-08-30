@@ -729,7 +729,7 @@ class Requests {
 	/**
 	 * Decoded a chunked body as per RFC 2616
 	 *
-	 * @see https://tools.ietf.org/html/rfc2616#section-3.6.1
+	 * @link https://tools.ietf.org/html/rfc2616#section-3.6.1
 	 * @param string $data Chunked body
 	 * @return string Decoded body
 	 */

@@ -2,7 +2,7 @@
 /**
  * Exception for 429 Too Many Requests responses
  *
- * @see https://tools.ietf.org/html/draft-nottingham-http-new-status-04
+ * @link https://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
 
@@ -13,7 +13,7 @@ use WpOrg\Requests\Exception\Http;
 /**
  * Exception for 429 Too Many Requests responses
  *
- * @see https://tools.ietf.org/html/draft-nottingham-http-new-status-04
+ * @link https://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
 class Status429 extends Http {
