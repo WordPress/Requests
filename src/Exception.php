@@ -45,7 +45,7 @@ class Exception extends PHPException {
 	}
 
 	/**
-	 * Like {@see getCode()}, but a string code.
+	 * Like {@see \Exception::getCode()}, but a string code.
 	 *
 	 * @codeCoverageIgnore
 	 * @return string
