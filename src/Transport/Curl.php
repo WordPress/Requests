@@ -200,7 +200,7 @@ class Curl implements Transport {
 
 		$options['hooks']->dispatch('curl.after_send', array());
 
-		if (curl_errno($this->handle) === 23 || curl_errno($this->handle) === 61) {
+		if (curl_errno($this->handle) === CURLE_WRITE_ERROR || curl_errno($this->handle) === CURLE_BAD_CONTENT_ENCODING) {
 			// Reset encoding and try again
 			curl_setopt($this->handle, CURLOPT_ENCODING, 'none');
 
