@@ -7,12 +7,19 @@ use ReflectionClass;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\FilteredIterator;
 
+/**
+ * @coversDefaultClass \WpOrg\Requests\Utility\FilteredIterator
+ */
 final class FilteredIteratorTest extends TestCase {
 
 	/**
 	 * Tests against insecure deserialization of untrusted data.
 	 *
 	 * @link https://github.com/WordPress/Requests/security/advisories/GHSA-52qp-jpq7-6c54
+	 *
+	 * @covers ::unserialize
+	 * @covers ::__unserialize
+	 * @covers ::__wakeup
 	 *
 	 * @dataProvider dataSerializeDeserializeObjects
 	 *
