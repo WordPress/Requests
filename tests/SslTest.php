@@ -59,39 +59,82 @@ final class SslTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider domainNoMatchProvider
+	 * Test handling of non-matching host and DNS names.
+	 *
+	 * @dataProvider dataNoMatch
+	 *
+	 * @param string $host      Host name to verify.
+	 * @param string $reference DNS name to match against.
+	 *
+	 * @return void
 	 */
-	public function testNoMatch($base, $dnsname) {
-		$this->assertFalse(Ssl::match_domain($base, $dnsname));
+	public function testNoMatch($host, $reference) {
+		$this->assertFalse(Ssl::match_domain($host, $reference));
 	}
 
 	/**
-	 * @dataProvider domainNoMatchProvider
+	 * Test handling of non-matching host and DNS names based on certificate.
+	 *
+	 * @dataProvider dataNoMatch
+	 *
+	 * @param string $host      Host name to verify.
+	 * @param string $reference DNS name to match against.
+	 *
+	 * @return void
 	 */
-	public function testNoMatchViaCertificate($base, $dnsname) {
-		$certificate = $this->fakeCertificate($dnsname);
-		$this->assertFalse(Ssl::verify_certificate($base, $certificate));
+	public function testNoMatchViaCertificate($host, $reference) {
+		$certificate = $this->fakeCertificate($reference);
+		$this->assertFalse(Ssl::verify_certificate($host, $certificate));
 	}
 
-	public static function domainNoMatchProvider() {
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataNoMatch() {
 		return array(
 			// Check that we need at least 3 components
-			array('com', '*'),
-			array('example.com', '*.com'),
+			'not a domain; wildcard reference' => array(
+				'host'      => 'com',
+				'reference' => '*',
+			),
+			'domain name; wildcard on TLD as reference' => array(
+				'host'      => 'example.com',
+				'reference' => '*.com',
+			),
 
 			// Check that double wildcards don't work
-			array('abc.def.example.com', '*.*.example.com'),
+			'domain name; double wildcard in reference' => array(
+				'host'      => 'abc.def.example.com',
+				'reference' => '*.*.example.com',
+			),
 
 			// Check that we only match with the correct number of components
-			array('abc.def.example.com', 'def.example.com'),
-			array('abc.def.example.com', '*.example.com'),
+			'four-level domain; three-level reference' => array(
+				'host'      => 'abc.def.example.com',
+				'reference' => 'def.example.com',
+			),
+			'four-level domain; three-level wildcard reference' => array(
+				'host'      => 'abc.def.example.com',
+				'reference' => '*.example.com',
+			),
 
 			// Check that the wildcard only works as the full first component
-			array('abc.def.example.com', 'a*.def.example.com'),
+			'four-level domain; four-level reference, but wildcard not stand-alone' => array(
+				'host'      => 'abc.def.example.com',
+				'reference' => 'a*.def.example.com',
+			),
 
 			// Check that wildcards are not allowed for IPs
-			array('192.168.0.1', '*.168.0.1'),
-			array('192.168.0.1', '192.168.0.*'),
+			'IP address; wildcard in refence (start)' => array(
+				'host'      => '192.168.0.1',
+				'reference' => '*.168.0.1',
+			),
+			'IP address; wildcard in refence (end)' => array(
+				'host'      => '192.168.0.1',
+				'reference' => '192.168.0.*',
+			),
 		);
 	}
 
