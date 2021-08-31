@@ -7,6 +7,9 @@ use WpOrg\Requests\IdnaEncoder;
 use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 
+/**
+ * @covers \WpOrg\Requests\IdnaEncoder
+ */
 final class IdnaEncoderTest extends TestCase {
 
 	/**
