@@ -148,6 +148,37 @@ final class IdnaEncoderTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Tests receiving an exception when trying to encode a hostname containing invalid unicode.
+	 *
+	 * @dataProvider dataInvalidUnicode
+	 *
+	 * @param string $data Data to encode.
+	 *
+	 * @return void
+	 */
+	public function testInvalidUnicode($data) {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Invalid Unicode codepoint');
+
+		IdnaEncoder::encode($data);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidUnicode() {
+		return array(
+			'Five-byte character'                    => array("\xfb\xb6\xb6\xb6\xb6"),
+			'Six-byte character'                     => array("\xfd\xb6\xb6\xb6\xb6\xb6"),
+			'Invalid ASCII character with multibyte' => array("\0\xc2\xb6"),
+			'Unfinished multibyte'                   => array("\xc2"),
+			'Partial multibyte'                      => array("\xc2\xc2\xb6"),
+		);
+	}
+
 	public function testASCIITooLong() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Provided string is too long');
@@ -166,35 +197,5 @@ final class IdnaEncoderTest extends TestCase {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Provided string begins with ACE prefix');
 		IdnaEncoder::encode("xn--\xe4\xbb\x96");
-	}
-
-	public function testFiveByteCharacter() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		IdnaEncoder::encode("\xfb\xb6\xb6\xb6\xb6");
-	}
-
-	public function testSixByteCharacter() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		IdnaEncoder::encode("\xfd\xb6\xb6\xb6\xb6\xb6");
-	}
-
-	public function testInvalidASCIICharacterWithMultibyte() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		IdnaEncoder::encode("\0\xc2\xb6");
-	}
-
-	public function testUnfinishedMultibyte() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		IdnaEncoder::encode("\xc2");
-	}
-
-	public function testPartialMultibyte() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Invalid Unicode codepoint');
-		IdnaEncoder::encode("\xc2\xc2\xb6");
 	}
 }
