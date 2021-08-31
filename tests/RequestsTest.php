@@ -5,8 +5,8 @@ namespace WpOrg\Requests\Tests;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
-use WpOrg\Requests\Tests\Mock\RawTransportMock;
-use WpOrg\Requests\Tests\Mock\TransportMock;
+use WpOrg\Requests\Tests\Fixtures\RawTransportMock;
+use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
 final class RequestsTest extends TestCase {

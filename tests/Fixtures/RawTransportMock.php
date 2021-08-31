@@ -1,6 +1,6 @@
 <?php
 
-namespace WpOrg\Requests\Tests\Mock;
+namespace WpOrg\Requests\Tests\Fixtures;
 
 use WpOrg\Requests\Transport;
 

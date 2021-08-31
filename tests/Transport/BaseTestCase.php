@@ -9,7 +9,7 @@ use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
-use WpOrg\Requests\Tests\Mock\TransportMock;
+use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
 abstract class BaseTestCase extends TestCase {
