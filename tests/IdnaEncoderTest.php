@@ -182,6 +182,7 @@ final class IdnaEncoderTest extends TestCase {
 	public function testASCIITooLong() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Provided string is too long');
+
 		$data = str_repeat('abcd', 20);
 		IdnaEncoder::encode($data);
 	}
@@ -189,6 +190,7 @@ final class IdnaEncoderTest extends TestCase {
 	public function testEncodedTooLong() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Encoded string is too long');
+
 		$data = str_repeat("\xe4\xbb\x96", 60);
 		IdnaEncoder::encode($data);
 	}
@@ -196,6 +198,7 @@ final class IdnaEncoderTest extends TestCase {
 	public function testAlreadyPrefixed() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Provided string begins with ACE prefix');
+
 		IdnaEncoder::encode("xn--\xe4\xbb\x96");
 	}
 }
