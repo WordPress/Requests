@@ -71,16 +71,7 @@ final class Fsockopen implements Transport {
 			} elseif (is_int($data) || is_float($data)) {
 				$data = (string) $data;
 			} else {
-				throw new InvalidArgument(
-					sprintf(
-						'%s: Argument #%d (%s) must be of type %s, %s given',
-						__METHOD__,
-						3,
-						'$data',
-						'array|string',
-						gettype($data)
-					)
-				);
+				throw InvalidArgument::create(3, '$data', 'array|string', gettype($data));
 			}
 		}
 
