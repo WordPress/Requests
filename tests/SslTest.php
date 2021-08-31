@@ -8,25 +8,53 @@ use WpOrg\Requests\Tests\TestCase;
 final class SslTest extends TestCase {
 
 	/**
-	 * @dataProvider domainMatchProvider
+	 * Test handling of matching host and DNS names.
+	 *
+	 * @dataProvider dataMatch
+	 *
+	 * @param string $host      Host name to verify.
+	 * @param string $reference DNS name to match against.
+	 *
+	 * @return void
 	 */
-	public function testMatch($base, $dnsname) {
-		$this->assertTrue(Ssl::match_domain($base, $dnsname));
+	public function testMatch($host, $reference) {
+		$this->assertTrue(Ssl::match_domain($host, $reference));
 	}
 
 	/**
-	 * @dataProvider domainMatchProvider
+	 * Test handling of matching host and DNS names based on certificate.
+	 *
+	 * @dataProvider dataMatch
+	 *
+	 * @param string $host      Host name to verify.
+	 * @param string $reference DNS name to match against.
+	 *
+	 * @return void
 	 */
-	public function testMatchViaCertificate($base, $dnsname) {
-		$certificate = $this->fakeCertificate($dnsname);
-		$this->assertTrue(Ssl::verify_certificate($base, $certificate));
+	public function testMatchViaCertificate($host, $reference) {
+		$certificate = $this->fakeCertificate($reference);
+		$this->assertTrue(Ssl::verify_certificate($host, $certificate));
 	}
 
-	public static function domainMatchProvider() {
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataMatch() {
 		return array(
-			array('example.com', 'example.com'),
-			array('test.example.com', 'test.example.com'),
-			array('test.example.com', '*.example.com'),
+			'top-level domain' => array(
+				'host'      => 'example.com',
+				'reference' => 'example.com',
+			),
+			'subdomain' => array(
+				'host'      => 'test.example.com',
+				'reference' => 'test.example.com',
+			),
+			'subdomain with wildcard reference' => array(
+				'host'      => 'test.example.com',
+				'reference' => '*.example.com',
+			),
 		);
 	}
 
