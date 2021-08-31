@@ -5,12 +5,17 @@ namespace WpOrg\Requests\Tests;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Tests\TestCase;
 
+/**
+ * @coversDefaultClass \WpOrg\Requests\Ssl
+ */
 final class SslTest extends TestCase {
 
 	/**
 	 * Test handling of matching host and DNS names.
 	 *
 	 * @dataProvider dataMatch
+	 *
+	 * @covers ::match_domain
 	 *
 	 * @param string $host      Host name to verify.
 	 * @param string $reference DNS name to match against.
@@ -26,6 +31,8 @@ final class SslTest extends TestCase {
 	 *
 	 * @dataProvider dataMatch
 	 * @dataProvider dataMatchViaCertificate
+	 *
+	 * @covers ::verify_certificate
 	 *
 	 * @param string      $host      Host name to verify.
 	 * @param string      $reference DNS name to match against.
@@ -103,6 +110,8 @@ final class SslTest extends TestCase {
 	 *
 	 * @dataProvider dataNoMatch
 	 *
+	 * @covers ::match_domain
+	 *
 	 * @param string $host      Host name to verify.
 	 * @param string $reference DNS name to match against.
 	 *
@@ -117,6 +126,8 @@ final class SslTest extends TestCase {
 	 *
 	 * @dataProvider dataNoMatch
 	 * @dataProvider dataNoMatchViaCertificate
+	 *
+	 * @covers ::verify_certificate
 	 *
 	 * @param string      $host      Host name to verify.
 	 * @param string      $reference DNS name to match against.
@@ -260,6 +271,8 @@ final class SslTest extends TestCase {
 	 * the value of the CN field.
 	 *
 	 * @link https://tools.ietf.org/html/rfc2818#section-3.1
+	 *
+	 * @covers ::verify_certificate
 	 */
 	public function testIgnoreCNWithSAN() {
 		$certificate = $this->fakeCertificate('example.net', 'DNS: example.com');
