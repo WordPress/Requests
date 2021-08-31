@@ -8,6 +8,9 @@
 
 namespace WpOrg\Requests;
 
+use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Utility\InputValidator;
+
 /**
  * SSL utilities for Requests
  *
@@ -28,8 +31,18 @@ final class Ssl {
 	 * @param string $host Host name to verify against
 	 * @param array $cert Certificate data from openssl_x509_parse()
 	 * @return bool
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $host argument is not a string or a stringable object.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $cert argument is not an array or array accessible.
 	 */
 	public static function verify_certificate($host, $cert) {
+		if (InputValidator::is_string_or_stringable($host) === false) {
+			throw InvalidArgument::create(1, '$host', 'string|Stringable', gettype($host));
+		}
+
+		if (InputValidator::has_array_access($cert) === false) {
+			throw InvalidArgument::create(2, '$cert', 'array|ArrayAccess', gettype($cert));
+		}
+
 		$has_dns_alt = false;
 
 		// Check the subjectAltName
@@ -82,8 +95,13 @@ final class Ssl {
 	 *
 	 * @param string $reference Reference dNSName
 	 * @return boolean Is the name valid?
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string or a stringable object.
 	 */
 	public static function verify_reference_name($reference) {
+		if (InputValidator::is_string_or_stringable($reference) === false) {
+			throw InvalidArgument::create(1, '$reference', 'string|Stringable', gettype($reference));
+		}
+
 		$parts = explode('.', $reference);
 
 		// Check the first part of the name
@@ -118,8 +136,13 @@ final class Ssl {
 	 * @param string $host Requested host
 	 * @param string $reference dNSName to match against
 	 * @return boolean Does the domain match?
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When either of the passed arguments is not a string or a stringable object.
 	 */
 	public static function match_domain($host, $reference) {
+		if (InputValidator::is_string_or_stringable($host) === false) {
+			throw InvalidArgument::create(1, '$host', 'string|Stringable', gettype($host));
+		}
+
 		// Check if the reference is blocklisted first
 		if (self::verify_reference_name($reference) !== true) {
 			return false;

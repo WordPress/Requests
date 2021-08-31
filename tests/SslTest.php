@@ -2,6 +2,8 @@
 
 namespace WpOrg\Requests\Tests;
 
+use stdClass;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -390,6 +392,90 @@ final class SslTest extends TestCase {
 				),
 				'expected'    => false,
 			),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed as $host.
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @covers ::verify_certificate
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testVerifyCertificateInvalidInputHost($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($host) must be of type string|Stringable');
+
+		Ssl::verify_certificate($input, array());
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed as $cert.
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @covers ::verify_certificate
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testVerifyCertificateInvalidInputCert($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($cert) must be of type array|ArrayAccess');
+
+		Ssl::verify_certificate('host', $input);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed.
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @covers ::verify_reference_name
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testVerifyReferenceNameInvalidInputType($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($reference) must be of type string|Stringable');
+
+		Ssl::verify_reference_name($input);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed.
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @covers ::match_domain
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testInvalidInputType($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($host) must be of type string|Stringable');
+
+		Ssl::match_domain($input, 'reference');
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInputType() {
+		return array(
+			'null'         => array(null),
+			'plain object' => array(new stdClass()),
 		);
 	}
 }
