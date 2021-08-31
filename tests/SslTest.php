@@ -396,6 +396,100 @@ final class SslTest extends TestCase {
 	}
 
 	/**
+	 * Test correctly identifying whether a reference name is valid.
+	 *
+	 * @covers ::verify_reference_name
+	 *
+	 * @dataProvider dataVerifyReferenceName
+	 *
+	 * @param string $reference Reference name to test.
+	 * @param bool   $expected  Expected function outcome.
+	 *
+	 * @return void
+	 */
+	public function testVerifyReferenceName($reference, $expected) {
+		$this->assertSame($expected, Ssl::verify_reference_name($reference));
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataVerifyReferenceName() {
+		return array(
+			'empty string' => array(
+				'reference' => '',
+				'expected'  => false,
+			),
+			'one part, no dot' => array(
+				'reference' => 'example',
+				'expected'  => true,
+			),
+			'one part, only wildcard' => array(
+				'reference' => '*',
+				'expected'  => false,
+			),
+			'two parts, no wildcard' => array(
+				'reference' => 'example.com',
+				'expected'  => true,
+			),
+			'two parts, wildcard in first' => array(
+				'reference' => '*.com',
+				'expected'  => false,
+			),
+			'two parts, wildcard in last' => array(
+				'reference' => 'example.*',
+				'expected'  => false,
+			),
+			'three parts, only dots' => array(
+				'reference' => '..',
+				'expected'  => false,
+			),
+			'three parts, no wildcard' => array(
+				'reference' => 'www.example.com',
+				'expected'  => true,
+			),
+			'three parts, no wildcard, has spaces' => array(
+				'reference' => 'my dog . and . my cat',
+				'expected'  => false,
+			),
+			'three parts, wildcard in first' => array(
+				'reference' => '*.example.com',
+				'expected'  => true,
+			),
+			'three parts, wildcard in second' => array(
+				'reference' => 'www.*.com',
+				'expected'  => false,
+			),
+			'three parts, wildcard in third' => array(
+				'reference' => 'www.example.*',
+				'expected'  => false,
+			),
+			'three parts, wildcard in first at start with other characters' => array(
+				'reference' => '*ww.example.com',
+				'expected'  => false,
+			),
+			'three parts, wildcard in first at end with other characters' => array(
+				'reference' => 'ww*.example.com',
+				'expected'  => false,
+			),
+			'three parts, wildcard in first and second' => array(
+				'reference' => '*.*.com',
+				'expected'  => false,
+			),
+			'three parts, wildcard in second and last' => array(
+				'reference' => 'www.*.*',
+				'expected'  => false,
+			),
+			'three parts, wildcard in first and last' => array(
+				'reference' => '*.example.*',
+				'expected'  => false,
+			),
+		);
+	}
+
+	/**
 	 * Tests receiving an exception when an invalid input type is passed as $host.
 	 *
 	 * @dataProvider dataInvalidInputType

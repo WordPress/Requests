@@ -102,7 +102,20 @@ final class Ssl {
 			throw InvalidArgument::create(1, '$reference', 'string|Stringable', gettype($reference));
 		}
 
+		if ($reference === '') {
+			return false;
+		}
+
+		if (preg_match('`\s`', $reference) > 0) {
+			// Whitespace detected. This can never be a dNSName.
+			return false;
+		}
+
 		$parts = explode('.', $reference);
+		if ($parts !== array_filter($parts)) {
+			// DNSName cannot contain two dots next to each other.
+			return false;
+		}
 
 		// Check the first part of the name
 		$first = array_shift($parts);
