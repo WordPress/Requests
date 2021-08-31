@@ -228,6 +228,11 @@ final class SslTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Test helper to mock a certificate.
+	 *
+	 * @return array
+	 */
 	private function fakeCertificate($dnsname, $with_san = true) {
 		$certificate = array(
 			'subject' => array(
