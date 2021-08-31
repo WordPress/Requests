@@ -6,12 +6,43 @@ use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Tests\TestCase;
 
 final class SslTest extends TestCase {
+
+	/**
+	 * @dataProvider domainMatchProvider
+	 */
+	public function testMatch($base, $dnsname) {
+		$this->assertTrue(Ssl::match_domain($base, $dnsname));
+	}
+
+	/**
+	 * @dataProvider domainMatchProvider
+	 */
+	public function testMatchViaCertificate($base, $dnsname) {
+		$certificate = $this->fakeCertificate($dnsname);
+		$this->assertTrue(Ssl::verify_certificate($base, $certificate));
+	}
+
 	public static function domainMatchProvider() {
 		return array(
 			array('example.com', 'example.com'),
 			array('test.example.com', 'test.example.com'),
 			array('test.example.com', '*.example.com'),
 		);
+	}
+
+	/**
+	 * @dataProvider domainNoMatchProvider
+	 */
+	public function testNoMatch($base, $dnsname) {
+		$this->assertFalse(Ssl::match_domain($base, $dnsname));
+	}
+
+	/**
+	 * @dataProvider domainNoMatchProvider
+	 */
+	public function testNoMatchViaCertificate($base, $dnsname) {
+		$certificate = $this->fakeCertificate($dnsname);
+		$this->assertFalse(Ssl::verify_certificate($base, $certificate));
 	}
 
 	public static function domainNoMatchProvider() {
@@ -36,20 +67,6 @@ final class SslTest extends TestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider domainMatchProvider
-	 */
-	public function testMatch($base, $dnsname) {
-		$this->assertTrue(Ssl::match_domain($base, $dnsname));
-	}
-
-	/**
-	 * @dataProvider domainNoMatchProvider
-	 */
-	public function testNoMatch($base, $dnsname) {
-		$this->assertFalse(Ssl::match_domain($base, $dnsname));
-	}
-
 	private function fakeCertificate($dnsname, $with_san = true) {
 		$certificate = array(
 			'subject' => array(
@@ -68,22 +85,6 @@ final class SslTest extends TestCase {
 		}
 
 		return $certificate;
-	}
-
-	/**
-	 * @dataProvider domainMatchProvider
-	 */
-	public function testMatchViaCertificate($base, $dnsname) {
-		$certificate = $this->fakeCertificate($dnsname);
-		$this->assertTrue(Ssl::verify_certificate($base, $certificate));
-	}
-
-	/**
-	 * @dataProvider domainNoMatchProvider
-	 */
-	public function testNoMatchViaCertificate($base, $dnsname) {
-		$certificate = $this->fakeCertificate($dnsname);
-		$this->assertFalse(Ssl::verify_certificate($base, $certificate));
 	}
 
 	public function testCNFallback() {
