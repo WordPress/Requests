@@ -33,7 +33,7 @@ final class Ssl {
 		$has_dns_alt = false;
 
 		// Check the subjectAltName
-		if (!empty($cert['extensions']) && !empty($cert['extensions']['subjectAltName'])) {
+		if (!empty($cert['extensions']['subjectAltName'])) {
 			$altnames = explode(',', $cert['extensions']['subjectAltName']);
 			foreach ($altnames as $altname) {
 				$altname = trim($altname);
