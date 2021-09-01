@@ -51,15 +51,17 @@ final class Ssl {
 					return true;
 				}
 			}
+
+			if ($has_dns_alt === true) {
+				return false;
+			}
 		}
 
 		// Fall back to checking the common name if we didn't get any dNSName
 		// alt names, as per RFC2818
-		if (!$has_dns_alt && !empty($cert['subject']['CN'])) {
+		if (!empty($cert['subject']['CN'])) {
 			// Check for a match
-			if (self::match_domain($host, $cert['subject']['CN']) === true) {
-				return true;
-			}
+			return (self::match_domain($host, $cert['subject']['CN']) === true);
 		}
 
 		return false;
