@@ -135,6 +135,16 @@ final class SslTest extends TestCase {
 				'host'      => '192.168.0.1',
 				'reference' => '192.168.0.*',
 			),
+
+			// IP vs named address.
+			'IP address vs named address' => array(
+				'host'      => '192.168.0.1',
+				'reference' => '*.example.com',
+			),
+			'Named address vs IP address' => array(
+				'host'      => 'example.com',
+				'reference' => '192.168.0.1',
+			),
 		);
 	}
 
