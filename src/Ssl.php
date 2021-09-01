@@ -131,8 +131,9 @@ final class Ssl {
 		}
 
 		// Calculate the valid wildcard match if the host is not an IP address
-		// Also validates that the host has 3 parts or more, as per Firefox's
-		// ruleset.
+		// Also validates that the host has 3 parts or more, as per Firefox's ruleset,
+		// as a wildcard reference is only allowed with 3 parts or more, so the
+		// comparison will never match if host doesn't contain 3 parts or more as well.
 		if (ip2long($host) === false) {
 			$parts    = explode('.', $host);
 			$parts[0] = '*';
