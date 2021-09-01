@@ -75,6 +75,26 @@ final class SslTest extends TestCase {
 				'reference' => 'example.com',
 				'with_san'  => false,
 			),
+			'SAN available, multiple alternatives provided; matching is second' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.net',
+				'with_san'  => 'DNS: example.com, DNS: example.net, DNS: example.info',
+			),
+			'SAN available, multiple alternatives provided; matching is last' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.net',
+				'with_san'  => 'DNS: example.com, DNS: example.org, DNS: example.net',
+			),
+			'SAN available, DNS prefix missing in first, not (matching) second' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.com',
+				'with_san'  => 'example.com, DNS: example.net',
+			),
+			'SAN available, DNS prefix missing in all, fallback to CN' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.net',
+				'with_san'  => 'example.com, example.net',
+			),
 		);
 	}
 
@@ -185,6 +205,26 @@ final class SslTest extends TestCase {
 				'reference' => 'example.com',
 				'with_san'  => false,
 			),
+			'SAN empty' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.com',
+				'with_san'  => '',
+			),
+			'SAN available, DNS prefix missing' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.com',
+				'with_san'  => 'example.com',
+			),
+			'SAN available, multiple alternatives provided; none of the SANs match, DNS prefix missing in first, not second' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.com',
+				'with_san'  => 'example.com, DNS: example.org',
+			),
+			'SAN available, multiple alternatives provided; none of the SANs match, even though CN does' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.net',
+				'with_san'  => 'DNS: example.com, DNS: example.org, DNS: example.info',
+			),
 		);
 	}
 
@@ -221,5 +261,117 @@ final class SslTest extends TestCase {
 
 		$this->assertTrue(Ssl::verify_certificate('example.com', $certificate), 'Checking SAN validation');
 		$this->assertFalse(Ssl::verify_certificate('example.net', $certificate), 'Checking CN non-validation');
+	}
+
+	/**
+	 * Test handling of non-compliant certificates.
+	 *
+	 * @dataProvider dataVerifyCertificateWithInvalidCertificates
+	 *
+	 * @param string $host        Host name to verify.
+	 * @param array  $certificate A (faked) certificate to verify against.
+	 * @param bool   $expected    Expected function output.
+	 *
+	 * @return void
+	 */
+	public function testVerifyCertificateWithInvalidCertificates($host, $certificate, $expected) {
+		$this->assertSame($expected, Ssl::verify_certificate($host, $certificate));
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataVerifyCertificateWithInvalidCertificates() {
+		return array(
+			'empty array' => array(
+				'host'        => 'example.com',
+				'certificate' => array(),
+				'expected'    => false,
+			),
+			'subject, but missing CN entry; no SAN' => array(
+				'host'        => 'example.com',
+				'certificate' => array(
+					'subject' => array(),
+				),
+				'expected'    => false,
+			),
+			'subject with empty CN entry; no SAN' => array(
+				'host'        => 'example.com',
+				'certificate' => array(
+					'subject' => array(
+						'CN' => '',
+					),
+				),
+				'expected'    => false,
+			),
+			'subject, but missing CN entry; SAN exists, missing DNS' => array(
+				'host'        => 'example.com',
+				'certificate' => array(
+					'subject'    => array(),
+					'extensions' => array(
+						'subjectAltName' => 'example.net',
+					),
+				),
+				'expected'    => false,
+			),
+			'subject with empty CN entry; SAN exists, missing DNS' => array(
+				'host'        => 'example.com',
+				'certificate' => array(
+					'subject' => array(
+						'CN' => '',
+					),
+					'extensions' => array(
+						'subjectAltName' => 'example.net',
+					),
+				),
+				'expected'    => false,
+			),
+			'subject, but missing CN entry; SAN exists, but non-matching' => array(
+				'host'        => 'example.com',
+				'certificate' => array(
+					'subject'    => array(),
+					'extensions' => array(
+						'subjectAltName' => 'DNS: example.net',
+					),
+				),
+				'expected'    => false,
+			),
+			'subject with empty CN entry; SAN exists, but non-matching' => array(
+				'host'        => 'example.com',
+				'certificate' => array(
+					'subject' => array(
+						'CN' => '',
+					),
+					'extensions' => array(
+						'subjectAltName' => 'DNS:   example.net',
+					),
+				),
+				'expected'    => false,
+			),
+			'extensions, but missing SAN entry' => array(
+				'host'        => 'example.com',
+				'certificate' => array(
+					'subject'    => array(
+						'CN' => 'example.net',
+					),
+					'extensions' => array(),
+				),
+				'expected'    => false,
+			),
+			'extensions with empty SAN entry' => array(
+				'host'        => 'example.com',
+				'certificate' => array(
+					'subject' => array(
+						'CN' => 'example.net',
+					),
+					'extensions' => array(
+						'subjectAltName' => '',
+					),
+				),
+				'expected'    => false,
+			),
+		);
 	}
 }
