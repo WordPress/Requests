@@ -198,10 +198,10 @@ final class SslTest extends TestCase {
 		if ($with_san !== false) {
 			// If SAN is set to true, default it to the dNSName
 			if ($with_san === true) {
-				$with_san = $dnsname;
+				$with_san = 'DNS: ' . $dnsname;
 			}
 			$certificate['extensions'] = array(
-				'subjectAltName' => 'DNS: ' . $with_san,
+				'subjectAltName' => $with_san,
 			);
 		}
 
@@ -217,7 +217,7 @@ final class SslTest extends TestCase {
 	 * @link https://tools.ietf.org/html/rfc2818#section-3.1
 	 */
 	public function testIgnoreCNWithSAN() {
-		$certificate = $this->fakeCertificate('example.net', 'example.com');
+		$certificate = $this->fakeCertificate('example.net', 'DNS: example.com');
 
 		$this->assertTrue(Ssl::verify_certificate('example.com', $certificate), 'Checking SAN validation');
 		$this->assertFalse(Ssl::verify_certificate('example.net', $certificate), 'Checking CN non-validation');
