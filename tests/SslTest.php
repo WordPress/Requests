@@ -25,14 +25,19 @@ final class SslTest extends TestCase {
 	 * Test handling of matching host and DNS names based on certificate.
 	 *
 	 * @dataProvider dataMatch
+	 * @dataProvider dataMatchViaCertificate
 	 *
-	 * @param string $host      Host name to verify.
-	 * @param string $reference DNS name to match against.
+	 * @param string      $host      Host name to verify.
+	 * @param string      $reference DNS name to match against.
+	 * @param bool|string $with_san  Optional. How to generate the fake certificate.
+	 *                               - false:  plain, CN only;
+	 *                               - true:   CN + subjectAltName, alt set to same as CN;
+	 *                               - string: CN + subjectAltName, alt set to string value.
 	 *
 	 * @return void
 	 */
-	public function testMatchViaCertificate($host, $reference) {
-		$certificate = $this->fakeCertificate($reference);
+	public function testMatchViaCertificate($host, $reference, $with_san = true) {
+		$certificate = $this->fakeCertificate($reference, $with_san);
 		$this->assertTrue(Ssl::verify_certificate($host, $certificate));
 	}
 
@@ -59,6 +64,21 @@ final class SslTest extends TestCase {
 	}
 
 	/**
+	 * Data provider for additional test cases specific to the Ssl::verify_certificate() method.
+	 *
+	 * @return array
+	 */
+	public function dataMatchViaCertificate() {
+		return array(
+			'top-level domain; missing SAN, fallback to CN' => array(
+				'host'      => 'example.com',
+				'reference' => 'example.com',
+				'with_san'  => false,
+			),
+		);
+	}
+
+	/**
 	 * Test handling of non-matching host and DNS names.
 	 *
 	 * @dataProvider dataNoMatch
@@ -76,14 +96,19 @@ final class SslTest extends TestCase {
 	 * Test handling of non-matching host and DNS names based on certificate.
 	 *
 	 * @dataProvider dataNoMatch
+	 * @dataProvider dataNoMatchViaCertificate
 	 *
-	 * @param string $host      Host name to verify.
-	 * @param string $reference DNS name to match against.
+	 * @param string      $host      Host name to verify.
+	 * @param string      $reference DNS name to match against.
+	 * @param bool|string $with_san  Optional. How to generate the fake certificate.
+	 *                               - false:  plain, CN only;
+	 *                               - true:   CN + subjectAltName, alt set to same as CN;
+	 *                               - string: CN + subjectAltName, alt set to string value.
 	 *
 	 * @return void
 	 */
-	public function testNoMatchViaCertificate($host, $reference) {
-		$certificate = $this->fakeCertificate($reference);
+	public function testNoMatchViaCertificate($host, $reference, $with_san = true) {
+		$certificate = $this->fakeCertificate($reference, $with_san);
 		$this->assertFalse(Ssl::verify_certificate($host, $certificate));
 	}
 
@@ -148,6 +173,21 @@ final class SslTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Data provider for additional test cases specific to the Ssl::verify_certificate() method.
+	 *
+	 * @return array
+	 */
+	public function dataNoMatchViaCertificate() {
+		return array(
+			'top-level domain; missing SAN, fallback to invalid CN' => array(
+				'host'      => 'example.net',
+				'reference' => 'example.com',
+				'with_san'  => false,
+			),
+		);
+	}
+
 	private function fakeCertificate($dnsname, $with_san = true) {
 		$certificate = array(
 			'subject' => array(
@@ -166,16 +206,6 @@ final class SslTest extends TestCase {
 		}
 
 		return $certificate;
-	}
-
-	public function testCNFallback() {
-		$certificate = $this->fakeCertificate('example.com', false);
-		$this->assertTrue(Ssl::verify_certificate('example.com', $certificate));
-	}
-
-	public function testInvalidCNFallback() {
-		$certificate = $this->fakeCertificate('example.com', false);
-		$this->assertFalse(Ssl::verify_certificate('example.net', $certificate));
 	}
 
 	/**
