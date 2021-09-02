@@ -8,6 +8,11 @@ use WpOrg\Requests\Tests\TestCase;
 
 final class HeadersTest extends TestCase {
 
+	/**
+	 * Test receiving an Exception when no key is provided when setting an entry.
+	 *
+	 * @return void
+	 */
 	public function testOffsetSetInvalidKey() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Object is a dictionary, not a list');
@@ -45,6 +50,12 @@ final class HeadersTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Test that when multiple headers are set using the same key, requesting the key will return the
+	 * combined values flattened into a single, comma-separated string.
+	 *
+	 * @return void
+	 */
 	public function testMultipleHeaders() {
 		$headers           = new Headers();
 		$headers['Accept'] = 'text/html;q=1.0';
