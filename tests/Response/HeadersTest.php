@@ -58,6 +58,7 @@ final class HeadersTest extends TestCase {
 	 *
 	 * Includes making sure that:
 	 * - keys are handled case-insensitively.
+	 * - multiple keys with the same name are flattened into one value.
 	 *
 	 * @return void
 	 */
@@ -65,9 +66,14 @@ final class HeadersTest extends TestCase {
 		$headers                   = new Headers();
 		$headers['Content-Type']   = 'text/plain';
 		$headers['Content-Length'] = 10;
+		$headers['Accept']         = 'text/html;q=1.0';
+		$headers['Accept']         = '*/*;q=0.1';
 
 		foreach ($headers as $name => $value) {
 			switch (strtolower($name)) {
+				case 'accept':
+					$this->assertSame('text/html;q=1.0,*/*;q=0.1', $value, 'Accept header does not match');
+					break;
 				case 'content-type':
 					$this->assertSame('text/plain', $value, 'Content-Type header does not match');
 					break;
