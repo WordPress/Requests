@@ -66,6 +66,63 @@ final class HeadersTest extends TestCase {
 	}
 
 	/**
+	 * Test retrieving all values for a given header (case-insensitively).
+	 *
+	 * @dataProvider dataGetValues
+	 *
+	 * @param string      $key      Key to request.
+	 * @param string|null $expected Expected return value.
+	 *
+	 * @return void
+	 */
+	public function testGetValues($key, $expected) {
+		$headers                   = new Headers();
+		$headers['Content-Type']   = 'text/plain';
+		$headers['Content-Length'] = 10;
+		$headers['Accept']         = 'text/html;q=1.0';
+		$headers['Accept']         = '*/*;q=0.1';
+
+		$this->assertSame($expected, $headers->getValues($key));
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataGetValues() {
+		return array(
+			'using case as set, single entry header' => array(
+				'key'      => 'Content-Type',
+				'expected' => array(
+					'text/plain',
+				),
+			),
+			'using lowercase, single entry header' => array(
+				'key'      => 'content-length',
+				'expected' => array(
+					10,
+				),
+			),
+			'using uppercase, multiple entry header' => array(
+				'key'      => 'ACCEPT',
+				'expected' => array(
+					'text/html;q=1.0',
+					'*/*;q=0.1',
+				),
+			),
+			'non-registered string key' => array(
+				'key'      => 'my-custom-header',
+				'expected' => null,
+			),
+			'non-registered integer key' => array(
+				'key'      => 10,
+				'expected' => null,
+			),
+		);
+	}
+
+	/**
 	 * Test iterator access for the object is supported.
 	 *
 	 * Includes making sure that:
