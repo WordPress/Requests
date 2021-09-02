@@ -16,18 +16,33 @@ final class HeadersTest extends TestCase {
 		$headers[] = 'text/plain';
 	}
 
-	public function testArrayAccess() {
+	/**
+	 * Test array access for the object is supported and supported in a case-insensitive manner.
+	 *
+	 * @dataProvider dataCaseInsensitiveArrayAccess
+	 *
+	 * @param string $key Key to request.
+	 *
+	 * @return void
+	 */
+	public function testCaseInsensitiveArrayAccess($key) {
 		$headers                 = new Headers();
 		$headers['Content-Type'] = 'text/plain';
 
-		$this->assertSame('text/plain', $headers['Content-Type']);
+		$this->assertSame('text/plain', $headers[$key]);
 	}
-	public function testCaseInsensitiveArrayAccess() {
-		$headers                 = new Headers();
-		$headers['Content-Type'] = 'text/plain';
 
-		$this->assertSame('text/plain', $headers['CONTENT-TYPE']);
-		$this->assertSame('text/plain', $headers['content-type']);
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataCaseInsensitiveArrayAccess() {
+		return array(
+			'access using case as set' => array('Content-Type'),
+			'access using lowercase'   => array('content-type'),
+			'access using uppercase'   => array('CONTENT-TYPE'),
+		);
 	}
 
 	public function testMultipleHeaders() {
