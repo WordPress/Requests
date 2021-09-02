@@ -33,6 +33,14 @@ class Curl extends Transport {
 	 */
 	protected $reason = 'Unknown';
 
+	/**
+	 * Create a new exception.
+	 *
+	 * @param string $message Exception message.
+	 * @param string $type    Exception type.
+	 * @param mixed  $data    Associated data, if applicable.
+	 * @param int    $code    Exception numerical code, if applicable.
+	 */
 	public function __construct($message, $type, $data = null, $code = 0) {
 		if ($type !== null) {
 			$this->type = $type;
