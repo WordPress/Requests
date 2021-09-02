@@ -6,10 +6,15 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\TestCase;
 
+/**
+ * @coversDefaultClass \WpOrg\Requests\Response\Headers
+ */
 final class HeadersTest extends TestCase {
 
 	/**
 	 * Test receiving an Exception when no key is provided when setting an entry.
+	 *
+	 * @covers ::offsetSet
 	 *
 	 * @return void
 	 */
@@ -23,6 +28,9 @@ final class HeadersTest extends TestCase {
 
 	/**
 	 * Test array access for the object is supported and supported in a case-insensitive manner.
+	 *
+	 * @covers ::offsetSet
+	 * @covers ::offsetGet
 	 *
 	 * @dataProvider dataCaseInsensitiveArrayAccess
 	 *
@@ -54,6 +62,10 @@ final class HeadersTest extends TestCase {
 	 * Test that when multiple headers are set using the same key, requesting the key will return the
 	 * combined values flattened into a single, comma-separated string.
 	 *
+	 * @covers ::offsetSet
+	 * @covers ::offsetGet
+	 * @covers ::flatten
+	 *
 	 * @return void
 	 */
 	public function testMultipleHeaders() {
@@ -67,6 +79,8 @@ final class HeadersTest extends TestCase {
 	/**
 	 * Test that null is returned when a non-registered header is requested.
 	 *
+	 * @covers ::offsetGet
+	 *
 	 * @return void
 	 */
 	public function testOffsetGetReturnsNullForNonRegisteredHeader() {
@@ -78,6 +92,8 @@ final class HeadersTest extends TestCase {
 
 	/**
 	 * Test retrieving all values for a given header (case-insensitively).
+	 *
+	 * @covers ::getValues
 	 *
 	 * @dataProvider dataGetValues
 	 *
@@ -139,6 +155,9 @@ final class HeadersTest extends TestCase {
 	 * Includes making sure that:
 	 * - keys are handled case-insensitively.
 	 * - multiple keys with the same name are flattened into one value.
+	 *
+	 * @covers ::getIterator
+	 * @covers ::flatten
 	 *
 	 * @return void
 	 */
