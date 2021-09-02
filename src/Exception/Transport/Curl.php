@@ -47,7 +47,7 @@ final class Curl extends Transport {
 		}
 
 		if ($code !== null) {
-			$this->code = $code;
+			$this->code = (int) $code;
 		}
 
 		if ($message !== null) {
