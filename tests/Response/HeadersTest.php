@@ -8,7 +8,7 @@ use WpOrg\Requests\Tests\TestCase;
 
 final class HeadersTest extends TestCase {
 
-	public function testInvalidKey() {
+	public function testOffsetSetInvalidKey() {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Object is a dictionary, not a list');
 
