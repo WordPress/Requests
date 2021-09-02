@@ -54,6 +54,18 @@ final class HeadersTest extends TestCase {
 	}
 
 	/**
+	 * Test that null is returned when a non-registered header is requested.
+	 *
+	 * @return void
+	 */
+	public function testOffsetGetReturnsNullForNonRegisteredHeader() {
+		$headers                 = new Headers();
+		$headers['Content-Type'] = 'text/plain';
+
+		$this->assertNull($headers['not-content-type']);
+	}
+
+	/**
 	 * Test iterator access for the object is supported.
 	 *
 	 * Includes making sure that:
