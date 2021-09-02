@@ -54,7 +54,12 @@ final class HeadersTest extends TestCase {
 	}
 
 	/**
-	 * @depends testArrayAccess
+	 * Test iterator access for the object is supported.
+	 *
+	 * Includes making sure that:
+	 * - keys are handled case-insensitively.
+	 *
+	 * @return void
 	 */
 	public function testIteration() {
 		$headers                   = new Headers();
@@ -64,13 +69,13 @@ final class HeadersTest extends TestCase {
 		foreach ($headers as $name => $value) {
 			switch (strtolower($name)) {
 				case 'content-type':
-					$this->assertSame('text/plain', $value);
+					$this->assertSame('text/plain', $value, 'Content-Type header does not match');
 					break;
 				case 'content-length':
-					$this->assertSame('10', $value);
+					$this->assertSame('10', $value, 'Content-Length header does not match');
 					break;
 				default:
-					throw new Exception('Invalid name: ' . $name);
+					throw new Exception('Invalid offset key: ' . $name);
 			}
 		}
 	}
