@@ -95,7 +95,9 @@ class Headers extends CaseInsensitiveDictionary {
 	/**
 	 * Get an iterator for the data
 	 *
-	 * Converts the internal
+	 * Converts the internally stored values to a comma-separated string if there is more
+	 * than one value for a key.
+	 *
 	 * @return \ArrayIterator
 	 */
 	public function getIterator() {
