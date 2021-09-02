@@ -51,7 +51,9 @@ class Curl extends Transport {
 	}
 
 	/**
-	 * Get the error message
+	 * Get the error message.
+	 *
+	 * @return string
 	 */
 	public function getReason() {
 		return $this->reason;
