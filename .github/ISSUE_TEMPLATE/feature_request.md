@@ -1,6 +1,6 @@
 ---
 name: ":rocket: Feature request"
-about: I have a suggestion (and may want to implement it)
+about: I have a suggestion (and may want to implement it).
 ---
 
 ## Is your feature request related to a problem?

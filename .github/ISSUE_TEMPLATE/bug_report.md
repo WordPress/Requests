@@ -1,6 +1,6 @@
 ---
 name: ":bug: Bug report"
-about: If something isn't working as expected.
+about: I got unexpected behavior and think it is a bug.
 ---
 
 ## Summary
@@ -9,7 +9,7 @@ about: If something isn't working as expected.
 
 ### Given the following code sample
 <!-- Please post code as text (using proper markup). Do not post screenshots of code. -->
-<!-- Add a much information as needed to allow for reproducing the issue consistently. -->
+<!-- Add as much information as needed to allow for reproducing the issue consistently. -->
 
 ```php
 ```
