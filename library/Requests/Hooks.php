@@ -21,13 +21,6 @@ class Requests_Hooks implements Requests_Hooker {
 	protected $hooks = array();
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		// pass
-	}
-
-	/**
 	 * Register a callback for a hook
 	 *
 	 * @param string $hook Hook name
