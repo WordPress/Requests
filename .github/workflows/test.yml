@@ -61,6 +61,15 @@ jobs:
           coverage: ${{ steps.set_cov.outputs.COV }}
           tools: cs2pr
 
+      # At least one test needs a non-en_US locale to be available, so make sure it is.
+      - name: Install locales
+        run: |
+          sudo apt-get update
+          sudo apt-get install locales-all
+
+      - name: Show available locales
+        run: locale -a
+
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
