@@ -70,6 +70,21 @@ bugs in PHP for more information on Subject Alternate Name field.
 [php-bug-47030]: https://php.net/47030
 [php-bug-55820]: https://php.net/55820
 
+
+Set a Timeout for Requests
+--------------------------
+Set a response timeout for Requests:
+
+```php
+$options = array(
+	'connect_timeout' => 60, // How long should we wait while trying to connect?
+    'timeout' => 60 		 // How long should we wait for a response?
+);
+$response = Requests::get('https://httpbin.org/', array(), $options);
+```
+
+
+
 ***
 
 Previous: [Making a request](usage.md)
