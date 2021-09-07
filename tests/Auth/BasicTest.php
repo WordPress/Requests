@@ -8,10 +8,17 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
 
+/**
+ * @covers \WpOrg\Requests\Auth\Basic
+ */
 final class BasicTest extends TestCase {
 
 	/**
 	 * @dataProvider transportProvider
+	 *
+	 * @param string $transport Transport to use.
+	 *
+	 * @return void
 	 */
 	public function testUsingArray($transport) {
 		$this->skipWhenTransportNotAvailable($transport);
@@ -55,6 +62,10 @@ final class BasicTest extends TestCase {
 
 	/**
 	 * @dataProvider transportProvider
+	 *
+	 * @param string $transport Transport to use.
+	 *
+	 * @return void
 	 */
 	public function testUsingInstantiation($transport) {
 		$this->skipWhenTransportNotAvailable($transport);
@@ -98,6 +109,10 @@ final class BasicTest extends TestCase {
 
 	/**
 	 * @dataProvider transportProvider
+	 *
+	 * @param string $transport Transport to use.
+	 *
+	 * @return void
 	 */
 	public function testPOSTUsingInstantiation($transport) {
 		$this->skipWhenTransportNotAvailable($transport);
