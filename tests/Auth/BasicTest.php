@@ -5,6 +5,7 @@ namespace WpOrg\Requests\Tests\Auth;
 use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
 
 final class BasicTest extends TestCase {
@@ -20,11 +21,36 @@ final class BasicTest extends TestCase {
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
-		$this->assertSame(200, $request->status_code);
 
+		// Verify the request succeeded.
+		$this->assertInstanceOf(
+			Response::class,
+			$request,
+			'GET request did not return an instance of `Requests\Response`'
+		);
+		$this->assertSame(
+			200,
+			$request->status_code,
+			'GET request failed. Expected status: 200. Received status: ' . $request->status_code
+		);
+
+		// Verify the response confirms that the request was authenticated.
 		$result = json_decode($request->body);
-		$this->assertTrue($result->authenticated);
-		$this->assertSame('user', $result->user);
+		$this->assertIsObject($result, 'Decoded response body is not an object');
+
+		$this->assertObjectHasAttribute(
+			'authenticated',
+			$result,
+			'Property "authenticated" not available in decoded response'
+		);
+		$this->assertTrue($result->authenticated, 'Authentication failed');
+
+		$this->assertObjectHasAttribute(
+			'user',
+			$result,
+			'Property "user" not available in decoded response'
+		);
+		$this->assertSame('user', $result->user, 'Unexpected value encountered for "user"');
 	}
 
 	/**
@@ -38,11 +64,36 @@ final class BasicTest extends TestCase {
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
-		$this->assertSame(200, $request->status_code);
 
+		// Verify the request succeeded.
+		$this->assertInstanceOf(
+			Response::class,
+			$request,
+			'GET request did not return an instance of `Requests\Response`'
+		);
+		$this->assertSame(
+			200,
+			$request->status_code,
+			'GET request failed. Expected status: 200. Received status: ' . $request->status_code
+		);
+
+		// Verify the response confirms that the request was authenticated.
 		$result = json_decode($request->body);
-		$this->assertTrue($result->authenticated);
-		$this->assertSame('user', $result->user);
+		$this->assertIsObject($result, 'Decoded response body is not an object');
+
+		$this->assertObjectHasAttribute(
+			'authenticated',
+			$result,
+			'Property "authenticated" not available in decoded response'
+		);
+		$this->assertTrue($result->authenticated, 'Authentication failed');
+
+		$this->assertObjectHasAttribute(
+			'user',
+			$result,
+			'Property "user" not available in decoded response'
+		);
+		$this->assertSame('user', $result->user, 'Unexpected value encountered for "user"');
 	}
 
 	/**
@@ -57,15 +108,45 @@ final class BasicTest extends TestCase {
 		);
 		$data    = 'test';
 		$request = Requests::post(httpbin('/post'), array(), $data, $options);
-		$this->assertSame(200, $request->status_code);
 
+		// Verify the request succeeded.
+		$this->assertInstanceOf(
+			Response::class,
+			$request,
+			'POST request did not return an instance of `Requests\Response`'
+		);
+		$this->assertSame(
+			200,
+			$request->status_code,
+			'POST request failed. Expected status: 200. Received status: ' . $request->status_code
+		);
+
+		// Verify the response confirms that the request was authenticated.
 		$result = json_decode($request->body);
+
+		$this->assertIsObject($result, 'Decoded response body is not an object');
+		$this->assertObjectHasAttribute(
+			'headers',
+			$result,
+			'Property "headers" not available in decoded response'
+		);
+		$this->assertObjectHasAttribute(
+			'Authorization',
+			$result->headers,
+			'Property "headers->Authorization" not available in decoded response'
+		);
 
 		$auth = $result->headers->Authorization;
 		$auth = explode(' ', $auth);
+		$this->assertArrayHasKey(1, $auth, 'Authorization header failed to be split into two parts');
+		$this->assertSame(base64_encode('user:passwd'), $auth[1], 'Unexpected authorization string in headers');
 
-		$this->assertSame(base64_encode('user:passwd'), $auth[1]);
-		$this->assertSame('test', $result->data);
+		$this->assertObjectHasAttribute(
+			'data',
+			$result,
+			'Property "data" not available in decoded response'
+		);
+		$this->assertSame('test', $result->data, 'Unexpected data value encountered');
 	}
 
 	public function testMissingPassword() {
