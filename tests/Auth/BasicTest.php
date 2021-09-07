@@ -149,10 +149,33 @@ final class BasicTest extends TestCase {
 		$this->assertSame('test', $result->data, 'Unexpected data value encountered');
 	}
 
-	public function testMissingPassword() {
+	/**
+	 * Verify that an exception is thrown when the class is instantiated with an invalid number of arguments.
+	 *
+	 * @dataProvider dataInvalidArgumentCount
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testInvalidArgumentCount($input) {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid number of arguments');
-		new Basic(array('user'));
+
+		new Basic($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidArgumentCount() {
+		return array(
+			'empty array'                 => array(array()),
+			'array with only one element' => array(array('user')),
+			'array with extra element'    => array(array('user', 'psw', 'port')),
+		);
 	}
 
 	/**
