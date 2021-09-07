@@ -8,7 +8,9 @@
 
 namespace WpOrg\Requests;
 
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooker;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * Handles adding and dispatching events
@@ -30,8 +32,23 @@ class Hooks implements Hooker {
 	 * @param string $hook Hook name
 	 * @param callback $callback Function/method to call on event
 	 * @param int $priority Priority number. <0 is executed earlier, >0 is executed later
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $hook argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $callback argument is not callable.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $priority argument is not an integer.
 	 */
 	public function register($hook, $callback, $priority = 0) {
+		if (is_string($hook) === false) {
+			throw InvalidArgument::create(1, '$hook', 'string', gettype($hook));
+		}
+
+		if (is_callable($callback) === false) {
+			throw InvalidArgument::create(2, '$callback', 'callable', gettype($callback));
+		}
+
+		if (InputValidator::is_numeric_array_key($priority) === false) {
+			throw InvalidArgument::create(3, '$priority', 'integer', gettype($priority));
+		}
+
 		if (!isset($this->hooks[$hook])) {
 			$this->hooks[$hook] = array(
 				$priority => array(),
@@ -49,8 +66,19 @@ class Hooks implements Hooker {
 	 * @param string $hook Hook name
 	 * @param array $parameters Parameters to pass to callbacks
 	 * @return boolean Successfulness
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $hook argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $parameters argument is not an array.
 	 */
 	public function dispatch($hook, $parameters = array()) {
+		if (is_string($hook) === false) {
+			throw InvalidArgument::create(1, '$hook', 'string', gettype($hook));
+		}
+
+		// Check strictly against array, as Array* objects don't work in combination with `call_user_func_array()`.
+		if (is_array($parameters) === false) {
+			throw InvalidArgument::create(2, '$parameters', 'array', gettype($parameters));
+		}
+
 		if (empty($this->hooks[$hook])) {
 			return false;
 		}

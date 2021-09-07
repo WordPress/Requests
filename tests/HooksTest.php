@@ -2,7 +2,12 @@
 
 namespace WpOrg\Requests\Tests;
 
+use Closure;
+use stdClass;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
+use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
+use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 
 /**
@@ -70,8 +75,11 @@ class HooksTest extends TestCase {
 			'Registering a second callback on the same hook with the same priority failed'
 		);
 
-		// Verify that new subkeys are created when needed.
-		$this->hooks->register('hookname', 'is_int', 10);
+		/*
+		 * Verify that new subkeys are created when needed.
+		 * Also verifies that the input validation isn't too strict for the priority.
+		 */
+		$this->hooks->register('hookname', 'is_int', '10');
 		$this->assertSame(
 			array(
 				'hookname' => array(
@@ -87,6 +95,29 @@ class HooksTest extends TestCase {
 			$this->getPropertyValue($this->hooks, 'hooks'),
 			'Registering a callback on a different priority for an existing hook failed'
 		);
+	}
+
+	/**
+	 * Technical test to verify and safeguard Hooks::register() accepts closure callbacks.
+	 *
+	 * @covers ::register
+	 *
+	 * @return void
+	 */
+	public function testRegisterClosureCallback() {
+		$this->hooks->register(
+			'hookname',
+			function($param) {
+				return true;
+			}
+		);
+
+		$hooks_prop = $this->getPropertyValue($this->hooks, 'hooks');
+
+		$this->assertArrayHasKey('hookname', $hooks_prop, '$hooks property does not have key ["hookname"]');
+		$this->assertArrayHasKey(0, $hooks_prop['hookname'], '$hooks property does not have key ["hookname"][0]');
+		$this->assertArrayHasKey(0, $hooks_prop['hookname'][0], '$hooks property does not have key ["hookname"][0][0]');
+		$this->assertInstanceof(Closure::class, $hooks_prop['hookname'][0][0], 'Closure callback is not registered correctly');
 	}
 
 
@@ -169,6 +200,152 @@ class HooksTest extends TestCase {
 		$this->hooks->register('hook_b', array($mock, 'callback_c'));
 
 		$this->assertTrue($this->hooks->dispatch('hook_b', array(10, 'text')));
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$hook`.
+	 *
+	 * @dataProvider dataInvalidHookname
+	 *
+	 * @covers ::register
+	 *
+	 * @param mixed $input Invalid hook name input.
+	 *
+	 * @return void
+	 */
+	public function testRegisterInvalidHookname($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($hook) must be of type string');
+
+		$this->hooks->register($input, 'is_string');
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed to `dispatch()` as `$hook`.
+	 *
+	 * @dataProvider dataInvalidHookname
+	 *
+	 * @covers ::dispatch
+	 *
+	 * @param mixed $input Invalid hook name input.
+	 *
+	 * @return void
+	 */
+	public function testDispatchInvalidHookname($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($hook) must be of type string');
+
+		$this->hooks->dispatch($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidHookname() {
+		return array(
+			'null'              => array(null),
+			'float'             => array(1.1),
+			'stringable object' => array(new StringableObject('value')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$callback`.
+	 *
+	 * @dataProvider dataRegisterInvalidCallback
+	 *
+	 * @covers ::register
+	 *
+	 * @param mixed $input Invalid callback.
+	 *
+	 * @return void
+	 */
+	public function testRegisterInvalidCallback($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($callback) must be of type callable');
+
+		$this->hooks->register('hookname', $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRegisterInvalidCallback() {
+		return array(
+			'null'                  => array(null),
+			'non-existent function' => array('functionname'),
+			'non-existent method'   => array(array($this, 'dummyCallbackDoesNotExist')),
+			'empty array'           => array(array()),
+			'plain object'          => array(new stdClass(), 'method'),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$priority`.
+	 *
+	 * @dataProvider dataRegisterInvalidPriority
+	 *
+	 * @covers ::register
+	 *
+	 * @param mixed $input Invalid priority.
+	 *
+	 * @return void
+	 */
+	public function testRegisterInvalidPriority($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #3 ($priority) must be of type int');
+
+		$this->hooks->register('hookname', array($this, 'dummyCallback1'), $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRegisterInvalidPriority() {
+		return array(
+			'null'             => array(null),
+			'float'            => array(1.1),
+			'string "123 abc"' => array('123 abc'),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed to `dispatch()` as `$parameters`.
+	 *
+	 * @dataProvider dataDispatchInvalidParameters
+	 *
+	 * @covers ::dispatch
+	 *
+	 * @param mixed $input Invalid parameters array.
+	 *
+	 * @return void
+	 */
+	public function testDispatchInvalidParameters($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($parameters) must be of type array');
+
+		$this->hooks->dispatch('hookname', $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataDispatchInvalidParameters() {
+		return array(
+			'null'                            => array(null),
+			'bool false'                      => array(false),
+			'float'                           => array(1.1),
+			'string'                          => array('param'),
+			'object implementing ArrayAccess' => array(new ArrayAccessibleObject()),
+		);
 	}
 
 	/**
