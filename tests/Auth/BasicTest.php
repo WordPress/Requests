@@ -13,10 +13,7 @@ final class BasicTest extends TestCase {
 	 * @dataProvider transportProvider
 	 */
 	public function testUsingArray($transport) {
-		if (!call_user_func(array($transport, 'test'))) {
-			$this->markTestSkipped($transport . ' is not available');
-			return;
-		}
+		$this->skipWhenTransportNotAvailable($transport);
 
 		$options = array(
 			'auth'      => array('user', 'passwd'),
@@ -34,10 +31,7 @@ final class BasicTest extends TestCase {
 	 * @dataProvider transportProvider
 	 */
 	public function testUsingInstantiation($transport) {
-		if (!call_user_func(array($transport, 'test'))) {
-			$this->markTestSkipped($transport . ' is not available');
-			return;
-		}
+		$this->skipWhenTransportNotAvailable($transport);
 
 		$options = array(
 			'auth'      => new Basic(array('user', 'passwd')),
@@ -55,10 +49,7 @@ final class BasicTest extends TestCase {
 	 * @dataProvider transportProvider
 	 */
 	public function testPOSTUsingInstantiation($transport) {
-		if (!call_user_func(array($transport, 'test'))) {
-			$this->markTestSkipped($transport . ' is not available');
-			return;
-		}
+		$this->skipWhenTransportNotAvailable($transport);
 
 		$options = array(
 			'auth'      => new Basic(array('user', 'passwd')),
@@ -83,4 +74,16 @@ final class BasicTest extends TestCase {
 		new Basic(array('user'));
 	}
 
+	/**
+	 * Helper function to skip select tests when the transport under test is not available.
+	 *
+	 * @param string $transport Transport to use.
+	 *
+	 * @return void
+	 */
+	public function skipWhenTransportNotAvailable($transport) {
+		if (!$transport::test()) {
+			$this->markTestSkipped('Transport "' . $transport . '" is not available');
+		}
+	}
 }
