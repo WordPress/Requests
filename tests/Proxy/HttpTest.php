@@ -6,7 +6,6 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
-use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
 
 final class HttpTest extends TestCase {
@@ -24,13 +23,6 @@ final class HttpTest extends TestCase {
 		if (!$has_proxy) {
 			$this->markTestSkipped('Proxy not available');
 		}
-	}
-
-	public function transportProvider() {
-		return array(
-			array(Curl::class),
-			array(Fsockopen::class),
-		);
 	}
 
 	/**

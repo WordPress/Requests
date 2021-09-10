@@ -140,6 +140,18 @@ class Requests {
 	);
 
 	/**
+	 * Default supported Transport classes.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array
+	 */
+	const DEFAULT_TRANSPORTS = array(
+		Curl::class      => Curl::class,
+		Fsockopen::class => Fsockopen::class,
+	);
+
+	/**
 	 * Current version of Requests
 	 *
 	 * @var string
@@ -186,13 +198,10 @@ class Requests {
 	 */
 	public static function add_transport($transport) {
 		if (empty(self::$transports)) {
-			self::$transports = array(
-				Curl::class,
-				Fsockopen::class,
-			);
+			self::$transports = self::DEFAULT_TRANSPORTS;
 		}
 
-		self::$transports = array_merge(self::$transports, array($transport));
+		self::$transports[$transport] = $transport;
 	}
 
 	/**
@@ -216,10 +225,7 @@ class Requests {
 		// @codeCoverageIgnoreEnd
 
 		if (empty(self::$transports)) {
-			self::$transports = array(
-				Curl::class,
-				Fsockopen::class,
-			);
+			self::$transports = self::DEFAULT_TRANSPORTS;
 		}
 
 		// Find us a working transport
