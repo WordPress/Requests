@@ -169,7 +169,7 @@ class Requests {
 			);
 		}
 
-		self::$transports = array_merge(self::$transports, array($transport));
+		self::$transports = array_merge(array($transport), self::$transports);
 	}
 
 	/**
