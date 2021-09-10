@@ -241,13 +241,46 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		$request['options']['hooks']->dispatch('curl.before_multi_exec', array(&$multihandle));
 
+		$made_progress = true;
+		$all_requests_start = microtime(true);
+		$microseconds_taken_by_last_curl_operation = 0;
 		do {
 			$active = 0;
 
+			if (!$made_progress) {
+				// For a small fraction of slow requests, curl_multi_select will busy loop and return immediately with no indication of error (it returns 0 immediately with/without setting curl_multi_errno).
+				// (https://github.com/rmccue/Requests/pull/284)
+				// To mitigate this, add our own sleep if curl returned but no requests completed (failing or succeeding)
+				// - The amount of time to sleep is the smaller of 1ms or 10% of total time spent waiting for curl requests
+				//   (10% was arbitrarily chosen to slowing down requests that would normally take less than 1 millisecond)
+				// - The amount of time that was already spent in curl_multi_exec+curl_multi_select in the previous request is subtracted from that.
+				//   (E.g. if curl_multi_select already slept for 1 milliseconds, curl_multi_select might be operating normally)
+				$elapsed_microseconds = (microtime(true) - $all_requests_start) * 1000000;
+				$microseconds_to_sleep = min($elapsed_microseconds / 10, 1000) - $microseconds_taken_by_last_curl_operation;
+				if ($microseconds_to_sleep >= 1) {
+					usleep($microseconds_to_sleep);
+				}
+			}
+			$operation_start = microtime(true);
+			$is_first_multi_exec = true;
 			do {
+				if (!$is_first_multi_exec) {
+					// Sleep for 1 millisecond to avoid a busy loop that would chew CPU
+					// See ORA2PG-498
+					usleep(1000);
+				}
 				$status = curl_multi_exec($multihandle, $active);
+				$is_first_multi_exec = false;
 			}
 			while ($status === CURLM_CALL_MULTI_PERFORM);
+
+			// curl_multi_select will sleep for at most 50 milliseconds before returning.
+			// Note that in php 7.1.23+, curl_multi_select can return immediately but return 0 with no error in some edge cases.
+			$select_result = curl_multi_select($multihandle, 0.05);
+			// A return value of 0 means that nothing interesting happened.
+			// A return value of -1 means that either (1) nothing interesting happened or (2) there was an error.
+			// A return value of 1 or more means that interesting things happened to that many connections.
+			$made_progress = $select_result > 0;
 
 			$to_process = array();
 
@@ -261,6 +294,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 			// Parse the finished requests before we start getting the new ones
 			foreach ($to_process as $key => $done) {
+				$made_progress = true;  // Set this just in case progress was made despite curl_multi_select saying otherwise.
 				$options = $requests[$key]['options'];
 				if ($done['result'] !== CURLE_OK) {
 					//get error string for handle.
@@ -288,6 +322,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 				}
 				$completed++;
 			}
+			$microseconds_taken_by_last_curl_operation = (microtime(true) - $operation_start) * 100000;
 		}
 		while ($active || $completed < $subrequestcount);
 
