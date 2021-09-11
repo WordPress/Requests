@@ -1,6 +1,6 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
 use Yoast\PHPUnitPolyfills\TestCases\TestCase as Polyfill_TestCase;
 

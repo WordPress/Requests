@@ -1,10 +1,10 @@
 <?php
 
-namespace Requests\Tests\Utility;
+namespace WpOrg\Requests\Tests\Utility;
 
 use ArrayIterator;
 use ReflectionClass;
-use Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\FilteredIterator;
 
 class FilteredIteratorTest extends TestCase {

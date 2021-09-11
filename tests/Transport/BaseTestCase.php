@@ -1,9 +1,7 @@
 <?php
 
-namespace Requests\Tests\Transport;
+namespace WpOrg\Requests\Tests\Transport;
 
-use Requests\Tests\Mock\TransportMock;
-use Requests\Tests\TestCase;
 use stdClass;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\Http\StatusUnknown;
@@ -11,6 +9,8 @@ use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
+use WpOrg\Requests\Tests\Mock\TransportMock;
+use WpOrg\Requests\Tests\TestCase;
 
 abstract class BaseTestCase extends TestCase {
 	public function set_up() {

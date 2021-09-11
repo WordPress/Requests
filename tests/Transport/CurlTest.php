@@ -1,10 +1,10 @@
 <?php
 
-namespace Requests\Tests\Transport;
+namespace WpOrg\Requests\Tests\Transport;
 
-use Requests\Tests\Transport\BaseTestCase;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Tests\Transport\BaseTestCase;
 use WpOrg\Requests\Transport\Curl;
 
 class CurlTest extends BaseTestCase {

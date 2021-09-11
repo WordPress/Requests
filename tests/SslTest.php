@@ -1,9 +1,9 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Ssl;
+use WpOrg\Requests\Tests\TestCase;
 
 class SslTest extends TestCase {
 	public static function domainMatchProvider() {

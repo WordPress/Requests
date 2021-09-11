@@ -1,10 +1,10 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Session;
+use WpOrg\Requests\Tests\TestCase;
 
 class SessionTest extends TestCase {
 	public function testURLResolution() {

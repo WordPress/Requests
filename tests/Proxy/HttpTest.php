@@ -1,11 +1,11 @@
 <?php
 
-namespace Requests\Tests\Proxy;
+namespace WpOrg\Requests\Tests\Proxy;
 
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
 

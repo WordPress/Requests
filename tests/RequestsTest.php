@@ -1,13 +1,13 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests\Tests\Mock\RawTransportMock;
-use Requests\Tests\Mock\TransportMock;
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Tests\Mock\RawTransportMock;
+use WpOrg\Requests\Tests\Mock\TransportMock;
+use WpOrg\Requests\Tests\TestCase;
 
 class RequestsTest extends TestCase {
 

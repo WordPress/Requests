@@ -1,10 +1,10 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\IdnaEncoder;
+use WpOrg\Requests\Tests\TestCase;
 
 class IdnaEncoderTest extends TestCase {
 	public static function specExamples() {

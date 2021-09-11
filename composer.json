@@ -58,7 +58,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Requests\\Tests\\": "tests/"
+      "WpOrg\\Requests\\Tests\\": "tests/"
     }
   },
   "scripts": {

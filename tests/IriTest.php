@@ -40,10 +40,10 @@
  *
  */
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Iri;
+use WpOrg\Requests\Tests\TestCase;
 
 class IriTest extends TestCase
 {

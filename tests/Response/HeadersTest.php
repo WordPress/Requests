@@ -1,10 +1,10 @@
 <?php
 
-namespace Requests\Tests\Response;
+namespace WpOrg\Requests\Tests\Response;
 
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Tests\TestCase;
 
 class HeadersTest extends TestCase {
 	public function testArrayAccess() {

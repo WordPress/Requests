@@ -1,6 +1,6 @@
 <?php
 
-namespace Requests\Tests\Mock;
+namespace WpOrg\Requests\Tests\Mock;
 
 use WpOrg\Requests\Transport;
 

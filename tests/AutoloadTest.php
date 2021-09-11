@@ -1,9 +1,9 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests\Tests\TestCase;
 use Requests_Exception_Transport_cURL;
+use WpOrg\Requests\Tests\TestCase;
 
 class AutoloadTest extends TestCase {
 

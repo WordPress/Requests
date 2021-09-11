@@ -1,11 +1,11 @@
 <?php
 
-namespace Requests\Tests\Auth;
+namespace WpOrg\Requests\Tests\Auth;
 
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
 

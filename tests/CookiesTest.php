@@ -1,14 +1,14 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests\Tests\TestCase;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 class CookiesTest extends TestCase {
