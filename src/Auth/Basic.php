@@ -67,7 +67,7 @@ class Basic implements Auth {
 	/**
 	 * Set cURL parameters before the data is sent
 	 *
-	 * @param resource $handle cURL resource
+	 * @param resource|\CurlHandle $handle cURL handle
 	 */
 	public function curl_before_send(&$handle) {
 		curl_setopt($handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);

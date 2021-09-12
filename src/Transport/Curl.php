@@ -57,7 +57,7 @@ class Curl implements Transport {
 	/**
 	 * cURL handle
 	 *
-	 * @var resource
+	 * @var resource|\CurlHandle Resource in PHP < 8.0, Instance of CurlHandle in PHP >= 8.0.
 	 */
 	protected $handle;
 
@@ -315,7 +315,7 @@ class Curl implements Transport {
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
-	 * @return resource Subrequest's cURL handle
+	 * @return resource|\CurlHandle Subrequest's cURL handle
 	 */
 	public function &get_subrequest_handle($url, $headers, $data, $options) {
 		$this->setup_handle($url, $headers, $data, $options);
@@ -484,7 +484,7 @@ class Curl implements Transport {
 	/**
 	 * Collect the headers as they are received
 	 *
-	 * @param resource $handle cURL resource
+	 * @param resource|\CurlHandle $handle cURL handle
 	 * @param string $headers Header string
 	 * @return integer Length of provided header
 	 */
@@ -509,7 +509,7 @@ class Curl implements Transport {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param resource $handle cURL resource
+	 * @param resource|\CurlHandle $handle cURL handle
 	 * @param string $data Body data
 	 * @return integer Length of provided data
 	 */

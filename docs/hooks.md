@@ -35,13 +35,13 @@ Available Hooks
     Set cURL options before the transport sets any (note that Requests may
     override these).
 
-    Parameters: `cURL resource &$fp`
+    Parameters: `cURL resource|CurlHandle &$fp`
 
 * **`curl.before_send`**
 
     Set cURL options just before the request is actually sent via `curl_exec()`.
 
-    Parameters: `cURL resource &$fp`
+    Parameters: `cURL resource|CurlHandle &$fp`
 
 * **`curl.after_request`**
 
