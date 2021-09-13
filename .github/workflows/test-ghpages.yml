@@ -1,0 +1,27 @@
+name: Test Jekyll Build
+
+on:
+  pull_request:
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+jobs:
+  #### TEST THAT THE GH PAGES SITE GETS BUILT WITHOUT ERRORS ####
+  test:
+    name: "Test GHPages site"
+    if: github.repository == 'WordPress/Requests'
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          # Use the version as per https://pages.github.com/versions/.
+          ruby-version: 2.7.3
+          bundler-cache: true
+
+      - name: Test building the GH Pages site
+        run: bundle exec jekyll build
