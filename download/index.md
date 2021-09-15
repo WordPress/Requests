@@ -53,13 +53,13 @@ $ git clone {{ site.github.clone_url }}
 And include it in your scripts:
 
 ```php
-require_once '/path/to/Requests/library/Requests.php';
+require_once '/path/to/Requests/src/Autoload.php';
 ```
 
 You'll probably also want to register an autoloader:
 
 ```php
-Requests::register_autoloader();
+WpOrg\Requests\Autoload::register();
 ```
 
 
