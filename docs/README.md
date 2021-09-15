@@ -6,6 +6,8 @@ here are prose; you might also want to check out the [API documentation][].
 
 [API documentation]: https://requests.ryanmccue.info/api/
 
+<!-- Splitter DO NOT REMOVE Splitter -->
+
 * Introduction
 	* [Goals][goals]
 	* [Why should I use Requests instead of X?][why-requests]
