@@ -28,6 +28,7 @@ exclude:
    - gemfiles/
    - Gemfile
    - Gemfile.lock
+   - artifacts/
    - node_modules/
    - vendor/bundle/
    - vendor/cache/
@@ -37,8 +38,6 @@ exclude:
    - CONTRIBUTING.md
    - LICENSE
    - README.md
-   - apigen.neon
-   - buildtool.py
    - Vagrantfile
    - vagrant-provision.sh
    - .gitignore
