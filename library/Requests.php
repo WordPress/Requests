@@ -23,6 +23,11 @@ if (!defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS') || REQUESTS_SILENCE_PSR0_DEPR
 		. ' Switch to the PSR-4 `WpOrg\Requests\...` class names at your earliest convenience.',
 		E_USER_DEPRECATED
 	);
+
+	// Prevent the deprecation notice from being thrown twice.
+	if (!defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS')) {
+		define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
+	}
 }
 
 require_once dirname(__DIR__) . '/src/Requests.php';

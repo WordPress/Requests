@@ -96,20 +96,6 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		);
 
 		/**
-		 * Whether or not a deprecation notice has been thrown for calling a deprecated class.
-		 *
-		 * @var bool
-		 */
-		private static $deprecation_thrown = false;
-
-		/**
-		 * Whether or not a deprecation notice should be thrown for calling a deprecated class.
-		 *
-		 * @var bool
-		 */
-		private static $throw_notice = true;
-
-		/**
 		 * Register the autoloader.
 		 *
 		 * Note: the autoloader is *prepended* in the autoload queue.
@@ -146,12 +132,8 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			}
 
 			if ($class_name === 'Requests') {
-				/*
-				 * Reference to the original PSR-0 Requests class.
-				 * Loading this class will always generate a deprecation notice.
-				 */
-				$file                     = dirname(__DIR__) . '/library/Requests.php';
-				self::$deprecation_thrown = true;
+				// Reference to the original PSR-0 Requests class.
+				$file = dirname(__DIR__) . '/library/Requests.php';
 			} elseif ($psr_4_prefix_pos === 0) {
 				// PSR-4 classname.
 				$file = __DIR__ . '/' . strtr(substr($class_name, 15), '\\', '/') . '.php';
@@ -170,25 +152,23 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			$class_lower = strtolower($class_name);
 
 			if (isset(self::$deprecated_classes[$class_lower])) {
-				if (self::$throw_notice === true) {
-					/*
-					 * Integrators who cannot yet upgrade to the PSR-4 class names can silence deprecations
-					 * by defining a `REQUESTS_SILENCE_PSR0_DEPRECATIONS` constant and setting it to `true`.
-					 * The constant needs to be defined before the first deprecated class is requested
-					 * via this autoloader.
-					 */
-					if (defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS') && REQUESTS_SILENCE_PSR0_DEPRECATIONS === true) {
-						self::$throw_notice = false;
-					}
+				/*
+				 * Integrators who cannot yet upgrade to the PSR-4 class names can silence deprecations
+				 * by defining a `REQUESTS_SILENCE_PSR0_DEPRECATIONS` constant and setting it to `true`.
+				 * The constant needs to be defined before the first deprecated class is requested
+				 * via this autoloader.
+				 */
+				if (!defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS') || REQUESTS_SILENCE_PSR0_DEPRECATIONS !== true) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+					trigger_error(
+						'The PSR-0 `Requests_...` class names in the Request library are deprecated.'
+						. ' Switch to the PSR-4 `WpOrg\Requests\...` class names at your earliest convenience.',
+						E_USER_DEPRECATED
+					);
 
-					if (self::$throw_notice === true && self::$deprecation_thrown === false) {
-						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
-						trigger_error(
-							'The PSR-0 `Requests_...` class names in the Request library are deprecated.'
-							. ' Switch to the PSR-4 `WpOrg\Requests\...` class names at your earliest convenience.',
-							E_USER_DEPRECATED
-						);
-						self::$deprecation_thrown = true;
+					// Prevent the deprecation notice from being thrown twice.
+					if (!defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS')) {
+						define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
 					}
 				}
 
