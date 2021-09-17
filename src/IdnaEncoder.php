@@ -23,6 +23,17 @@ class IdnaEncoder {
 	 */
 	const ACE_PREFIX = 'xn--';
 
+	/**
+	 * Maximum length of a IDNA URL in ASCII.
+	 *
+	 * @see \WpOrg\Requests\IdnaEncoder::to_ascii()
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var int
+	 */
+	const MAX_LENGTH = 64;
+
 	/**#@+
 	 * Bootstrap constant for Punycode
 	 *
@@ -67,7 +78,7 @@ class IdnaEncoder {
 		// Step 1: Check if the string is already ASCII
 		if (self::is_ascii($string)) {
 			// Skip to step 7
-			if (strlen($string) < 64) {
+			if (strlen($string) < self::MAX_LENGTH) {
 				return $string;
 			}
 
@@ -81,7 +92,7 @@ class IdnaEncoder {
 		// Step 4: Check if it's ASCII now
 		if (self::is_ascii($string)) {
 			// Skip to step 7
-			if (strlen($string) < 64) {
+			if (strlen($string) < self::MAX_LENGTH) {
 				return $string;
 			}
 
@@ -100,7 +111,7 @@ class IdnaEncoder {
 		$string = self::ACE_PREFIX . $string;
 
 		// Step 8: Check size
-		if (strlen($string) < 64) {
+		if (strlen($string) < self::MAX_LENGTH) {
 			return $string;
 		}
 
