@@ -9,8 +9,8 @@ use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
 
-class HttpTest extends TestCase {
-	protected function checkProxyAvailable($type = '') {
+final class HttpTest extends TestCase {
+	private function checkProxyAvailable($type = '') {
 		switch ($type) {
 			case 'auth':
 				$has_proxy = defined('REQUESTS_HTTP_PROXY_AUTH') && REQUESTS_HTTP_PROXY_AUTH;

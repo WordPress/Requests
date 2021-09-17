@@ -6,7 +6,7 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\Mock\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
-class ChunkedDecodingTest extends TestCase {
+final class ChunkedDecodingTest extends TestCase {
 	public static function chunkedProvider() {
 		return array(
 			array(

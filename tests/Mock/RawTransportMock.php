@@ -4,7 +4,7 @@ namespace WpOrg\Requests\Tests\Mock;
 
 use WpOrg\Requests\Transport;
 
-class RawTransportMock implements Transport {
+final class RawTransportMock implements Transport {
 	public $data = '';
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		return $this->data;

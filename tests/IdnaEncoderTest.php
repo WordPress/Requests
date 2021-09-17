@@ -6,7 +6,7 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\IdnaEncoder;
 use WpOrg\Requests\Tests\TestCase;
 
-class IdnaEncoderTest extends TestCase {
+final class IdnaEncoderTest extends TestCase {
 	public static function specExamples() {
 		return array(
 			array(

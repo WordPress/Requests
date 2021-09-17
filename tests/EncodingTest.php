@@ -5,8 +5,8 @@ namespace WpOrg\Requests\Tests;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
 
-class EncodingTest extends TestCase {
-	protected static function mapData($type, $data) {
+final class EncodingTest extends TestCase {
+	private static function mapData($type, $data) {
 		$real_data = array();
 		foreach ($data as $value) {
 			$key             = $type . ': ' . $value[0];

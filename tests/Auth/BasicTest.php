@@ -9,7 +9,7 @@ use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
 
-class BasicTest extends TestCase {
+final class BasicTest extends TestCase {
 	public static function transportProvider() {
 		return array(
 			array(Fsockopen::class),

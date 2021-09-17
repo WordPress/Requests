@@ -4,7 +4,7 @@ namespace WpOrg\Requests\Exception\Transport;
 
 use WpOrg\Requests\Exception\Transport;
 
-class Curl extends Transport {
+final class Curl extends Transport {
 
 	const EASY  = 'cURLEasy';
 	const MULTI = 'cURLMulti';

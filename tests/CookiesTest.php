@@ -11,7 +11,7 @@ use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
-class CookiesTest extends TestCase {
+final class CookiesTest extends TestCase {
 	public function testBasicCookie() {
 		$cookie = new Cookie('requests-testcookie', 'testvalue');
 
@@ -113,7 +113,7 @@ class CookiesTest extends TestCase {
 		$this->assertSame('testvalue', $cookie->value);
 	}
 
-	protected function setCookieRequest($cookies) {
+	private function setCookieRequest($cookies) {
 		$options  = array(
 			'cookies' => $cookies,
 		);
@@ -466,7 +466,7 @@ class CookiesTest extends TestCase {
 		);
 	}
 
-	protected function check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags = array()) {
+	private function check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags = array()) {
 		if (isset($expected['name'])) {
 			$this->assertSame($expected['name'], $cookie->name);
 		}

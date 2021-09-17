@@ -17,7 +17,7 @@ namespace WpOrg\Requests;
  * @package Requests
  * @subpackage Utilities
  */
-class Ipv6 {
+final class Ipv6 {
 	/**
 	 * Uncompresses an IPv6 address
 	 *
@@ -126,7 +126,7 @@ class Ipv6 {
 	 * @param string $ip An IPv6 address
 	 * @return string[] [0] contains the IPv6 represented part, and [1] the IPv4 represented part
 	 */
-	protected static function split_v6_v4($ip) {
+	private static function split_v6_v4($ip) {
 		if (strpos($ip, '.') !== false) {
 			$pos       = strrpos($ip, ':');
 			$ipv6_part = substr($ip, 0, $pos);

@@ -16,7 +16,7 @@ use WpOrg\Requests\Exception\Http;
  * @link https://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
-class Status429 extends Http {
+final class Status429 extends Http {
 	/**
 	 * HTTP status code
 	 *

@@ -45,7 +45,7 @@ namespace WpOrg\Requests\Tests;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Tests\TestCase;
 
-class IriTest extends TestCase
+final class IriTest extends TestCase
 {
 	public static function rfc3986_tests()
 	{

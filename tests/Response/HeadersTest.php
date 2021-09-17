@@ -6,7 +6,7 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\TestCase;
 
-class HeadersTest extends TestCase {
+final class HeadersTest extends TestCase {
 	public function testArrayAccess() {
 		$headers                 = new Headers();
 		$headers['Content-Type'] = 'text/plain';

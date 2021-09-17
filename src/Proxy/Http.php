@@ -22,7 +22,7 @@ use WpOrg\Requests\Proxy;
  * @subpackage Proxy
  * @since 1.6
  */
-class Http implements Proxy {
+final class Http implements Proxy {
 	/**
 	 * Proxy host and port
 	 *

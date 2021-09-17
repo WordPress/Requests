@@ -7,7 +7,7 @@ use ReflectionClass;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\FilteredIterator;
 
-class FilteredIteratorTest extends TestCase {
+final class FilteredIteratorTest extends TestCase {
 	/**
 	 * @dataProvider dataSerializeDeserializeObjects
 	 */

@@ -5,7 +5,7 @@ namespace WpOrg\Requests\Tests;
 use Requests_Exception_Transport_cURL;
 use WpOrg\Requests\Tests\TestCase;
 
-class AutoloadTest extends TestCase {
+final class AutoloadTest extends TestCase {
 
 	const MSG = 'The PSR-0 `Requests_...` class names in the Request library are deprecated.';
 

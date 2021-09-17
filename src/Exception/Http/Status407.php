@@ -14,7 +14,7 @@ use WpOrg\Requests\Exception\Http;
  *
  * @package Requests
  */
-class Status407 extends Http {
+final class Status407 extends Http {
 	/**
 	 * HTTP status code
 	 *

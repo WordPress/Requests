@@ -6,7 +6,7 @@ use WpOrg\Requests\Response;
 use WpOrg\Requests\Session;
 use WpOrg\Requests\Tests\TestCase;
 
-class SessionTest extends TestCase {
+final class SessionTest extends TestCase {
 	public function testURLResolution() {
 		$session = new Session(httpbin('/'));
 

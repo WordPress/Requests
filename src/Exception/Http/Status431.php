@@ -16,7 +16,7 @@ use WpOrg\Requests\Exception\Http;
  * @link https://tools.ietf.org/html/rfc6585
  * @package Requests
  */
-class Status431 extends Http {
+final class Status431 extends Http {
 	/**
 	 * HTTP status code
 	 *
