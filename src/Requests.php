@@ -185,6 +185,25 @@ class Requests {
 	protected static $certificate_path;
 
 	/**
+	 * All (known) valid deflate, gzip header magic markers.
+	 *
+	 * These markers related to different compression levels.
+	 *
+	 * @link https://stackoverflow.com/a/43170354/482864 Marker source.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array
+	 */
+	private static $magic_compression_headers = array(
+		"\x1f\x8b" => true, // Gzip marker.
+		"\x78\x01" => true, // Zlib marker - level 1.
+		"\x78\x5e" => true, // Zlib marker - level 2 to 5.
+		"\x78\x9c" => true, // Zlib marker - level 6.
+		"\x78\xda" => true, // Zlib marker - level 7 to 9.
+	);
+
+	/**
 	 * This is a static class, do not instantiate it
 	 *
 	 * @codeCoverageIgnore
@@ -823,9 +842,8 @@ class Requests {
 	 * @return string Decompressed string
 	 */
 	public static function decompress($data) {
-		// All valid deflate, gzip header magic markers
-		$valid_magic = array("\x1f\x8b", "\x78\x01", "\x78\x5e", "\x78\x9c", "\x78\xda");
-		if (!in_array(substr($data, 0, 2), $valid_magic, true)) {
+		$marker = substr($data, 0, 2);
+		if (!isset(self::$magic_compression_headers[$marker])) {
 			// Not actually compressed. Probably cURL ruining this for us.
 			return $data;
 		}
