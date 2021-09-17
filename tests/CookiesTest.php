@@ -1,19 +1,19 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests;
-use Requests\Tests\TestCase;
-use Requests_Cookie;
-use Requests_Cookie_Jar;
-use Requests_Exception;
-use Requests_IRI;
-use Requests_Response_Headers;
-use Requests_Utility_CaseInsensitiveDictionary;
+use WpOrg\Requests\Cookie;
+use WpOrg\Requests\Cookie\Jar;
+use WpOrg\Requests\Exception;
+use WpOrg\Requests\Iri;
+use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 class CookiesTest extends TestCase {
 	public function testBasicCookie() {
-		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue');
+		$cookie = new Cookie('requests-testcookie', 'testvalue');
 
 		$this->assertSame('requests-testcookie', $cookie->name);
 		$this->assertSame('testvalue', $cookie->value);
@@ -28,28 +28,28 @@ class CookiesTest extends TestCase {
 			'httponly',
 			'path' => '/',
 		);
-		$cookie     = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$cookie     = new Cookie('requests-testcookie', 'testvalue', $attributes);
 
 		$this->assertSame('requests-testcookie=testvalue', $cookie->format_for_header());
 		$this->assertSame('requests-testcookie=testvalue; httponly; path=/', $cookie->format_for_set_cookie());
 	}
 
 	public function testEmptyCookieName() {
-		$cookie = Requests_Cookie::parse('test');
+		$cookie = Cookie::parse('test');
 		$this->assertSame('', $cookie->name);
 		$this->assertSame('test', $cookie->value);
 	}
 
 	public function testEmptyAttributes() {
-		$cookie = Requests_Cookie::parse('foo=bar; HttpOnly');
+		$cookie = Cookie::parse('foo=bar; HttpOnly');
 		$this->assertTrue($cookie->attributes['httponly']);
 	}
 
 	public function testCookieJarSetter() {
-		$jar1                        = new Requests_Cookie_Jar();
+		$jar1                        = new Jar();
 		$jar1['requests-testcookie'] = 'testvalue';
 
-		$jar2 = new Requests_Cookie_Jar(
+		$jar2 = new Jar(
 			array(
 				'requests-testcookie' => 'testvalue',
 			)
@@ -58,7 +58,7 @@ class CookiesTest extends TestCase {
 	}
 
 	public function testCookieJarUnsetter() {
-		$jar                        = new Requests_Cookie_Jar();
+		$jar                        = new Jar();
 		$jar['requests-testcookie'] = 'testvalue';
 
 		$this->assertSame('testvalue', $jar['requests-testcookie']);
@@ -69,9 +69,9 @@ class CookiesTest extends TestCase {
 	}
 
 	public function testCookieJarAsList() {
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Object is a dictionary, not a list');
-		$cookies   = new Requests_Cookie_Jar();
+		$cookies   = new Jar();
 		$cookies[] = 'requests-testcookie1=testvalue1';
 	}
 
@@ -80,7 +80,7 @@ class CookiesTest extends TestCase {
 			'requests-testcookie1' => 'testvalue1',
 			'requests-testcookie2' => 'testvalue2',
 		);
-		$jar     = new Requests_Cookie_Jar($cookies);
+		$jar     = new Jar($cookies);
 
 		foreach ($jar as $key => $value) {
 			$this->assertSame($cookies[$key], $value);
@@ -154,7 +154,7 @@ class CookiesTest extends TestCase {
 	}
 
 	public function testSendingCookieWithJar() {
-		$cookies = new Requests_Cookie_Jar(
+		$cookies = new Jar(
 			array(
 				'requests-testcookie1' => 'testvalue1',
 			)
@@ -180,7 +180,7 @@ class CookiesTest extends TestCase {
 	}
 
 	public function testSendingMultipleCookiesWithJar() {
-		$cookies = new Requests_Cookie_Jar(
+		$cookies = new Jar(
 			array(
 				'requests-testcookie1' => 'testvalue1',
 				'requests-testcookie2' => 'testvalue2',
@@ -196,9 +196,9 @@ class CookiesTest extends TestCase {
 	}
 
 	public function testSendingPrebakedCookie() {
-		$cookies = new Requests_Cookie_Jar(
+		$cookies = new Jar(
 			array(
-				new Requests_Cookie('requests-testcookie', 'testvalue'),
+				new Cookie('requests-testcookie', 'testvalue'),
 			)
 		);
 		$data    = $this->setCookieRequest($cookies);
@@ -236,9 +236,9 @@ class CookiesTest extends TestCase {
 	 * @dataProvider domainMatchProvider
 	 */
 	public function testDomainExactMatch($original, $check, $matches, $domain_matches) {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
-		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes);
 		$this->assertSame($matches, $cookie->domain_matches($check));
 	}
 
@@ -246,12 +246,12 @@ class CookiesTest extends TestCase {
 	 * @dataProvider domainMatchProvider
 	 */
 	public function testDomainMatch($original, $check, $matches, $domain_matches) {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $original;
 		$flags                = array(
 			'host-only' => false,
 		);
-		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
 		$this->assertSame($domain_matches, $cookie->domain_matches($check));
 	}
 
@@ -279,9 +279,9 @@ class CookiesTest extends TestCase {
 	 * @dataProvider pathMatchProvider
 	 */
 	public function testPathMatch($original, $check, $matches) {
-		$attributes         = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes         = new CaseInsensitiveDictionary();
 		$attributes['path'] = $original;
-		$cookie             = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$cookie             = new Cookie('requests-testcookie', 'testvalue', $attributes);
 		$this->assertSame($matches, $cookie->path_matches($check));
 	}
 
@@ -318,11 +318,11 @@ class CookiesTest extends TestCase {
 	 * @dataProvider urlMatchProvider
 	 */
 	public function testUrlExactMatch($domain, $path, $check, $matches, $domain_matches) {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $domain;
 		$attributes['path']   = $path;
-		$check                = new Requests_IRI($check);
-		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes);
+		$check                = new Iri($check);
+		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes);
 		$this->assertSame($matches, $cookie->uri_matches($check));
 	}
 
@@ -332,33 +332,33 @@ class CookiesTest extends TestCase {
 	 * @dataProvider urlMatchProvider
 	 */
 	public function testUrlMatch($domain, $path, $check, $matches, $domain_matches) {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $domain;
 		$attributes['path']   = $path;
 		$flags                = array(
 			'host-only' => false,
 		);
-		$check                = new Requests_IRI($check);
-		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+		$check                = new Iri($check);
+		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
 		$this->assertSame($domain_matches, $cookie->uri_matches($check));
 	}
 
 	public function testUrlMatchSecure() {
-		$attributes           = new Requests_Utility_CaseInsensitiveDictionary();
+		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = 'example.com';
 		$attributes['path']   = '/';
 		$attributes['secure'] = true;
 		$flags                = array(
 			'host-only' => false,
 		);
-		$cookie               = new Requests_Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
 
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('https://example.com/')));
-		$this->assertFalse($cookie->uri_matches(new Requests_IRI('http://example.com/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('https://example.com/')));
+		$this->assertFalse($cookie->uri_matches(new Iri('http://example.com/')));
 
 		// Double-check host-only
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('https://www.example.com/')));
-		$this->assertFalse($cookie->uri_matches(new Requests_IRI('http://www.example.com/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('https://www.example.com/')));
+		$this->assertFalse($cookie->uri_matches(new Iri('http://www.example.com/')));
 	}
 
 	/**
@@ -369,18 +369,18 @@ class CookiesTest extends TestCase {
 	 * should be regarded as "global" cookies (that is, set for `.`)
 	 */
 	public function testUrlMatchManuallySet() {
-		$cookie = new Requests_Cookie('requests-testcookie', 'testvalue');
+		$cookie = new Cookie('requests-testcookie', 'testvalue');
 		$this->assertTrue($cookie->domain_matches('example.com'));
 		$this->assertTrue($cookie->domain_matches('example.net'));
 		$this->assertTrue($cookie->path_matches('/'));
 		$this->assertTrue($cookie->path_matches('/test'));
 		$this->assertTrue($cookie->path_matches('/test/'));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.com/')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.com/test')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.com/test/')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.net/')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.net/test')));
-		$this->assertTrue($cookie->uri_matches(new Requests_IRI('http://example.net/test/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test/')));
 	}
 
 	public static function parseResultProvider() {
@@ -495,7 +495,7 @@ class CookiesTest extends TestCase {
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
-		$cookie = Requests_Cookie::parse($header, null, $reference_time);
+		$cookie = Cookie::parse($header, null, $reference_time);
 		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
 	}
 
@@ -508,7 +508,7 @@ class CookiesTest extends TestCase {
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
-		$cookie = Requests_Cookie::parse($header, null, $reference_time);
+		$cookie = Cookie::parse($header, null, $reference_time);
 
 		// Normalize the value again
 		$cookie->normalize();
@@ -520,13 +520,13 @@ class CookiesTest extends TestCase {
 	 * @dataProvider parseResultProvider
 	 */
 	public function testParsingHeaderObject($header, $expected, $expected_attributes = array(), $expected_flags = array()) {
-		$headers               = new Requests_Response_Headers();
+		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
-		$parsed = Requests_Cookie::parse_from_headers($headers, null, $reference_time);
+		$parsed = Cookie::parse_from_headers($headers, null, $reference_time);
 		$this->assertCount(1, $parsed);
 
 		$cookie = reset($parsed);
@@ -647,14 +647,14 @@ class CookiesTest extends TestCase {
 	 * @dataProvider parseFromHeadersProvider
 	 */
 	public function testParsingHeaderWithOrigin($header, $origin, $expected, $expected_attributes = array(), $expected_flags = array()) {
-		$origin                = new Requests_IRI($origin);
-		$headers               = new Requests_Response_Headers();
+		$origin                = new Iri($origin);
+		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
-		$parsed = Requests_Cookie::parse_from_headers($headers, $origin, $reference_time);
+		$parsed = Cookie::parse_from_headers($headers, $origin, $reference_time);
 		if (isset($expected['invalid'])) {
 			$this->assertCount(0, $parsed);
 			return;

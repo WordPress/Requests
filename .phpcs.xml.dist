@@ -16,8 +16,8 @@
 	<file>.</file>
 
 	<!-- Third party files and build files don't need to comply with these coding standards. -->
-	<exclude-pattern>*/library/Requests/IRI\.php$</exclude-pattern>
-	<exclude-pattern>*/tests/IRITest\.php$</exclude-pattern>
+	<exclude-pattern>*/src/Iri\.php$</exclude-pattern>
+	<exclude-pattern>*/tests/IriTest\.php$</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/coverage/</exclude-pattern>
 
@@ -186,11 +186,12 @@
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="Requests"/>
+				<element value="WpOrg\Requests"/>
 			</property>
 		</properties>
 		
-		<!-- Only code within the actual distributed package needs to be prefixed. -->
-		<include-pattern>/library/*\.php$</include-pattern>
+		<exclude-pattern>*/examples/*\.php$</exclude-pattern>
+		<exclude-pattern>*/tests/bootstrap\.php$</exclude-pattern>
 	</rule>
 
 	<!-- Simplify alignment rules for multiline arrays. -->
@@ -219,8 +220,11 @@
 
 	<!-- Don't rename existing classes to prevent a BC break. -->
 	<rule ref="PEAR.NamingConventions.ValidClassName.Invalid">
-		<exclude-pattern>*/Transport/cURL\.php$</exclude-pattern>
-		<exclude-pattern>*/Transport/fsockopen\.php$</exclude-pattern>
+		<exclude-pattern>*/library/Deprecated\.php$</exclude-pattern>
+	</rule>
+
+	<rule ref="Generic.Files.OneObjectStructurePerFile.MultipleFound">
+		<exclude-pattern>*/library/Deprecated\.php$</exclude-pattern>
 	</rule>
 
 	<!-- ==========================================================================

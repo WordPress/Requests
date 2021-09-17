@@ -1,11 +1,11 @@
 <?php
 
-namespace Requests\Tests\Utility;
+namespace WpOrg\Requests\Tests\Utility;
 
 use ArrayIterator;
 use ReflectionClass;
-use Requests\Tests\TestCase;
-use Requests_Utility_FilteredIterator;
+use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Utility\FilteredIterator;
 
 class FilteredIteratorTest extends TestCase {
 	/**
@@ -13,9 +13,9 @@ class FilteredIteratorTest extends TestCase {
 	 */
 	public function testDeserializeRequestUtilityFilteredIteratorObjects($value) {
 		$serialized = serialize($value);
-		if (get_class($value) === Requests_Utility_FilteredIterator::class) {
+		if (get_class($value) === FilteredIterator::class) {
 			$new_value  = unserialize($serialized);
-			$reflection = new ReflectionClass(Requests_Utility_FilteredIterator::class);
+			$reflection = new ReflectionClass(FilteredIterator::class);
 			$property   = $reflection->getProperty('callback');
 			$property->setAccessible(true);
 			$callback_value = $property->getValue($new_value);
@@ -27,9 +27,9 @@ class FilteredIteratorTest extends TestCase {
 
 	public function dataSerializeDeserializeObjects() {
 		return array(
-			array(new Requests_Utility_FilteredIterator(array(1), 'md5')),
-			array(new Requests_Utility_FilteredIterator(array(1, 2), 'sha1')),
-			array(new Requests_Utility_FilteredIterator(array(1, 2, 3), 'doesnotexist')),
+			array(new FilteredIterator(array(1), 'md5')),
+			array(new FilteredIterator(array(1, 2), 'sha1')),
+			array(new FilteredIterator(array(1, 2, 3), 'doesnotexist')),
 			array(new ArrayIterator(array(1, 2, 3))),
 		);
 	}

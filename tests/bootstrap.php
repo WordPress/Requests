@@ -41,8 +41,8 @@ if (defined('__PHPUNIT_PHAR__')) {
 	require_once $vendor_dir . '/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 	// Load the library autoloader.
-	require_once dirname(__DIR__) . '/library/Requests.php';
-	Requests::register_autoloader();
+	require_once dirname(__DIR__) . '/src/Autoload.php';
+	WpOrg\Requests\Autoload::register();
 
 	/*
 	 * Autoloader specifically for the test files.
@@ -52,12 +52,12 @@ if (defined('__PHPUNIT_PHAR__')) {
 	spl_autoload_register(
 		function ($class_name) {
 			// Only try & load our own classes.
-			if (stripos($class_name, 'Requests\\Tests\\') !== 0) {
+			if (stripos($class_name, 'WpOrg\\Requests\\Tests\\') !== 0) {
 				return false;
 			}
 
-			// Strip namespace prefix 'Requests\Tests\'.
-			$relative_class = substr($class_name, 15);
+			// Strip namespace prefix 'WpOrg\\Requests\Tests\'.
+			$relative_class = substr($class_name, 21);
 			$file           = realpath(__DIR__ . '/' . strtr($relative_class, '\\', '/') . '.php');
 
 			if (file_exists($file)) {

@@ -24,7 +24,7 @@ We all have better things to do. That's why Requests was born.
 ```php
 $headers = array('Accept' => 'application/json');
 $options = array('auth' => array('user', 'pass'));
-$request = Requests::get('https://api.github.com/gists', $headers, $options);
+$request = WpOrg\Requests\Requests::get('https://api.github.com/gists', $headers, $options);
 
 var_dump($request->status_code);
 // int(200)
@@ -79,14 +79,14 @@ To install the source code:
 $ git clone git://github.com/WordPress/Requests.git
 ```
 
-And include it in your scripts:
+Next, include the autoloader in your scripts:
 ```php
-require_once '/path/to/Requests/library/Requests.php';
+require_once '/path/to/Requests/src/Autoload.php';
 ```
 
-You'll probably also want to register an autoloader:
+You'll probably also want to register the autoloader:
 ```php
-Requests::register_autoloader();
+WpOrg\Requests\Autoload::register();
 ```
 
 ### Install source from zip/tarball
@@ -104,13 +104,15 @@ $ wget https://github.com/WordPress/Requests/tarball/stable -O - | tar xzv
 
 ### Using a Class Loader
 If you're using a class loader (e.g., [Symfony Class Loader][]) for
-[PSR-0][]-style class loading:
+[PSR-4][]-style class loading:
 ```php
-$loader->registerPrefix('Requests', 'path/to/vendor/Requests/library');
+$loader = new Psr4ClassLoader();
+$loader->addPrefix('WpOrg\\Requests\\', 'path/to/vendor/Requests/src');
+$loader->register();
 ```
 
 [Symfony Class Loader]: https://github.com/symfony/ClassLoader
-[PSR-0]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md
+[PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4.md
 
 
 Documentation
@@ -119,7 +121,7 @@ The best place to start is our [prose-based documentation][], which will guide
 you through using Requests.
 
 After that, take a look at [the documentation for
-`Requests::request()`][request_method], where all the parameters are fully
+`\WpOrg\Requests\Requests::request()`][request_method], where all the parameters are fully
 documented.
 
 Requests is [100% documented with PHPDoc](https://requests.ryanmccue.info/api/).

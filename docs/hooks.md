@@ -3,7 +3,7 @@ Hooks
 Requests has a hook system that you can use to manipulate parts of the request
 process along with internal transport hooks.
 
-Check out the [API documentation for `Requests_Hooks`][requests_hooks] for more
+Check out the [API documentation for `WpOrg\Requests\Hooks`][requests_hooks] for more
 information on how to use the hook system.
 
 [requests_hooks]: {{ '/api/class-Requests_Hooks.html' | prepend: site.baseurl }}
@@ -28,7 +28,7 @@ Available Hooks
 
     Alter the response object before it is returned to the user.
 
-    Parameters: `Requests_Response &$return`
+    Parameters: `WpOrg\Requests\Response &$return`
 
 * **`curl.before_request`**
 
@@ -88,16 +88,18 @@ Authentication guide][authentication-custom] instead.
 
 [authentication-custom]: authentication-custom.md
 
-In order to register your own hooks, you need to instantiate `Requests_Hooks`
+In order to register your own hooks, you need to instantiate `WpOrg\Requests\Hooks`
 and pass the object in via the `'hooks'` option.
 
 ```php
-$hooks = new Requests_Hooks();
+$hooks = new WpOrg\Requests\Hooks();
 $hooks->register('requests.after_request', 'mycallback');
 
-$request = Requests::get('https://httpbin.org/get', array(), array('hooks' => $hooks));
+$request = WpOrg\Requests\Requests::get('https://httpbin.org/get', array(), array('hooks' => $hooks));
 ```
 
 ***
 
 Previous: [Requests through proxy](proxy.md)
+
+Next: [Upgrading to Requests 2.0](upgrading.md)

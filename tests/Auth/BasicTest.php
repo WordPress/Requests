@@ -1,19 +1,19 @@
 <?php
 
-namespace Requests\Tests\Auth;
+namespace WpOrg\Requests\Tests\Auth;
 
-use Requests;
-use Requests\Tests\TestCase;
-use Requests_Auth_Basic;
-use Requests_Exception;
-use Requests_Transport_cURL;
-use Requests_Transport_fsockopen;
+use WpOrg\Requests\Auth\Basic;
+use WpOrg\Requests\Exception;
+use WpOrg\Requests\Requests;
+use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Transport\Curl;
+use WpOrg\Requests\Transport\Fsockopen;
 
 class BasicTest extends TestCase {
 	public static function transportProvider() {
 		return array(
-			array(Requests_Transport_fsockopen::class),
-			array(Requests_Transport_cURL::class),
+			array(Fsockopen::class),
+			array(Curl::class),
 		);
 	}
 
@@ -48,7 +48,7 @@ class BasicTest extends TestCase {
 		}
 
 		$options = array(
-			'auth'      => new Requests_Auth_Basic(array('user', 'passwd')),
+			'auth'      => new Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
 		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
@@ -69,7 +69,7 @@ class BasicTest extends TestCase {
 		}
 
 		$options = array(
-			'auth'      => new Requests_Auth_Basic(array('user', 'passwd')),
+			'auth'      => new Basic(array('user', 'passwd')),
 			'transport' => $transport,
 		);
 		$data    = 'test';
@@ -86,9 +86,9 @@ class BasicTest extends TestCase {
 	}
 
 	public function testMissingPassword() {
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Invalid number of arguments');
-		new Requests_Auth_Basic(array('user'));
+		new Basic(array('user'));
 	}
 
 }

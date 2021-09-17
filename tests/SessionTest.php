@@ -1,14 +1,14 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests\Tests\TestCase;
-use Requests_Response;
-use Requests_Session;
+use WpOrg\Requests\Response;
+use WpOrg\Requests\Session;
+use WpOrg\Requests\Tests\TestCase;
 
 class SessionTest extends TestCase {
 	public function testURLResolution() {
-		$session = new Requests_Session(httpbin('/'));
+		$session = new Session(httpbin('/'));
 
 		// Set the cookies up
 		$response = $session->get('/get');
@@ -34,7 +34,7 @@ class SessionTest extends TestCase {
 			'X-Requests-Session' => 'BasicGET',
 			'X-Requests-Request' => 'notset',
 		);
-		$session         = new Requests_Session(httpbin('/'), $session_headers);
+		$session         = new Session(httpbin('/'), $session_headers);
 		$response        = $session->get('/get', array('X-Requests-Request' => 'GET'));
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
@@ -51,7 +51,7 @@ class SessionTest extends TestCase {
 			'X-Requests-Session' => 'BasicHEAD',
 			'X-Requests-Request' => 'notset',
 		);
-		$session         = new Requests_Session(httpbin('/'), $session_headers);
+		$session         = new Session(httpbin('/'), $session_headers);
 		$response        = $session->head('/get', array('X-Requests-Request' => 'HEAD'));
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
@@ -62,7 +62,7 @@ class SessionTest extends TestCase {
 			'X-Requests-Session' => 'BasicDELETE',
 			'X-Requests-Request' => 'notset',
 		);
-		$session         = new Requests_Session(httpbin('/'), $session_headers);
+		$session         = new Session(httpbin('/'), $session_headers);
 		$response        = $session->delete('/delete', array('X-Requests-Request' => 'DELETE'));
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
@@ -79,7 +79,7 @@ class SessionTest extends TestCase {
 			'X-Requests-Session' => 'BasicPOST',
 			'X-Requests-Request' => 'notset',
 		);
-		$session         = new Requests_Session(httpbin('/'), $session_headers);
+		$session         = new Session(httpbin('/'), $session_headers);
 		$response        = $session->post('/post', array('X-Requests-Request' => 'POST'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
@@ -96,7 +96,7 @@ class SessionTest extends TestCase {
 			'X-Requests-Session' => 'BasicPUT',
 			'X-Requests-Request' => 'notset',
 		);
-		$session         = new Requests_Session(httpbin('/'), $session_headers);
+		$session         = new Session(httpbin('/'), $session_headers);
 		$response        = $session->put('/put', array('X-Requests-Request' => 'PUT'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
@@ -113,7 +113,7 @@ class SessionTest extends TestCase {
 			'X-Requests-Session' => 'BasicPATCH',
 			'X-Requests-Request' => 'notset',
 		);
-		$session         = new Requests_Session(httpbin('/'), $session_headers);
+		$session         = new Session(httpbin('/'), $session_headers);
 		$response        = $session->patch('/patch', array('X-Requests-Request' => 'PATCH'), array('postdata' => 'exists'));
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
@@ -126,7 +126,7 @@ class SessionTest extends TestCase {
 	}
 
 	public function testMultiple() {
-		$session   = new Requests_Session(httpbin('/'), array('X-Requests-Session' => 'Multiple'));
+		$session   = new Session(httpbin('/'), array('X-Requests-Session' => 'Multiple'));
 		$requests  = array(
 			'test1' => array(
 				'url' => httpbin('/get'),
@@ -139,7 +139,7 @@ class SessionTest extends TestCase {
 
 		// test1
 		$this->assertNotEmpty($responses['test1']);
-		$this->assertInstanceOf(Requests_Response::class, $responses['test1']);
+		$this->assertInstanceOf(Response::class, $responses['test1']);
 		$this->assertSame(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
@@ -148,7 +148,7 @@ class SessionTest extends TestCase {
 
 		// test2
 		$this->assertNotEmpty($responses['test2']);
-		$this->assertInstanceOf(Requests_Response::class, $responses['test2']);
+		$this->assertInstanceOf(Response::class, $responses['test2']);
 		$this->assertSame(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
@@ -174,7 +174,7 @@ class SessionTest extends TestCase {
 			'foo'        => 'bar',
 		);
 
-		$session = new Requests_Session('http://example.com/', $headers, $data, $options);
+		$session = new Session('http://example.com/', $headers, $data, $options);
 		$this->assertSame('http://example.com/', $session->url);
 		$this->assertSame($headers, $session->headers);
 		$this->assertSame($data, $session->data);
@@ -202,7 +202,7 @@ class SessionTest extends TestCase {
 	}
 
 	public function testSharedCookies() {
-		$session = new Requests_Session(httpbin('/'));
+		$session = new Session(httpbin('/'));
 
 		$options  = array(
 			'follow_redirects' => false,

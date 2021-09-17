@@ -1,20 +1,20 @@
 <?php
 
-namespace Requests\Tests\Response;
+namespace WpOrg\Requests\Tests\Response;
 
-use Requests\Tests\TestCase;
-use Requests_Exception;
-use Requests_Response_Headers;
+use WpOrg\Requests\Exception;
+use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Tests\TestCase;
 
 class HeadersTest extends TestCase {
 	public function testArrayAccess() {
-		$headers                 = new Requests_Response_Headers();
+		$headers                 = new Headers();
 		$headers['Content-Type'] = 'text/plain';
 
 		$this->assertSame('text/plain', $headers['Content-Type']);
 	}
 	public function testCaseInsensitiveArrayAccess() {
-		$headers                 = new Requests_Response_Headers();
+		$headers                 = new Headers();
 		$headers['Content-Type'] = 'text/plain';
 
 		$this->assertSame('text/plain', $headers['CONTENT-TYPE']);
@@ -25,7 +25,7 @@ class HeadersTest extends TestCase {
 	 * @depends testArrayAccess
 	 */
 	public function testIteration() {
-		$headers                   = new Requests_Response_Headers();
+		$headers                   = new Headers();
 		$headers['Content-Type']   = 'text/plain';
 		$headers['Content-Length'] = 10;
 
@@ -44,14 +44,14 @@ class HeadersTest extends TestCase {
 	}
 
 	public function testInvalidKey() {
-		$this->expectException(Requests_Exception::class);
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Object is a dictionary, not a list');
-		$headers   = new Requests_Response_Headers();
+		$headers   = new Headers();
 		$headers[] = 'text/plain';
 	}
 
 	public function testMultipleHeaders() {
-		$headers           = new Requests_Response_Headers();
+		$headers           = new Headers();
 		$headers['Accept'] = 'text/html;q=1.0';
 		$headers['Accept'] = '*/*;q=0.1';
 

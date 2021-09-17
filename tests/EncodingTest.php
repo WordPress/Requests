@@ -1,9 +1,9 @@
 <?php
 
-namespace Requests\Tests;
+namespace WpOrg\Requests\Tests;
 
-use Requests;
-use Requests\Tests\TestCase;
+use WpOrg\Requests\Requests;
+use WpOrg\Requests\Tests\TestCase;
 
 class EncodingTest extends TestCase {
 	protected static function mapData($type, $data) {

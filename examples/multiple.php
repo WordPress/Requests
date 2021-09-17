@@ -1,10 +1,10 @@
 <?php
 
-// First, include Requests
-require_once dirname(__DIR__) . '/library/Requests.php';
+// First, include the Requests Autoloader.
+require_once dirname(__DIR__) . '/src/Autoload.php';
 
-// Next, make sure Requests can load internal classes
-Requests::register_autoloader();
+// Next, make sure Requests can load internal classes.
+WpOrg\Requests\Autoload::register();
 
 // Setup what we want to request
 $requests = array(
@@ -35,7 +35,7 @@ $options = array(
 );
 
 // Send the request!
-$responses = Requests::request_multiple($requests, $options);
+$responses = WpOrg\Requests\Requests::request_multiple($requests, $options);
 
 // Note: the response from the above call will be an associative array matching
 // $requests with the response data, however we've already handled it in
