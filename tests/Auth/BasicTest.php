@@ -6,16 +6,8 @@ use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
-use WpOrg\Requests\Transport\Curl;
-use WpOrg\Requests\Transport\Fsockopen;
 
 final class BasicTest extends TestCase {
-	public static function transportProvider() {
-		return array(
-			array(Fsockopen::class),
-			array(Curl::class),
-		);
-	}
 
 	/**
 	 * @dataProvider transportProvider
