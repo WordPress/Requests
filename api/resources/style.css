@@ -306,6 +306,12 @@ code a b {
 	padding: 5px 15px;
 }
 
+#warning {
+	background: #f697a4;
+	padding: 1px 8px;
+	margin: 0 0 1.2em ;
+}
+
 .description pre {
 	padding: .6em;
 	background: #fcfcf7;
