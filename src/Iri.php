@@ -10,6 +10,7 @@ namespace WpOrg\Requests;
 
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Ipv6;
+use WpOrg\Requests\Port;
 
 /**
  * IRI parser/serialiser/normaliser
@@ -128,19 +129,19 @@ class Iri {
 	 */
 	protected $normalization = array(
 		'acap' => array(
-			'port' => 674
+			'port' => Port::ACAP,
 		),
 		'dict' => array(
-			'port' => 2628
+			'port' => Port::DICT,
 		),
 		'file' => array(
-			'ihost' => 'localhost'
+			'ihost' => 'localhost',
 		),
 		'http' => array(
-			'port' => 80,
+			'port' => Port::HTTP,
 		),
 		'https' => array(
-			'port' => 443,
+			'port' => Port::HTTPS,
 		),
 	);
 
