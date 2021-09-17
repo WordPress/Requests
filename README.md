@@ -154,10 +154,15 @@ $ phpunit Transport/cURL
 Contribute
 ----------
 
-1. Check for open issues or open a new issue for a feature request or a bug
+1. Check for open issues or open a new issue for a feature request or a bug.
 2. Fork [the repository][] on Github to start making your changes to the
-    `develop` branch (or branch off of it)
-3. Write a test which shows that the bug was fixed or that the feature works as expected
-4. Send a pull request and bug me until I merge it
+    `develop` branch (or branch off of it).
+3. Write one or more tests which show that the bug was fixed or that the feature works as expected.
+4. Send in a pull request.
+
+If you have questions while working on your contribution and you use Slack, there is
+a [#core-http-api] channel available in the [WordPress Slack] in which contributions can be discussed.
 
 [the repository]: https://github.com/WordPress/Requests
+[#core-http-api]: https://wordpress.slack.com/archives/C02BBE29V42
+[WordPress Slack]: https://make.wordpress.org/chat/
