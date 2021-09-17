@@ -49,7 +49,9 @@ class Http extends Exception {
 	}
 
 	/**
-	 * Get the status message
+	 * Get the status message.
+	 *
+	 * @return string
 	 */
 	public function getReason() {
 		return $this->reason;
