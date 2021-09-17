@@ -63,11 +63,11 @@ Why should I use Requests?
    authentication handlers and cookie support is actually handled internally
    with hooks.
 
-[codecov]: https://app.codecov.io/gh/WordPress/Requests/branch/master
+[codecov]: https://app.codecov.io/gh/WordPress/Requests/branch/stable
 [hooking system]: hooks.html
-[requests_ssl]: https://github.com/WordPress/Requests/blob/master/library/Requests/SSL.php
+[requests_ssl]: https://github.com/WordPress/Requests/blob/stable/src/Ssl.php
 [ghactions]: https://github.com/WordPress/Requests/actions
-[wpssl]: http://core.trac.wordpress.org/ticket/25007
+[wpssl]: https://core.trac.wordpress.org/ticket/25007
 
 
 Why shouldn't I use...
@@ -94,8 +94,8 @@ instead of something else, in our opinion.
 
    Requests, on the other hand, exposes only a handful of classes to the
    global namespace, most of which are for internal use. You can learn to use
-   the `Requests::request()` method and the `Requests_Response` object in the
-   space of 10 minutes and you already know how to use Requests.
+   the `WpOrg\Requests\Requests::request()` method and the `WpOrg\Requests\Response`
+   object in the space of 10 minutes and you already know how to use Requests.
 
 
 ### Guzzle
@@ -167,7 +167,7 @@ instead of something else, in our opinion.
    using PEAR for your project.
 
    Requests is entirely self-contained, and includes all the libraries it needs
-   (for example, `Requests_IRI` is based on `ComplexPie_IRI` by Geoffrey Sneddon).
+   (for example, `WpOrg\Requests\Iri` is based on `ComplexPie_IRI` by Geoffrey Sneddon).
 
 
 ### Zend Framework's Zend\_Http\_Client
