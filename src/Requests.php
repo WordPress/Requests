@@ -108,6 +108,38 @@ class Requests {
 	const DEFAULT_CERT_PATH = __DIR__ . '/../certificates/cacert.pem';
 
 	/**
+	 * Option defaults.
+	 *
+	 * @see \WpOrg\Requests\Requests::get_default_options()
+	 * @see \WpOrg\Requests\Requests::request() for values returned by this method
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array
+	 */
+	const OPTION_DEFAULTS = array(
+		'timeout'          => 10,
+		'connect_timeout'  => 10,
+		'useragent'        => 'php-requests/' . self::VERSION,
+		'protocol_version' => 1.1,
+		'redirected'       => 0,
+		'redirects'        => 10,
+		'follow_redirects' => true,
+		'blocking'         => true,
+		'type'             => self::GET,
+		'filename'         => false,
+		'auth'             => false,
+		'proxy'            => false,
+		'cookies'          => false,
+		'max_bytes'        => false,
+		'idn'              => true,
+		'hooks'            => null,
+		'transport'        => null,
+		'verify'           => null,
+		'verifyname'       => true,
+	);
+
+	/**
 	 * Current version of Requests
 	 *
 	 * @var string
@@ -493,27 +525,9 @@ class Requests {
 	 * @return array Default option values
 	 */
 	protected static function get_default_options($multirequest = false) {
-		$defaults = array(
-			'timeout'          => 10,
-			'connect_timeout'  => 10,
-			'useragent'        => 'php-requests/' . self::VERSION,
-			'protocol_version' => 1.1,
-			'redirected'       => 0,
-			'redirects'        => 10,
-			'follow_redirects' => true,
-			'blocking'         => true,
-			'type'             => self::GET,
-			'filename'         => false,
-			'auth'             => false,
-			'proxy'            => false,
-			'cookies'          => false,
-			'max_bytes'        => false,
-			'idn'              => true,
-			'hooks'            => null,
-			'transport'        => null,
-			'verify'           => self::get_certificate_path(),
-			'verifyname'       => true,
-		);
+		$defaults           = static::OPTION_DEFAULTS;
+		$defaults['verify'] = self::get_certificate_path();
+
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
 		}
