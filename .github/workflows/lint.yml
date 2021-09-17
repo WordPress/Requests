@@ -49,4 +49,9 @@ jobs:
           composer-options: --ignore-platform-reqs
 
       - name: Lint against parse errors
+        if: ${{ matrix.php >= '7.2' }}
         run: composer lint -- --checkstyle | cs2pr
+
+      - name: Lint against parse errors
+        if: ${{ matrix.php < '7.2' }}
+        run: composer lint -- --exclude build --checkstyle | cs2pr

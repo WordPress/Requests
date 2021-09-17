@@ -1,4 +1,5 @@
 .github/ export-ignore
+build/ export-ignore
 docs/ export-ignore
 examples/ export-ignore
 tests/ export-ignore
@@ -6,4 +7,5 @@ tests/ export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 .phpcs.xml.dist export-ignore
+phpdoc.dist.xml export-ignore
 phpunit.xml.dist export-ignore

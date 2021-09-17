@@ -4,6 +4,8 @@ tests/coverage/*
 # Ignore composer related files
 /composer.lock
 /vendor
+build/ghpages/composer.lock
+build/ghpages/vendor
 
 # Ignore local overrides of the PHPCS config file.
 .phpcs.xml
@@ -11,3 +13,8 @@ phpcs.xml
 
 # Ignore PHPUnit results cache file.
 .phpunit.result.cache
+
+# Ignore temporary files for ghpages builds.
+phpdoc.xml
+build/ghpages/.phpdoc
+build/ghpages/artifacts
