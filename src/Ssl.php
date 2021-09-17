@@ -23,7 +23,7 @@ class Ssl {
 	 * Unfortunately, PHP doesn't check the certificate against the alternative
 	 * names, leading things like 'https://www.github.com/' to be invalid.
 	 *
-	 * @see https://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
+	 * @link https://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
 	 *
 	 * @throws \WpOrg\Requests\Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
 	 * @param string $host Host name to verify against

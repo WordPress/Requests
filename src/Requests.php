@@ -149,7 +149,7 @@ class Requests {
 	/**
 	 * Selected transport name
 	 *
-	 * Use {@see get_transport()} instead
+	 * Use {@see \WpOrg\Requests\Requests::get_transport()} instead
 	 *
 	 * @var array
 	 */
@@ -243,7 +243,7 @@ class Requests {
 	}
 
 	/**#@+
-	 * @see request()
+	 * @see \WpOrg\Requests\Requests::request()
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $options
@@ -279,7 +279,7 @@ class Requests {
 	/**#@-*/
 
 	/**#@+
-	 * @see request()
+	 * @see \WpOrg\Requests\Requests::request()
 	 * @param string $url
 	 * @param array $headers
 	 * @param array $data
@@ -309,8 +309,8 @@ class Requests {
 	/**
 	 * Send a PATCH request
 	 *
-	 * Note: Unlike {@see post} and {@see put}, `$headers` is required, as the
-	 * specification recommends that should send an ETag
+	 * Note: Unlike {@see \WpOrg\Requests\Requests::post()} and {@see \WpOrg\Requests\Requests::put()},
+	 * `$headers` is required, as the specification recommends that should send an ETag
 	 *
 	 * @link https://tools.ietf.org/html/rfc5789
 	 */
@@ -355,8 +355,8 @@ class Requests {
 	 *    (boolean, default: true)
 	 * - `transport`: Custom transport. Either a class name, or a
 	 *    transport object. Defaults to the first working transport from
-	 *    {@see getTransport()}
-	 *    (string|\WpOrg\Requests\Transport, default: {@see getTransport()})
+	 *    {@see \WpOrg\Requests\Requests::getTransport()}
+	 *    (string|\WpOrg\Requests\Transport, default: {@see \WpOrg\Requests\Requests::getTransport()})
 	 * - `hooks`: Hooks handler.
 	 *    (\WpOrg\Requests\Hooker, default: new WpOrg\Requests\Hooks())
 	 * - `verify`: Should we verify SSL certificates? Allows passing in a custom
@@ -419,16 +419,16 @@ class Requests {
 	 * The request fields value is an associative array with the following keys:
 	 *
 	 * - `url`: Request URL Same as the `$url` parameter to
-	 *    {@see \WpOrg\Requests\Requests::request}
+	 *    {@see \WpOrg\Requests\Requests::request()}
 	 *    (string, required)
 	 * - `headers`: Associative array of header fields. Same as the `$headers`
-	 *    parameter to {@see \WpOrg\Requests\Requests::request}
+	 *    parameter to {@see \WpOrg\Requests\Requests::request()}
 	 *    (array, default: `array()`)
 	 * - `data`: Associative array of data fields or a string. Same as the
-	 *    `$data` parameter to {@see \WpOrg\Requests\Requests::request}
+	 *    `$data` parameter to {@see \WpOrg\Requests\Requests::request()}
 	 *    (array|string, default: `array()`)
 	 * - `type`: HTTP request type (use \WpOrg\Requests\Requests constants). Same as the `$type`
-	 *    parameter to {@see \WpOrg\Requests\Requests::request}
+	 *    parameter to {@see \WpOrg\Requests\Requests::request()}
 	 *    (string, default: `\WpOrg\Requests\Requests::GET`)
 	 * - `cookies`: Associative array of cookie name to value, or cookie jar.
 	 *    (array|\WpOrg\Requests\Cookie\Jar)
@@ -446,7 +446,7 @@ class Requests {
 	 *    (callback)
 	 *
 	 * @param array $requests Requests data (see description for more information)
-	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request})
+	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
 	 */
 	public static function request_multiple($requests, $options = array()) {
@@ -754,7 +754,7 @@ class Requests {
 	/**
 	 * Decoded a chunked body as per RFC 2616
 	 *
-	 * @see https://tools.ietf.org/html/rfc2616#section-3.6.1
+	 * @link https://tools.ietf.org/html/rfc2616#section-3.6.1
 	 * @param string $data Chunked body
 	 * @return string Decoded body
 	 */

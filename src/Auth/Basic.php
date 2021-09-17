@@ -55,8 +55,8 @@ class Basic implements Auth {
 	/**
 	 * Register the necessary callbacks
 	 *
-	 * @see curl_before_send
-	 * @see fsockopen_header
+	 * @see \WpOrg\Requests\Auth\Basic::curl_before_send()
+	 * @see \WpOrg\Requests\Auth\Basic::fsockopen_header()
 	 * @param \WpOrg\Requests\Hooks $hooks Hook system
 	 */
 	public function register(Hooks $hooks) {
