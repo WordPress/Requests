@@ -38,6 +38,19 @@ class FilteredIterator extends ArrayIterator {
 	}
 
 	/**
+	 * @inheritdoc
+	 *
+	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
+	 */
+	#[ReturnTypeWillChange]
+	public function __unserialize($serialized) {}
+	// phpcs:enable
+
+	public function __wakeup() {
+		unset($this->callback);
+	}
+
+	/**
 	 * Get the current item's value after filtering
 	 *
 	 * @return string
@@ -58,16 +71,4 @@ class FilteredIterator extends ArrayIterator {
 	 */
 	#[ReturnTypeWillChange]
 	public function unserialize($serialized) {}
-
-	/**
-	 * @inheritdoc
-	 *
-	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
-	 */
-	#[ReturnTypeWillChange]
-	public function __unserialize($serialized) {}
-
-	public function __wakeup() {
-		unset($this->callback);
-	}
 }

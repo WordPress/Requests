@@ -91,6 +91,15 @@ class Cookie {
 	}
 
 	/**
+	 * Get the cookie value
+	 *
+	 * Attributes and other data can be accessed via methods.
+	 */
+	public function __toString() {
+		return $this->value;
+	}
+
+	/**
 	 * Check if a cookie is expired.
 	 *
 	 * Checks the age against $this->reference_time to determine if the cookie
@@ -347,15 +356,6 @@ class Cookie {
 			$header_value .= '; ' . implode('; ', $parts);
 		}
 		return $header_value;
-	}
-
-	/**
-	 * Get the cookie value
-	 *
-	 * Attributes and other data can be accessed via methods.
-	 */
-	public function __toString() {
-		return $this->value;
 	}
 
 	/**
