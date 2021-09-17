@@ -1,5 +1,5 @@
 ---
-name: ":bug: Bug report"
+name: "\U0001F41B Bug report"
 about: I got unexpected behavior and think it is a bug.
 ---
 
