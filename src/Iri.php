@@ -991,11 +991,11 @@ class Iri {
 	/**
 	 * Convert an IRI to a URI (or parts thereof)
 	 *
-	 * @param string|bool IRI to convert (or false from {@see \WpOrg\Requests\IRI::get_iri()})
+	 * @param string|bool $iri IRI to convert (or false from {@see \WpOrg\Requests\IRI::get_iri()})
 	 * @return string|false URI if IRI is valid, false otherwise.
 	 */
-	protected function to_uri($string) {
-		if (!is_string($string)) {
+	protected function to_uri($iri) {
+		if (!is_string($iri)) {
 			return false;
 		}
 
@@ -1005,14 +1005,14 @@ class Iri {
 		}
 
 		$position = 0;
-		$strlen = strlen($string);
-		while (($position += strcspn($string, $non_ascii, $position)) < $strlen) {
-			$string = substr_replace($string, sprintf('%%%02X', ord($string[$position])), $position, 1);
+		$strlen = strlen($iri);
+		while (($position += strcspn($iri, $non_ascii, $position)) < $strlen) {
+			$iri = substr_replace($iri, sprintf('%%%02X', ord($iri[$position])), $position, 1);
 			$position += 3;
 			$strlen += 2;
 		}
 
-		return $string;
+		return $iri;
 	}
 
 	/**
