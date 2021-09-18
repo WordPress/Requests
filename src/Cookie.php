@@ -365,15 +365,15 @@ class Cookie {
 	 * is an intentional deviation from RFC 2109 and RFC 2616. RFC 6265
 	 * specifies some of this handling, but not in a thorough manner.
 	 *
-	 * @param string Cookie header value (from a Set-Cookie header)
+	 * @param string $cookie_header Cookie header value (from a Set-Cookie header)
 	 * @return \WpOrg\Requests\Cookie Parsed cookie object
 	 */
-	public static function parse($string, $name = '', $reference_time = null) {
-		$parts   = explode(';', $string);
+	public static function parse($cookie_header, $name = '', $reference_time = null) {
+		$parts   = explode(';', $cookie_header);
 		$kvparts = array_shift($parts);
 
 		if (!empty($name)) {
-			$value = $string;
+			$value = $cookie_header;
 		}
 		elseif (strpos($kvparts, '=') === false) {
 			// Some sites might only have a value without the equals separator.
