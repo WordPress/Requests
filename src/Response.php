@@ -134,7 +134,7 @@ class Response {
 	 * @throws \WpOrg\Requests\Exception If `$this->body` is not a valid json
 	 * @return array
 	 */
-	public function json($assoc = true, $depth = 512, $options = 0) {
+	public function decode_body($assoc = true, $depth = 512, $options = 0) {
 		static $json_errors = array(
 			JSON_ERROR_DEPTH          => 'JSON_ERROR_DEPTH - Maximum stack depth exceeded',
 			JSON_ERROR_STATE_MISMATCH => 'JSON_ERROR_STATE_MISMATCH - Underflow or the modes mismatch',

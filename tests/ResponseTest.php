@@ -13,13 +13,13 @@ final class ResponseTest extends TestCase {
 
 		$response       = new Response();
 		$response->body = 'Invalid JSON';
-		$response->json();
+		$response->decode_body();
 	}
 
 	public function testJsonResponse() {
 		$response       = new Response();
 		$response->body = '{"success": false, "error": [], "data": null}';
-		$decoded_body   = $response->json();
+		$decoded_body   = $response->decode_body();
 
 		$expected = array(
 			'success' => false,
