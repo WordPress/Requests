@@ -64,58 +64,58 @@ class IdnaEncoder {
 	}
 
 	/**
-	 * Convert a UTF-8 string to an ASCII string using Punycode
+	 * Convert a UTF-8 text string to an ASCII string using Punycode
 	 *
 	 * @throws \WpOrg\Requests\Exception Provided string longer than 64 ASCII characters (`idna.provided_too_long`)
 	 * @throws \WpOrg\Requests\Exception Prepared string longer than 64 ASCII characters (`idna.prepared_too_long`)
 	 * @throws \WpOrg\Requests\Exception Provided string already begins with xn-- (`idna.provided_is_prefixed`)
 	 * @throws \WpOrg\Requests\Exception Encoded string longer than 64 ASCII characters (`idna.encoded_too_long`)
 	 *
-	 * @param string $string ASCII or UTF-8 string (max length 64 characters)
+	 * @param string $text ASCII or UTF-8 string (max length 64 characters)
 	 * @return string ASCII string
 	 */
-	public static function to_ascii($string) {
-		// Step 1: Check if the string is already ASCII
-		if (self::is_ascii($string)) {
+	public static function to_ascii($text) {
+		// Step 1: Check if the text is already ASCII
+		if (self::is_ascii($text)) {
 			// Skip to step 7
-			if (strlen($string) < self::MAX_LENGTH) {
-				return $string;
+			if (strlen($text) < self::MAX_LENGTH) {
+				return $text;
 			}
 
-			throw new Exception('Provided string is too long', 'idna.provided_too_long', $string);
+			throw new Exception('Provided string is too long', 'idna.provided_too_long', $text);
 		}
 
 		// Step 2: nameprep
-		$string = self::nameprep($string);
+		$text = self::nameprep($text);
 
 		// Step 3: UseSTD3ASCIIRules is false, continue
 		// Step 4: Check if it's ASCII now
-		if (self::is_ascii($string)) {
+		if (self::is_ascii($text)) {
 			// Skip to step 7
-			if (strlen($string) < self::MAX_LENGTH) {
-				return $string;
+			if (strlen($text) < self::MAX_LENGTH) {
+				return $text;
 			}
 
-			throw new Exception('Prepared string is too long', 'idna.prepared_too_long', $string);
+			throw new Exception('Prepared string is too long', 'idna.prepared_too_long', $text);
 		}
 
 		// Step 5: Check ACE prefix
-		if (strpos($string, self::ACE_PREFIX) === 0) {
-			throw new Exception('Provided string begins with ACE prefix', 'idna.provided_is_prefixed', $string);
+		if (strpos($text, self::ACE_PREFIX) === 0) {
+			throw new Exception('Provided string begins with ACE prefix', 'idna.provided_is_prefixed', $text);
 		}
 
 		// Step 6: Encode with Punycode
-		$string = self::punycode_encode($string);
+		$text = self::punycode_encode($text);
 
 		// Step 7: Prepend ACE prefix
-		$string = self::ACE_PREFIX . $string;
+		$text = self::ACE_PREFIX . $text;
 
 		// Step 8: Check size
-		if (strlen($string) < self::MAX_LENGTH) {
-			return $string;
+		if (strlen($text) < self::MAX_LENGTH) {
+			return $text;
 		}
 
-		throw new Exception('Encoded string is too long', 'idna.encoded_too_long', $string);
+		throw new Exception('Encoded string is too long', 'idna.encoded_too_long', $text);
 	}
 
 	/**
