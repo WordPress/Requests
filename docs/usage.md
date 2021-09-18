@@ -1,5 +1,5 @@
-Usage
-=====
+Making a request
+================
 
 Ready to go? Make sure you have Requests [installed][download] and bootstrapped either the
 Composer `autoload.php` file, the Requests autoload function or your autoloader, before attempting any of the

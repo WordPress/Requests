@@ -1,5 +1,6 @@
 Custom Authentication
 =====================
+
 Custom authentication handlers are designed to be straight-forward to write.
 In order to write a handler, you'll need to implement the `WpOrg\Requests\Auth`
 interface.
