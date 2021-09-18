@@ -419,18 +419,18 @@ class Iri {
 	/**
 	 * Replace invalid character with percent encoding
 	 *
-	 * @param string $string Input string
+	 * @param string $text Input string
 	 * @param string $extra_chars Valid characters not in iunreserved or
 	 *                            iprivate (this is ASCII-only)
 	 * @param bool $iprivate Allow iprivate
 	 * @return string
 	 */
-	protected function replace_invalid_with_pct_encoding($string, $extra_chars, $iprivate = false) {
+	protected function replace_invalid_with_pct_encoding($text, $extra_chars, $iprivate = false) {
 		// Normalize as many pct-encoded sections as possible
-		$string = preg_replace_callback('/(?:%[A-Fa-f0-9]{2})+/', array($this, 'remove_iunreserved_percent_encoded'), $string);
+		$text = preg_replace_callback('/(?:%[A-Fa-f0-9]{2})+/', array($this, 'remove_iunreserved_percent_encoded'), $text);
 
 		// Replace invalid percent characters
-		$string = preg_replace('/%(?![A-Fa-f0-9]{2})/', '%25', $string);
+		$text = preg_replace('/%(?![A-Fa-f0-9]{2})/', '%25', $text);
 
 		// Add unreserved and % to $extra_chars (the latter is safe because all
 		// pct-encoded sections are now valid).
@@ -438,9 +438,9 @@ class Iri {
 
 		// Now replace any bytes that aren't allowed with their pct-encoded versions
 		$position = 0;
-		$strlen = strlen($string);
-		while (($position += strspn($string, $extra_chars, $position)) < $strlen) {
-			$value = ord($string[$position]);
+		$strlen = strlen($text);
+		while (($position += strspn($text, $extra_chars, $position)) < $strlen) {
+			$value = ord($text[$position]);
 
 			// Start position
 			$start = $position;
@@ -477,7 +477,7 @@ class Iri {
 			if ($remaining) {
 				if ($position + $length <= $strlen) {
 					for ($position++; $remaining; $position++) {
-						$value = ord($string[$position]);
+						$value = ord($text[$position]);
 
 						// Check that the byte is valid, then add it to the character:
 						if (($value & 0xC0) === 0x80) {
@@ -528,7 +528,7 @@ class Iri {
 				}
 
 				for ($j = $start; $j <= $position; $j++) {
-					$string = substr_replace($string, sprintf('%%%02X', ord($string[$j])), $j, 1);
+					$text = substr_replace($text, sprintf('%%%02X', ord($text[$j])), $j, 1);
 					$j += 2;
 					$position += 2;
 					$strlen += 2;
@@ -536,7 +536,7 @@ class Iri {
 			}
 		}
 
-		return $string;
+		return $text;
 	}
 
 	/**
