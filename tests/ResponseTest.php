@@ -1,17 +1,23 @@
 <?php
 
-class RequestsTest_Response extends PHPUnit_Framework_TestCase {
-    /**
-     * @expectedException Requests_Exception
-     */
+namespace WpOrg\Requests\Tests;
+
+use WpOrg\Requests\Exception;
+use WpOrg\Requests\Response;
+use WpOrg\Requests\Tests\TestCase;
+
+class ResponseTest extends TestCase {
+
     public function testInvalidJsonResponse() {
-        $response = new Requests_Response();
+        $this->expectException(Exception::class);
+
+        $response = new Response();
         $response->body = 'Invalid JSON';
         $response->json();
     }
 
     public function testJsonResponse() {
-        $response = new Requests_Response();
+        $response = new Response();
         $response->body = '{"success": false, "error": [], "data": null}';
         $decodedBody = $response->json();
 

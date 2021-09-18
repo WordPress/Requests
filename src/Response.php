@@ -131,7 +131,7 @@ class Response {
 	/**
 	 * Returns json decoded response
 	 *
-	 * @throws Requests_Exception If `$this->body` is not a valid json
+	 * @throws \WpOrg\Requests\Exception If `$this->body` is not a valid json
 	 * @return array
 	 */
 	public function json($assoc = true, $depth = 512, $options = 0) {
@@ -148,7 +148,7 @@ class Response {
 		if (JSON_ERROR_NONE !== json_last_error()) {
 			$last_error = json_last_error();
 			$error = isset($json_errors[$last_error]) ? $json_errors[$last_error] : 'Unknown error';
-			throw new Requests_Exception('Unable to parse JSON data: ' . $error, 'response.invalid', $this);
+			throw new Exception('Unable to parse JSON data: ' . $error, 'response.invalid', $this);
 		}
 
 		return $data;
