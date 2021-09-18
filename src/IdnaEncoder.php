@@ -119,15 +119,15 @@ class IdnaEncoder {
 	}
 
 	/**
-	 * Check whether a given string contains only ASCII characters
+	 * Check whether a given text string contains only ASCII characters
 	 *
 	 * @internal (Testing found regex was the fastest implementation)
 	 *
-	 * @param string $string
-	 * @return bool Is the string ASCII-only?
+	 * @param string $text
+	 * @return bool Is the text string ASCII-only?
 	 */
-	protected static function is_ascii($string) {
-		return (preg_match('/(?:[^\x00-\x7F])/', $string) !== 1);
+	protected static function is_ascii($text) {
+		return (preg_match('/(?:[^\x00-\x7F])/', $text) !== 1);
 	}
 
 	/**
