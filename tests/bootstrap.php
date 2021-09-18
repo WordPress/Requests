@@ -2,13 +2,13 @@
 
 date_default_timezone_set('UTC');
 
-function define_from_env($name, $default = false) {
+function define_from_env($name, $fallback = false) {
 	$env = getenv($name);
 	if ($env) {
 		define($name, $env);
 	}
 	else {
-		define($name, $default);
+		define($name, $fallback);
 	}
 }
 
