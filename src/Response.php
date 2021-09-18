@@ -134,7 +134,7 @@ class Response {
 	 * @throws \WpOrg\Requests\Exception If `$this->body` is not a valid json
 	 * @return array
 	 */
-	public function decode_body($assoc = true, $depth = 512, $options = 0) {
+	public function decode_body($associative = true, $depth = 512, $options = 0) {
 		static $json_errors = array(
 			JSON_ERROR_DEPTH          => 'JSON_ERROR_DEPTH - Maximum stack depth exceeded',
 			JSON_ERROR_STATE_MISMATCH => 'JSON_ERROR_STATE_MISMATCH - Underflow or the modes mismatch',
@@ -143,7 +143,7 @@ class Response {
 			JSON_ERROR_UTF8           => 'JSON_ERROR_UTF8 - Malformed UTF-8 characters, possibly incorrectly encoded',
 		);
 
-		$data = json_decode($this->body, $assoc, $depth, $options);
+		$data = json_decode($this->body, $associative, $depth, $options);
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
 			$last_error = json_last_error();
