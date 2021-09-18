@@ -52,11 +52,11 @@ class IdnaEncoder {
 	/**
 	 * Encode a hostname using Punycode
 	 *
-	 * @param string $string Hostname
+	 * @param string $hostname Hostname
 	 * @return string Punycode-encoded hostname
 	 */
-	public static function encode($string) {
-		$parts = explode('.', $string);
+	public static function encode($hostname) {
+		$parts = explode('.', $hostname);
 		foreach ($parts as &$part) {
 			$part = self::to_ascii($part);
 		}
