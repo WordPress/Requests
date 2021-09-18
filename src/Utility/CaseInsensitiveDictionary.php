@@ -42,29 +42,29 @@ class CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Check if the given item exists
 	 *
-	 * @param string $key Item key
+	 * @param string $offset Item key
 	 * @return boolean Does the item exist?
 	 */
 	#[ReturnTypeWillChange]
-	public function offsetExists($key) {
-		$key = strtolower($key);
-		return isset($this->data[$key]);
+	public function offsetExists($offset) {
+		$offset = strtolower($offset);
+		return isset($this->data[$offset]);
 	}
 
 	/**
 	 * Get the value for the item
 	 *
-	 * @param string $key Item key
+	 * @param string $offset Item key
 	 * @return string|null Item value (null if offsetExists is false)
 	 */
 	#[ReturnTypeWillChange]
-	public function offsetGet($key) {
-		$key = strtolower($key);
-		if (!isset($this->data[$key])) {
+	public function offsetGet($offset) {
+		$offset = strtolower($offset);
+		if (!isset($this->data[$offset])) {
 			return null;
 		}
 
-		return $this->data[$key];
+		return $this->data[$offset];
 	}
 
 	/**
@@ -72,27 +72,27 @@ class CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 *
-	 * @param string $key Item name
+	 * @param string $offset Item name
 	 * @param string $value Item value
 	 */
 	#[ReturnTypeWillChange]
-	public function offsetSet($key, $value) {
-		if ($key === null) {
+	public function offsetSet($offset, $value) {
+		if ($offset === null) {
 			throw new Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
-		$key              = strtolower($key);
-		$this->data[$key] = $value;
+		$offset              = strtolower($offset);
+		$this->data[$offset] = $value;
 	}
 
 	/**
 	 * Unset the given header
 	 *
-	 * @param string $key
+	 * @param string $offset
 	 */
 	#[ReturnTypeWillChange]
-	public function offsetUnset($key) {
-		unset($this->data[strtolower($key)]);
+	public function offsetUnset($offset) {
+		unset($this->data[strtolower($offset)]);
 	}
 
 	/**

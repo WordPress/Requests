@@ -58,27 +58,27 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Check if the given item exists
 	 *
-	 * @param string $key Item key
+	 * @param string $offset Item key
 	 * @return boolean Does the item exist?
 	 */
 	#[ReturnTypeWillChange]
-	public function offsetExists($key) {
-		return isset($this->cookies[$key]);
+	public function offsetExists($offset) {
+		return isset($this->cookies[$offset]);
 	}
 
 	/**
 	 * Get the value for the item
 	 *
-	 * @param string $key Item key
+	 * @param string $offset Item key
 	 * @return string|null Item value (null if offsetExists is false)
 	 */
 	#[ReturnTypeWillChange]
-	public function offsetGet($key) {
-		if (!isset($this->cookies[$key])) {
+	public function offsetGet($offset) {
+		if (!isset($this->cookies[$offset])) {
 			return null;
 		}
 
-		return $this->cookies[$key];
+		return $this->cookies[$offset];
 	}
 
 	/**
@@ -86,26 +86,26 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 *
-	 * @param string $key Item name
+	 * @param string $offset Item name
 	 * @param string $value Item value
 	 */
 	#[ReturnTypeWillChange]
-	public function offsetSet($key, $value) {
-		if ($key === null) {
+	public function offsetSet($offset, $value) {
+		if ($offset === null) {
 			throw new Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
-		$this->cookies[$key] = $value;
+		$this->cookies[$offset] = $value;
 	}
 
 	/**
 	 * Unset the given header
 	 *
-	 * @param string $key
+	 * @param string $offset
 	 */
 	#[ReturnTypeWillChange]
-	public function offsetUnset($key) {
-		unset($this->cookies[$key]);
+	public function offsetUnset($offset) {
+		unset($this->cookies[$offset]);
 	}
 
 	/**
