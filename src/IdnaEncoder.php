@@ -131,14 +131,14 @@ class IdnaEncoder {
 	}
 
 	/**
-	 * Prepare a string for use as an IDNA name
+	 * Prepare a text string for use as an IDNA name
 	 *
 	 * @todo Implement this based on RFC 3491 and the newer 5891
-	 * @param string $string
+	 * @param string $text
 	 * @return string Prepared string
 	 */
-	protected static function nameprep($string) {
-		return $string;
+	protected static function nameprep($text) {
+		return $text;
 	}
 
 	/**
