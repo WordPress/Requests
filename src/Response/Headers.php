@@ -63,16 +63,16 @@ class Headers extends CaseInsensitiveDictionary {
 	/**
 	 * Get all values for a given header
 	 *
-	 * @param string $key
+	 * @param string $offset
 	 * @return array|null Header values
 	 */
-	public function getValues($key) {
-		$key = strtolower($key);
-		if (!isset($this->data[$key])) {
+	public function getValues($offset) {
+		$offset = strtolower($offset);
+		if (!isset($this->data[$offset])) {
 			return null;
 		}
 
-		return $this->data[$key];
+		return $this->data[$offset];
 	}
 
 	/**
