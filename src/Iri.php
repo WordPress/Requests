@@ -545,13 +545,13 @@ class Iri {
 	 * Removes sequences of percent encoded bytes that represent UTF-8
 	 * encoded characters in iunreserved
 	 *
-	 * @param array $match PCRE match
+	 * @param array $regex_match PCRE match
 	 * @return string Replacement
 	 */
-	protected function remove_iunreserved_percent_encoded($match) {
+	protected function remove_iunreserved_percent_encoded($regex_match) {
 		// As we just have valid percent encoded sequences we can just explode
 		// and ignore the first member of the returned array (an empty string).
-		$bytes = explode('%', $match[0]);
+		$bytes = explode('%', $regex_match[0]);
 
 		// Initialize the new string (this is what will be returned) and that
 		// there are no bytes remaining in the current sequence (unsurprising
