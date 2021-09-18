@@ -129,10 +129,26 @@ class Response {
 	}
 
 	/**
-	 * Returns json decoded response
+	 * JSON decode the response body.
 	 *
-	 * @throws \WpOrg\Requests\Exception If `$this->body` is not a valid json
+	 * The method parameters are the same as those for the PHP native `json_decode()` function.
+	 *
+	 * @link https://php.net/json-decode
+	 *
+	 * @param ?bool $associative Optional. When `true`, JSON objects will be returned as associative arrays;
+	 *                           When `false`, JSON objects will be returned as objects.
+	 *                           When `null`, JSON objects will be returned as associative arrays
+	 *                           or objects depending on whether `JSON_OBJECT_AS_ARRAY` is set in the flags.
+	 *                           Defaults to `true` (in contrast to the PHP native default of `null`).
+	 * @param int   $depth       Optional. Maximum nesting depth of the structure being decoded.
+	 *                           Defaults to `512`.
+	 * @param int   $options     Optional. Bitmask of JSON_BIGINT_AS_STRING, JSON_INVALID_UTF8_IGNORE,
+	 *                           JSON_INVALID_UTF8_SUBSTITUTE, JSON_OBJECT_AS_ARRAY, JSON_THROW_ON_ERROR.
+	 *                           Defaults to `0` (no options set).
+	 *
 	 * @return array
+	 *
+	 * @throws \WpOrg\Requests\Exception If `$this->body` is not valid json.
 	 */
 	public function decode_body($associative = true, $depth = 512, $options = 0) {
 		$data = json_decode($this->body, $associative, $depth, $options);
