@@ -1,5 +1,6 @@
-Hooks
-=====
+Hooking system
+==============
+
 Requests has a hook system that you can use to manipulate parts of the request
 process along with internal transport hooks.
 

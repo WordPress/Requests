@@ -1,5 +1,5 @@
-Proxy Support
-=============
+Requests through proxy
+======================
 
 Making requests through HTTP proxies is fully supported.
 

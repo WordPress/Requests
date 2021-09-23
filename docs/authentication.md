@@ -1,5 +1,6 @@
-Authentication
-==============
+Authenticating your request
+===========================
+
 Many requests that you make will require authentication of some type. Requests
 includes support out of the box for HTTP Basic authentication, with more
 built-ins coming soon.

@@ -1,5 +1,6 @@
-Why Requests Instead of X?
-==========================
+Why should I use Requests Instead of X?
+=======================================
+
 This is a quick look at why you should use Requests instead of another
 solution. Keep in mind though that these are my point of view, and they may not
 be issues for you.
@@ -7,7 +8,7 @@ be issues for you.
 As always with software, you should choose what you think is best.
 
 
-Why should I use Requests?
+Advantages of using Requests
 --------------------------
 1. **Designed for maximum compatibility**
 
