@@ -419,18 +419,18 @@ class Iri {
 	/**
 	 * Replace invalid character with percent encoding
 	 *
-	 * @param string $string Input string
+	 * @param string $text Input string
 	 * @param string $extra_chars Valid characters not in iunreserved or
 	 *                            iprivate (this is ASCII-only)
 	 * @param bool $iprivate Allow iprivate
 	 * @return string
 	 */
-	protected function replace_invalid_with_pct_encoding($string, $extra_chars, $iprivate = false) {
+	protected function replace_invalid_with_pct_encoding($text, $extra_chars, $iprivate = false) {
 		// Normalize as many pct-encoded sections as possible
-		$string = preg_replace_callback('/(?:%[A-Fa-f0-9]{2})+/', array($this, 'remove_iunreserved_percent_encoded'), $string);
+		$text = preg_replace_callback('/(?:%[A-Fa-f0-9]{2})+/', array($this, 'remove_iunreserved_percent_encoded'), $text);
 
 		// Replace invalid percent characters
-		$string = preg_replace('/%(?![A-Fa-f0-9]{2})/', '%25', $string);
+		$text = preg_replace('/%(?![A-Fa-f0-9]{2})/', '%25', $text);
 
 		// Add unreserved and % to $extra_chars (the latter is safe because all
 		// pct-encoded sections are now valid).
@@ -438,9 +438,9 @@ class Iri {
 
 		// Now replace any bytes that aren't allowed with their pct-encoded versions
 		$position = 0;
-		$strlen = strlen($string);
-		while (($position += strspn($string, $extra_chars, $position)) < $strlen) {
-			$value = ord($string[$position]);
+		$strlen = strlen($text);
+		while (($position += strspn($text, $extra_chars, $position)) < $strlen) {
+			$value = ord($text[$position]);
 
 			// Start position
 			$start = $position;
@@ -477,7 +477,7 @@ class Iri {
 			if ($remaining) {
 				if ($position + $length <= $strlen) {
 					for ($position++; $remaining; $position++) {
-						$value = ord($string[$position]);
+						$value = ord($text[$position]);
 
 						// Check that the byte is valid, then add it to the character:
 						if (($value & 0xC0) === 0x80) {
@@ -528,7 +528,7 @@ class Iri {
 				}
 
 				for ($j = $start; $j <= $position; $j++) {
-					$string = substr_replace($string, sprintf('%%%02X', ord($string[$j])), $j, 1);
+					$text = substr_replace($text, sprintf('%%%02X', ord($text[$j])), $j, 1);
 					$j += 2;
 					$position += 2;
 					$strlen += 2;
@@ -536,7 +536,7 @@ class Iri {
 			}
 		}
 
-		return $string;
+		return $text;
 	}
 
 	/**
@@ -545,13 +545,13 @@ class Iri {
 	 * Removes sequences of percent encoded bytes that represent UTF-8
 	 * encoded characters in iunreserved
 	 *
-	 * @param array $match PCRE match
+	 * @param array $regex_match PCRE match
 	 * @return string Replacement
 	 */
-	protected function remove_iunreserved_percent_encoded($match) {
+	protected function remove_iunreserved_percent_encoded($regex_match) {
 		// As we just have valid percent encoded sequences we can just explode
 		// and ignore the first member of the returned array (an empty string).
-		$bytes = explode('%', $match[0]);
+		$bytes = explode('%', $regex_match[0]);
 
 		// Initialize the new string (this is what will be returned) and that
 		// there are no bytes remaining in the current sequence (unsurprising
@@ -991,11 +991,11 @@ class Iri {
 	/**
 	 * Convert an IRI to a URI (or parts thereof)
 	 *
-	 * @param string|bool IRI to convert (or false from {@see \WpOrg\Requests\IRI::get_iri()})
+	 * @param string|bool $iri IRI to convert (or false from {@see \WpOrg\Requests\IRI::get_iri()})
 	 * @return string|false URI if IRI is valid, false otherwise.
 	 */
-	protected function to_uri($string) {
-		if (!is_string($string)) {
+	protected function to_uri($iri) {
+		if (!is_string($iri)) {
 			return false;
 		}
 
@@ -1005,14 +1005,14 @@ class Iri {
 		}
 
 		$position = 0;
-		$strlen = strlen($string);
-		while (($position += strcspn($string, $non_ascii, $position)) < $strlen) {
-			$string = substr_replace($string, sprintf('%%%02X', ord($string[$position])), $position, 1);
+		$strlen = strlen($iri);
+		while (($position += strcspn($iri, $non_ascii, $position)) < $strlen) {
+			$iri = substr_replace($iri, sprintf('%%%02X', ord($iri[$position])), $position, 1);
 			$position += 3;
 			$strlen += 2;
 		}
 
-		return $string;
+		return $iri;
 	}
 
 	/**

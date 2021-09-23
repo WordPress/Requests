@@ -146,19 +146,19 @@ class Cookie {
 	/**
 	 * Check if a cookie is valid for a given domain
 	 *
-	 * @param string $string Domain to check
+	 * @param string $domain Domain to check
 	 * @return boolean Whether the cookie is valid for the given domain
 	 */
-	public function domain_matches($string) {
+	public function domain_matches($domain) {
 		if (!isset($this->attributes['domain'])) {
 			// Cookies created manually; cookies created by Requests will set
 			// the domain to the requested domain
 			return true;
 		}
 
-		$domain_string = $this->attributes['domain'];
-		if ($domain_string === $string) {
-			// The domain string and the string are identical.
+		$cookie_domain = $this->attributes['domain'];
+		if ($cookie_domain === $domain) {
+			// The cookie domain and the passed domain are identical.
 			return true;
 		}
 
@@ -168,26 +168,26 @@ class Cookie {
 			return false;
 		}
 
-		if (strlen($string) <= strlen($domain_string)) {
-			// For obvious reasons, the string cannot be a suffix if the domain
-			// is shorter than the domain string
+		if (strlen($domain) <= strlen($cookie_domain)) {
+			// For obvious reasons, the cookie domain cannot be a suffix if the passed domain
+			// is shorter than the cookie domain
 			return false;
 		}
 
-		if (substr($string, -1 * strlen($domain_string)) !== $domain_string) {
-			// The domain string should be a suffix of the string.
+		if (substr($domain, -1 * strlen($cookie_domain)) !== $cookie_domain) {
+			// The cookie domain should be a suffix of the passed domain.
 			return false;
 		}
 
-		$prefix = substr($string, 0, strlen($string) - strlen($domain_string));
+		$prefix = substr($domain, 0, strlen($domain) - strlen($cookie_domain));
 		if (substr($prefix, -1) !== '.') {
-			// The last character of the string that is not included in the
+			// The last character of the passed domain that is not included in the
 			// domain string should be a %x2E (".") character.
 			return false;
 		}
 
-		// The string should be a host name (i.e., not an IP address).
-		return !preg_match('#^(.+\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$#', $string);
+		// The passed domain should be a host name (i.e., not an IP address).
+		return !preg_match('#^(.+\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$#', $domain);
 	}
 
 	/**
@@ -365,15 +365,15 @@ class Cookie {
 	 * is an intentional deviation from RFC 2109 and RFC 2616. RFC 6265
 	 * specifies some of this handling, but not in a thorough manner.
 	 *
-	 * @param string Cookie header value (from a Set-Cookie header)
+	 * @param string $cookie_header Cookie header value (from a Set-Cookie header)
 	 * @return \WpOrg\Requests\Cookie Parsed cookie object
 	 */
-	public static function parse($string, $name = '', $reference_time = null) {
-		$parts   = explode(';', $string);
+	public static function parse($cookie_header, $name = '', $reference_time = null) {
+		$parts   = explode(';', $cookie_header);
 		$kvparts = array_shift($parts);
 
 		if (!empty($name)) {
-			$value = $string;
+			$value = $cookie_header;
 		}
 		elseif (strpos($kvparts, '=') === false) {
 			// Some sites might only have a value without the equals separator.

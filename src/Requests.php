@@ -802,12 +802,12 @@ class Requests {
 	/**
 	 * Convert a key => value array to a 'key: value' array for headers
 	 *
-	 * @param array $array Dictionary of header values
+	 * @param array $dictionary Dictionary of header values
 	 * @return array List of headers
 	 */
-	public static function flatten($array) {
+	public static function flatten($dictionary) {
 		$return = array();
-		foreach ($array as $key => $value) {
+		foreach ($dictionary as $key => $value) {
 			$return[] = sprintf('%s: %s', $key, $value);
 		}
 		return $return;

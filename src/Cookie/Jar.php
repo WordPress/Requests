@@ -166,16 +166,16 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Parse all cookies from a response and attach them to the response
 	 *
-	 * @var \WpOrg\Requests\Response $response
+	 * @param \WpOrg\Requests\Response $response
 	 */
-	public function before_redirect_check(Response $return) {
-		$url = $return->url;
+	public function before_redirect_check(Response $response) {
+		$url = $response->url;
 		if (!$url instanceof Iri) {
 			$url = new Iri($url);
 		}
 
-		$cookies         = Cookie::parse_from_headers($return->headers, $url);
-		$this->cookies   = array_merge($this->cookies, $cookies);
-		$return->cookies = $this;
+		$cookies           = Cookie::parse_from_headers($response->headers, $url);
+		$this->cookies     = array_merge($this->cookies, $cookies);
+		$response->cookies = $this;
 	}
 }
