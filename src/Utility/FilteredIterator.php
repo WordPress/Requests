@@ -43,7 +43,7 @@ final class FilteredIterator extends ArrayIterator {
 	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
 	 */
 	#[ReturnTypeWillChange]
-	public function __unserialize($serialized) {}
+	public function __unserialize($data) {}
 	// phpcs:enable
 
 	public function __wakeup() {
@@ -70,5 +70,5 @@ final class FilteredIterator extends ArrayIterator {
 	 * @inheritdoc
 	 */
 	#[ReturnTypeWillChange]
-	public function unserialize($serialized) {}
+	public function unserialize($data) {}
 }

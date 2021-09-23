@@ -26,16 +26,16 @@ class Headers extends CaseInsensitiveDictionary {
 	 * Avoid using this where commas may be used unquoted in values, such as
 	 * Set-Cookie headers.
 	 *
-	 * @param string $key
+	 * @param string $offset
 	 * @return string|null Header value
 	 */
-	public function offsetGet($key) {
-		$key = strtolower($key);
-		if (!isset($this->data[$key])) {
+	public function offsetGet($offset) {
+		$offset = strtolower($offset);
+		if (!isset($this->data[$offset])) {
 			return null;
 		}
 
-		return $this->flatten($this->data[$key]);
+		return $this->flatten($this->data[$offset]);
 	}
 
 	/**
@@ -43,36 +43,36 @@ class Headers extends CaseInsensitiveDictionary {
 	 *
 	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 *
-	 * @param string $key Item name
+	 * @param string $offset Item name
 	 * @param string $value Item value
 	 */
-	public function offsetSet($key, $value) {
-		if ($key === null) {
+	public function offsetSet($offset, $value) {
+		if ($offset === null) {
 			throw new Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
-		$key = strtolower($key);
+		$offset = strtolower($offset);
 
-		if (!isset($this->data[$key])) {
-			$this->data[$key] = array();
+		if (!isset($this->data[$offset])) {
+			$this->data[$offset] = array();
 		}
 
-		$this->data[$key][] = $value;
+		$this->data[$offset][] = $value;
 	}
 
 	/**
 	 * Get all values for a given header
 	 *
-	 * @param string $key
+	 * @param string $offset
 	 * @return array|null Header values
 	 */
-	public function getValues($key) {
-		$key = strtolower($key);
-		if (!isset($this->data[$key])) {
+	public function getValues($offset) {
+		$offset = strtolower($offset);
+		if (!isset($this->data[$offset])) {
 			return null;
 		}
 
-		return $this->data[$key];
+		return $this->data[$offset];
 	}
 
 	/**
