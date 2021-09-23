@@ -41,7 +41,7 @@ final class StatusUnknown extends Http {
 	 */
 	public function __construct($reason = null, $data = null) {
 		if ($data instanceof Response) {
-			$this->code = $data->status_code;
+			$this->code = (int) $data->status_code;
 		}
 
 		parent::__construct($reason, $data);
