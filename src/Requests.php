@@ -248,6 +248,33 @@ class Requests {
 		return new $class();
 	}
 
+
+	/**
+	 * @param array|string $body
+	 * @param array|string $key_files
+	 * @param string $file_key
+	 *
+	 * @return array $body
+	 */
+	public static function add_files_to_body( $body, $key_files, $file_key = '' ) {
+		if ( ! is_array( $body ) ) {
+			if ( is_scalar( $body ) && ! empty( $body ) ) {
+				$body = array( $body );
+			} else {
+				$body = array();
+			}
+		}
+		if ( is_array( $key_files ) ) {
+			foreach ($key_files as $key => $file_path ){
+				$body[ $key ] = $file_path;
+			}
+		} elseif( is_scalar( $file_key ) && ! empty( $key_files ) ) {
+			$body[ $file_key ] = $key_files;
+		}
+
+		return $body;
+	}
+
 	/**#@+
 	 * @see \WpOrg\Requests\Requests::request()
 	 * @param string $url

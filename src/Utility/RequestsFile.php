@@ -6,6 +6,10 @@
  * @subpackage Utilities
  */
 
+namespace WpOrg\Requests\Utility;
+
+
+use WpOrg\Requests\Exception\RequestsExceptionFile;
 /**
  * A file object describing an upload.
  *
@@ -14,7 +18,7 @@
  * @package Requests
  * @subpackage Utilities
  */
-class Requests_File {
+class RequestsFile {
 	/**
 	 * The path to the file.
 	 *
@@ -43,13 +47,13 @@ class Requests_File {
 	 * @param string $mimetype The mimetype override. Will try to guess if not given.
 	 * @param string $filename The upload file name.
 	 *
-	 * @throws Requests_Exception_File If file is not readable or does not exist.
+	 * @return RequestsFile
+	 *@throws RequestsExceptionFile If file is not readable or does not exist.
 	 *
-	 * @return Requests_File
 	 */
 	public function __construct($path, $type = null, $name = null) {
 		if (!file_exists($path) || !is_readable($path)) {
-			throw new Requests_Exception_File('File is not readable', null, $path);
+			throw new RequestsExceptionFile('File is not readable', null, $path);
 		}
 
 		$this->path = $path;
