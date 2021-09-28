@@ -6,7 +6,7 @@ use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Exception\RequestsExceptionFile;
 use WpOrg\Requests\Utility\RequestsFile;
 
-class RequestsTest_File extends TestCase {
+class FileTest extends TestCase {
 
 	/**
 	 * @throws RequestsExceptionFile
@@ -63,8 +63,9 @@ class RequestsTest_File extends TestCase {
 	public function test_add_file_to_empty_body(){
 		$body = '';
 		file_put_contents( $tmpfile = tempnam( sys_get_temp_dir(), 'requests' ), 'hello');
+		$file = new RequestsFile( $tmpfile );
 		$body = Requests::add_files_to_body( $body, $tmpfile, 'filename' );
-		$this->assertEquals( $body, array( 'filename' => $tmpfile ) );
+		$this->assertEquals( $body, array( 'filename' => $file ) );
 	}
 
 	/**
@@ -73,8 +74,9 @@ class RequestsTest_File extends TestCase {
 	public function test_add_file_to_body_with_string(){
 		$body = 'dd';
 		file_put_contents( $tmpfile = tempnam( sys_get_temp_dir(), 'requests' ), 'hello');
+		$file = new RequestsFile( $tmpfile );
 		$body = Requests::add_files_to_body( $body, $tmpfile, 'filename' );
-		$this->assertEquals( $body, array( 0 => 'dd','filename' => $tmpfile ) );
+		$this->assertEquals( $body, array( 0 => 'dd','filename' => $file ) );
 	}
 
 	/**
@@ -83,8 +85,9 @@ class RequestsTest_File extends TestCase {
 	public function test_add_file_to_body_with_array(){
 		$body = array( 'dd' => 'fff' ) ;
 		file_put_contents( $tmpfile = tempnam( sys_get_temp_dir(), 'requests' ), 'hello' );
+		$file = new RequestsFile( $tmpfile );
 		$body = Requests::add_files_to_body( $body, $tmpfile, 'filename' );
-		$this->assertEquals( $body, array( 'dd' => 'fff','filename' => $tmpfile ) );
+		$this->assertEquals( $body, array( 'dd' => 'fff','filename' => $file ) );
 	}
 	/**
 	 * @covers \WpOrg\Requests\Requests::add_files_to_body
@@ -92,10 +95,12 @@ class RequestsTest_File extends TestCase {
 	public function test_add_files_to_body_with_array(){
 		$body = array( 'dd' => 'fff' ) ;
 		file_put_contents( $tmpfile1 = tempnam( sys_get_temp_dir(), 'requests' ), 'hello' );
+		$file1 = new RequestsFile( $tmpfile1 );
 		file_put_contents( $tmpfile2 = tempnam( sys_get_temp_dir(), 'requests' ), 'hello2' );
+		$file2 = new RequestsFile( $tmpfile2 );
 		$files = array( $tmpfile1, $tmpfile2 );
 		$body = Requests::add_files_to_body( $body, $files );
-		$this->assertEquals( $body, array( 'dd' => 'fff',0 => $tmpfile1, 1 => $tmpfile2 ) );
+		$this->assertEquals( $body, array( 'dd' => 'fff',0 => $file1, 1 => $file2 ) );
 	}
 	/**
 	 * @covers \WpOrg\Requests\Requests::add_files_to_body
@@ -103,9 +108,11 @@ class RequestsTest_File extends TestCase {
 	public function test_add_files_to_body_with_keyed_array(){
 		$body = array( 'dd' => 'fff' ) ;
 		file_put_contents( $tmpfile1 = tempnam( sys_get_temp_dir(), 'requests' ), 'hello' );
+		$file1 = new RequestsFile( $tmpfile1 );
 		file_put_contents( $tmpfile2 = tempnam( sys_get_temp_dir(), 'requests' ), 'hello2' );
+		$file2 = new RequestsFile( $tmpfile2 );
 		$files = array( 'tmpfile1' => $tmpfile1,'tmpfile2' => $tmpfile2 );
 		$body = Requests::add_files_to_body( $body, $files );
-		$this->assertEquals( $body, array( 'dd' => 'fff','tmpfile1' => $tmpfile1, 'tmpfile2' => $tmpfile2 ) );
+		$this->assertEquals( $body, array( 'dd' => 'fff','tmpfile1' => $file1, 'tmpfile2' => $file2 ) );
 	}
 }
