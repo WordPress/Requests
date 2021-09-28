@@ -1,0 +1,105 @@
+name: Quicktest
+
+on:
+  push:
+    branches-ignore:
+      - stable
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+jobs:
+  #### QUICK TEST STAGE ####
+  # Runs the tests against select PHP versions for pushes to arbitrary branches.
+  quicktest:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['5.6', '7.2', 'latest']
+
+    name: "Quick Test: PHP ${{ matrix.php }}"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      # At least one test needs a non-en_US locale to be available, so make sure it is.
+      - name: Install locales
+        run: |
+          sudo apt-get update
+          sudo apt-get install locales-all
+
+      - name: Show available locales
+        run: locale -a
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies - normal
+        if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
+        uses: "ramsey/composer-install@v1"
+
+      # For PHP 8.0 and "nightly", we need to install with ignore platform reqs.
+      - name: Install Composer dependencies - with ignore platform
+        if: ${{ startsWith( matrix.php, '8' ) || matrix.php == 'latest' }}
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: --ignore-platform-reqs
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Setup proxy server
+        run: pip3 install mitmproxy
+
+      - name: Start test server
+        run: |
+          PORT=8080 vendor/bin/start.sh
+          echo "REQUESTS_TEST_HOST_HTTP=localhost:8080" >> $GITHUB_ENV
+
+      - name: Start proxy server
+        run: |
+          PORT=9002 tests/utils/proxy/start.sh
+          PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
+          echo "REQUESTS_HTTP_PROXY=localhost:9002" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY_AUTH=localhost:9003" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY_AUTH_USER=test" >> $GITHUB_ENV
+          echo "REQUESTS_HTTP_PROXY_AUTH_PASS=pass" >> $GITHUB_ENV
+
+      - name: Ensure the HTTPS test instance on Heroku is spun up
+        run: curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
+
+      - name: Check mitmproxy version
+        run: mitmdump --version
+
+      - name: Ping localhost domain
+        run: ping -c1 localhost
+
+      - name: Access localhost on port 8080
+        run: curl -i http://localhost:8080
+
+      - name: Access localhost on port 9002
+        run: curl -i http://localhost:9002
+
+      - name: Show PHPUnit version
+        run: vendor/bin/phpunit --version
+
+      - name: Run the unit tests
+        run: composer test
+
+      - name: Stop proxy server
+        continue-on-error: true
+        run: |
+          PORT=9002 tests/utils/proxy/stop.sh
+          PORT=9003 tests/utils/proxy/stop.sh
+
+      - name: Stop test server
+        continue-on-error: true
+        run: vendor/bin/stop.sh

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+    configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.phpdoc.org"
+    xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+>
+
+    <title>Requests #.#.# API</title>
+
+    <paths>
+        <output>build/ghpages/artifacts/api/</output>
+        <cache>build/ghpages/.phpdoc/</cache>
+    </paths>
+
+    <version number="latest">
+        <api format="php">
+            <source dsn=".">
+                <path>src</path>
+            </source>
+            <visibility>public</visibility>
+            <visibility>protected</visibility>
+            <ignore-tags>
+                <ignore-tag>codeCoverageIgnore</ignore-tag>
+                <ignore-tag>phpcs</ignore-tag>
+                <ignore-tag>todo</ignore-tag>
+            </ignore-tags>
+        </api>
+    </version>
+
+    <template name="default"/>
+
+</phpdocumentor>

@@ -1,5 +1,6 @@
-Why Requests Instead of X?
-==========================
+Why should I use Requests Instead of X?
+=======================================
+
 This is a quick look at why you should use Requests instead of another
 solution. Keep in mind though that these are my point of view, and they may not
 be issues for you.
@@ -7,35 +8,31 @@ be issues for you.
 As always with software, you should choose what you think is best.
 
 
-Why should I use Requests?
+Advantages of using Requests
 --------------------------
 1. **Designed for maximum compatibility**
 
    The realities of working with widely deployable software mean that awesome
-   PHP features aren't always available. PHP 5.3, cURL, OpenSSL and more are not
+   PHP features aren't always available. PHP 8.0, cURL, OpenSSL and more are not
    necessarily going to be available on every system. While you're welcome to
-   require PHP 5.3, 5.4 or even 5.5, it's not our job to force you to use those.
-
-   (The WordPress project estimates [about 60%][wpstats] of hosts are running
-   PHP 5.2, so this is a serious issue for developers working on large
-   deployable projects.)
+   require PHP 5.6, 7.2 or even 8.0, it's not our job to force you to use those.
 
    Don't worry though, Requests will automatically use better features where
    possible, giving you an extra speed boost with cURL.
 
-2. **Simple API**
+2. **Straight-forward API**
 
    Requests' API is designed to be able to be learnt in 10 minutes. Everything
    from basic requests all the way up to advanced usage involving custom SSL
-   certificates and stored cookies is handled by a simple API.
+   certificates and stored cookies is handled by a straight-forward API.
 
    Other HTTP libraries optimize for the library developer's time; **Requests
    optimizes for your time**.
 
 3. **Thoroughly tested**
 
-   Requests is [continuously integrated with Travis][travis] and test coverage
-   is [constantly monitored with Coveralls][coveralls] to give you confidence in
+   Requests is [continuously integrated with GH Actions][ghactions] and test coverage
+   is [constantly monitored with CodeCov][codecov] to give you confidence in
    the library. We aim for test coverage **over 90%** at all times, and new
    features require new tests to go along with them. This ensures that you can
    be confident in the quality of the code, as well as being able to update to
@@ -43,30 +40,30 @@ Why should I use Requests?
 
 4. **Secure by default**
 
-   Unlike other HTTP libraries, Requests is secure by default. Requests is the
-   **first and currently only** standalone HTTP library to
+   Unlike other HTTP libraries, Requests is secure by default. Requests was the
+   **first** standalone HTTP library to
    **[fully verify][requests_ssl] all HTTPS requests** even without cURL. We
    also bundle the latest root certificate authorities to ensure that your
    secure requests are actually secure.
 
-   (Of note is that WordPress as of version 3.7 also supports full checking of
+   _Of note is that WordPress as of version 3.7 also supports full checking of
    the certificates, thanks to [evangelism efforts on our behalf][wpssl].
    Together, we are the only HTTP libraries in PHP to fully verify certificates
-   to the same level as browsers.)
+   to the same level as browsers._
 
 5. **Extensible from the core**
 
-   If you need low-level access to Requests' internals, simply plug your
+   If you need low-level access to Requests' internals, plug your
    callbacks in via the built-in [hooking system][] and mess around as much as
-   you want. Requests' simple hooking system is so powerful that both
+   you want. Requests' hooking system is so powerful that both
    authentication handlers and cookie support is actually handled internally
    with hooks.
 
-[coveralls]: https://coveralls.io/r/rmccue/Requests
+[codecov]: https://app.codecov.io/gh/WordPress/Requests/branch/stable
 [hooking system]: hooks.md
-[requests_ssl]: https://github.com/rmccue/Requests/blob/master/library/Requests/SSL.php
-[travis]: https://travis-ci.org/rmccue/Requests
-[wpssl]: http://core.trac.wordpress.org/ticket/25007
+[requests_ssl]: https://github.com/WordPress/Requests/blob/stable/src/Ssl.php
+[ghactions]: https://github.com/WordPress/Requests/actions
+[wpssl]: https://core.trac.wordpress.org/ticket/25007
 
 
 Why shouldn't I use...
@@ -85,7 +82,7 @@ instead of something else, in our opinion.
    projects indicates that cURL is available on roughly 90% of hosts, but that
    leaves 10% of hosts without it.
 
-2. **cURL's interface sucks**
+2. **cURL's interface is hard to work with**
 
    cURL's interface was designed for PHP 4, and hence uses resources with
    horrible functions such as `curl_setopt()`. Combined with that, it uses 229
@@ -93,43 +90,40 @@ instead of something else, in our opinion.
 
    Requests, on the other hand, exposes only a handful of classes to the
    global namespace, most of which are for internal use. You can learn to use
-   the `Requests::request()` method and the `Requests_Response` object in the
-   space of 10 minutes and you already know how to use Requests.
+   the `WpOrg\Requests\Requests::request()` method and the `WpOrg\Requests\Response`
+   object in the space of 10 minutes and you already know how to use Requests.
 
 
 ### Guzzle
 
-1. **Requires cURL and PHP 5.3+**
+1. **Requires cURL and PHP 7.2+**
 
    Guzzle is designed to be a client to fit a large number of installations, but
    as a result of optimizing for Guzzle developer time, it uses cURL as an
-   underlying transport. As noted above, this is a majority of systems, but
-   far from all.
+   underlying transport. As noted above, this is fine for a majority of systems,
+   but far from all.
 
-   The same is true for PHP 5.3+. While we'd all love to rely on PHP's newer
+   The same is true for PHP 7.2+. While we'd all love to rely on PHP's newer
    features, the fact is that a huge percentage of hosts are still running on
-   PHP 5.2. (The WordPress project estimates [about 60%][wpstats] of hosts are
-   running PHP 5.2.)
+   older versions of PHP.
 
 2. **Not just a HTTP client**
 
    Guzzle is not intended to just be a HTTP client, but rather to be a
-   full-featured REST client. Requests is just a HTTP client, intentionally. Our
-   development strategy is to act as a low-level library that REST clients can
+   full-featured REST client. Requests is just and only a HTTP client, intentionally.
+   Our development strategy is to act as a low-level library that REST clients can
    easily be built on, not to provide the whole kitchen sink for you.
 
    If you want to rapidly develop a web service client using a framework, Guzzle
    will suit you perfectly. On the other hand, if you want a HTTP client without
    all the rest, Requests is the way to go.
 
-[wpstats]: http://wordpress.org/about/stats/
-
 
 ### Buzz
 
-1. **Requires PHP 5.3+**
+1. **Requires PHP 7.1+**
 
-   As with Guzzle, while PHP 5.3+ is awesome, you can't always rely on it being
+   As with Guzzle, while PHP 7.1+ is awesome, you can't always rely on it being
    on a host. With widely distributable software, this is a huge problem.
 
 2. **Not transport-transparent**
@@ -158,30 +152,18 @@ instead of something else, in our opinion.
    PEAR is (in theory) a great distribution system (with a less than wonderful
    implementation), however it is not ubiquitous, as many hosts disable it to
    save on space that most people aren't going to use anyway.
-
-   PEAR is also a pain for users. Users want to be able to download a zip of
-   your project without needing to install anything else from PEAR.
-
-   (If you really want though, Requests is available via PEAR. Check the README
-   to see how to grab it.)
+   
+   PEAR has also largely been superseded by Composer, making installation via
+   PEAR a pain for users. Users want to be able to install via Composer or to
+   download a zip of a project without needing to install anything else from PEAR.
 
 2. **Depends on other PEAR utilities**
 
-   HTTP\_Request2 requires Net_URL2 in order to function, locking you in to
+   HTTP\_Request2 requires Net\_URL2 in order to function, locking you in to
    using PEAR for your project.
 
    Requests is entirely self-contained, and includes all the libraries it needs
-   (for example, Requests\_IRI is based on ComplexPie\_IRI by Geoffrey Sneddon).
-
-
-### PECL HttpRequest
-
-1. **Requires a PECL extension**
-
-   Similar to PEAR, users aren't big fans of installing extra libraries. Unlike
-   PEAR though, PECL extensions require compiling, which end users will be
-   unfamiliar with. In addition, on systems where users do not have full
-   control over PHP, they will be unable to install custom extensions.
+   (for example, `WpOrg\Requests\Iri` is based on `ComplexPie_IRI` by Geoffrey Sneddon).
 
 
 ### Zend Framework's Zend\_Http\_Client
@@ -190,3 +172,9 @@ instead of something else, in our opinion.
 
    Similar to HTTP_Request2, Zend's client is not fully self-contained and
    requires other components from the framework.
+
+***
+
+Previous: [Goals](goals.md)
+
+Next: [Making a request](usage.md)

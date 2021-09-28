@@ -4,7 +4,9 @@ Documentation
 If you're here, you're looking for documentation for Requests! The documents
 here are prose; you might also want to check out the [API documentation][].
 
-[API documentation]: http://requests.ryanmccue.info/api/
+[API documentation]: https://requests.ryanmccue.info/api/
+
+<!-- Splitter DO NOT REMOVE Splitter -->
 
 * Introduction
 	* [Goals][goals]
@@ -17,6 +19,7 @@ here are prose; you might also want to check out the [API documentation][].
 	* [Custom authentication][authentication-custom]
 	* [Requests through proxy][proxy]
 	* [Hooking system][hooks]
+* [Upgrading to Requests 2.0][upgrading]
 
 [goals]: goals.md
 [why-requests]: why-requests.md
@@ -26,3 +29,4 @@ here are prose; you might also want to check out the [API documentation][].
 [authentication-custom]: authentication-custom.md
 [hooks]: hooks.md
 [proxy]: proxy.md
+[upgrading]: upgrading.md

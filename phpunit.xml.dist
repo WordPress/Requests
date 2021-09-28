@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.5/phpunit.xsd"
+	backupGlobals="true"
+	bootstrap="tests/bootstrap.php"
+	colors="true"
+	verbose="true"
+	>
+	<testsuites>
+		<testsuite name="RequestsTests">
+			<directory suffix="Test.php">tests</directory>
+		</testsuite>
+	</testsuites>
+
+	<logging>
+		<log type="coverage-html" target="tests/coverage" lowUpperBound="35" highLowerBound="90"/>
+	</logging>
+
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">src</directory>
+		</whitelist>
+	</filter>
+</phpunit>

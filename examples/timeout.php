@@ -1,10 +1,10 @@
 <?php
 
-// First, include Requests
-include('../library/Requests.php');
+// First, include the Requests Autoloader.
+require_once dirname(__DIR__) . '/src/Autoload.php';
 
-// Next, make sure Requests can load internal classes
-Requests::register_autoloader();
+// Next, make sure Requests can load internal classes.
+WpOrg\Requests\Autoload::register();
 
 // Define a timeout of 2.5 seconds
 $options = array(
@@ -12,6 +12,6 @@ $options = array(
 );
 
 // Now let's make a request to a page that will delay its response by 3 seconds
-$request = Requests::get('http://httpbin.org/delay/3', array(), $options);
+$request = WpOrg\Requests\Requests::get('http://httpbin.org/delay/3', array(), $options);
 
 // An exception will be thrown, stating a timeout of the request !

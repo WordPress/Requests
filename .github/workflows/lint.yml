@@ -1,0 +1,57 @@
+name: Lint
+
+on:
+  # Run on all pushes and on all pull requests.
+  push:
+  pull_request:
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+jobs:
+  lint: #----------------------------------------------------------------------
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Lint against the high/low versions of each PHP major.
+        php: ['5.6', '7.0', '7.4', '8.0']
+        experimental: [false]
+
+        include:
+          - php: '8.1'
+            experimental: true
+
+    name: "Lint: PHP ${{ matrix.php }}"
+    continue-on-error: ${{ matrix.experimental }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: cs2pr
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies - normal
+        if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
+        uses: "ramsey/composer-install@v1"
+
+      # For PHP 8.0 and "nightly", we need to install with ignore platform reqs.
+      - name: Install Composer dependencies - with ignore platform
+        if: ${{ startsWith( matrix.php, '8' ) || matrix.php == 'latest' }}
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: --ignore-platform-reqs
+
+      - name: Lint against parse errors
+        if: ${{ matrix.php >= '7.2' }}
+        run: composer lint -- --checkstyle | cs2pr
+
+      - name: Lint against parse errors
+        if: ${{ matrix.php < '7.2' }}
+        run: composer lint -- --exclude build --checkstyle | cs2pr
