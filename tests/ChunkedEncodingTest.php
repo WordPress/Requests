@@ -3,7 +3,7 @@
 namespace WpOrg\Requests\Tests;
 
 use WpOrg\Requests\Requests;
-use WpOrg\Requests\Tests\Mock\TransportMock;
+use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
 final class ChunkedDecodingTest extends TestCase {
