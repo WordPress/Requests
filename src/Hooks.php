@@ -33,9 +33,10 @@ class Hooks implements Hooker {
 	 */
 	public function register($hook, $callback, $priority = 0) {
 		if (!isset($this->hooks[$hook])) {
-			$this->hooks[$hook] = array();
-		}
-		if (!isset($this->hooks[$hook][$priority])) {
+			$this->hooks[$hook] = array(
+				$priority => array(),
+			);
+		} elseif (!isset($this->hooks[$hook][$priority])) {
 			$this->hooks[$hook][$priority] = array();
 		}
 
