@@ -45,18 +45,13 @@ jobs:
           php-version: '7.4'
           ini-values: display_errors=On
           coverage: none
-
-      # This will install the phpDocumentor PHAR, not the "normal" dependencies.
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
-        with:
-          composer-options: "--working-dir=build/ghpages/"
+          tools: phpdoc
 
       - name: Update the phpDoc configuration
         run: php build/ghpages/update-docgen-config.php
 
       - name: Generate the phpDoc documentation
-        run: php build/ghpages/vendor/bin/phpdoc
+        run: phpDocumentor
 
       - name: Transform the markdown docs for use in GH Pages
         run: php build/ghpages/update-markdown-docs.php
