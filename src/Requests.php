@@ -187,7 +187,7 @@ class Requests {
 	/**
 	 * All (known) valid deflate, gzip header magic markers.
 	 *
-	 * These markers related to different compression levels.
+	 * These markers relate to different compression levels.
 	 *
 	 * @link https://stackoverflow.com/a/43170354/482864 Marker source.
 	 *
