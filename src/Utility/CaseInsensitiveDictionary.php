@@ -62,15 +62,7 @@ class CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
 	 */
 	#[ReturnTypeWillChange]
 	public function offsetGet($offset) {
-		if (is_string($offset)) {
-			$offset = strtolower($offset);
-		}
-
-		if (!isset($this->data[$offset])) {
-			return null;
-		}
-
-		return $this->data[$offset];
+		return $this->offsetExists($offset) ? $this->data[$offset] : null;
 	}
 
 	/**
