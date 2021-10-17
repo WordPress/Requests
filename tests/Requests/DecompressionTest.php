@@ -8,7 +8,9 @@ use WpOrg\Requests\Tests\TestCase;
 final class DecompressionTest extends TestCase {
 
 	/**
-	 * @dataProvider encodedData
+	 * @dataProvider dataGzip
+	 * @dataProvider dataDeflate
+	 * @dataProvider dataDeflateWithoutHeaders
 	 */
 	public function testDecompress($expected, $compressed) {
 		$decompressed = Requests::decompress($compressed);
@@ -16,93 +18,73 @@ final class DecompressionTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider encodedData
+	 * @dataProvider dataGzip
+	 * @dataProvider dataDeflate
+	 * @dataProvider dataDeflateWithoutHeaders
 	 */
 	public function testCompatibleInflate($expected, $compressed) {
 		$decompressed = Requests::compatible_gzinflate($compressed);
 		$this->assertSame($expected, $decompressed);
 	}
 
-	public static function gzipData() {
+	public function dataGzip() {
 		return array(
-			array(
-				'foobar',
-				"\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\x4b\xcb\xcf\x4f\x4a"
-				. "\x2c\x02\x00\x95\x1f\xf6\x9e\x06\x00\x00\x00",
+			'gzip: foobar' => array(
+				'expected'   => 'foobar',
+				'compressed' => "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\x4b\xcb\xcf\x4f\x4a"
+							. "\x2c\x02\x00\x95\x1f\xf6\x9e\x06\x00\x00\x00",
 			),
-			array(
-				'Requests for PHP',
-				"\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\x0b\x4a\x2d\x2c\x4d"
-				. "\x2d\x2e\x29\x56\x48\xcb\x2f\x52\x08\xf0\x08\x00\x00\x58\x35"
-				. "\x18\x17\x10\x00\x00\x00",
+			'gzip: Requests for PHP' => array(
+				'expected'   => 'Requests for PHP',
+				'compressed' => "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\x0b\x4a\x2d\x2c\x4d"
+							. "\x2d\x2e\x29\x56\x48\xcb\x2f\x52\x08\xf0\x08\x00\x00\x58\x35"
+							. "\x18\x17\x10\x00\x00\x00",
 			),
 		);
 	}
 
-	public static function deflateData() {
+	public function dataDeflate() {
 		return array(
-			array(
-				'foobar',
-				"\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\x78\x9c\x4b\xcb\xcf"
-				. "\x4f\x4a\x2c\x02\x00\x08\xab\x02\x7a",
+			'deflate: foobar' => array(
+				'expected'   => 'foobar',
+				'compressed' => "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\x78\x9c\x4b\xcb\xcf"
+					. "\x4f\x4a\x2c\x02\x00\x08\xab\x02\x7a",
 			),
-			array(
-				'Requests for PHP',
-				"\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\x78\x9c\x0b\x4a\x2d"
-				. "\x2c\x4d\x2d\x2e\x29\x56\x48\xcb\x2f\x52\x08\xf0\x08\x00\x00"
-				. "\x34\x68\x05\xcc",
-			),
-		);
-	}
-	public static function deflateWithoutHeadersData() {
-		return array(
-			array(
-				'foobar',
-				"\x78\x9c\x4b\xcb\xcf\x4f\x4a\x2c\x02\x00\x08\xab\x02\x7a",
-			),
-			array(
-				'Requests for PHP',
-				"\x78\x9c\x0b\x4a\x2d\x2c\x4d\x2d\x2e\x29\x56\x48\xcb\x2f\x52"
-				. "\x08\xf0\x08\x00\x00\x34\x68\x05\xcc",
-			),
-			array(
-				'compression level 1',
-				"\x78\x01\x4b\xce\xcf\x2d\x28\x4a\x2d\x2e\xce\xcc\xcf\x53\xc8\x49"
-				. "\x2d\x4b\xcd\x51\x30\x04\x00\x4d\x86\x07\x3c",
-			),
-			array(
-				'compression level 3',
-				"\x78\x5e\x4b\xce\xcf\x2d\x28\x4a\x2d\x2e\xce\xcc\xcf\x53\xc8\x49"
-				. "\x2d\x4b\xcd\x51\x30\x06\x00\x4d\x88\x07\x3e",
-			),
-			array(
-				'compression level 9',
-				"\x78\xda\x4b\xce\xcf\x2d\x28\x4a\x2d\x2e\xce\xcc\xcf\x53\xc8\x49"
-				. "\x2d\x4b\xcd\x51\xb0\x04\x00\x4d\x8e\x07\x44",
+			'deflate: Requests for PHP' => array(
+				'expected'   => 'Requests for PHP',
+				'compressed' => "\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\x78\x9c\x0b\x4a\x2d"
+							. "\x2c\x4d\x2d\x2e\x29\x56\x48\xcb\x2f\x52\x08\xf0\x08\x00\x00"
+							. "\x34\x68\x05\xcc",
 			),
 		);
 	}
 
-	public static function encodedData() {
-		$datasets                                 = array();
-		$datasets['gzip']                         = self::gzipData();
-		$datasets['deflate']                      = self::deflateData();
-		$datasets['deflate without zlib headers'] = self::deflateWithoutHeadersData();
-
-		$data = array();
-		foreach ($datasets as $key => $set) {
-			$real_set = self::mapData($key, $set);
-			$data     = array_merge($data, $real_set);
-		}
-		return $data;
-	}
-
-	private static function mapData($type, $data) {
-		$real_data = array();
-		foreach ($data as $value) {
-			$key             = $type . ': ' . $value[0];
-			$real_data[$key] = $value;
-		}
-		return $real_data;
+	public function dataDeflateWithoutHeaders() {
+		return array(
+			'deflate without zlib headers: foobar' => array(
+				'expected'   => 'foobar',
+				'compressed' => "\x78\x9c\x4b\xcb\xcf\x4f\x4a\x2c\x02\x00\x08\xab\x02\x7a",
+			),
+			'deflate without zlib headers: Requests for PHP' => array(
+				'expected'   => 'Requests for PHP',
+				'compressed' => "\x78\x9c\x0b\x4a\x2d\x2c\x4d\x2d\x2e\x29\x56\x48\xcb\x2f\x52"
+							. "\x08\xf0\x08\x00\x00\x34\x68\x05\xcc",
+			),
+			'deflate without zlib headers: compression level 1' => array(
+				'expected'   => 'compression level 1',
+				'compressed' => "\x78\x01\x4b\xce\xcf\x2d\x28\x4a\x2d\x2e\xce\xcc\xcf\x53\xc8\x49"
+							. "\x2d\x4b\xcd\x51\x30\x04\x00\x4d\x86\x07\x3c",
+			),
+			'deflate without zlib headers: compression level 3' => array(
+				'expected'   => 'compression level 3',
+				'compressed' => "\x78\x5e\x4b\xce\xcf\x2d\x28\x4a\x2d\x2e\xce\xcc\xcf\x53\xc8\x49"
+							. "\x2d\x4b\xcd\x51\x30\x06\x00\x4d\x88\x07\x3e",
+			),
+			'deflate without zlib headers: compression level 9' => array(
+				'expected'   => 'compression level 9',
+				'compressed' => "\x78\xda\x4b\xce\xcf\x2d\x28\x4a\x2d\x2e\xce\xcc\xcf\x53\xc8\x49"
+							. "\x2d\x4b\xcd\x51\xb0\x04\x00\x4d\x8e\x07\x44",
+			),
+		);
 	}
 }
