@@ -10,17 +10,17 @@ final class DecompressionTest extends TestCase {
 	/**
 	 * @dataProvider encodedData
 	 */
-	public function testDecompress($original, $encoded) {
-		$decoded = Requests::decompress($encoded);
-		$this->assertSame($original, $decoded);
+	public function testDecompress($expected, $compressed) {
+		$decompressed = Requests::decompress($compressed);
+		$this->assertSame($expected, $decompressed);
 	}
 
 	/**
 	 * @dataProvider encodedData
 	 */
-	public function testCompatibleInflate($original, $encoded) {
-		$decoded = Requests::compatible_gzinflate($encoded);
-		$this->assertSame($original, $decoded);
+	public function testCompatibleInflate($expected, $compressed) {
+		$decompressed = Requests::compatible_gzinflate($compressed);
+		$this->assertSame($expected, $decompressed);
 	}
 
 	public static function gzipData() {
