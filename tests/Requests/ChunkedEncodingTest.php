@@ -72,6 +72,7 @@ final class ChunkedDecodingTest extends TestCase {
 
 	public function dataNotActuallyChunked() {
 		return array(
+			'empty string'                         => array(''),
 			'invalid chunk size'                   => array('Hello! This is a non-chunked response!'),
 			'invalid chunk extension'              => array('1BNot chunked\r\nLooks chunked but it is not\r\n'),
 			'unquoted chunk-ext-val with space'    => array("02;foo=unquoted with space\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
