@@ -9,7 +9,7 @@ use WpOrg\Requests\Tests\TestCase;
 final class ChunkedDecodingTest extends TestCase {
 
 	/**
-	 * @dataProvider chunkedProvider
+	 * @dataProvider dataChunked
 	 */
 	public function testChunked($body, $expected) {
 		$transport          = new TransportMock();
@@ -24,7 +24,7 @@ final class ChunkedDecodingTest extends TestCase {
 		$this->assertSame($expected, $response->body);
 	}
 
-	public static function chunkedProvider() {
+	public function dataChunked() {
 		return array(
 			array(
 				"25\r\nThis is the data in the first chunk\r\n\r\n1A\r\nand this is the second one\r\n0\r\n",
@@ -55,7 +55,7 @@ final class ChunkedDecodingTest extends TestCase {
 
 	/**
 	 * Response says it's chunked, but actually isn't
-	 * @dataProvider notChunkedProvider
+	 * @dataProvider dataNotActuallyChunked
 	 */
 	public function testNotActuallyChunked($body) {
 		$transport          = new TransportMock();
@@ -70,7 +70,7 @@ final class ChunkedDecodingTest extends TestCase {
 		$this->assertSame($transport->body, $response->body);
 	}
 
-	public static function notChunkedProvider() {
+	public function dataNotActuallyChunked() {
 		return array(
 			'invalid chunk size'                   => array('Hello! This is a non-chunked response!'),
 			'invalid chunk extension'              => array('1BNot chunked\r\nLooks chunked but it is not\r\n'),
