@@ -8,10 +8,19 @@ use WpOrg\Requests\Tests\TestCase;
 final class DecompressionTest extends TestCase {
 
 	/**
+	 * Test decompressing an encoded response body.
+	 *
+	 * @covers \WpOrg\Requests\Requests::decompress
+	 *
 	 * @dataProvider dataDecompressNotCompressed
 	 * @dataProvider dataGzip
 	 * @dataProvider dataDeflate
 	 * @dataProvider dataDeflateWithoutHeaders
+	 *
+	 * @param string $expected   Expected text string after decompression.
+	 * @param string $compressed Compressed data string.
+	 *
+	 * @return void
 	 */
 	public function testDecompress($expected, $compressed) {
 		$decompressed = Requests::decompress($compressed);
@@ -19,10 +28,19 @@ final class DecompressionTest extends TestCase {
 	}
 
 	/**
+	 * Test decompression of deflated strings.
+	 *
+	 * @covers \WpOrg\Requests\Requests::compatible_gzinflate
+	 *
 	 * @dataProvider dataCompatibleInflateNotCompressed
 	 * @dataProvider dataGzip
 	 * @dataProvider dataDeflate
 	 * @dataProvider dataDeflateWithoutHeaders
+	 *
+	 * @param string $expected   Expected text string after decompression.
+	 * @param string $compressed Compressed data string.
+	 *
+	 * @return void
 	 */
 	public function testCompatibleInflate($expected, $compressed) {
 		$decompressed = Requests::compatible_gzinflate($compressed);
@@ -65,6 +83,11 @@ final class DecompressionTest extends TestCase {
 		return $data;
 	}
 
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
 	public function dataGzip() {
 		return array(
 			'gzip: foobar' => array(
@@ -81,6 +104,11 @@ final class DecompressionTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
 	public function dataDeflate() {
 		return array(
 			'deflate: foobar' => array(
@@ -97,6 +125,11 @@ final class DecompressionTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
 	public function dataDeflateWithoutHeaders() {
 		return array(
 			'deflate without zlib headers: foobar' => array(
