@@ -7,6 +7,23 @@ use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
 final class ChunkedDecodingTest extends TestCase {
+
+	/**
+	 * @dataProvider chunkedProvider
+	 */
+	public function testChunked($body, $expected) {
+		$transport          = new TransportMock();
+		$transport->body    = $body;
+		$transport->chunked = true;
+
+		$options  = array(
+			'transport' => $transport,
+		);
+		$response = Requests::get('http://example.com/', array(), $options);
+
+		$this->assertSame($expected, $response->body);
+	}
+
 	public static function chunkedProvider() {
 		return array(
 			array(
@@ -37,33 +54,6 @@ final class ChunkedDecodingTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider chunkedProvider
-	 */
-	public function testChunked($body, $expected) {
-		$transport          = new TransportMock();
-		$transport->body    = $body;
-		$transport->chunked = true;
-
-		$options  = array(
-			'transport' => $transport,
-		);
-		$response = Requests::get('http://example.com/', array(), $options);
-
-		$this->assertSame($expected, $response->body);
-	}
-
-	public static function notChunkedProvider() {
-		return array(
-			'invalid chunk size'                   => array('Hello! This is a non-chunked response!'),
-			'invalid chunk extension'              => array('1BNot chunked\r\nLooks chunked but it is not\r\n'),
-			'unquoted chunk-ext-val with space'    => array("02;foo=unquoted with space\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
-			'unquoted chunk-ext-val with forbidden character' => array("02;foo={unquoted}\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
-			'invalid chunk-ext-name'               => array("02;{foo}=bar\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
-			'incomplete quote for chunk-ext-value' => array("02;foo=\"no end quote\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
-		);
-	}
-
-	/**
 	 * Response says it's chunked, but actually isn't
 	 * @dataProvider notChunkedProvider
 	 */
@@ -80,6 +70,16 @@ final class ChunkedDecodingTest extends TestCase {
 		$this->assertSame($transport->body, $response->body);
 	}
 
+	public static function notChunkedProvider() {
+		return array(
+			'invalid chunk size'                   => array('Hello! This is a non-chunked response!'),
+			'invalid chunk extension'              => array('1BNot chunked\r\nLooks chunked but it is not\r\n'),
+			'unquoted chunk-ext-val with space'    => array("02;foo=unquoted with space\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
+			'unquoted chunk-ext-val with forbidden character' => array("02;foo={unquoted}\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
+			'invalid chunk-ext-name'               => array("02;{foo}=bar\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
+			'incomplete quote for chunk-ext-value' => array("02;foo=\"no end quote\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
+		);
+	}
 
 	/**
 	 * Response says it's chunked and starts looking like it is, but turns out
