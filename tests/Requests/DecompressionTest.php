@@ -1,11 +1,11 @@
 <?php
 
-namespace WpOrg\Requests\Tests;
+namespace WpOrg\Requests\Tests\Requests;
 
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
 
-final class EncodingTest extends TestCase {
+final class DecompressionTest extends TestCase {
 	private static function mapData($type, $data) {
 		$real_data = array();
 		foreach ($data as $value) {
