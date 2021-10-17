@@ -6,13 +6,21 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
 
 final class DecompressionTest extends TestCase {
-	private static function mapData($type, $data) {
-		$real_data = array();
-		foreach ($data as $value) {
-			$key             = $type . ': ' . $value[0];
-			$real_data[$key] = $value;
-		}
-		return $real_data;
+
+	/**
+	 * @dataProvider encodedData
+	 */
+	public function testDecompress($original, $encoded) {
+		$decoded = Requests::decompress($encoded);
+		$this->assertSame($original, $decoded);
+	}
+
+	/**
+	 * @dataProvider encodedData
+	 */
+	public function testCompatibleInflate($original, $encoded) {
+		$decoded = Requests::compatible_gzinflate($encoded);
+		$this->assertSame($original, $decoded);
 	}
 
 	public static function gzipData() {
@@ -89,19 +97,12 @@ final class DecompressionTest extends TestCase {
 		return $data;
 	}
 
-	/**
-	 * @dataProvider encodedData
-	 */
-	public function testDecompress($original, $encoded) {
-		$decoded = Requests::decompress($encoded);
-		$this->assertSame($original, $decoded);
-	}
-
-	/**
-	 * @dataProvider encodedData
-	 */
-	public function testCompatibleInflate($original, $encoded) {
-		$decoded = Requests::compatible_gzinflate($encoded);
-		$this->assertSame($original, $decoded);
+	private static function mapData($type, $data) {
+		$real_data = array();
+		foreach ($data as $value) {
+			$key             = $type . ': ' . $value[0];
+			$real_data[$key] = $value;
+		}
+		return $real_data;
 	}
 }
