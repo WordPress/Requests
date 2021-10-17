@@ -27,28 +27,28 @@ final class ChunkedDecodingTest extends TestCase {
 	public function dataChunked() {
 		return array(
 			array(
-				"25\r\nThis is the data in the first chunk\r\n\r\n1A\r\nand this is the second one\r\n0\r\n",
-				"This is the data in the first chunk\r\nand this is the second one",
+				'body'     => "25\r\nThis is the data in the first chunk\r\n\r\n1A\r\nand this is the second one\r\n0\r\n",
+				'expected' => "This is the data in the first chunk\r\nand this is the second one",
 			),
 			array(
-				"02\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0\r\nnothing\n",
-				"abra\ncadabra",
+				'body'     => "02\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0\r\nnothing\n",
+				'expected' => "abra\ncadabra",
 			),
 			array(
-				"02\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
-				"abra\ncadabra\nall we got\n",
+				'body'     => "02\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
+				'expected' => "abra\ncadabra\nall we got\n",
 			),
 			array(
-				"02;foo=bar;hello=world\r\nab\r\n04;foo=baz\r\nra\nc\r\n06;justfoo\r\nadabra\r\n0c\r\n\nall we got\n",
-				"abra\ncadabra\nall we got\n",
+				'body'     => "02;foo=bar;hello=world\r\nab\r\n04;foo=baz\r\nra\nc\r\n06;justfoo\r\nadabra\r\n0c\r\n\nall we got\n",
+				'expected' => "abra\ncadabra\nall we got\n",
 			),
 			array(
-				"02;foo=\"quoted value\"\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
-				"abra\ncadabra\nall we got\n",
+				'body'     => "02;foo=\"quoted value\"\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
+				'expected' => "abra\ncadabra\nall we got\n",
 			),
 			array(
-				"02;foo-bar=baz\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
-				"abra\ncadabra\nall we got\n",
+				'body'     => "02;foo-bar=baz\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
+				'expected' => "abra\ncadabra\nall we got\n",
 			),
 		);
 	}
