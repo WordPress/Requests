@@ -1,6 +1,6 @@
 <?php
 
-namespace WpOrg\Requests\Tests;
+namespace WpOrg\Requests\Tests\Requests;
 
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
