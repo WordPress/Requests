@@ -3,6 +3,7 @@
 namespace WpOrg\Requests\Tests\Requests;
 
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -21,7 +22,8 @@ final class ChunkedDecodingTest extends TestCase {
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 
-		$this->assertSame($expected, $response->body);
+		$this->assertInstanceOf(Response::class, $response, 'Response is not an instance of the Response class.');
+		$this->assertSame($expected, $response->body, 'Response body does not match expected dechunked body');
 	}
 
 	public function dataChunked() {
@@ -67,7 +69,8 @@ final class ChunkedDecodingTest extends TestCase {
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
 
-		$this->assertSame($transport->body, $response->body);
+		$this->assertInstanceOf(Response::class, $response, 'Response is not an instance of the Response class.');
+		$this->assertSame($transport->body, $response->body, 'Response body does not match original body');
 	}
 
 	public function dataNotActuallyChunked() {
@@ -95,6 +98,8 @@ final class ChunkedDecodingTest extends TestCase {
 			'transport' => $transport,
 		);
 		$response = Requests::get('http://example.com/', array(), $options);
-		$this->assertSame($transport->body, $response->body);
+
+		$this->assertInstanceOf(Response::class, $response, 'Response is not an instance of the Response class.');
+		$this->assertSame($transport->body, $response->body, 'Response body does not match original body');
 	}
 }
