@@ -7,10 +7,19 @@ use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
+/**
+ * @covers \WpOrg\Requests\Requests::decode_chunked
+ */
 final class ChunkedDecodingTest extends TestCase {
 
 	/**
+	 * Test decoding chunked responses.
+	 *
 	 * @dataProvider dataChunked
+	 *
+	 * @param string $body Not really chunked response body.
+	 *
+	 * @return void
 	 */
 	public function testChunked($body, $expected) {
 		$transport          = new TransportMock();
@@ -26,6 +35,11 @@ final class ChunkedDecodingTest extends TestCase {
 		$this->assertSame($expected, $response->body, 'Response body does not match expected dechunked body');
 	}
 
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
 	public function dataChunked() {
 		return array(
 			array(
@@ -56,8 +70,13 @@ final class ChunkedDecodingTest extends TestCase {
 	}
 
 	/**
-	 * Response says it's chunked, but actually isn't
+	 * Response says it's chunked, but actually isn't.
+	 *
 	 * @dataProvider dataNotActuallyChunked
+	 *
+	 * @param string $body Not really chunked response body.
+	 *
+	 * @return void
 	 */
 	public function testNotActuallyChunked($body) {
 		$transport          = new TransportMock();
@@ -73,6 +92,11 @@ final class ChunkedDecodingTest extends TestCase {
 		$this->assertSame($transport->body, $response->body, 'Response body does not match original body');
 	}
 
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
 	public function dataNotActuallyChunked() {
 		return array(
 			'empty string'                         => array(''),
@@ -87,7 +111,9 @@ final class ChunkedDecodingTest extends TestCase {
 
 	/**
 	 * Response says it's chunked and starts looking like it is, but turns out
-	 * that they're lying to us
+	 * that they're lying to us.
+	 *
+	 * @return void
 	 */
 	public function testMixedChunkiness() {
 		$transport          = new TransportMock();
