@@ -8,6 +8,7 @@ use WpOrg\Requests\Tests\TestCase;
 final class DecompressionTest extends TestCase {
 
 	/**
+	 * @dataProvider dataDecompressNotCompressed
 	 * @dataProvider dataGzip
 	 * @dataProvider dataDeflate
 	 * @dataProvider dataDeflateWithoutHeaders
@@ -18,6 +19,7 @@ final class DecompressionTest extends TestCase {
 	}
 
 	/**
+	 * @dataProvider dataCompatibleInflateNotCompressed
 	 * @dataProvider dataGzip
 	 * @dataProvider dataDeflate
 	 * @dataProvider dataDeflateWithoutHeaders
@@ -25,6 +27,38 @@ final class DecompressionTest extends TestCase {
 	public function testCompatibleInflate($expected, $compressed) {
 		$decompressed = Requests::compatible_gzinflate($compressed);
 		$this->assertSame($expected, $decompressed);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataDecompressNotCompressed() {
+		return array(
+			'not compressed: empty string' => array(
+				'expected'   => '',
+				'compressed' => '',
+			),
+			'not compressed: Requests for PHP' => array(
+				'expected'   => 'Requests for PHP',
+				'compressed' => 'Requests for PHP',
+			),
+		);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataCompatibleInflateNotCompressed() {
+		$data = $this->dataDecompressNotCompressed();
+		foreach ($data as $key => $value) {
+			$data[$key]['expected'] = false;
+		}
+
+		return $data;
 	}
 
 	public function dataGzip() {
