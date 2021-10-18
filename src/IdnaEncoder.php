@@ -92,11 +92,17 @@ class IdnaEncoder {
 		// Step 4: Check if it's ASCII now
 		if (self::is_ascii($text)) {
 			// Skip to step 7
+			/*
+			 * As the `nameprep()` method returns the original string, this code will never be reached until
+			 * that method is properly implemented.
+			 */
+			// @codeCoverageIgnoreStart
 			if (strlen($text) < self::MAX_LENGTH) {
 				return $text;
 			}
 
 			throw new Exception('Prepared string is too long', 'idna.prepared_too_long', $text);
+			// @codeCoverageIgnoreEnd
 		}
 
 		// Step 5: Check ACE prefix
