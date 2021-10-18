@@ -2,7 +2,9 @@
 
 namespace WpOrg\Requests\Tests\Requests;
 
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 
 final class DecompressionTest extends TestCase {
@@ -186,6 +188,54 @@ final class DecompressionTest extends TestCase {
 				'compressed' => "\x78\xda\x4b\xce\xcf\x2d\x28\x4a\x2d\x2e\xce\xcc\xcf\x53\xc8\x49"
 							. "\x2d\x4b\xcd\x51\xb0\x04\x00\x4d\x8e\x07\x44",
 			),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed.
+	 *
+	 * @covers \WpOrg\Requests\Requests::decompress
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testDecompressInvalidInputType($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($data) must be of type string');
+
+		Requests::decompress($input);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed.
+	 *
+	 * @covers \WpOrg\Requests\Requests::compatible_gzinflate
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testCompatibleGzinflateInvalidInputType($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($gz_data) must be of type string');
+
+		Requests::compatible_gzinflate($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInputType() {
+		return array(
+			'null'              => array(null),
+			'stringable object' => array(new StringableObject('value')),
 		);
 	}
 }

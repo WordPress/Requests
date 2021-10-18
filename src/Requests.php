@@ -900,8 +900,14 @@ class Requests {
 	 *
 	 * @param string $data Compressed data in one of the above formats
 	 * @return string Decompressed string
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string.
 	 */
 	public static function decompress($data) {
+		if (is_string($data) === false) {
+			throw InvalidArgument::create(1, '$data', 'string', gettype($data));
+		}
+
 		if (trim($data) === '') {
 			// Empty body does not need further processing.
 			return $data;
@@ -961,8 +967,14 @@ class Requests {
 	 *
 	 * @param string $gz_data String to decompress.
 	 * @return string|bool False on failure.
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string.
 	 */
 	public static function compatible_gzinflate($gz_data) {
+		if (is_string($gz_data) === false) {
+			throw InvalidArgument::create(1, '$gz_data', 'string', gettype($gz_data));
+		}
+
 		if (trim($gz_data) === '') {
 			return false;
 		}
