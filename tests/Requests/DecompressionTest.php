@@ -40,6 +40,10 @@ final class DecompressionTest extends TestCase {
 				'expected'   => '',
 				'compressed' => '',
 			),
+			'not compressed: whitespace only string' => array(
+				'expected'   => "  \n\r  ",
+				'compressed' => "  \n\r  ",
+			),
 			'not compressed: Requests for PHP' => array(
 				'expected'   => 'Requests for PHP',
 				'compressed' => 'Requests for PHP',

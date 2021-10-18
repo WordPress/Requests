@@ -842,6 +842,11 @@ class Requests {
 	 * @return string Decompressed string
 	 */
 	public static function decompress($data) {
+		if (trim($data) === '') {
+			// Empty body does not need further processing.
+			return $data;
+		}
+
 		$marker = substr($data, 0, 2);
 		if (!isset(self::$magic_compression_headers[$marker])) {
 			// Not actually compressed. Probably cURL ruining this for us.
@@ -898,6 +903,10 @@ class Requests {
 	 * @return string|bool False on failure.
 	 */
 	public static function compatible_gzinflate($gz_data) {
+		if (trim($gz_data) === '') {
+			return false;
+		}
+
 		// Compressed data might contain a full zlib header, if so strip it for
 		// gzinflate()
 		if (substr($gz_data, 0, 3) === "\x1f\x8b\x08") {
