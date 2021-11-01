@@ -9,7 +9,7 @@
 
 namespace WpOrg\Requests\Proxy;
 
-use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\ArgumentCount;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Proxy;
 
@@ -57,8 +57,12 @@ final class Http implements Proxy {
 	 * Constructor
 	 *
 	 * @since 1.6
-	 * @throws \WpOrg\Requests\Exception On incorrect number of arguments (`authbasicbadargs`)
-	 * @param array|null $args Array of user and password. Must have exactly two elements
+	 * @since 2.0 Throws an `ArgumentCount` exception instead of the Requests base `Exception.
+	 *
+	 * @param array|null $args Array of proxy, user and password.
+	 *                         Must have exactly one (proxy) or three elements (proxy, user, password).
+	 *
+	 * @throws \WpOrg\Requests\Exception\ArgumentCount On incorrect number of arguments (`proxyhttpbadargs`)
 	 */
 	public function __construct($args = null) {
 		if (is_string($args)) {
@@ -73,7 +77,11 @@ final class Http implements Proxy {
 				$this->use_authentication                    = true;
 			}
 			else {
-				throw new Exception('Invalid number of arguments', 'proxyhttpbadargs');
+				throw ArgumentCount::create(
+					'an array with exactly one element or exactly three elements',
+					count($args),
+					'proxyhttpbadargs'
+				);
 			}
 		}
 	}

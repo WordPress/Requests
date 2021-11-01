@@ -3,6 +3,7 @@
 namespace WpOrg\Requests\Tests\Proxy;
 
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\ArgumentCount;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
@@ -69,8 +70,8 @@ final class HttpTest extends TestCase {
 			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
 			'transport' => $transport,
 		);
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Invalid number of arguments');
+		$this->expectException(ArgumentCount::class);
+		$this->expectExceptionMessage('WpOrg\Requests\Proxy\Http::__construct() expects an array with exactly one element or exactly three elements');
 		Requests::get(httpbin('/get'), array(), $options);
 	}
 

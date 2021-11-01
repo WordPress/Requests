@@ -3,7 +3,7 @@
 namespace WpOrg\Requests\Tests\Auth;
 
 use WpOrg\Requests\Auth\Basic;
-use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\ArgumentCount;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
@@ -253,8 +253,8 @@ final class BasicTest extends TestCase {
 	 * @return void
 	 */
 	public function testInvalidArgumentCount($input) {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Invalid number of arguments');
+		$this->expectException(ArgumentCount::class);
+		$this->expectExceptionMessage('WpOrg\Requests\Auth\Basic::__construct() expects an array with exactly two elements');
 
 		new Basic($input);
 	}

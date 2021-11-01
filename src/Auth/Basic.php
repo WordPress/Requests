@@ -9,7 +9,7 @@
 namespace WpOrg\Requests\Auth;
 
 use WpOrg\Requests\Auth;
-use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\ArgumentCount;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 
@@ -40,15 +40,18 @@ class Basic implements Auth {
 	/**
 	 * Constructor
 	 *
+	 * @since 2.0 Throws an `InvalidArgument` exception.
+	 * @since 2.0 Throws an `ArgumentCount` exception instead of the Requests base `Exception.
+	 *
 	 * @param array|null $args Array of user and password. Must have exactly two elements
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not an array or null.
-	 * @throws \WpOrg\Requests\Exception                 On incorrect number of arguments (`authbasicbadargs`).
+	 * @throws \WpOrg\Requests\Exception\ArgumentCount   On incorrect number of array elements (`authbasicbadargs`).
 	 */
 	public function __construct($args = null) {
 		if (is_array($args)) {
 			if (count($args) !== 2) {
-				throw new Exception('Invalid number of arguments', 'authbasicbadargs');
+				throw ArgumentCount::create('an array with exactly two elements', count($args), 'authbasicbadargs');
 			}
 
 			list($this->user, $this->pass) = $args;
