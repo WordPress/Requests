@@ -1,10 +1,10 @@
 name: Build website
 
 on:
-  # Trigger the workflow whenever a new release is created.
-  release:
-    types:
-      - published
+  # Trigger the workflow whenever a new tag is created.
+  push:
+    tags:
+      - '2**'
   # And whenever this workflow or one of the associated scripts is updated.
   pull_request:
     paths:
@@ -81,6 +81,24 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+      # PRs based on the "pull request" event trigger will contain changes from the
+      # current `develop` branch, so should not be published as the website should
+      # always be based on the latest release.
+      - name: Determine PR title prefix, body and more
+        id: get_pr_info
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo '::set-output name=REF::${{ github.ref_name }}'
+            echo '::set-output name=PR_TITLE_PREFIX::[TEST | DO NOT MERGE] '
+            echo '::set-output name=PR_BODY::Test run for the website update after changes to the automated scripts.'
+            echo '::set-output name=DRAFT::true'
+          else
+            echo '::set-output name=REF::${{ github.event.release.tag_name }}'
+            echo '::set-output name=PR_TITLE_PREFIX::'
+            echo '::set-output name=PR_BODY::Website update after the release of Requests ${{ github.event.release.tag_name }}.'
+            echo '::set-output name=DRAFT::false'
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v2
         with:
@@ -108,7 +126,7 @@ jobs:
           git config user.name 'GitHub Action'
           git config user.email '${{ github.actor }}@users.noreply.github.com'
           git add -A ./api/
-          git commit --allow-empty --message="GH Pages: update API docs for Requests ${{ github.ref }}"
+          git commit --allow-empty --message="GH Pages: update API docs for Requests ${{ steps.get_pr_info.outputs.REF }}"
 
       # Similar to the API docs, files could be removed from the prose docs, so
       # make sure that the directory is cleared out completely beforehand.
@@ -128,22 +146,6 @@ jobs:
       - name: Remove the artifacts directory
         run: rmdir --ignore-fail-on-non-empty --verbose ./artifacts
 
-      # PRs based on the "pull request" event trigger will contain changes from the
-      # current `develop` branch, so should not be published as the website should
-      # always be based on the latest release.
-      - name: Determine PR title prefix, body and more
-        id: get_pr_info
-        run: |
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo '::set-output name=PR_TITLE_PREFIX::[TEST | DO NOT MERGE] '
-            echo '::set-output name=PR_BODY::Test run for the website update after changes to the automated scripts.'
-            echo '::set-output name=DRAFT::true'
-          else
-            echo '::set-output name=PR_TITLE_PREFIX::'
-            echo '::set-output name=PR_BODY::Website update after the release of Requests ${{ github.ref }}.'
-            echo '::set-output name=DRAFT::false'
-          fi
-
       - name: Show status
         run: git status -vv --untracked=all
 
@@ -151,9 +153,9 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           base: gh-pages
-          branch: feature/auto-ghpages-update-${{ github.ref }}
+          branch: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
           delete-branch: true
-          commit-message: "GH Pages: update other docs for Requests ${{ github.ref }}"
+          commit-message: "GH Pages: update other docs for Requests ${{ steps.get_pr_info.outputs.REF }}"
           title: "${{ steps.get_pr_info.outputs.PR_TITLE_PREFIX }}:books: Update GHPages website"
           body: |
             ${{ steps.get_pr_info.outputs.PR_BODY }}
