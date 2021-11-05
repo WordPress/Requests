@@ -140,6 +140,25 @@ class Requests {
 	);
 
 	/**
+	 * All (known) valid deflate, gzip header magic markers.
+	 *
+	 * These markers relate to different compression levels.
+	 *
+	 * @link https://stackoverflow.com/a/43170354/482864 Marker source.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array
+	 */
+	const MAGIC_COMPRESSION_HEADERS = array(
+		"\x1f\x8b" => true, // Gzip marker.
+		"\x78\x01" => true, // Zlib marker - level 1.
+		"\x78\x5e" => true, // Zlib marker - level 2 to 5.
+		"\x78\x9c" => true, // Zlib marker - level 6.
+		"\x78\xda" => true, // Zlib marker - level 7 to 9.
+	);
+
+	/**
 	 * Default supported Transport classes.
 	 *
 	 * @since 2.0.0
@@ -183,25 +202,6 @@ class Requests {
 	 * @var string
 	 */
 	protected static $certificate_path;
-
-	/**
-	 * All (known) valid deflate, gzip header magic markers.
-	 *
-	 * These markers relate to different compression levels.
-	 *
-	 * @link https://stackoverflow.com/a/43170354/482864 Marker source.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @var array
-	 */
-	private static $magic_compression_headers = array(
-		"\x1f\x8b" => true, // Gzip marker.
-		"\x78\x01" => true, // Zlib marker - level 1.
-		"\x78\x5e" => true, // Zlib marker - level 2 to 5.
-		"\x78\x9c" => true, // Zlib marker - level 6.
-		"\x78\xda" => true, // Zlib marker - level 7 to 9.
-	);
 
 	/**
 	 * This is a static class, do not instantiate it
@@ -843,7 +843,7 @@ class Requests {
 	 */
 	public static function decompress($data) {
 		$marker = substr($data, 0, 2);
-		if (!isset(self::$magic_compression_headers[$marker])) {
+		if (!isset(self::MAGIC_COMPRESSION_HEADERS[$marker])) {
 			// Not actually compressed. Probably cURL ruining this for us.
 			return $data;
 		}
