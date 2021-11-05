@@ -14,7 +14,7 @@ use IteratorAggregate;
 use ReturnTypeWillChange;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Exception;
-use WpOrg\Requests\Hooker;
+use WpOrg\Requests\HookManager;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response;
 
@@ -121,9 +121,9 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Register the cookie handler with the request's hooking system
 	 *
-	 * @param \WpOrg\Requests\Hooker $hooks Hooking system
+	 * @param \WpOrg\Requests\HookManager $hooks Hooking system
 	 */
-	public function register(Hooker $hooks) {
+	public function register(HookManager $hooks) {
 		$hooks->register('requests.before_request', array($this, 'before_request'));
 		$hooks->register('requests.before_redirect_check', array($this, 'before_redirect_check'));
 	}

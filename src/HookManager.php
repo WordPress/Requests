@@ -14,7 +14,7 @@ namespace WpOrg\Requests;
  * @package Requests
  * @subpackage Utilities
  */
-interface Hooker {
+interface HookManager {
 	/**
 	 * Register a callback for a hook
 	 *
