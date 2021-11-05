@@ -9,7 +9,7 @@
 namespace WpOrg\Requests;
 
 use WpOrg\Requests\Exception\InvalidArgument;
-use WpOrg\Requests\Hooker;
+use WpOrg\Requests\HookManager;
 use WpOrg\Requests\Utility\InputValidator;
 
 /**
@@ -18,7 +18,7 @@ use WpOrg\Requests\Utility\InputValidator;
  * @package Requests
  * @subpackage Utilities
  */
-class Hooks implements Hooker {
+class Hooks implements HookManager {
 	/**
 	 * Registered callbacks for each hook
 	 *

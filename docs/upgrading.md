@@ -41,7 +41,7 @@ class names.
 |-----------|----------------------------------------------|-------------------------------------------------------------------------|
 | class     | `Requests`                                   | `WpOrg\Requests\Requests` <strong><sup>1</sup></strong>                 |
 | interface | `Requests_Auth`                              | `WpOrg\Requests\Auth`                                                   |
-| interface | `Requests_Hooker`                            | `WpOrg\Requests\Hooker`                                                 |
+| interface | `Requests_Hooker`                            | `WpOrg\Requests\HookManager`                                            |
 | interface | `Requests_Transport`                         | `WpOrg\Requests\Transport`                                              |
 | interface | `Requests_Proxy`                             | `WpOrg\Requests\Proxy`                                                  |
 | class     | `Requests_Cookie`                            | `WpOrg\Requests\Cookie`                                                 |
