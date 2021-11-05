@@ -115,17 +115,17 @@ jobs:
       # So we always need to make sure that the old version of the API docs are
       # cleared out completely.
       - name: Clear out the API directory
-        run: rm -vrf ./api/*
+        run: rm -vrf ./api-2.x/*
 
       - name: Move the updated API doc files
-        run: mv -fv artifacts/api/* ./api/
+        run: mv -fv artifacts/api-2.x/* ./api-2.x/
 
       # The commit should contain all changes in the API directory, both tracked and untracked!
       - name: Commit the API docs separately
         run: |
           git config user.name 'GitHub Action'
           git config user.email '${{ github.actor }}@users.noreply.github.com'
-          git add -A ./api/
+          git add -A ./api-2.x/
           git commit --allow-empty --message="GH Pages: update API docs for Requests ${{ steps.get_pr_info.outputs.REF }}"
 
       # Similar to the API docs, files could be removed from the prose docs, so

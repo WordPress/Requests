@@ -9,7 +9,7 @@
     <title>Requests #.#.# API</title>
 
     <paths>
-        <output>build/ghpages/artifacts/api/</output>
+        <output>build/ghpages/artifacts/api-2.x/</output>
         <cache>build/ghpages/.phpdoc/</cache>
     </paths>
 
