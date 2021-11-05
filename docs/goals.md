@@ -23,7 +23,7 @@ Goals
 
    No matter what you have installed on your system, you should be able to run
    Requests. We use cURL if it's available, and fallback to sockets otherwise.
-   We require only a baseline of PHP 5.2, leaving the choice of PHP minimum
+   We require only a baseline of PHP 5.6, leaving the choice of PHP minimum
    requirement fully in your hands, and giving you the ability to support many
    more hosts.
 
