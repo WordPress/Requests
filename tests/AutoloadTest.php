@@ -3,7 +3,9 @@
 namespace WpOrg\Requests\Tests;
 
 use Requests_Exception_Transport_cURL;
+use Requests_Utility_FilteredIterator;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Utility\FilteredIterator;
 
 final class AutoloadTest extends TestCase {
 
@@ -26,6 +28,27 @@ final class AutoloadTest extends TestCase {
 		$this->expectDeprecation();
 		$this->expectDeprecationMessage(self::MSG);
 
-		$this->assertSame('cURLEasy', Requests_Exception_Transport_cURL::EASY);
+		$var = Requests_Exception_Transport_cURL::EASY;
+	}
+
+	/**
+	 * Verify that the deprecation layer works without a fatal error for extending a final class.
+	 *
+	 * @preserveGlobalState disabled
+	 * @runInSeparateProcess
+	 */
+	public function testAutoloadOfOldRequestsClassDoesNotThrowAFatalForFinalClass() {
+		define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
+
+		$this->assertInstanceOf(FilteredIterator::class, new Requests_Utility_FilteredIterator(array(), function() {}));
+	}
+
+	/**
+	 * Verify that the constant declaration in the previous test doesn't affect other tests.
+	 *
+	 * @coversNothing
+	 */
+	public function testConstantDeclarationDoesntInfluenceFurtherTests() {
+		$this->assertFalse(defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS'));
 	}
 }
