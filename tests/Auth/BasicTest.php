@@ -3,7 +3,8 @@
 namespace WpOrg\Requests\Tests\Auth;
 
 use WpOrg\Requests\Auth\Basic;
-use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\ArgumentCount;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
@@ -114,6 +115,56 @@ final class BasicTest extends TestCase {
 	 *
 	 * @return void
 	 */
+	public function testUsingInstantiationWithDelayedSettingOfCredentials($transport) {
+		$this->skipWhenTransportNotAvailable($transport);
+
+		$options = array(
+			'auth'      => new Basic(),
+			'transport' => $transport,
+		);
+
+		$options['auth']->user = 'user';
+		$options['auth']->pass = 'passwd';
+		$request               = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
+
+		// Verify the request succeeded.
+		$this->assertInstanceOf(
+			Response::class,
+			$request,
+			'GET request did not return an instance of `Requests\Response`'
+		);
+		$this->assertSame(
+			200,
+			$request->status_code,
+			'GET request failed. Expected status: 200. Received status: ' . $request->status_code
+		);
+
+		// Verify the response confirms that the request was authenticated.
+		$result = json_decode($request->body);
+		$this->assertIsObject($result, 'Decoded response body is not an object');
+
+		$this->assertObjectHasAttribute(
+			'authenticated',
+			$result,
+			'Property "authenticated" not available in decoded response'
+		);
+		$this->assertTrue($result->authenticated, 'Authentication failed');
+
+		$this->assertObjectHasAttribute(
+			'user',
+			$result,
+			'Property "user" not available in decoded response'
+		);
+		$this->assertSame('user', $result->user, 'Unexpected value encountered for "user"');
+	}
+
+	/**
+	 * @dataProvider transportProvider
+	 *
+	 * @param string $transport Transport to use.
+	 *
+	 * @return void
+	 */
 	public function testPOSTUsingInstantiation($transport) {
 		$this->skipWhenTransportNotAvailable($transport);
 
@@ -165,6 +216,34 @@ final class BasicTest extends TestCase {
 	}
 
 	/**
+	 * Tests receiving an exception when an invalid input type is passed.
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testInvalidInputType($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($args) must be of type array|null');
+
+		new Basic($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInputType() {
+		return array(
+			'boolean false'         => array(false),
+			'authentication string' => array('user:psw'),
+		);
+	}
+
+	/**
 	 * Verify that an exception is thrown when the class is instantiated with an invalid number of arguments.
 	 *
 	 * @dataProvider dataInvalidArgumentCount
@@ -174,8 +253,8 @@ final class BasicTest extends TestCase {
 	 * @return void
 	 */
 	public function testInvalidArgumentCount($input) {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Invalid number of arguments');
+		$this->expectException(ArgumentCount::class);
+		$this->expectExceptionMessage('WpOrg\Requests\Auth\Basic::__construct() expects an array with exactly two elements');
 
 		new Basic($input);
 	}
