@@ -2,8 +2,7 @@
 /**
  * cURL HTTP transport
  *
- * @package Requests
- * @subpackage Transport
+ * @package Requests\Transport
  */
 
 namespace WpOrg\Requests\Transport;
@@ -19,8 +18,7 @@ use WpOrg\Requests\Transport;
 /**
  * cURL HTTP transport
  *
- * @package Requests
- * @subpackage Transport
+ * @package Requests\Transport
  */
 final class Curl implements Transport {
 	const CURL_7_10_5 = 0x070A05;

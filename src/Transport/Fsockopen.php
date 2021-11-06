@@ -2,8 +2,7 @@
 /**
  * fsockopen HTTP transport
  *
- * @package Requests
- * @subpackage Transport
+ * @package Requests\Transport
  */
 
 namespace WpOrg\Requests\Transport;
@@ -19,8 +18,7 @@ use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 /**
  * fsockopen HTTP transport
  *
- * @package Requests
- * @subpackage Transport
+ * @package Requests\Transport
  */
 final class Fsockopen implements Transport {
 	/**

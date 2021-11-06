@@ -2,8 +2,7 @@
 /**
  * SSL utilities for Requests
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 
 namespace WpOrg\Requests;
@@ -16,8 +15,7 @@ use WpOrg\Requests\Utility\InputValidator;
  *
  * Collection of utilities for working with and verifying SSL certificates.
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 final class Ssl {
 	/**

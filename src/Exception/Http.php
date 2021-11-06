@@ -2,7 +2,7 @@
 /**
  * Exception based on HTTP response
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests\Exception;
@@ -13,7 +13,7 @@ use WpOrg\Requests\Exception\Http\StatusUnknown;
 /**
  * Exception based on HTTP response
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 class Http extends Exception {
 	/**

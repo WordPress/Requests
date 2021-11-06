@@ -2,7 +2,7 @@
 /**
  * Exception for 417 Expectation Failed responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests\Exception\Http;
@@ -12,7 +12,7 @@ use WpOrg\Requests\Exception\Http;
 /**
  * Exception for 417 Expectation Failed responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 final class Status417 extends Http {
 	/**

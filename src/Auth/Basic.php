@@ -2,8 +2,7 @@
 /**
  * Basic Authentication provider
  *
- * @package Requests
- * @subpackage Authentication
+ * @package Requests\Authentication
  */
 
 namespace WpOrg\Requests\Auth;
@@ -19,8 +18,7 @@ use WpOrg\Requests\Hooks;
  * Provides a handler for Basic HTTP authentication via the Authorization
  * header.
  *
- * @package Requests
- * @subpackage Authentication
+ * @package Requests\Authentication
  */
 class Basic implements Auth {
 	/**

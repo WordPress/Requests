@@ -2,8 +2,7 @@
 /**
  * Input validation utilities.
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 
 namespace WpOrg\Requests\Utility;
@@ -15,8 +14,7 @@ use Traversable;
 /**
  * Input validation utilities.
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 final class InputValidator {
 

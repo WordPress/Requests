@@ -7,7 +7,7 @@ use InvalidArgumentException;
 /**
  * Exception for an invalid argument passed.
  *
- * @package Requests
+ * @package Requests\Exceptions
  * @since   2.0.0
  */
 final class InvalidArgument extends InvalidArgumentException {

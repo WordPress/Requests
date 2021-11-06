@@ -11,8 +11,8 @@ use WpOrg\Requests\Utility\InputValidator;
  *
  * Note: Not fully compliant, as nameprep does nothing yet.
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
+ *
  * @link https://tools.ietf.org/html/rfc3490 IDNA specification
  * @link https://tools.ietf.org/html/rfc3492 Punycode/Bootstrap specification
  */

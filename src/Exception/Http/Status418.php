@@ -3,7 +3,8 @@
  * Exception for 418 I'm A Teapot responses
  *
  * @link https://tools.ietf.org/html/rfc2324
- * @package Requests
+ *
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests\Exception\Http;
@@ -14,7 +15,8 @@ use WpOrg\Requests\Exception\Http;
  * Exception for 418 I'm A Teapot responses
  *
  * @link https://tools.ietf.org/html/rfc2324
- * @package Requests
+ *
+ * @package Requests\Exceptions
  */
 final class Status418 extends Http {
 	/**

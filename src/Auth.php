@@ -2,8 +2,7 @@
 /**
  * Authentication provider interface
  *
- * @package Requests
- * @subpackage Authentication
+ * @package Requests\Authentication
  */
 
 namespace WpOrg\Requests;
@@ -19,8 +18,8 @@ use WpOrg\Requests\Hooks;
  * makes it much easier for users to use your provider.
  *
  * @see \WpOrg\Requests\Hooks
- * @package Requests
- * @subpackage Authentication
+ *
+ * @package Requests\Authentication
  */
 interface Auth {
 	/**

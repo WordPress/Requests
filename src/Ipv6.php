@@ -2,8 +2,7 @@
 /**
  * Class to validate and to work with IPv6 addresses
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 
 namespace WpOrg\Requests;
@@ -14,8 +13,7 @@ namespace WpOrg\Requests;
  * This was originally based on the PEAR class of the same name, but has been
  * entirely rewritten.
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 final class Ipv6 {
 	/**

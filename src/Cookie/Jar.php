@@ -2,8 +2,7 @@
 /**
  * Cookie holder object
  *
- * @package Requests
- * @subpackage Cookies
+ * @package Requests\Cookies
  */
 
 namespace WpOrg\Requests\Cookie;
@@ -21,8 +20,7 @@ use WpOrg\Requests\Response;
 /**
  * Cookie holder object
  *
- * @package Requests
- * @subpackage Cookies
+ * @package Requests\Cookies
  */
 class Jar implements ArrayAccess, IteratorAggregate {
 	/**

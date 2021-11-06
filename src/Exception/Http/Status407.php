@@ -2,7 +2,7 @@
 /**
  * Exception for 407 Proxy Authentication Required responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests\Exception\Http;
@@ -12,7 +12,7 @@ use WpOrg\Requests\Exception\Http;
 /**
  * Exception for 407 Proxy Authentication Required responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 final class Status407 extends Http {
 	/**

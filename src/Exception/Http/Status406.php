@@ -2,7 +2,7 @@
 /**
  * Exception for 406 Not Acceptable responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests\Exception\Http;
@@ -12,7 +12,7 @@ use WpOrg\Requests\Exception\Http;
 /**
  * Exception for 406 Not Acceptable responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 final class Status406 extends Http {
 	/**

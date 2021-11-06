@@ -2,8 +2,7 @@
 /**
  * Session handler for persistent requests and default parameters
  *
- * @package Requests
- * @subpackage Session Handler
+ * @package Requests\SessionHandler
  */
 
 namespace WpOrg\Requests;
@@ -20,8 +19,7 @@ use WpOrg\Requests\Requests;
  * with all subrequests resolved from this. Base options can be set (including
  * a shared cookie jar), then overridden for individual requests.
  *
- * @package Requests
- * @subpackage Session Handler
+ * @package Requests\SessionHandler
  */
 class Session {
 	/**

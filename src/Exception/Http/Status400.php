@@ -2,7 +2,7 @@
 /**
  * Exception for 400 Bad Request responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests\Exception\Http;
@@ -12,7 +12,7 @@ use WpOrg\Requests\Exception\Http;
 /**
  * Exception for 400 Bad Request responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 final class Status400 extends Http {
 	/**

@@ -2,7 +2,7 @@
 /**
  * Exception for HTTP requests
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests;
@@ -12,7 +12,7 @@ use Exception as PHPException;
 /**
  * Exception for HTTP requests
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 class Exception extends PHPException {
 	/**
