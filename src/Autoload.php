@@ -23,6 +23,11 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 	/**
 	 * Autoloader for Requests for PHP.
 	 *
+	 * This autoloader supports the PSR-4 based Requests 2.0.0 classes in a case-sensitive manner
+	 * as the most common server OS-es are case-sensitive and the file names are in mixed case.
+	 *
+	 * For the PSR-0 Requests 1.x BC-layer, requested classes will be treated case-insensitively.
+	 *
 	 * @package Requests
 	 */
 	final class Autoload {
@@ -125,13 +130,15 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		 */
 		public static function load($class_name) {
 			// Check that the class starts with "Requests" (PSR-0) or "WpOrg\Requests" (PSR-4).
-			$psr_4_prefix_pos = stripos($class_name, 'WpOrg\\Requests\\');
+			$psr_4_prefix_pos = strpos($class_name, 'WpOrg\\Requests\\');
 
 			if (stripos($class_name, 'Requests') !== 0 && $psr_4_prefix_pos !== 0) {
 				return false;
 			}
 
-			if ($class_name === 'Requests') {
+			$class_lower = strtolower($class_name);
+
+			if ($class_lower === 'requests') {
 				// Reference to the original PSR-0 Requests class.
 				$file = dirname(__DIR__) . '/library/Requests.php';
 			} elseif ($psr_4_prefix_pos === 0) {
@@ -149,8 +156,6 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			 * If this is one of the deprecated/renamed PSR-0 classes being requested,
 			 * let's alias it to the new name and throw a deprecation notice.
 			 */
-			$class_lower = strtolower($class_name);
-
 			if (isset(self::$deprecated_classes[$class_lower])) {
 				/*
 				 * Integrators who cannot yet upgrade to the PSR-4 class names can silence deprecations

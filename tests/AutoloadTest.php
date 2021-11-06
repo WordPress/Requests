@@ -34,13 +34,15 @@ final class AutoloadTest extends TestCase {
 	/**
 	 * Verify that the deprecation layer works without a fatal error for extending a final class.
 	 *
+	 * Note: this test also verifies that the PSR-0 names are handled case-insensitively by the autoloader.
+	 *
 	 * @preserveGlobalState disabled
 	 * @runInSeparateProcess
 	 */
 	public function testAutoloadOfOldRequestsClassDoesNotThrowAFatalForFinalClass() {
 		define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
 
-		$this->assertInstanceOf(FilteredIterator::class, new Requests_Utility_FilteredIterator(array(), function() {}));
+		$this->assertInstanceOf(FilteredIterator::class, new Requests_utility_filteredIterator(array(), function() {}));
 	}
 
 	/**
