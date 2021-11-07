@@ -79,17 +79,86 @@ final class HeadersTest extends TestCase {
 	}
 
 	/**
+	 * Test that non-string array keys are handled correctly.
+	 *
+	 * @covers ::offsetSet
+	 *
+	 * @dataProvider dataOffsetSetDoesNotTryToLowercaseNonStringKeys
+	 *
+	 * @param mixed      $key         Key to set.
+	 * @param string|int $request_key Key to retrieve if different.
+	 *
+	 * @return void
+	 */
+	public function testOffsetSetDoesNotTryToLowercaseNonStringKeys($key, $request_key = null) {
+		$headers       = new Headers();
+		$headers[$key] = 'value';
+
+		if (!isset($request_key)) {
+			$request_key = $key;
+		}
+
+		$this->assertSame('value', $headers[$request_key]);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataOffsetSetDoesNotTryToLowercaseNonStringKeys() {
+		return array(
+			'integer key'       => array(10),
+			'boolean false key' => array(false, 0),
+		);
+	}
+
+	/**
+	 * Test that multiple headers can be registered on a non-string key.
+	 *
+	 * @covers ::offsetGet
+	 * @covers ::offsetSet
+	 *
+	 * @return void
+	 */
+	public function testOffsetSetRegisterMultipleHeadersOnIntegerKey() {
+		$headers     = new Headers();
+		$headers[10] = 'value1';
+		$headers[10] = 'value2';
+
+		$this->assertSame('value1,value2', $headers[10]);
+	}
+
+	/**
 	 * Test that null is returned when a non-registered header is requested.
 	 *
 	 * @covers ::offsetGet
 	 *
+	 * @dataProvider dataOffsetGetReturnsNullForNonRegisteredHeader
+	 *
+	 * @param mixed $key Key to request.
+	 *
 	 * @return void
 	 */
-	public function testOffsetGetReturnsNullForNonRegisteredHeader() {
+	public function testOffsetGetReturnsNullForNonRegisteredHeader($key) {
 		$headers                 = new Headers();
 		$headers['Content-Type'] = 'text/plain';
 
-		$this->assertNull($headers['not-content-type']);
+		$this->assertNull($headers[$key]);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataOffsetGetReturnsNullForNonRegisteredHeader() {
+		return array(
+			// This test case also tests that no "passing null to non-nullable" deprecation is thrown in PHP 8.1.
+			'null'                       => array(null),
+			'non-registered integer key' => array(10),
+			'non-registred string key'   => array('not-content-type'),
+		);
 	}
 
 	/**

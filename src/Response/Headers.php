@@ -31,7 +31,10 @@ class Headers extends CaseInsensitiveDictionary {
 	 * @return string|null Header value
 	 */
 	public function offsetGet($offset) {
-		$offset = strtolower($offset);
+		if (is_string($offset)) {
+			$offset = strtolower($offset);
+		}
+
 		if (!isset($this->data[$offset])) {
 			return null;
 		}
@@ -52,7 +55,9 @@ class Headers extends CaseInsensitiveDictionary {
 			throw new Exception('Object is a dictionary, not a list', 'invalidset');
 		}
 
-		$offset = strtolower($offset);
+		if (is_string($offset)) {
+			$offset = strtolower($offset);
+		}
 
 		if (!isset($this->data[$offset])) {
 			$this->data[$offset] = array();
