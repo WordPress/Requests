@@ -4,6 +4,10 @@ namespace WpOrg\Requests\Tests\Utility;
 
 use ArrayIterator;
 use ReflectionClass;
+use ReflectionObject;
+use stdClass;
+use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\FilteredIterator;
 
@@ -66,4 +70,140 @@ final class FilteredIteratorTest extends TestCase {
 			),
 		);
 	}
+
+	/**
+	 * Tests that valid $data is accepted by the constructor.
+	 *
+	 * @dataProvider dataConstructorValidData
+	 *
+	 * @covers ::__construct
+	 *
+	 * @param mixed $input Valid input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorValidData($input) {
+		$this->assertInstanceOf(FilteredIterator::class, new FilteredIterator($input, 'ltrim'));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorValidData() {
+		return array(
+			'array'           => array(array(1, 2, 3)),
+			'iterable object' => array(new ArrayIterator(array(1, 2, 3))),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed as `$data` to the constructor.
+	 *
+	 * @dataProvider dataConstructorInvalidData
+	 *
+	 * @covers ::__construct
+	 *
+	 * @param mixed $input Invalid input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidData($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($data) must be of type iterable');
+
+		new FilteredIterator($input, 'ltrim');
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidData() {
+		return array(
+			'null'              => array(null),
+			'float'             => array(1.1),
+			'stringable object' => array(new StringableObject('value')),
+		);
+	}
+
+	/**
+	 * Tests that valid $callback is accepted by the constructor.
+	 *
+	 * @dataProvider dataConstructorValidCallback
+	 *
+	 * @covers ::__construct
+	 *
+	 * @param mixed $input Valid input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorValidCallback($input) {
+		$obj = new FilteredIterator(array(), $input);
+
+		$reflection = new ReflectionObject($obj);
+		$property   = $reflection->getProperty('callback');
+		$property->setAccessible(true);
+		$callback_value = $property->getValue($obj);
+		$property->setAccessible(false);
+
+		$this->assertSame($input, $callback_value, 'Callback property has not been set');
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorValidCallback() {
+		return array(
+			'existing PHP native function' => array('strtolower'),
+			'dummy callback method'        => array(array($this, 'dummyCallback')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed as `$callback` to the constructor.
+	 *
+	 * @dataProvider dataConstructorInvalidCallback
+	 *
+	 * @covers ::__construct
+	 *
+	 * @param mixed $input Invalid callback.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidCallback($input) {
+		$obj = new FilteredIterator(array(), $input);
+
+		$reflection = new ReflectionObject($obj);
+		$property   = $reflection->getProperty('callback');
+		$property->setAccessible(true);
+		$callback_value = $property->getValue($obj);
+		$property->setAccessible(false);
+
+		$this->assertNull($callback_value, 'Callback property has been set to invalid callback');
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidCallback() {
+		return array(
+			'null'                  => array(null),
+			'non-existent function' => array('functionname'),
+			'plain object'          => array(new stdClass(), 'method'),
+		);
+	}
+
+	/**
+	 * Dummy callback method.
+	 *
+	 * @return void
+	 */
+	public function dummyCallback() {}
 }
