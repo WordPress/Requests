@@ -8,6 +8,9 @@
 
 namespace WpOrg\Requests;
 
+use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Utility\InputValidator;
+
 /**
  * Class to validate and to work with IPv6 addresses
  *
@@ -33,10 +36,19 @@ final class Ipv6 {
 	 * @author Josh Peck <jmp at joshpeck dot org>
 	 * @copyright 2003-2005 The PHP Group
 	 * @license https://opensource.org/licenses/bsd-license.php
+	 *
 	 * @param string $ip An IPv6 address
 	 * @return string The uncompressed IPv6 address
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string or a stringable object.
 	 */
 	public static function uncompress($ip) {
+		if (InputValidator::is_string_or_stringable($ip) === false) {
+			throw InvalidArgument::create(1, '$ip', 'string|Stringable', gettype($ip));
+		}
+
+		$ip = (string) $ip;
+
 		if (substr_count($ip, '::') !== 1) {
 			return $ip;
 		}
@@ -81,11 +93,13 @@ final class Ipv6 {
 	 *           0:0:0:0:0:0:0:1        ->  ::1
 	 *
 	 * @see \WpOrg\Requests\IPv6::uncompress()
+	 *
 	 * @param string $ip An IPv6 address
 	 * @return string The compressed IPv6 address
 	 */
 	public static function compress($ip) {
-		// Prepare the IP to be compressed
+		// Prepare the IP to be compressed.
+		// Note: Input validation is handled in the `uncompress()` method, which is the first call made in this method.
 		$ip       = self::uncompress($ip);
 		$ip_parts = self::split_v6_v4($ip);
 
@@ -147,6 +161,7 @@ final class Ipv6 {
 	 * @return bool true if $ip is a valid IPv6 address
 	 */
 	public static function check_ipv6($ip) {
+		// Note: Input validation is handled in the `uncompress()` method, which is the first call made in this method.
 		$ip                = self::uncompress($ip);
 		list($ipv6, $ipv4) = self::split_v6_v4($ip);
 		$ipv6              = explode(':', $ipv6);
