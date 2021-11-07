@@ -203,6 +203,19 @@ class HooksTest extends TestCase {
 	}
 
 	/**
+	 * Technical test to verify that the dispatch method doesn't break on PHP 8.0 when passed an associative array.
+	 *
+	 * @covers ::dispatch
+	 *
+	 * @return void
+	 */
+	public function testDispatchDoesntBreakWithKeyedParametersArray() {
+		$this->hooks->register('hookname', array($this, 'dummyCallback1'));
+
+		$this->assertTrue($this->hooks->dispatch('hookname', array('paramA' => 10, 'paramB' => 'text')));
+	}
+
+	/**
 	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$hook`.
 	 *
 	 * @dataProvider dataInvalidHookname
