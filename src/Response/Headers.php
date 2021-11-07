@@ -8,6 +8,7 @@
 namespace WpOrg\Requests\Response;
 
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 use WpOrg\Requests\Utility\FilteredIterator;
 
@@ -65,8 +66,14 @@ class Headers extends CaseInsensitiveDictionary {
 	 *
 	 * @param string $offset
 	 * @return array|null Header values
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not valid as an array key.
 	 */
 	public function getValues($offset) {
+		if (!is_string($offset) && !is_int($offset)) {
+			throw InvalidArgument::create(1, '$offset', 'string|int', gettype($offset));
+		}
+
 		$offset = strtolower($offset);
 		if (!isset($this->data[$offset])) {
 			return null;
@@ -83,13 +90,19 @@ class Headers extends CaseInsensitiveDictionary {
 	 *
 	 * @param string|array $value Value to flatten
 	 * @return string Flattened value
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string or an array.
 	 */
 	public function flatten($value) {
-		if (is_array($value)) {
-			$value = implode(',', $value);
+		if (is_string($value)) {
+			return $value;
 		}
 
-		return $value;
+		if (is_array($value)) {
+			return implode(',', $value);
+		}
+
+		throw InvalidArgument::create(1, '$value', 'string|array', gettype($value));
 	}
 
 	/**

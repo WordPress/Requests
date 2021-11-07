@@ -2,7 +2,9 @@
 
 namespace WpOrg\Requests\Tests\Response;
 
+use stdClass;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -150,6 +152,37 @@ final class HeadersTest extends TestCase {
 	}
 
 	/**
+	 * Tests receiving an exception when an invalid offset is passed to getValues().
+	 *
+	 * @covers ::getValues
+	 *
+	 * @dataProvider dataGetValuesInvalidOffset
+	 *
+	 * @param mixed $key Requested offset.
+	 *
+	 * @return void
+	 */
+	public function testGetValuesInvalidOffset($key) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($offset) must be of type string|int');
+
+		$headers = new Headers();
+		$headers->getValues($key);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataGetValuesInvalidOffset() {
+		return array(
+			'null'          => array(null),
+			'boolean false' => array(false),
+		);
+	}
+
+	/**
 	 * Test iterator access for the object is supported.
 	 *
 	 * Includes making sure that:
@@ -183,5 +216,67 @@ final class HeadersTest extends TestCase {
 					throw new Exception('Invalid offset key: ' . $name);
 			}
 		}
+	}
+
+	/**
+	 * Tests flattening of data.
+	 *
+	 * @covers ::flatten
+	 *
+	 * @dataProvider dataFlatten
+	 *
+	 * @param string|array $input    Value to flatten.
+	 * @param string       $expected Expected output value.
+	 *
+	 * @return void
+	 */
+	public function testFlatten($input, $expected) {
+		$headers = new Headers();
+		$this->assertSame($expected, $headers->flatten($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataFlatten() {
+		return array(
+			'string'            => array('text', 'text'),
+			'empty array'       => array(array(), ''),
+			'array with values' => array(array('text', 10, 'more text'), 'text,10,more text'),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid value is passed to flatten().
+	 *
+	 * @covers ::flatten
+	 *
+	 * @dataProvider dataFlattenInvalidValue
+	 *
+	 * @param mixed $input Value to flatten.
+	 *
+	 * @return void
+	 */
+	public function testFlattenInvalidValue($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($value) must be of type string|array');
+
+		$headers = new Headers();
+		$headers->flatten($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataFlattenInvalidValue() {
+		return array(
+			'null'          => array(null),
+			'boolean false' => array(false),
+			'plain object'  => array(new stdClass()),
+		);
 	}
 }
