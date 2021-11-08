@@ -2,8 +2,7 @@
 /**
  * IRI parser/serialiser/normaliser
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 
 namespace WpOrg\Requests;
@@ -45,8 +44,7 @@ use WpOrg\Requests\Port;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  * @author Geoffrey Sneddon
  * @author Steve Minutillo
  * @copyright 2007-2009 Geoffrey Sneddon and Steve Minutillo

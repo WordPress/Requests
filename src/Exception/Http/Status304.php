@@ -2,7 +2,7 @@
 /**
  * Exception for 304 Not Modified responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests\Exception\Http;
@@ -12,7 +12,7 @@ use WpOrg\Requests\Exception\Http;
 /**
  * Exception for 304 Not Modified responses
  *
- * @package Requests
+ * @package Requests\Exceptions
  */
 final class Status304 extends Http {
 	/**

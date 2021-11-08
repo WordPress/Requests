@@ -2,9 +2,8 @@
 /**
  * Proxy connection interface
  *
- * @package Requests
- * @subpackage Proxy
- * @since 1.6
+ * @package Requests\Proxy
+ * @since   1.6
  */
 
 namespace WpOrg\Requests;
@@ -20,9 +19,9 @@ use WpOrg\Requests\Hooks;
  * makes it much easier for users to use your provider.
  *
  * @see \WpOrg\Requests\Hooks
- * @package Requests
- * @subpackage Proxy
- * @since 1.6
+ *
+ * @package Requests\Proxy
+ * @since   1.6
  */
 interface Proxy {
 	/**

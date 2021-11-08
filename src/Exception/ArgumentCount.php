@@ -14,7 +14,7 @@ use WpOrg\Requests\Exception;
  * Along the same lines, this exception is also used if a method expects an array
  * with a certain number of elements and the provided number of elements does not comply.
  *
- * @package Requests
+ * @package Requests\Exceptions
  * @since   2.0.0
  */
 final class ArgumentCount extends Exception {

@@ -2,8 +2,7 @@
 /**
  * Base HTTP transport
  *
- * @package Requests
- * @subpackage Transport
+ * @package Requests\Transport
  */
 
 namespace WpOrg\Requests;
@@ -11,8 +10,7 @@ namespace WpOrg\Requests;
 /**
  * Base HTTP transport
  *
- * @package Requests
- * @subpackage Transport
+ * @package Requests\Transport
  */
 interface Transport {
 	/**

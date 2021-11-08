@@ -2,8 +2,7 @@
 /**
  * Handles adding and dispatching events
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\EventDispatcher
  */
 
 namespace WpOrg\Requests;
@@ -15,8 +14,7 @@ use WpOrg\Requests\Utility\InputValidator;
 /**
  * Handles adding and dispatching events
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\EventDispatcher
  */
 class Hooks implements HookManager {
 	/**

@@ -3,7 +3,8 @@
  * Exception for 511 Network Authentication Required responses
  *
  * @link https://tools.ietf.org/html/rfc6585
- * @package Requests
+ *
+ * @package Requests\Exceptions
  */
 
 namespace WpOrg\Requests\Exception\Http;
@@ -14,7 +15,8 @@ use WpOrg\Requests\Exception\Http;
  * Exception for 511 Network Authentication Required responses
  *
  * @link https://tools.ietf.org/html/rfc6585
- * @package Requests
+ *
+ * @package Requests\Exceptions
  */
 final class Status511 extends Http {
 	/**

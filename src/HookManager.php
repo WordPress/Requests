@@ -2,8 +2,7 @@
 /**
  * Event dispatcher
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\EventDispatcher
  */
 
 namespace WpOrg\Requests;
@@ -11,8 +10,7 @@ namespace WpOrg\Requests;
 /**
  * Event dispatcher
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\EventDispatcher
  */
 interface HookManager {
 	/**

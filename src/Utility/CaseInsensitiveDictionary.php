@@ -2,8 +2,7 @@
 /**
  * Case-insensitive dictionary, suitable for HTTP headers
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 
 namespace WpOrg\Requests\Utility;
@@ -17,8 +16,7 @@ use WpOrg\Requests\Exception;
 /**
  * Case-insensitive dictionary, suitable for HTTP headers
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 class CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
 	/**

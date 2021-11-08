@@ -2,9 +2,8 @@
 /**
  * HTTP Proxy connection interface
  *
- * @package Requests
- * @subpackage Proxy
- * @since 1.6
+ * @package Requests\Proxy
+ * @since   1.6
  */
 
 namespace WpOrg\Requests\Proxy;
@@ -18,9 +17,8 @@ use WpOrg\Requests\Proxy;
  *
  * Provides a handler for connection via an HTTP proxy
  *
- * @package Requests
- * @subpackage Proxy
- * @since 1.6
+ * @package Requests\Proxy
+ * @since   1.6
  */
 final class Http implements Proxy {
 	/**

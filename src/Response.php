@@ -3,6 +3,7 @@
  * HTTP response class
  *
  * Contains a response from \WpOrg\Requests\Requests::request()
+ *
  * @package Requests
  */
 
@@ -17,6 +18,7 @@ use WpOrg\Requests\Response\Headers;
  * HTTP response class
  *
  * Contains a response from \WpOrg\Requests\Requests::request()
+ *
  * @package Requests
  */
 class Response {

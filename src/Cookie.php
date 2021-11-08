@@ -2,8 +2,7 @@
 /**
  * Cookie storage object
  *
- * @package Requests
- * @subpackage Cookies
+ * @package Requests\Cookies
  */
 
 namespace WpOrg\Requests;
@@ -15,8 +14,7 @@ use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 /**
  * Cookie storage object
  *
- * @package Requests
- * @subpackage Cookies
+ * @package Requests\Cookies
  */
 class Cookie {
 	/**

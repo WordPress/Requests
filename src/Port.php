@@ -2,10 +2,8 @@
 /**
  * Port utilities for Requests
  *
- * @package Requests
- * @subpackage Utilities
- *
- * @since 2.0.0
+ * @package Requests\Utilities
+ * @since   2.0.0
  */
 
 namespace WpOrg\Requests;
@@ -16,10 +14,8 @@ use WpOrg\Requests\Exception\InvalidArgument;
 /**
  * Find the correct port depending on the Request type.
  *
- * @package Requests
- * @subpackage Utilities
- *
- * @since 2.0.0
+ * @package Requests\Utilities
+ * @since   2.0.0
  */
 final class Port {
 

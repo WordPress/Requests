@@ -1,9 +1,19 @@
 <?php
+/**
+ * CURL Transport Exception.
+ *
+ * @package Requests\Exceptions
+ */
 
 namespace WpOrg\Requests\Exception\Transport;
 
 use WpOrg\Requests\Exception\Transport;
 
+/**
+ * CURL Transport Exception.
+ *
+ * @package Requests\Exceptions
+ */
 final class Curl extends Transport {
 
 	const EASY  = 'cURLEasy';

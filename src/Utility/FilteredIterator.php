@@ -2,8 +2,7 @@
 /**
  * Iterator for arrays requiring filtered values
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 
 namespace WpOrg\Requests\Utility;
@@ -16,8 +15,7 @@ use WpOrg\Requests\Utility\InputValidator;
 /**
  * Iterator for arrays requiring filtered values
  *
- * @package Requests
- * @subpackage Utilities
+ * @package Requests\Utilities
  */
 final class FilteredIterator extends ArrayIterator {
 	/**
