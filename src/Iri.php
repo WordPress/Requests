@@ -9,6 +9,7 @@
 namespace WpOrg\Requests;
 
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Ipv6;
 use WpOrg\Requests\Port;
 
@@ -247,8 +248,14 @@ class Iri {
 	 * Create a new IRI object, from a specified string
 	 *
 	 * @param string|null $iri
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $iri argument is not a string nor null.
 	 */
 	public function __construct($iri = null) {
+		if ($iri !== null && is_string($iri) === false) {
+			throw InvalidArgument::create(1, '$iri', 'string|null', gettype($iri));
+		}
+
 		$this->set_iri($iri);
 	}
 

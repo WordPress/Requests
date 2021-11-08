@@ -42,7 +42,9 @@
 
 namespace WpOrg\Requests\Tests;
 
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
+use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 
 final class IriTest extends TestCase
@@ -412,5 +414,36 @@ final class IriTest extends TestCase
 		$iri->port = 'example';
 
 		$this->assertNull($iri->port);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed to the constructor.
+	 *
+	 * @dataProvider dataConstructorInvalidInput
+	 *
+	 * @covers \WpOrg\Requests\Iri::__construct
+	 *
+	 * @param mixed $iri Invalid input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidInput($iri) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($iri) must be of type string|null');
+
+		new Iri($iri);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidInput() {
+		return array(
+			'boolean false'     => array(false),
+			'float'             => array(1.1),
+			'stringable object' => array(new StringableObject('value')),
+		);
 	}
 }
