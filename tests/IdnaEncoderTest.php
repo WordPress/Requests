@@ -3,6 +3,7 @@
 namespace WpOrg\Requests\Tests;
 
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\IdnaEncoder;
 use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
@@ -179,6 +180,36 @@ final class IdnaEncoderTest extends TestCase {
 			'Invalid ASCII character with multibyte' => array("\0\xc2\xb6"),
 			'Unfinished multibyte'                   => array("\xc2"),
 			'Partial multibyte'                      => array("\xc2\xc2\xb6"),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed.
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @param mixed $data Data to encode.
+	 *
+	 * @return void
+	 */
+	public function testInvalidInputType($data) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($hostname) must be of type string');
+
+		IdnaEncoder::encode($data);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInputType() {
+		return array(
+			'null'          => array(null),
+			'boolean false' => array(false),
+			'integer'       => array(12345),
+			'array'         => array(array(1, 2, 3)),
 		);
 	}
 

@@ -3,6 +3,8 @@
 namespace WpOrg\Requests;
 
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * IDNA URL encoder
@@ -54,8 +56,13 @@ class IdnaEncoder {
 	 *
 	 * @param string $hostname Hostname
 	 * @return string Punycode-encoded hostname
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string or a stringable object.
 	 */
 	public static function encode($hostname) {
+		if (InputValidator::is_string_or_stringable($hostname) === false) {
+			throw InvalidArgument::create(1, '$hostname', 'string|Stringable', gettype($hostname));
+		}
+
 		$parts = explode('.', $hostname);
 		foreach ($parts as &$part) {
 			$part = self::to_ascii($part);
