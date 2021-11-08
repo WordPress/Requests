@@ -2,7 +2,9 @@
 
 namespace WpOrg\Requests\Tests\Response;
 
+use stdClass;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -77,17 +79,86 @@ final class HeadersTest extends TestCase {
 	}
 
 	/**
+	 * Test that non-string array keys are handled correctly.
+	 *
+	 * @covers ::offsetSet
+	 *
+	 * @dataProvider dataOffsetSetDoesNotTryToLowercaseNonStringKeys
+	 *
+	 * @param mixed      $key         Key to set.
+	 * @param string|int $request_key Key to retrieve if different.
+	 *
+	 * @return void
+	 */
+	public function testOffsetSetDoesNotTryToLowercaseNonStringKeys($key, $request_key = null) {
+		$headers       = new Headers();
+		$headers[$key] = 'value';
+
+		if (!isset($request_key)) {
+			$request_key = $key;
+		}
+
+		$this->assertSame('value', $headers[$request_key]);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataOffsetSetDoesNotTryToLowercaseNonStringKeys() {
+		return array(
+			'integer key'       => array(10),
+			'boolean false key' => array(false, 0),
+		);
+	}
+
+	/**
+	 * Test that multiple headers can be registered on a non-string key.
+	 *
+	 * @covers ::offsetGet
+	 * @covers ::offsetSet
+	 *
+	 * @return void
+	 */
+	public function testOffsetSetRegisterMultipleHeadersOnIntegerKey() {
+		$headers     = new Headers();
+		$headers[10] = 'value1';
+		$headers[10] = 'value2';
+
+		$this->assertSame('value1,value2', $headers[10]);
+	}
+
+	/**
 	 * Test that null is returned when a non-registered header is requested.
 	 *
 	 * @covers ::offsetGet
 	 *
+	 * @dataProvider dataOffsetGetReturnsNullForNonRegisteredHeader
+	 *
+	 * @param mixed $key Key to request.
+	 *
 	 * @return void
 	 */
-	public function testOffsetGetReturnsNullForNonRegisteredHeader() {
+	public function testOffsetGetReturnsNullForNonRegisteredHeader($key) {
 		$headers                 = new Headers();
 		$headers['Content-Type'] = 'text/plain';
 
-		$this->assertNull($headers['not-content-type']);
+		$this->assertNull($headers[$key]);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataOffsetGetReturnsNullForNonRegisteredHeader() {
+		return array(
+			// This test case also tests that no "passing null to non-nullable" deprecation is thrown in PHP 8.1.
+			'null'                       => array(null),
+			'non-registered integer key' => array(10),
+			'non-registred string key'   => array('not-content-type'),
+		);
 	}
 
 	/**
@@ -150,6 +221,37 @@ final class HeadersTest extends TestCase {
 	}
 
 	/**
+	 * Tests receiving an exception when an invalid offset is passed to getValues().
+	 *
+	 * @covers ::getValues
+	 *
+	 * @dataProvider dataGetValuesInvalidOffset
+	 *
+	 * @param mixed $key Requested offset.
+	 *
+	 * @return void
+	 */
+	public function testGetValuesInvalidOffset($key) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($offset) must be of type string|int');
+
+		$headers = new Headers();
+		$headers->getValues($key);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataGetValuesInvalidOffset() {
+		return array(
+			'null'          => array(null),
+			'boolean false' => array(false),
+		);
+	}
+
+	/**
 	 * Test iterator access for the object is supported.
 	 *
 	 * Includes making sure that:
@@ -183,5 +285,67 @@ final class HeadersTest extends TestCase {
 					throw new Exception('Invalid offset key: ' . $name);
 			}
 		}
+	}
+
+	/**
+	 * Tests flattening of data.
+	 *
+	 * @covers ::flatten
+	 *
+	 * @dataProvider dataFlatten
+	 *
+	 * @param string|array $input    Value to flatten.
+	 * @param string       $expected Expected output value.
+	 *
+	 * @return void
+	 */
+	public function testFlatten($input, $expected) {
+		$headers = new Headers();
+		$this->assertSame($expected, $headers->flatten($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataFlatten() {
+		return array(
+			'string'            => array('text', 'text'),
+			'empty array'       => array(array(), ''),
+			'array with values' => array(array('text', 10, 'more text'), 'text,10,more text'),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid value is passed to flatten().
+	 *
+	 * @covers ::flatten
+	 *
+	 * @dataProvider dataFlattenInvalidValue
+	 *
+	 * @param mixed $input Value to flatten.
+	 *
+	 * @return void
+	 */
+	public function testFlattenInvalidValue($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($value) must be of type string|array');
+
+		$headers = new Headers();
+		$headers->flatten($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataFlattenInvalidValue() {
+		return array(
+			'null'          => array(null),
+			'boolean false' => array(false),
+			'plain object'  => array(new stdClass()),
+		);
 	}
 }
