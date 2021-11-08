@@ -88,7 +88,7 @@ class Hooks implements HookManager {
 
 		foreach ($this->hooks[$hook] as $priority => $hooked) {
 			foreach ($hooked as $callback) {
-				call_user_func_array($callback, $parameters);
+				$callback(...$parameters);
 			}
 		}
 
