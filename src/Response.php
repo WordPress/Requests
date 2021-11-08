@@ -118,7 +118,7 @@ class Response {
 	 */
 	public function throw_for_status($allow_redirects = true) {
 		if ($this->is_redirect()) {
-			if (!$allow_redirects) {
+			if ($allow_redirects !== true) {
 				throw new Exception('Redirection not allowed', 'response.no_redirects', $this);
 			}
 		}
