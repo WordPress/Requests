@@ -402,9 +402,22 @@ class Cookie {
 	 * specifies some of this handling, but not in a thorough manner.
 	 *
 	 * @param string $cookie_header Cookie header value (from a Set-Cookie header)
+	 * @param string $name
+	 * @param int|null $reference_time
 	 * @return \WpOrg\Requests\Cookie Parsed cookie object
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $cookie_header argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $name argument is not a string.
 	 */
 	public static function parse($cookie_header, $name = '', $reference_time = null) {
+		if (is_string($cookie_header) === false) {
+			throw InvalidArgument::create(1, '$cookie_header', 'string', gettype($cookie_header));
+		}
+
+		if (is_string($name) === false) {
+			throw InvalidArgument::create(2, '$name', 'string', gettype($name));
+		}
+
 		$parts   = explode(';', $cookie_header);
 		$kvparts = array_shift($parts);
 

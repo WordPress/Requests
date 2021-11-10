@@ -422,7 +422,7 @@ final class CookiesTest extends TestCase {
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
-		$cookie = Cookie::parse($header, null, $reference_time);
+		$cookie = Cookie::parse($header, '', $reference_time);
 		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
 	}
 
@@ -435,7 +435,7 @@ final class CookiesTest extends TestCase {
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
-		$cookie = Cookie::parse($header, null, $reference_time);
+		$cookie = Cookie::parse($header, '', $reference_time);
 
 		// Normalize the value again
 		$cookie->normalize();
@@ -733,5 +733,55 @@ final class CookiesTest extends TestCase {
 			'string'          => array('now'),
 			'DateTime object' => array(new DateTime('now')),
 		);
+	}
+
+	/**
+	 * Tests receiving an exception when the parse() method received an invalid input type as `$cookie_header`.
+	 *
+	 * @dataProvider dataInvalidStringInput
+	 *
+	 * @covers \WpOrg\Requests\Cookie::parse
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testParseInvalidCookieHeader($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($cookie_header) must be of type string');
+
+		Cookie::parse($input);
+	}
+
+	/**
+	 * Tests receiving an exception when the parse() method received an invalid input type as `$name`.
+	 *
+	 * @dataProvider dataInvalidStringInput
+	 *
+	 * @covers \WpOrg\Requests\Cookie::parse
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testParseInvalidName($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($name) must be of type string');
+
+		Cookie::parse('test', $input);
+	}
+
+	/**
+	 * Tests receiving an exception when the parse() method received an invalid input type as `$reference_time`.
+	 *
+	 * @covers \WpOrg\Requests\Cookie::parse
+	 *
+	 * @return void
+	 */
+	public function testParseInvalidReferenceTime() {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #5 ($reference_time) must be of type integer|null');
+
+		Cookie::parse('test', 'test', 'now');
 	}
 }
