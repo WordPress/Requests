@@ -178,6 +178,10 @@ class Cookie {
 	 * @return boolean Whether the cookie is valid for the given domain
 	 */
 	public function domain_matches($domain) {
+		if (is_string($domain) === false) {
+			return false;
+		}
+
 		if (!isset($this->attributes['domain'])) {
 			// Cookies created manually; cookies created by Requests will set
 			// the domain to the requested domain

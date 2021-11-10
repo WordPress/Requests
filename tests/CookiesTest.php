@@ -130,6 +130,8 @@ final class CookiesTest extends TestCase {
 
 	public function domainMatchProvider() {
 		return array(
+			'Invalid check domain (type): null'         => array('example.com', null, false, false),
+			'Invalid check domain (type): boolean true' => array('example.com', true, false, false),
 			array('example.com', 'example.com', true, true),
 			array('example.com', 'www.example.com', false, true),
 			array('example.com', 'example.net', false, false),
