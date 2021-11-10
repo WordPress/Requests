@@ -51,7 +51,7 @@ final class CurlTest extends BaseTestCase {
 	 *
 	 * This is used for asserting that cURL handles are not leaking memory.
 	 */
-	protected function assert_post_conditions(  ) {
+	protected function assert_post_conditions() {
 		if ($this->curl_handle === null) {
 			// No cURL handle was used during this particular test scenario.
 			return;
