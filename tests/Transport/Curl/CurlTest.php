@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests\Transport\Curl;
 
+use CurlHandle;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
@@ -57,13 +58,15 @@ final class CurlTest extends BaseTestCase {
 			return;
 		}
 
-		if ($this->curl_handle instanceof \CurlHandle) {
+		if ($this->curl_handle instanceof CurlHandle) {
 			// CURL handles have been changed from resources into CurlHandle
 			// objects starting with PHP 8.0, which don;t need to be closed.
 			return;
 		}
 
-		$this->assertIsClosedResource($this->curl_handle);
+		if ($this->shouldClosedResourceAssertionBeSkipped($this->curl_handle) === false) {
+			$this->assertIsClosedResource($this->curl_handle);
+		}
 	}
 
 	public function testBadIP() {
