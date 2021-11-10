@@ -81,9 +81,14 @@ class Hooks implements HookManager {
 			return false;
 		}
 
+		if (!empty($parameters)) {
+			// Strip potential keys from the array to prevent them being interpreted as parameter names in PHP 8.0.
+			$parameters = array_values($parameters);
+		}
+
 		foreach ($this->hooks[$hook] as $priority => $hooked) {
 			foreach ($hooked as $callback) {
-				call_user_func_array($callback, $parameters);
+				$callback(...$parameters);
 			}
 		}
 

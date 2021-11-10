@@ -203,6 +203,45 @@ class HooksTest extends TestCase {
 	}
 
 	/**
+	 * Technical test to verify that the dispatch method handles parameters passed by reference correctly.
+	 *
+	 * @covers ::dispatch
+	 *
+	 * @return void
+	 */
+	public function testDispatchHandlesParametersPassedByReference() {
+		$this->hooks->register('hookname', array($this, 'dummyCallbackExpectingReferences'));
+		$url             = 'original';
+		$headers         = array('original');
+		$unchanged       = 'original';
+		$not_a_reference = 'original';
+
+		$this->assertTrue(
+			$this->hooks->dispatch('hookname', array(&$url, &$headers, &$unchanged, $not_a_reference)),
+			'Hook dispatch did not return true'
+		);
+
+		// Verify that the variables were updated by reference (when passed as reference).
+		$this->assertSame('changed', $url, 'Value of $url was not changed by reference');
+		$this->assertSame(array('changed'), $headers, 'Value of $headers was not changed by reference');
+		$this->assertSame('original', $unchanged, 'Value of unchanged parameter passed by reference, did not match original value');
+		$this->assertSame('original', $not_a_reference, 'Value of parameter not passed by reference, did not match original value');
+	}
+
+	/**
+	 * Technical test to verify that the dispatch method doesn't break on PHP 8.0 when passed an associative array.
+	 *
+	 * @covers ::dispatch
+	 *
+	 * @return void
+	 */
+	public function testDispatchDoesntBreakWithKeyedParametersArray() {
+		$this->hooks->register('hookname', array($this, 'dummyCallback1'));
+
+		$this->assertTrue($this->hooks->dispatch('hookname', array('paramA' => 10, 'paramB' => 'text')));
+	}
+
+	/**
 	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$hook`.
 	 *
 	 * @dataProvider dataInvalidHookname
@@ -361,4 +400,15 @@ class HooksTest extends TestCase {
 	 * @return void
 	 */
 	public function dummyCallback2() {}
+
+	/**
+	 * Dummy callback method.
+	 *
+	 * @return void
+	 */
+	public function dummyCallbackExpectingReferences(&$url, &$headers, &$unchanged, $not_a_reference) {
+		$url             = 'changed';
+		$headers         = array('changed');
+		$not_a_reference = 'changed';
+	}
 }
