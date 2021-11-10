@@ -7,9 +7,11 @@
 
 namespace WpOrg\Requests;
 
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * Cookie storage object
@@ -67,8 +69,36 @@ class Cookie {
 	 * @param string $name
 	 * @param string $value
 	 * @param array|\WpOrg\Requests\Utility\CaseInsensitiveDictionary $attributes Associative array of attribute data
+	 * @param array $flags
+	 * @param int|null $reference_time
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $name argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $value argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $attributes argument is not an array or iterable object with array access.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $flags argument is not an array.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $reference_time argument is not an integer or null.
 	 */
 	public function __construct($name, $value, $attributes = array(), $flags = array(), $reference_time = null) {
+		if (is_string($name) === false) {
+			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		}
+
+		if (is_string($value) === false) {
+			throw InvalidArgument::create(2, '$value', 'string', gettype($value));
+		}
+
+		if (InputValidator::has_array_access($attributes) === false || InputValidator::is_iterable($attributes) === false) {
+			throw InvalidArgument::create(3, '$attributes', 'array|ArrayAccess&Traversable', gettype($attributes));
+		}
+
+		if (is_array($flags) === false) {
+			throw InvalidArgument::create(4, '$flags', 'array', gettype($flags));
+		}
+
+		if ($reference_time !== null && is_int($reference_time) === false) {
+			throw InvalidArgument::create(5, '$reference_time', 'integer|null', gettype($reference_time));
+		}
+
 		$this->name       = $name;
 		$this->value      = $value;
 		$this->attributes = $attributes;

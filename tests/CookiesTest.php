@@ -2,10 +2,15 @@
 
 namespace WpOrg\Requests\Tests;
 
+use DateTime;
+use EmptyIterator;
 use WpOrg\Requests\Cookie;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
+use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
@@ -579,5 +584,148 @@ final class CookiesTest extends TestCase {
 
 		$cookie = reset($parsed);
 		$this->check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$name`.
+	 *
+	 * @dataProvider dataInvalidStringInput
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidName($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($name) must be of type string');
+
+		new Cookie($input, 'value');
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$value`.
+	 *
+	 * @dataProvider dataInvalidStringInput
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidValue($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($value) must be of type string');
+
+		new Cookie('name', $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidStringInput() {
+		return array(
+			'null'              => array(null),
+			'float'             => array(1.1),
+			'stringable object' => array(new StringableObject('name')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$name`.
+	 *
+	 * @dataProvider dataConstructorInvalidAttributes
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidAttributes($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #3 ($attributes) must be of type array|ArrayAccess&Traversable');
+
+		new Cookie('name', 'value', $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidAttributes() {
+		return array(
+			'null'                                 => array(null),
+			'text string'                          => array('array'),
+			'iterator object without array access' => array(new EmptyIterator()),
+			'array accessible object not iterable' => array(new ArrayAccessibleObject(array(1, 2, 3))),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$flags`.
+	 *
+	 * @dataProvider dataConstructorInvalidFlags
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidFlags($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #4 ($flags) must be of type array');
+
+		new Cookie('name', 'value', array(), $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidFlags() {
+		return array(
+			'null'                    => array(null),
+			'integer'                 => array(101),
+			'array accessible object' => array(new ArrayAccessibleObject(array())),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$reference_time`.
+	 *
+	 * @dataProvider dataConstructorInvalidReferenceTime
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidReferenceTime($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #5 ($reference_time) must be of type integer|null');
+
+		new Cookie('name', 'value', array(), array(), $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidReferenceTime() {
+		return array(
+			'float'           => array(1.1),
+			'string'          => array('now'),
+			'DateTime object' => array(new DateTime('now')),
+		);
 	}
 }
