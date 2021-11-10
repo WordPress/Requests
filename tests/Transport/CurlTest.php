@@ -3,12 +3,62 @@
 namespace WpOrg\Requests\Tests\Transport;
 
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\Transport\BaseTestCase;
 use WpOrg\Requests\Transport\Curl;
 
 final class CurlTest extends BaseTestCase {
 	protected $transport = Curl::class;
+
+	/**
+	 * Temporary storage of the cURL handle to assert against.
+	 *
+	 * @var null|resource|\CurlHandle
+	 */
+	protected $curl_handle;
+
+	/**
+	 * Get the options to use for the cURL tests.
+	 *
+	 * This adds a hook on curl.before_request to store the cURL handle. This is
+	 * needed for asserting after the test scenarios that the cURL handle was
+	 * correctly closed.
+	 *
+	 * @param array $other
+	 * @return array
+	 */
+	protected function getOptions($other = array()) {
+		$options = parent::getOptions($other);
+
+		$this->curl_handle = null;
+
+		$hooks = new Hooks();
+		$hooks->register(
+			'curl.before_request',
+			function ($handle) {
+				$this->curl_handle = $handle;
+			}
+		);
+
+		$options['hooks'] = $hooks;
+
+		return $options;
+	}
+
+	/**
+	 * Post condition asserts to run after each scenario.
+	 *
+	 * This is used for asserting that cURL handles are not leaking memory.
+	 */
+	protected function assert_post_conditions(  ) {
+		if ($this->curl_handle === null) {
+			// No cURL handle was used during this particular test scenario.
+			return;
+		}
+
+		$this->assertCurlHandleIsClosed($this->curl_handle);
+	}
 
 	public function testBadIP() {
 		$this->expectException(Exception::class);
@@ -135,5 +185,37 @@ final class CurlTest extends BaseTestCase {
 		$result = json_decode($request->body, true);
 
 		$this->assertFalse(isset($result['headers']['Expect']));
+	}
+
+	/**
+	 * Assert that a provided cURL handle was properly closed.
+	 *
+	 * For PHP 8.0+, the cURL handle is not a resource that needs to be closed,
+	 * but rather a \CurlHandle object. The assertion just skips these.
+	 *
+	 * @param resource|\CurlHandle $handle CURL handle to check.
+	 */
+	private function assertCurlHandleIsClosed($handle) {
+		if ($handle instanceof \CurlHandle) {
+			// CURL handles have been changed from resources into CurlHandle
+			// objects starting with PHP 8.0, which don;t need to be closed.
+			return;
+		}
+
+		self::assertThat(
+			in_array(
+				gettype($handle),
+				array('resource', 'resource (closed)'),
+				true
+			),
+			self::isTrue(),
+			'Failed asserting that stored cURL handle was a resource.'
+		);
+
+		self::assertThat(
+			is_resource($handle) === false,
+			self::isTrue(),
+			'Failed asserting that stored cURL handle was properly closed.'
+		);
 	}
 }

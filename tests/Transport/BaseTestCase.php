@@ -17,7 +17,7 @@ abstract class BaseTestCase extends TestCase {
 
 	protected $skip_https = false;
 
-	public function set_up() {
+	protected function set_up() {
 		// Intermediary variable $test_method. This can be simplified (removed) once the minimum supported PHP version is 7.0 or higher.
 		$test_method = array($this->transport, 'test');
 
