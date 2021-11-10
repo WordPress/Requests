@@ -874,6 +874,11 @@ class Requests {
 	 * @return string Decompressed string
 	 */
 	public static function decompress($data) {
+		if (trim($data) === '') {
+			// Empty body does not need further processing.
+			return $data;
+		}
+
 		$marker = substr($data, 0, 2);
 		if (!isset(self::$magic_compression_headers[$marker])) {
 			// Not actually compressed. Probably cURL ruining this for us.
@@ -921,7 +926,7 @@ class Requests {
 	 * takes place. For a simple progmatic way to determine the magic offset in use, see:
 	 * https://core.trac.wordpress.org/ticket/18273
 	 *
-	 * @since 2.8.1
+	 * @since 1.6.0
 	 * @link https://core.trac.wordpress.org/ticket/18273
 	 * @link https://www.php.net/gzinflate#70875
 	 * @link https://www.php.net/gzinflate#77336
@@ -930,6 +935,10 @@ class Requests {
 	 * @return string|bool False on failure.
 	 */
 	public static function compatible_gzinflate($gz_data) {
+		if (trim($gz_data) === '') {
+			return false;
+		}
+
 		// Compressed data might contain a full zlib header, if so strip it for
 		// gzinflate()
 		if (substr($gz_data, 0, 3) === "\x1f\x8b\x08") {
