@@ -96,6 +96,14 @@ $data = array('some' => 'data');
 $response = WpOrg\Requests\Requests::post($url, $headers, json_encode($data));
 ```
 
+To send a file as part of a post body:
+
+```php
+$url = 'https://api.github.com/some/endpoint';
+$body = \WpOrg\Requests\Requests::add_files_to_body( array('mydata' => 'something'), $file_path, 'file1'  );
+$response = WpOrg\Requests\Requests::post( $url, $headers, $body );
+```
+
 Note that if you don't manually specify a Content-Type header, Requests has
 undefined behaviour for the header. It may be set to various values depending
 on the internal execution path, so it's recommended to set this explicitly if

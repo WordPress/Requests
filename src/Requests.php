@@ -21,6 +21,7 @@ use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
+use WpOrg\Requests\Utility\RequestsFile;
 
 /**
  * Requests for PHP
@@ -265,6 +266,33 @@ class Requests {
 
 		$class = self::$transport[$cap_string];
 		return new $class();
+	}
+
+
+	/**
+	 * @param array|string $body
+	 * @param array|string $key_files
+	 * @param string $file_key
+	 *
+	 * @return array $body
+	 */
+	public static function add_files_to_body( $body, $key_files, $file_key = '' ) {
+		if ( ! is_array( $body ) ) {
+			if ( is_scalar( $body ) && ! empty( $body ) ) {
+				$body = array( $body );
+			} else {
+				$body = array();
+			}
+		}
+		if ( is_array( $key_files ) ) {
+			foreach ($key_files as $key => $file_path ){
+				$body[ $key ] = new RequestsFile( $file_path );
+			}
+		} elseif( is_scalar( $file_key ) && ! empty( $key_files ) ) {
+			$body[ $file_key ] = new RequestsFile( $key_files );
+		}
+
+		return $body;
 	}
 
 	/**#@+
@@ -581,15 +609,16 @@ class Requests {
 		self::$certificate_path = $path;
 	}
 
+
 	/**
-	 * Set the default values
+	 * @param $url
+	 * @param $headers
+	 * @param $data
+	 * @param $type
+	 * @param $options
 	 *
-	 * @param string $url URL to request
-	 * @param array $headers Extra headers to send with the request
-	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
-	 * @param string $type HTTP request type
-	 * @param array $options Options for the request
-	 * @return array $options
+	 * @return mixed
+	 * @throws \WpOrg\Requests\Exception
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
@@ -641,6 +670,8 @@ class Requests {
 				$options['data_format'] = 'body';
 			}
 		}
+
+		return $options;
 	}
 
 	/**

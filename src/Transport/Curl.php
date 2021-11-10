@@ -357,15 +357,35 @@ final class Curl implements Transport {
 
 		$headers = Requests::flatten($headers);
 
+		$files = array();
+
 		if (!empty($data)) {
 			$data_format = $options['data_format'];
 
+			if (is_array($data)) {
+				foreach($data as $key => $value) {
+					if ($value instanceof Requests_File) {
+						$files[$key] = $value;
+					}
+				}
+			}
+
 			if ($data_format === 'query') {
 				$url  = self::format_get($url, $data);
-				$data = '';
+				$data = array();
 			}
-			elseif (!is_string($data)) {
-				$data = http_build_query($data, '', '&');
+		}
+
+		if (!empty($files)) {
+			if (function_exists('curl_file_create')) {
+				foreach($files as $key => $file) {
+					$data[$key] = curl_file_create($file->path, $file->type, $file->name);
+				}
+			}
+			else {
+				foreach($files as $key => $file) {
+					$data[$key] = "@{$file->path}";
+				}
 			}
 		}
 
