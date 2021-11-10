@@ -34,15 +34,16 @@ final class CurlTest extends BaseTestCase {
 
 		$this->curl_handle = null;
 
-		$hooks = new Hooks();
-		$hooks->register(
+		if (!array_key_exists('hooks', $options)) {
+			$options['hooks'] = new Hooks();
+		}
+
+		$options['hooks']->register(
 			'curl.before_request',
 			function ($handle) {
 				$this->curl_handle = $handle;
 			}
 		);
-
-		$options['hooks'] = $hooks;
 
 		return $options;
 	}
