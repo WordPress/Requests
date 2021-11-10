@@ -57,7 +57,13 @@ final class CurlTest extends BaseTestCase {
 			return;
 		}
 
-		$this->assertCurlHandleIsClosed($this->curl_handle);
+		if ($this->curl_handle instanceof \CurlHandle) {
+			// CURL handles have been changed from resources into CurlHandle
+			// objects starting with PHP 8.0, which don;t need to be closed.
+			return;
+		}
+
+		$this->assertIsClosedResource($this->curl_handle);
 	}
 
 	public function testBadIP() {
@@ -185,37 +191,5 @@ final class CurlTest extends BaseTestCase {
 		$result = json_decode($request->body, true);
 
 		$this->assertFalse(isset($result['headers']['Expect']));
-	}
-
-	/**
-	 * Assert that a provided cURL handle was properly closed.
-	 *
-	 * For PHP 8.0+, the cURL handle is not a resource that needs to be closed,
-	 * but rather a \CurlHandle object. The assertion just skips these.
-	 *
-	 * @param resource|\CurlHandle $handle CURL handle to check.
-	 */
-	private function assertCurlHandleIsClosed($handle) {
-		if ($handle instanceof \CurlHandle) {
-			// CURL handles have been changed from resources into CurlHandle
-			// objects starting with PHP 8.0, which don;t need to be closed.
-			return;
-		}
-
-		self::assertThat(
-			in_array(
-				gettype($handle),
-				array('resource', 'resource (closed)'),
-				true
-			),
-			self::isTrue(),
-			'Failed asserting that stored cURL handle was a resource.'
-		);
-
-		self::assertThat(
-			is_resource($handle) === false,
-			self::isTrue(),
-			'Failed asserting that stored cURL handle was properly closed.'
-		);
 	}
 }
