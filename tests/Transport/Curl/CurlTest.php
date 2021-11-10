@@ -29,20 +29,21 @@ final class CurlTest extends BaseTestCase {
 	 * @param array $other
 	 * @return array
 	 */
-	protected function getOptions($other = array()) {
+	protected function getOptions($other = []) {
 		$options = parent::getOptions($other);
 
 		$this->curl_handle = null;
 
-		$hooks = new Hooks();
-		$hooks->register(
+		if (!array_key_exists('hooks', $options)) {
+			$options['hooks'] = new Hooks();
+		}
+
+		$options['hooks']->register(
 			'curl.before_request',
 			function ($handle) {
 				$this->curl_handle = $handle;
 			}
 		);
-
-		$options['hooks'] = $hooks;
 
 		return $options;
 	}
