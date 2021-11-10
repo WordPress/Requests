@@ -232,9 +232,9 @@ final class Curl implements Transport {
 			$response = $this->response_data;
 		}
 
-		if (true === $options['blocking']) {
+		if (! isset($options['blocking']) || $options['blocking'] !== false) {
 			// Need to remove the $this reference from the curl handle.
-			// Otherwise \WpOrg\Requests\Transport\Curl wont be garbage collected and the curl_close() will never be called.
+			// Otherwise \WpOrg\Requests\Transport\Curl won't be garbage collected and the curl_close() will never be called.
 			curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, null);
 			curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, null);
 		}
