@@ -149,12 +149,6 @@ final class Curl implements Transport {
 			}
 		}
 
-		$this->hooks = $options['hooks'];
-
-		$this->setup_handle($url, $headers, $data, $options);
-
-		$options['hooks']->dispatch('curl.before_send', array(&$this->handle));
-
 		if ($options['filename'] !== false) {
 			// phpcs:ignore WordPress.PHP.NoSilencedErrors -- Silenced the PHP native warning in favour of throwing an exception.
 			$this->stream_handle = @fopen($options['filename'], 'wb');
@@ -163,6 +157,12 @@ final class Curl implements Transport {
 				throw new Exception($error['message'], 'fopen');
 			}
 		}
+
+		$this->hooks = $options['hooks'];
+
+		$this->setup_handle($url, $headers, $data, $options);
+
+		$options['hooks']->dispatch('curl.before_send', array(&$this->handle));
 
 		$this->response_data       = '';
 		$this->response_bytes      = 0;
