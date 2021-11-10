@@ -187,6 +187,12 @@ final class Curl implements Transport {
 			}
 		}
 
+		$this->hooks = $options['hooks'];
+
+		$this->setup_handle($url, $headers, $data, $options);
+
+		$options['hooks']->dispatch('curl.before_send', array(&$this->handle));
+
 		$this->response_data       = '';
 		$this->response_bytes      = 0;
 		$this->response_byte_limit = false;
