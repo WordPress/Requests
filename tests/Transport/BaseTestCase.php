@@ -3,6 +3,7 @@
 namespace WpOrg\Requests\Tests\Transport;
 
 use stdClass;
+use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\Http\StatusUnknown;
 use WpOrg\Requests\Exception\InvalidArgument;
@@ -17,15 +18,17 @@ abstract class BaseTestCase extends TestCase {
 	protected $skip_https = false;
 
 	public function set_up() {
-		$callback  = array($this->transport, 'test');
-		$supported = call_user_func($callback);
+		// Intermediary variable $test_method. This can be simplified (removed) once the minimum supported PHP version is 7.0 or higher.
+		$test_method = array($this->transport, 'test');
+
+		$supported = $test_method();
 
 		if (!$supported) {
 			$this->markTestSkipped($this->transport . ' is not available');
 			return;
 		}
 
-		$ssl_supported = call_user_func($callback, array('ssl' => true));
+		$ssl_supported = $test_method(array(Capability::SSL => true));
 		if (!$ssl_supported) {
 			$this->skip_https = true;
 		}

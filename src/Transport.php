@@ -34,8 +34,12 @@ interface Transport {
 	public function request_multiple($requests, $options);
 
 	/**
-	 * Self-test whether the transport can be used
-	 * @return bool
+	 * Self-test whether the transport can be used.
+	 *
+	 * The available capabilities to test for can be found in {@see \WpOrg\Requests\Capability}.
+	 *
+	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
+	 * @return bool Whether the transport can be used.
 	 */
-	public static function test();
+	public static function test($capabilities = array());
 }

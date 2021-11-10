@@ -224,47 +224,79 @@ class Requests {
 	}
 
 	/**
-	 * Get a working transport
+	 * Get the fully qualified class name (FQCN) for a working transport.
 	 *
-	 * @throws \WpOrg\Requests\Exception If no valid transport is found (`notransport`)
-	 * @return \WpOrg\Requests\Transport
+	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
+	 * @return string FQCN of the transport to use, or an empty string if no transport was
+	 *                found which provided the requested capabilities.
 	 */
-	protected static function get_transport($capabilities = array()) {
-		// Caching code, don't bother testing coverage
+	protected static function get_transport_class($capabilities = array()) {
+		// Caching code, don't bother testing coverage.
 		// @codeCoverageIgnoreStart
-		// array of capabilities as a string to be used as an array key
+		// Array of capabilities as a string to be used as an array key.
 		ksort($capabilities);
 		$cap_string = serialize($capabilities);
 
-		// Don't search for a transport if it's already been done for these $capabilities
-		if (isset(self::$transport[$cap_string]) && self::$transport[$cap_string] !== null) {
-			$class = self::$transport[$cap_string];
-			return new $class();
+		// Don't search for a transport if it's already been done for these $capabilities.
+		if (isset(self::$transport[$cap_string])) {
+			return self::$transport[$cap_string];
 		}
+
+		// Ensure we will not run this same check again later on.
+		self::$transport[$cap_string] = '';
 		// @codeCoverageIgnoreEnd
 
 		if (empty(self::$transports)) {
 			self::$transports = self::DEFAULT_TRANSPORTS;
 		}
 
-		// Find us a working transport
+		// Find us a working transport.
 		foreach (self::$transports as $class) {
 			if (!class_exists($class)) {
 				continue;
 			}
 
-			$result = call_user_func(array($class, 'test'), $capabilities);
-			if ($result) {
+			$result = $class::test($capabilities);
+			if ($result === true) {
 				self::$transport[$cap_string] = $class;
 				break;
 			}
 		}
-		if (self::$transport[$cap_string] === null) {
+
+		return self::$transport[$cap_string];
+	}
+
+	/**
+	 * Get a working transport.
+	 *
+	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
+	 * @return \WpOrg\Requests\Transport
+	 * @throws \WpOrg\Requests\Exception If no valid transport is found (`notransport`).
+	 */
+	protected static function get_transport($capabilities = array()) {
+		$class = self::get_transport_class($capabilities);
+
+		if ($class === '') {
 			throw new Exception('No working transports found', 'notransport', self::$transports);
 		}
 
-		$class = self::$transport[$cap_string];
 		return new $class();
+	}
+
+	/**
+	 * Checks to see if we have a transport for the capabilities requested.
+	 *
+	 * Supported capabilities can be found in the {@see \WpOrg\Requests\Capability}
+	 * interface as constants.
+	 *
+	 * Example usage:
+	 * `Requests::has_capabilities([Capability::SSL => true])`.
+	 *
+	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
+	 * @return bool Whether the transport has the requested capabilities.
+	 */
+	public static function has_capabilities($capabilities = array()) {
+		return self::get_transport_class($capabilities) !== '';
 	}
 
 	/**#@+

@@ -91,7 +91,7 @@ final class TransportMock implements Transport {
 		return $responses;
 	}
 
-	public static function test() {
+	public static function test($capabilities = array()) {
 		return true;
 	}
 }
