@@ -2,7 +2,8 @@ name: Quicktest
 
 on:
   push:
-    branches-ignore:
+    branches:
+#    branches-ignore:
       - stable
   # Allow manually triggering the workflow.
   workflow_dispatch:

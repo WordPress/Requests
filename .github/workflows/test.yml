@@ -2,8 +2,8 @@ name: Test
 
 on:
   push:
-    branches:
-      - stable
+#    branches:
+#      - stable
   pull_request:
   # Allow manually triggering the workflow.
   workflow_dispatch:
@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       # Keys:
       # - coverage: Whether to run the tests with code coverage.
       # - experimental: Whether the build is "allowed to fail".
