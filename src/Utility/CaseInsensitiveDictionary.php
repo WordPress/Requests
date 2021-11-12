@@ -76,7 +76,7 @@ class CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 *
-	 * @param string|null $offset Item name
+	 * @param string $offset Item name
 	 * @param string $value Item value
 	 */
 	#[ReturnTypeWillChange]
