@@ -388,7 +388,7 @@ class Cookie {
 		$name  = trim($name);
 		$value = trim($value);
 
-		// Attribute key are handled case-insensitively
+		// Attribute keys are handled case-insensitively
 		$attributes = new CaseInsensitiveDictionary();
 
 		if (!empty($parts)) {

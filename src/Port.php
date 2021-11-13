@@ -56,8 +56,8 @@ final class Port {
 	 *
 	 * @return int
 	 *
-	 * @throws WpOrg\Requests\ExceptionInvalidArgument When a non-string input has been passed.
-	 * @throws WpOrg\Requests\Exception                When a non-supported port is requested ('portnotsupported').
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When a non-string input has been passed.
+	 * @throws \WpOrg\Requests\Exception                 When a non-supported port is requested ('portnotsupported').
 	 */
 	public static function get($type) {
 		if (!is_string($type)) {

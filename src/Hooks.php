@@ -28,7 +28,7 @@ class Hooks implements HookManager {
 	 * Register a callback for a hook
 	 *
 	 * @param string $hook Hook name
-	 * @param callback $callback Function/method to call on event
+	 * @param callable $callback Function/method to call on event
 	 * @param int $priority Priority number. <0 is executed earlier, >0 is executed later
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $hook argument is not a string.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $callback argument is not callable.
