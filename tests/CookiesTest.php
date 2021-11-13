@@ -180,6 +180,10 @@ final class CookiesTest extends TestCase {
 
 	public function pathMatchProvider() {
 		return array(
+			'Invalid check path (type): null'    => array('/', null, true),
+			'Invalid check path (type): true'    => array('/', true, false),
+			'Invalid check path (type): integer' => array('/', 123, false),
+			'Invalid check path (type): array'   => array('/', array(1, 2), false),
 			array('/', '', true),
 			array('/', '/', true),
 

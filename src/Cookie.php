@@ -242,6 +242,10 @@ class Cookie {
 			return true;
 		}
 
+		if (is_scalar($request_path) === false) {
+			return false;
+		}
+
 		$cookie_path = $this->attributes['path'];
 
 		if ($cookie_path === $request_path) {
