@@ -621,7 +621,7 @@ class Requests {
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type
 	 * @param array $options Options for the request
-	 * @return void $options is update with the results
+	 * @return void $options is updated with the results
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
