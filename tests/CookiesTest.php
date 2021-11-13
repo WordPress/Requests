@@ -3,8 +3,6 @@
 namespace WpOrg\Requests\Tests;
 
 use WpOrg\Requests\Cookie;
-use WpOrg\Requests\Cookie\Jar;
-use WpOrg\Requests\Exception;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
@@ -43,48 +41,6 @@ final class CookiesTest extends TestCase {
 	public function testEmptyAttributes() {
 		$cookie = Cookie::parse('foo=bar; HttpOnly');
 		$this->assertTrue($cookie->attributes['httponly']);
-	}
-
-	public function testCookieJarSetter() {
-		$jar1                        = new Jar();
-		$jar1['requests-testcookie'] = 'testvalue';
-
-		$jar2 = new Jar(
-			array(
-				'requests-testcookie' => 'testvalue',
-			)
-		);
-		$this->assertEquals($jar1, $jar2);
-	}
-
-	public function testCookieJarUnsetter() {
-		$jar                        = new Jar();
-		$jar['requests-testcookie'] = 'testvalue';
-
-		$this->assertSame('testvalue', $jar['requests-testcookie']);
-
-		unset($jar['requests-testcookie']);
-		$this->assertEmpty($jar['requests-testcookie']);
-		$this->assertFalse(isset($jar['requests-testcookie']));
-	}
-
-	public function testCookieJarAsList() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Object is a dictionary, not a list');
-		$cookies   = new Jar();
-		$cookies[] = 'requests-testcookie1=testvalue1';
-	}
-
-	public function testCookieJarIterator() {
-		$cookies = array(
-			'requests-testcookie1' => 'testvalue1',
-			'requests-testcookie2' => 'testvalue2',
-		);
-		$jar     = new Jar($cookies);
-
-		foreach ($jar as $key => $value) {
-			$this->assertSame($cookies[$key], $value);
-		}
 	}
 
 	public function testReceivingCookies() {
@@ -153,18 +109,6 @@ final class CookiesTest extends TestCase {
 		$this->assertEmpty($data['cookies']);
 	}
 
-	public function testSendingCookieWithJar() {
-		$cookies = new Jar(
-			array(
-				'requests-testcookie1' => 'testvalue1',
-			)
-		);
-		$data    = $this->setCookieRequest($cookies);
-
-		$this->assertArrayHasKey('requests-testcookie1', $data);
-		$this->assertSame('testvalue1', $data['requests-testcookie1']);
-	}
-
 	public function testSendingMultipleCookies() {
 		$cookies = array(
 			'requests-testcookie1' => 'testvalue1',
@@ -177,34 +121,6 @@ final class CookiesTest extends TestCase {
 
 		$this->assertArrayHasKey('requests-testcookie2', $data);
 		$this->assertSame('testvalue2', $data['requests-testcookie2']);
-	}
-
-	public function testSendingMultipleCookiesWithJar() {
-		$cookies = new Jar(
-			array(
-				'requests-testcookie1' => 'testvalue1',
-				'requests-testcookie2' => 'testvalue2',
-			)
-		);
-		$data    = $this->setCookieRequest($cookies);
-
-		$this->assertArrayHasKey('requests-testcookie1', $data);
-		$this->assertSame('testvalue1', $data['requests-testcookie1']);
-
-		$this->assertArrayHasKey('requests-testcookie2', $data);
-		$this->assertSame('testvalue2', $data['requests-testcookie2']);
-	}
-
-	public function testSendingPrebakedCookie() {
-		$cookies = new Jar(
-			array(
-				new Cookie('requests-testcookie', 'testvalue'),
-			)
-		);
-		$data    = $this->setCookieRequest($cookies);
-
-		$this->assertArrayHasKey('requests-testcookie', $data);
-		$this->assertSame('testvalue', $data['requests-testcookie']);
 	}
 
 	public function domainMatchProvider() {
