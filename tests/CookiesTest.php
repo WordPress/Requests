@@ -784,4 +784,22 @@ final class CookiesTest extends TestCase {
 
 		Cookie::parse('test', 'test', 'now');
 	}
+
+	/**
+	 * Tests receiving an exception when the parse_from_headers() method received an invalid input type as `$reference_time`.
+	 *
+	 * @covers \WpOrg\Requests\Cookie::parse_from_headers
+	 *
+	 * @return void
+	 */
+	public function testParseFromHeadersInvalidReferenceTime() {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #5 ($reference_time) must be of type integer|null');
+
+		$origin                = new Iri();
+		$headers               = new Headers();
+		$headers['Set-Cookie'] = 'name=value;';
+
+		Cookie::parse_from_headers($headers, $origin, 'now');
+	}
 }
