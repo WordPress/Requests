@@ -45,10 +45,10 @@ class Headers extends CaseInsensitiveDictionary {
 	/**
 	 * Set the given item
 	 *
-	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
-	 *
 	 * @param string $offset Item name
 	 * @param string $value Item value
+	 *
+	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 */
 	public function offsetSet($offset, $value) {
 		if ($offset === null) {

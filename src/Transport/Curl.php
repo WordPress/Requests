@@ -130,13 +130,14 @@ final class Curl implements Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @throws \WpOrg\Requests\Exception On a cURL error (`curlerror`)
-	 *
 	 * @param string $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return string Raw HTTP result
+	 *
+	 * @throws \WpOrg\Requests\InvalidArgument When the $data parameter is not an array or string.
+	 * @throws \WpOrg\Requests\Exception       On a cURL error (`curlerror`)
 	 */
 	public function request($url, $headers = array(), $data = array(), $options = array()) {
 		if (!is_array($data) && !is_string($data)) {

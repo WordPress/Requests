@@ -73,13 +73,13 @@ class IdnaEncoder {
 	/**
 	 * Convert a UTF-8 text string to an ASCII string using Punycode
 	 *
+	 * @param string $text ASCII or UTF-8 string (max length 64 characters)
+	 * @return string ASCII string
+	 *
 	 * @throws \WpOrg\Requests\Exception Provided string longer than 64 ASCII characters (`idna.provided_too_long`)
 	 * @throws \WpOrg\Requests\Exception Prepared string longer than 64 ASCII characters (`idna.prepared_too_long`)
 	 * @throws \WpOrg\Requests\Exception Provided string already begins with xn-- (`idna.provided_is_prefixed`)
 	 * @throws \WpOrg\Requests\Exception Encoded string longer than 64 ASCII characters (`idna.encoded_too_long`)
-	 *
-	 * @param string $text ASCII or UTF-8 string (max length 64 characters)
-	 * @return string ASCII string
 	 */
 	public static function to_ascii($text) {
 		// Step 1: Check if the text is already ASCII
@@ -159,9 +159,10 @@ class IdnaEncoder {
 	 *
 	 * Based on \WpOrg\Requests\Iri::replace_invalid_with_pct_encoding()
 	 *
-	 * @throws \WpOrg\Requests\Exception Invalid UTF-8 codepoint (`idna.invalidcodepoint`)
 	 * @param string $input
 	 * @return array Unicode code points
+	 *
+	 * @throws \WpOrg\Requests\Exception Invalid UTF-8 codepoint (`idna.invalidcodepoint`)
 	 */
 	protected static function utf8_to_codepoints($input) {
 		$codepoints = array();
@@ -249,10 +250,11 @@ class IdnaEncoder {
 	 * RFC3492-compliant encoder
 	 *
 	 * @internal Pseudo-code from Section 6.3 is commented with "#" next to relevant code
-	 * @throws \WpOrg\Requests\Exception On character outside of the domain (never happens with Punycode) (`idna.character_outside_domain`)
 	 *
 	 * @param string $input UTF-8 encoded string to encode
 	 * @return string Punycode-encoded string
+	 *
+	 * @throws \WpOrg\Requests\Exception On character outside of the domain (never happens with Punycode) (`idna.character_outside_domain`)
 	 */
 	public static function punycode_encode($input) {
 		$output = '';
@@ -361,10 +363,11 @@ class IdnaEncoder {
 	 * Convert a digit to its respective character
 	 *
 	 * @link https://tools.ietf.org/html/rfc3492#section-5
-	 * @throws \WpOrg\Requests\Exception On invalid digit (`idna.invalid_digit`)
 	 *
 	 * @param int $digit Digit in the range 0-35
 	 * @return string Single character corresponding to digit
+	 *
+	 * @throws \WpOrg\Requests\Exception On invalid digit (`idna.invalid_digit`)
 	 */
 	protected static function digit_to_char($digit) {
 		// @codeCoverageIgnoreStart

@@ -89,10 +89,10 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	/**
 	 * Set the given item
 	 *
-	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
-	 *
 	 * @param string $offset Item name
 	 * @param string $value Item value
+	 *
+	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 */
 	#[ReturnTypeWillChange]
 	public function offsetSet($offset, $value) {

@@ -623,6 +623,8 @@ class Requests {
 	 * @param string $type HTTP request type
 	 * @param array $options Options for the request
 	 * @return void $options is updated with the results
+	 *
+	 * @throws \WpOrg\Requests\Exception When the $url is not an http(s) URL.
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
