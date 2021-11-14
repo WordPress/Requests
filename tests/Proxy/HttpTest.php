@@ -4,6 +4,7 @@ namespace WpOrg\Requests\Tests\Proxy;
 
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\ArgumentCount;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
@@ -139,5 +140,17 @@ final class HttpTest extends TestCase {
 
 		$response = Requests::get(httpbin('/get'), array(), $options);
 		$this->assertSame(407, $response->status_code);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed to the Proxy\Http constructor.
+	 *
+	 * @covers \WpOrg\Requests\Proxy\Http::__construct
+	 */
+	public function testConstructorInvalidParameterType() {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($args) must be of type array|string|null');
+
+		new Http(false);
 	}
 }
