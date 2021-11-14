@@ -6,8 +6,7 @@
  *
  * @internal
  *
- * @package Requests
- * @subpackage GHPages
+ * @package Requests\GHPages
  *
  * @phpcs:disable PHPCompatibility.FunctionDeclarations.NewParamTypeDeclarations.stringFound
  * @phpcs:disable PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.intFound
