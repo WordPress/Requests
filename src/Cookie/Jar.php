@@ -52,7 +52,7 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 * @param string|\WpOrg\Requests\Cookie $cookie
 	 * @return \WpOrg\Requests\Cookie
 	 */
-	public function normalize_cookie($cookie, $key = null) {
+	public function normalize_cookie($cookie, $key = '') {
 		if ($cookie instanceof Cookie) {
 			return $cookie;
 		}
