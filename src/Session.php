@@ -83,12 +83,12 @@ class Session {
 	/**
 	 * Get a property's value
 	 *
-	 * @param string $key Property key
+	 * @param string $name Property name.
 	 * @return mixed|null Property value, null if none found
 	 */
-	public function __get($key) {
-		if (isset($this->options[$key])) {
-			return $this->options[$key];
+	public function __get($name) {
+		if (isset($this->options[$name])) {
+			return $this->options[$name];
 		}
 
 		return null;
@@ -97,31 +97,29 @@ class Session {
 	/**
 	 * Set a property's value
 	 *
-	 * @param string $key Property key
+	 * @param string $name Property name.
 	 * @param mixed $value Property value
 	 */
-	public function __set($key, $value) {
-		$this->options[$key] = $value;
+	public function __set($name, $value) {
+		$this->options[$name] = $value;
 	}
 
 	/**
 	 * Remove a property's value
 	 *
-	 * @param string $key Property key
+	 * @param string $name Property name.
 	 */
-	public function __isset($key) {
-		return isset($this->options[$key]);
+	public function __isset($name) {
+		return isset($this->options[$name]);
 	}
 
 	/**
 	 * Remove a property's value
 	 *
-	 * @param string $key Property key
+	 * @param string $name Property name.
 	 */
-	public function __unset($key) {
-		if (isset($this->options[$key])) {
-			unset($this->options[$key]);
-		}
+	public function __unset($name) {
+		unset($this->options[$name]);
 	}
 
 	/**#@+
