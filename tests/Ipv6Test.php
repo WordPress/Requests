@@ -83,7 +83,7 @@ final class Ipv6Test extends TestCase {
 	 */
 	public function testUncompressInvalidInputType($ip) {
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($ip) must be of type string');
+		$this->expectExceptionMessage('Argument #1 ($ip) must be of type string|Stringable');
 
 		Ipv6::uncompress($ip);
 	}
@@ -100,7 +100,7 @@ final class Ipv6Test extends TestCase {
 	 */
 	public function testCompressInvalidInputType($ip) {
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($ip) must be of type string');
+		$this->expectExceptionMessage('Argument #1 ($ip) must be of type string|Stringable');
 
 		Ipv6::compress($ip);
 	}
@@ -117,7 +117,7 @@ final class Ipv6Test extends TestCase {
 	 */
 	public function testCheckIpv6InvalidInputType($ip) {
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($ip) must be of type string');
+		$this->expectExceptionMessage('Argument #1 ($ip) must be of type string|Stringable');
 
 		Ipv6::check_ipv6($ip);
 	}

@@ -35,7 +35,7 @@ final class Ipv6 {
 	 * @copyright 2003-2005 The PHP Group
 	 * @license https://opensource.org/licenses/bsd-license.php
 	 *
-	 * @param string $ip An IPv6 address
+	 * @param string|Stringable $ip An IPv6 address
 	 * @return string The uncompressed IPv6 address
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string or a stringable object.
