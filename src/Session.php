@@ -292,7 +292,7 @@ class Session {
 			$request['data'] = array_merge($this->data, $request['data']);
 		}
 
-		if ($merge_options !== false) {
+		if ($merge_options === true) {
 			$request['options'] = array_merge($this->options, $request['options']);
 
 			// Disallow forcing the type, as that's a per request setting
