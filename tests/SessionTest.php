@@ -2,8 +2,13 @@
 
 namespace WpOrg\Requests\Tests;
 
+use EmptyIterator;
+use stdClass;
+use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Session;
+use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
 use WpOrg\Requests\Tests\TestCase;
 
 final class SessionTest extends TestCase {
@@ -223,5 +228,183 @@ final class SessionTest extends TestCase {
 			'requests-testcookie' => 'testvalue',
 		);
 		$this->assertSame($cookies, $data['cookies']);
+	}
+
+	/**
+	 * Tests that valid input for the $url parameter for a new Session object is handled correctly.
+	 *
+	 * @dataProvider dataConstructorValidUrl
+	 *
+	 * @covers \WpOrg\Requests\Session::__construct
+	 *
+	 * @param mixed $input Valid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorValidUrl($input) {
+		$this->assertInstanceOf(Session::class, new Session($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorValidUrl() {
+		return array(
+			'null'              => array(null),
+			'string'            => array(httpbin('/')),
+			'stringable object' => array(new Iri(httpbin('/'))),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$url`.
+	 *
+	 * @dataProvider dataConstructorInvalidUrl
+	 *
+	 * @covers \WpOrg\Requests\Session::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidUrl($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($url) must be of type string|Stringable|null');
+
+		new Session($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidUrl() {
+		return array(
+			'boolean false'         => array(false),
+			'array'                 => array(array(httpbin('/'))),
+			'non-stringable object' => array(new stdClass('name')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$headers`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Session::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidHeaders($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($headers) must be of type array');
+
+		new Session(null, $input);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$data`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Session::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidData($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #3 ($data) must be of type array');
+
+		new Session('/', array(), $input);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$options`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Session::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidOptions($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #4 ($options) must be of type array');
+
+		new Session('/', array(), array(), $input);
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$requests`.
+	 *
+	 * @dataProvider dataRequestMultipleInvalidRequests
+	 *
+	 * @covers \WpOrg\Requests\Session::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleInvalidRequests($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($requests) must be of type array|ArrayAccess&Traversable');
+
+		$session = new Session();
+		$session->request_multiple($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRequestMultipleInvalidRequests() {
+		return array(
+			'null'                                 => array(null),
+			'text string'                          => array('array'),
+			'iterator object without array access' => array(new EmptyIterator()),
+			'array accessible object not iterable' => array(new ArrayAccessibleObject(array(1, 2, 3))),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$option`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Session::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleInvalidOptions($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($options) must be of type array');
+
+		$session = new Session();
+		$session->request_multiple(array(), $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidTypeNotArray() {
+		return array(
+			'null'                    => array(null),
+			'boolean false'           => array(false),
+			'array accessible object' => array(new ArrayAccessibleObject(array())),
+		);
 	}
 }

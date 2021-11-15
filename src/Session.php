@@ -8,8 +8,10 @@
 namespace WpOrg\Requests;
 
 use WpOrg\Requests\Cookie\Jar;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * Session handler for persistent requests and default parameters
@@ -64,12 +66,33 @@ class Session {
 	/**
 	 * Create a new session
 	 *
-	 * @param string|null $url Base URL for requests
+	 * @param string|Stringable|null $url Base URL for requests
 	 * @param array $headers Default headers for requests
 	 * @param array $data Default data for requests
 	 * @param array $options Default options for requests
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or null.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $headers argument is not an array.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $data argument is not an array.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
 	public function __construct($url = null, $headers = array(), $data = array(), $options = array()) {
+		if ($url !== null && InputValidator::is_string_or_stringable($url) === false) {
+			throw InvalidArgument::create(1, '$url', 'string|Stringable|null', gettype($url));
+		}
+
+		if (is_array($headers) === false) {
+			throw InvalidArgument::create(2, '$headers', 'array', gettype($headers));
+		}
+
+		if (is_array($data) === false) {
+			throw InvalidArgument::create(3, '$data', 'array', gettype($data));
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(4, '$options', 'array', gettype($options));
+		}
+
 		$this->url     = $url;
 		$this->headers = $headers;
 		$this->data    = $data;
@@ -217,8 +240,19 @@ class Session {
 	 * @param array $requests Requests data (see {@see \WpOrg\Requests\Requests::request_multiple()})
 	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
 	public function request_multiple($requests, $options = array()) {
+		if (InputValidator::has_array_access($requests) === false || InputValidator::is_iterable($requests) === false) {
+			throw InvalidArgument::create(1, '$requests', 'array|ArrayAccess&Traversable', gettype($requests));
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(2, '$options', 'array', gettype($options));
+		}
+
 		foreach ($requests as $key => $request) {
 			$requests[$key] = $this->merge_request($request, false);
 		}
@@ -258,7 +292,7 @@ class Session {
 			$request['data'] = array_merge($this->data, $request['data']);
 		}
 
-		if ($merge_options !== false) {
+		if ($merge_options === true) {
 			$request['options'] = array_merge($this->options, $request['options']);
 
 			// Disallow forcing the type, as that's a per request setting
