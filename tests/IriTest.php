@@ -42,6 +42,7 @@
 
 namespace WpOrg\Requests\Tests;
 
+use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Tests\Fixtures\StringableObject;
@@ -417,6 +418,17 @@ final class IriTest extends TestCase
 	}
 
 	/**
+	 * Safeguard that the constructor can accept Stringable objects as $iri.
+	 *
+	 * @covers \WpOrg\Requests\Iri::__construct
+	 *
+	 * @return void
+	 */
+	public function testConstructorAcceptsStringableIri() {
+		$this->assertInstanceOf(Iri::class, new Iri(new StringableObject('https://example.com/')));
+	}
+
+	/**
 	 * Tests receiving an exception when an invalid input type is passed to the constructor.
 	 *
 	 * @dataProvider dataConstructorInvalidInput
@@ -429,7 +441,7 @@ final class IriTest extends TestCase
 	 */
 	public function testConstructorInvalidInput($iri) {
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($iri) must be of type string|null');
+		$this->expectExceptionMessage('Argument #1 ($iri) must be of type string|Stringable|null');
 
 		new Iri($iri);
 	}
@@ -441,9 +453,9 @@ final class IriTest extends TestCase
 	 */
 	public function dataConstructorInvalidInput() {
 		return array(
-			'boolean false'     => array(false),
-			'float'             => array(1.1),
-			'stringable object' => array(new StringableObject('value')),
+			'boolean false'         => array(false),
+			'float'                 => array(1.1),
+			'non-stringable object' => array(new stdClass('value')),
 		);
 	}
 }
