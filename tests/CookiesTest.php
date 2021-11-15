@@ -2,10 +2,15 @@
 
 namespace WpOrg\Requests\Tests;
 
+use DateTime;
+use EmptyIterator;
 use WpOrg\Requests\Cookie;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
+use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
@@ -125,6 +130,8 @@ final class CookiesTest extends TestCase {
 
 	public function domainMatchProvider() {
 		return array(
+			'Invalid check domain (type): null'         => array('example.com', null, false, false),
+			'Invalid check domain (type): boolean true' => array('example.com', true, false, false),
 			array('example.com', 'example.com', true, true),
 			array('example.com', 'www.example.com', false, true),
 			array('example.com', 'example.net', false, false),
@@ -173,6 +180,10 @@ final class CookiesTest extends TestCase {
 
 	public function pathMatchProvider() {
 		return array(
+			'Invalid check path (type): null'    => array('/', null, true),
+			'Invalid check path (type): true'    => array('/', true, false),
+			'Invalid check path (type): integer' => array('/', 123, false),
+			'Invalid check path (type): array'   => array('/', array(1, 2), false),
 			array('/', '', true),
 			array('/', '/', true),
 
@@ -411,7 +422,7 @@ final class CookiesTest extends TestCase {
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
-		$cookie = Cookie::parse($header, null, $reference_time);
+		$cookie = Cookie::parse($header, '', $reference_time);
 		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
 	}
 
@@ -424,7 +435,7 @@ final class CookiesTest extends TestCase {
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
-		$cookie = Cookie::parse($header, null, $reference_time);
+		$cookie = Cookie::parse($header, '', $reference_time);
 
 		// Normalize the value again
 		$cookie->normalize();
@@ -579,5 +590,216 @@ final class CookiesTest extends TestCase {
 
 		$cookie = reset($parsed);
 		$this->check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$name`.
+	 *
+	 * @dataProvider dataInvalidStringInput
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidName($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($name) must be of type string');
+
+		new Cookie($input, 'value');
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$value`.
+	 *
+	 * @dataProvider dataInvalidStringInput
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidValue($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($value) must be of type string');
+
+		new Cookie('name', $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidStringInput() {
+		return array(
+			'null'              => array(null),
+			'float'             => array(1.1),
+			'stringable object' => array(new StringableObject('name')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$name`.
+	 *
+	 * @dataProvider dataConstructorInvalidAttributes
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidAttributes($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #3 ($attributes) must be of type array|ArrayAccess&Traversable');
+
+		new Cookie('name', 'value', $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidAttributes() {
+		return array(
+			'null'                                 => array(null),
+			'text string'                          => array('array'),
+			'iterator object without array access' => array(new EmptyIterator()),
+			'array accessible object not iterable' => array(new ArrayAccessibleObject(array(1, 2, 3))),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$flags`.
+	 *
+	 * @dataProvider dataConstructorInvalidFlags
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidFlags($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #4 ($flags) must be of type array');
+
+		new Cookie('name', 'value', array(), $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidFlags() {
+		return array(
+			'null'                    => array(null),
+			'integer'                 => array(101),
+			'array accessible object' => array(new ArrayAccessibleObject(array())),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$reference_time`.
+	 *
+	 * @dataProvider dataConstructorInvalidReferenceTime
+	 *
+	 * @covers \WpOrg\Requests\Cookie::__construct
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testConstructorInvalidReferenceTime($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #5 ($reference_time) must be of type integer|null');
+
+		new Cookie('name', 'value', array(), array(), $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataConstructorInvalidReferenceTime() {
+		return array(
+			'float'           => array(1.1),
+			'string'          => array('now'),
+			'DateTime object' => array(new DateTime('now')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the parse() method received an invalid input type as `$cookie_header`.
+	 *
+	 * @dataProvider dataInvalidStringInput
+	 *
+	 * @covers \WpOrg\Requests\Cookie::parse
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testParseInvalidCookieHeader($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($cookie_header) must be of type string');
+
+		Cookie::parse($input);
+	}
+
+	/**
+	 * Tests receiving an exception when the parse() method received an invalid input type as `$name`.
+	 *
+	 * @dataProvider dataInvalidStringInput
+	 *
+	 * @covers \WpOrg\Requests\Cookie::parse
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testParseInvalidName($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($name) must be of type string');
+
+		Cookie::parse('test', $input);
+	}
+
+	/**
+	 * Tests receiving an exception when the parse() method received an invalid input type as `$reference_time`.
+	 *
+	 * @covers \WpOrg\Requests\Cookie::parse
+	 *
+	 * @return void
+	 */
+	public function testParseInvalidReferenceTime() {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #5 ($reference_time) must be of type integer|null');
+
+		Cookie::parse('test', 'test', 'now');
+	}
+
+	/**
+	 * Tests receiving an exception when the parse_from_headers() method received an invalid input type as `$reference_time`.
+	 *
+	 * @covers \WpOrg\Requests\Cookie::parse_from_headers
+	 *
+	 * @return void
+	 */
+	public function testParseFromHeadersInvalidReferenceTime() {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #5 ($reference_time) must be of type integer|null');
+
+		$origin                = new Iri();
+		$headers               = new Headers();
+		$headers['Set-Cookie'] = 'name=value;';
+
+		Cookie::parse_from_headers($headers, $origin, 'now');
 	}
 }

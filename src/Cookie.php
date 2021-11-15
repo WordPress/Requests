@@ -7,9 +7,11 @@
 
 namespace WpOrg\Requests;
 
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * Cookie storage object
@@ -67,8 +69,36 @@ class Cookie {
 	 * @param string $name
 	 * @param string $value
 	 * @param array|\WpOrg\Requests\Utility\CaseInsensitiveDictionary $attributes Associative array of attribute data
+	 * @param array $flags
+	 * @param int|null $reference_time
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $name argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $value argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $attributes argument is not an array or iterable object with array access.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $flags argument is not an array.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $reference_time argument is not an integer or null.
 	 */
 	public function __construct($name, $value, $attributes = array(), $flags = array(), $reference_time = null) {
+		if (is_string($name) === false) {
+			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		}
+
+		if (is_string($value) === false) {
+			throw InvalidArgument::create(2, '$value', 'string', gettype($value));
+		}
+
+		if (InputValidator::has_array_access($attributes) === false || InputValidator::is_iterable($attributes) === false) {
+			throw InvalidArgument::create(3, '$attributes', 'array|ArrayAccess&Traversable', gettype($attributes));
+		}
+
+		if (is_array($flags) === false) {
+			throw InvalidArgument::create(4, '$flags', 'array', gettype($flags));
+		}
+
+		if ($reference_time !== null && is_int($reference_time) === false) {
+			throw InvalidArgument::create(5, '$reference_time', 'integer|null', gettype($reference_time));
+		}
+
 		$this->name       = $name;
 		$this->value      = $value;
 		$this->attributes = $attributes;
@@ -148,6 +178,10 @@ class Cookie {
 	 * @return boolean Whether the cookie is valid for the given domain
 	 */
 	public function domain_matches($domain) {
+		if (is_string($domain) === false) {
+			return false;
+		}
+
 		if (!isset($this->attributes['domain'])) {
 			// Cookies created manually; cookies created by Requests will set
 			// the domain to the requested domain
@@ -206,6 +240,10 @@ class Cookie {
 			// Cookies created manually; cookies created by Requests will set
 			// the path to the requested path
 			return true;
+		}
+
+		if (is_scalar($request_path) === false) {
+			return false;
 		}
 
 		$cookie_path = $this->attributes['path'];
@@ -364,9 +402,22 @@ class Cookie {
 	 * specifies some of this handling, but not in a thorough manner.
 	 *
 	 * @param string $cookie_header Cookie header value (from a Set-Cookie header)
+	 * @param string $name
+	 * @param int|null $reference_time
 	 * @return \WpOrg\Requests\Cookie Parsed cookie object
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $cookie_header argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $name argument is not a string.
 	 */
 	public static function parse($cookie_header, $name = '', $reference_time = null) {
+		if (is_string($cookie_header) === false) {
+			throw InvalidArgument::create(1, '$cookie_header', 'string', gettype($cookie_header));
+		}
+
+		if (is_string($name) === false) {
+			throw InvalidArgument::create(2, '$name', 'string', gettype($name));
+		}
+
 		$parts   = explode(';', $cookie_header);
 		$kvparts = array_shift($parts);
 
