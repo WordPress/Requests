@@ -48,7 +48,7 @@ $response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $optio
 The actual behavior depends on the transport being used, but in general should be based on the [`openssl` PHP ini settings].
 
 If you're accessing sites with certificates from other certificate authorities (CAs), or self-signed certificates,
-you can point Requests to a custom CA list in PEM form - the same format is accepted by both cURL and OpenSSL.
+you can point Requests to a custom CA list in PEM form (the same format accepted by cURL and OpenSSL).
 You can do so by using the `'verify'` option with a filepath string:
 
 ```php
