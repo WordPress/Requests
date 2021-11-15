@@ -33,30 +33,49 @@ $session->options['useragent'] = 'My-Awesome-App';
 
 Secure Requests with SSL
 ------------------------
-By default, HTTPS requests will use the most secure options available:
+
+It is recommended to always use secure requests whenever the server setup allows for it.
+
+Setting the `$options['verify']` key to `true` when initiating a request enables certificate
+verification using the certificate authority list provided by the server environment:
 
 ```php
-$response = WpOrg\Requests\Requests::get('https://httpbin.org/');
+// Use server-provided certificate authority list.
+$options  = array('verify' => true);
+$response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
 ```
 
-Requests bundles certificates from the [Mozilla certificate authority list][],
-which is the same list of root certificates used in most browsers. If you're
-accessing sites with certificates from other CAs, or self-signed certificates,
-you can point Requests to a custom CA list in PEM form (the same format
-accepted by cURL and OpenSSL):
+The actual behavior depends on the transport being used, but in general should be based on the [`openssl` PHP ini settings].
+
+If you're accessing sites with certificates from other certificate authorities (CAs), or self-signed certificates,
+you can point Requests to a custom CA list in PEM form (the same format accepted by cURL and OpenSSL).
+You can do so by using the `'verify'` option with a filepath string:
 
 ```php
+// Use custom certificate authority list.
 $options = array(
     'verify' => '/path/to/cacert.pem'
 );
 $response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
 ```
 
-Alternatively, if you want to disable verification completely, this is possible
-with `'verify' => false`, but note that this is extremely insecure and should be
-avoided.
+As a fallback, Requests bundles certificates from the [Mozilla certificate authority list],
+which is the same list of root certificates used by most browsers.
+This fallback is used when the `'verify'` option is not provided at all:
 
-Note that SSL verification might not be available depending on what extensions
+```php
+// Use fallback certificate authority list.
+$response = WpOrg\Requests\Requests::get('https://httpbin.org/');
+```
+
+:warning: **_Note however that this fallback should only be used for servers that are not properly
+configured for SSL verification, as a continuously managed server should provide a more
+up-to-date certificate authority list than a software library which only gets updates once in a while._**
+
+If you want to disable verification completely, this is possible with `'verify' => false`,
+but doing so is at your own risk as this is extremely insecure and should be avoided.
+
+SSL verification might not be available depending on what extensions
 are enabled for your PHP environment. You can test whether Requests has
 access to a transport with SSL capabilities with the following call:
 
@@ -77,6 +96,7 @@ See also the [related PHP][php-bug-47030] and [OpenSSL-related][php-bug-55820]
 bugs in PHP for more information on Subject Alternate Name field.
 
 [Mozilla certificate authority list]: https://www.mozilla.org/projects/security/certs/
+[`openssl` PHP ini settings]: https://www.php.net/manual/en/openssl.configuration.php
 [php-bug-47030]: https://php.net/47030
 [php-bug-55820]: https://php.net/55820
 
