@@ -11,6 +11,7 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Ipv6;
 use WpOrg\Requests\Port;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * IRI parser/serialiser/normaliser
@@ -245,13 +246,13 @@ class Iri {
 	/**
 	 * Create a new IRI object, from a specified string
 	 *
-	 * @param string|null $iri
+	 * @param string|Stringable|null $iri
 	 *
-	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $iri argument is not a string nor null.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $iri argument is not a string, Stringable or null.
 	 */
 	public function __construct($iri = null) {
-		if ($iri !== null && is_string($iri) === false) {
-			throw InvalidArgument::create(1, '$iri', 'string|null', gettype($iri));
+		if ($iri !== null && InputValidator::is_string_or_stringable($iri) === false) {
+			throw InvalidArgument::create(1, '$iri', 'string|Stringable|null', gettype($iri));
 		}
 
 		$this->set_iri($iri);
@@ -732,6 +733,9 @@ class Iri {
 		if ($iri === null) {
 			return true;
 		}
+
+		$iri = (string) $iri;
+
 		if (isset($cache[$iri])) {
 			list($this->scheme,
 				 $this->iuserinfo,
@@ -744,7 +748,7 @@ class Iri {
 			return $return;
 		}
 
-		$parsed = $this->parse_iri((string) $iri);
+		$parsed = $this->parse_iri($iri);
 
 		$return = $this->set_scheme($parsed['scheme'])
 			&& $this->set_authority($parsed['authority'])
