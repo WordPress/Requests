@@ -5,107 +5,232 @@ Changelog
 -----
 
 (((CURRENT DUMP)))
-- Docblocks: update all `@package` tags [[#606](https://github.com/WordPress/Requests/pull/606)]
-- Response\Headers: add input validation + more defensive coding [[#605](https://github.com/WordPress/Requests/pull/605)]
-- Class FilteredIterator: add input validation [[#604](https://github.com/WordPress/Requests/pull/604)]
-- Class Response: improve input handling [[#603](https://github.com/WordPress/Requests/pull/603)]
-- Class Iri: add input validation [[#602](https://github.com/WordPress/Requests/pull/602)]
-- Class Ipv6: add input validation [[#601](https://github.com/WordPress/Requests/pull/601)]
-- PHP 8.0 | Hooks::dispatch(): prevent potential fatal error [[#599](https://github.com/WordPress/Requests/pull/599)]
-- DecompressionTest: improve tests [[#595](https://github.com/WordPress/Requests/pull/595)]
-- Autoload: treat PSR-4 case-sensitively and PSR-0 case-insensitively [[#594](https://github.com/WordPress/Requests/pull/594)]
-- IdnaEncoder::encode(): add input validation [[#592](https://github.com/WordPress/Requests/pull/592)]
-- Ssl::verify_reference_name(): add more defensive coding [[#591](https://github.com/WordPress/Requests/pull/591)]
-- Release checklist: minor tweaks [[#588](https://github.com/WordPress/Requests/pull/588)]
-- Rename interface Hooker => HookManager [[#587](https://github.com/WordPress/Requests/pull/587)]
-- BC-layer: fix fatal "can not inherit from final class" errors [[#586](https://github.com/WordPress/Requests/pull/586)]
-- GH Actions: more website update workflow tweaks [[#583](https://github.com/WordPress/Requests/pull/583)]
-- ChunkedEncodingTest: improve tests [[#581](https://github.com/WordPress/Requests/pull/581)]
-- GH Actions: improve auto-cancelling of outdated builds [[#579](https://github.com/WordPress/Requests/pull/579)]
-- Fix the DocBlock for `offsetGet()`. [[#578](https://github.com/WordPress/Requests/pull/578)]
-- update cacert to the latest version [[#577](https://github.com/WordPress/Requests/pull/577)]
-- GH Actions: auto-cancel previous builds for same branch [[#575](https://github.com/WordPress/Requests/pull/575)]
-- Auth\Basic: add input validation to constructor [[#574](https://github.com/WordPress/Requests/pull/574)]
-- Hooks: add input validation to all methods [[#573](https://github.com/WordPress/Requests/pull/573)]
-- Ssl: add input validation to all methods [[#572](https://github.com/WordPress/Requests/pull/572)]
-- Remove expired DST Root CA X3 from bundled cacert.pem [[#571](https://github.com/WordPress/Requests/pull/571)]
-- GH Actions: minor simplification to website gen workflow [[#569](https://github.com/WordPress/Requests/pull/569)]
-- PHPUnit: update configuration [[#566](https://github.com/WordPress/Requests/pull/566)]
-- GH Actions/update website: minor tweak [[#563](https://github.com/WordPress/Requests/pull/563)]
-- GH Pages/prose docs: improve title consistency [[#562](https://github.com/WordPress/Requests/pull/562)]
-- QA/PHP 8.0 | Don't use reserved keywords as param names [[#561](https://github.com/WordPress/Requests/pull/561)]
-- PHP 8.0: ensure parameter names are aligned with PHP native param names [[#560](https://github.com/WordPress/Requests/pull/560)]
-- Response: add `decode_body()` method [[#559](https://github.com/WordPress/Requests/pull/559)]
-- Utility\CaseInsensitiveDictionary: add dedicated unit tests + minor bug fix [[#558](https://github.com/WordPress/Requests/pull/558)]
-- Auth\Basic: improve tests [[#557](https://github.com/WordPress/Requests/pull/557)]
-- Hooks: add set of dedicated unit tests [[#556](https://github.com/WordPress/Requests/pull/556)]
-- Response\Headers: improve tests [[#555](https://github.com/WordPress/Requests/pull/555)]
-- Exception\Transport\Curl: add perfunctory unit tests [[#554](https://github.com/WordPress/Requests/pull/554)]
-- Exception\Http: add perfunctory unit tests [[#553](https://github.com/WordPress/Requests/pull/553)]
-- Exception\Http\StatusUnknown: add perfunctory unit tests [[#552](https://github.com/WordPress/Requests/pull/552)]
-- Ssl: improve tests [[#551](https://github.com/WordPress/Requests/pull/551)]
-- FilteredIteratorTest: improve tests [[#550](https://github.com/WordPress/Requests/pull/550)]
-- IdnaEncoderTest: improve tests [[#549](https://github.com/WordPress/Requests/pull/549)]
-- Tests: move Mock classes to Fixtures directory [[#548](https://github.com/WordPress/Requests/pull/548)]
-- Introduce new WpOrg\Requests\Utility\InputValidator class [[#547](https://github.com/WordPress/Requests/pull/547)]
-- GH Actions: add GH Pages update workflow [[#545](https://github.com/WordPress/Requests/pull/545)]
-- GH Pages: updates for the new automated site generation workflow [[#544](https://github.com/WordPress/Requests/pull/544)]
-- Various minor docs fixes [[#543](https://github.com/WordPress/Requests/pull/543)]
-- InvalidArgument: add new `create()` method [[#542](https://github.com/WordPress/Requests/pull/542)]
-- Requests: set default transports as a constant [[#541](https://github.com/WordPress/Requests/pull/541)]
-- Issue templates: fix broken emojis [[#540](https://github.com/WordPress/Requests/pull/540)]
-- Requests: set default options as a constant [[#539](https://github.com/WordPress/Requests/pull/539)]
-- Introduce WpOrg\Requests\Port class [[#538](https://github.com/WordPress/Requests/pull/538)]
-- Curl: use Curl extension error constants [[#537](https://github.com/WordPress/Requests/pull/537)]
-- IdnaEncoder: set maximum length as a constant [[#536](https://github.com/WordPress/Requests/pull/536)]
-- Requests: set default certificate path as a constant [[#535](https://github.com/WordPress/Requests/pull/535)]
-- Declare classes as final whenever possible [[#534](https://github.com/WordPress/Requests/pull/534)]
-- Documentation: review of the `@see` tags [[#532](https://github.com/WordPress/Requests/pull/532)]
-- CS/QA: fix structure order within classes [[#531](https://github.com/WordPress/Requests/pull/531)]
-- GH Pages: add QA workflow [[#528](https://github.com/WordPress/Requests/pull/528)]
-- README: add note about the Slack channel [[#526](https://github.com/WordPress/Requests/pull/526)]
-- QA/Hooks: remove superfluous constructor [[#525](https://github.com/WordPress/Requests/pull/525)]
-- Add pull request template [[#524](https://github.com/WordPress/Requests/pull/524)]
-- Release checklist: add extra check [[#523](https://github.com/WordPress/Requests/pull/523)]
-- Add issue templates [[#522](https://github.com/WordPress/Requests/pull/522)]
-- FsockopenTest: add regression test for HTTP string [[#521](https://github.com/WordPress/Requests/pull/521)]
-- FsockopenTest: add regression test for HTTP string [[#520](https://github.com/WordPress/Requests/pull/520)]
-- Requests 2.0.0: introduce namespaces [[#519](https://github.com/WordPress/Requests/pull/519)]
-- Composer: update version constraints [[#517](https://github.com/WordPress/Requests/pull/517)]
-- Add Roave security advisories for dev dependencies [[#516](https://github.com/WordPress/Requests/pull/516)]
-- QA: tweak code coverage configuration [[#511](https://github.com/WordPress/Requests/pull/511)]
-- Clean up: remove previously deprecated methods [[#510](https://github.com/WordPress/Requests/pull/510)]
-- Drop support for HHVM [[#509](https://github.com/WordPress/Requests/pull/509)]
-- Tests: only use our own autoloader when testing via a PHAR [[#508](https://github.com/WordPress/Requests/pull/508)]
-- Modernize: use the magic ::class constant [[#506](https://github.com/WordPress/Requests/pull/506)]
-- PHP 8.1: fix deprecation warnings [[#505](https://github.com/WordPress/Requests/pull/505)]
-- Modernize: use magic __DIR__ constant in lib code and example code [[#504](https://github.com/WordPress/Requests/pull/504)]
-- Tests: introduce namespaces [[#503](https://github.com/WordPress/Requests/pull/503)]
-- GH Actions: run tests against PHP 8.1 [[#501](https://github.com/WordPress/Requests/pull/501)]
-- PHP 8.1: fix deprecation notices in `Requests_Transport_cURL` [[#500](https://github.com/WordPress/Requests/pull/500)]
-- PHP 8.1: improve input validation for `Requests_Transport_(fsockopen|cURL)` [[#499](https://github.com/WordPress/Requests/pull/499)]
-- max_bytes not respected in a performant manner [[#494](https://github.com/WordPress/Requests/pull/494)]
-- Add Requests::has_capability() which can be used to determine if SSL is available. [[#492](https://github.com/WordPress/Requests/pull/492)]
-- Add .editorconfig file [[#491](https://github.com/WordPress/Requests/pull/491)]
-- Update all branch references [[#490](https://github.com/WordPress/Requests/pull/490)]
-- Documentation: link review [[#489](https://github.com/WordPress/Requests/pull/489)]
-- Composer: enhance information [[#488](https://github.com/WordPress/Requests/pull/488)]
-- Drop support for PHP < 5.6 & PEAR [[#470](https://github.com/WordPress/Requests/pull/470)]
-- Replace Travis CI with GitHub Actions workflows [[#447](https://github.com/WordPress/Requests/pull/447)]
-- Replace PHPUnit 6+ compat code with Yoast PHPUnit polyfills package [[#446](https://github.com/WordPress/Requests/pull/446)]
-- Removed CURLOPT_REFERER [[#444](https://github.com/WordPress/Requests/pull/444)]
-- Throw exception if invalid filename is provided [[#379](https://github.com/WordPress/Requests/pull/379)]
-- Prevent cURL transport from leaking on Exception [[#319](https://github.com/WordPress/Requests/pull/319)]
-- Add support for various deflate compression levels [[#309](https://github.com/WordPress/Requests/pull/309)]
-- Add `Requests::has_capability()` which can be used to determine if SSL is available. [[#251](https://github.com/WordPress/Requests/pull/251)]
-- Closes #167 - Add json() for json responses [[#214](https://github.com/WordPress/Requests/pull/214)]
+- CS: use short arrays [#623][gh-623]
+- Update docs to provide context about CA list fallback [#622][gh-622]
+- Requests: add input validation [#621][gh-621]
+- Session: add input validation [#620][gh-620]
+- CS/Docs: various minor fixes [#618][gh-618]
+- Requests: remove duplicate `match_domain()` method [#617][gh-617]
+- Requests::request(): use Capability constant [#616][gh-616]
+- Ssl: safeguard support for Stringable objects [#615][gh-615]
+- IdnaEncoder + Ipv6: minor tweaks for Stringable support [#614][gh-614]
+- Iri::__construct(): allow `$iri` to be stringable [#613][gh-613]
+- Session: rename magic method parameters [#612][gh-612]
+- Proxy\Http::__construct(): add input validation [#611][gh-611]
+- Cookie\Jar: add input validation [#610][gh-610]
+- Cookie: add input validation [#609][gh-609]
+- Fix reports by PHPStan [#608][gh-608]
+- Docblocks: update all `@package` tags [#606][gh-606]
+- Response\Headers: add input validation + more defensive coding [#605][gh-605]
+- Class FilteredIterator: add input validation [#604][gh-604]
+- Class Response: improve input handling [#603][gh-603]
+- Class Iri: add input validation [#602][gh-602]
+- Class Ipv6: add input validation [#601][gh-601]
+- PHP 8.0 | Hooks::dispatch(): prevent potential fatal error [#599][gh-599]
+- DecompressionTest: improve tests [#595][gh-595]
+- Autoload: treat PSR-4 case-sensitively and PSR-0 case-insensitively [#594][gh-594]
+- IdnaEncoder::encode(): add input validation [#592][gh-592]
+- Ssl::verify_reference_name(): add more defensive coding [#591][gh-591]
+- Release checklist: minor tweaks [#588][gh-588]
+- Rename interface Hooker => HookManager [#587][gh-587]
+- BC-layer: fix fatal "can not inherit from final class" errors [#586][gh-586]
+- GH Actions: more website update workflow tweaks [#583][gh-583]
+- ChunkedEncodingTest: improve tests [#581][gh-581]
+- GH Actions: improve auto-cancelling of outdated builds [#579][gh-579]
+- Fix the DocBlock for `offsetGet()`. [#578][gh-578]
+- update cacert to the latest version [#577][gh-577]
+- GH Actions: auto-cancel previous builds for same branch [#575][gh-575]
+- Auth\Basic: add input validation to constructor [#574][gh-574]
+- Hooks: add input validation to all methods [#573][gh-573]
+- Ssl: add input validation to all methods [#572][gh-572]
+- Remove expired DST Root CA X3 from bundled cacert.pem [#571][gh-571]
+- GH Actions: minor simplification to website gen workflow [#569][gh-569]
+- PHPUnit: update configuration [#566][gh-566]
+- GH Actions/update website: minor tweak [#563][gh-563]
+- GH Pages/prose docs: improve title consistency [#562][gh-562]
+- QA/PHP 8.0 | Don't use reserved keywords as param names [#561][gh-561]
+- PHP 8.0: ensure parameter names are aligned with PHP native param names [#560][gh-560]
+- Response: add `decode_body()` method [#559][gh-559]
+- Utility\CaseInsensitiveDictionary: add dedicated unit tests + minor bug fix [#558][gh-558]
+- Auth\Basic: improve tests [#557][gh-557]
+- Hooks: add set of dedicated unit tests [#556][gh-556]
+- Response\Headers: improve tests [#555][gh-555]
+- Exception\Transport\Curl: add perfunctory unit tests [#554][gh-554]
+- Exception\Http: add perfunctory unit tests [#553][gh-553]
+- Exception\Http\StatusUnknown: add perfunctory unit tests [#552][gh-552]
+- Ssl: improve tests [#551][gh-551]
+- FilteredIteratorTest: improve tests [#550][gh-550]
+- IdnaEncoderTest: improve tests [#549][gh-549]
+- Tests: move Mock classes to Fixtures directory [#548][gh-548]
+- Introduce new WpOrg\Requests\Utility\InputValidator class [#547][gh-547]
+- GH Actions: add GH Pages update workflow [#545][gh-545]
+- GH Pages: updates for the new automated site generation workflow [#544][gh-544]
+- Various minor docs fixes [#543][gh-543]
+- InvalidArgument: add new `create()` method [#542][gh-542]
+- Requests: set default transports as a constant [#541][gh-541]
+- Issue templates: fix broken emojis [#540][gh-540]
+- Requests: set default options as a constant [#539][gh-539]
+- Introduce WpOrg\Requests\Port class [#538][gh-538]
+- Curl: use Curl extension error constants [#537][gh-537]
+- IdnaEncoder: set maximum length as a constant [#536][gh-536]
+- Requests: set default certificate path as a constant [#535][gh-535]
+- Declare classes as final whenever possible [#534][gh-534]
+- Documentation: review of the `@see` tags [#532][gh-532]
+- CS/QA: fix structure order within classes [#531][gh-531]
+- GH Pages: add QA workflow [#528][gh-528]
+- README: add note about the Slack channel [#526][gh-526]
+- QA/Hooks: remove superfluous constructor [#525][gh-525]
+- Add pull request template [#524][gh-524]
+- Release checklist: add extra check [#523][gh-523]
+- Add issue templates [#522][gh-522]
+- FsockopenTest: add regression test for HTTP string [#521][gh-521]
+- FsockopenTest: add regression test for HTTP string [#520][gh-520]
+- Requests 2.0.0: introduce namespaces [#519][gh-519]
+- Composer: update version constraints [#517][gh-517]
+- Add Roave security advisories for dev dependencies [#516][gh-516]
+- QA: tweak code coverage configuration [#511][gh-511]
+- Clean up: remove previously deprecated methods [#510][gh-510]
+- Drop support for HHVM [#509][gh-509]
+- Tests: only use our own autoloader when testing via a PHAR [#508][gh-508]
+- Modernize: use the magic ::class constant [#506][gh-506]
+- PHP 8.1: fix deprecation warnings [#505][gh-505]
+- Modernize: use magic __DIR__ constant in lib code and example code [#504][gh-504]
+- Tests: introduce namespaces [#503][gh-503]
+- GH Actions: run tests against PHP 8.1 [#501][gh-501]
+- PHP 8.1: fix deprecation notices in `Requests_Transport_cURL` [#500][gh-500]
+- PHP 8.1: improve input validation for `Requests_Transport_(fsockopen|cURL)` [#499][gh-499]
+- max_bytes not respected in a performant manner [#494][gh-494]
+- Add Requests::has_capability() which can be used to determine if SSL is available. [#492][gh-492]
+- Add .editorconfig file [#491][gh-491]
+- Update all branch references [#490][gh-490]
+- Documentation: link review [#489][gh-489]
+- Composer: enhance information [#488][gh-488]
+- Drop support for PHP < 5.6 & PEAR [#470][gh-470]
+- Replace Travis CI with GitHub Actions workflows [#447][gh-447]
+- Replace PHPUnit 6+ compat code with Yoast PHPUnit polyfills package [#446][gh-446]
+- Removed CURLOPT_REFERER [#444][gh-444]
+- Throw exception if invalid filename is provided [#379][gh-379]
+- Prevent cURL transport from leaking on Exception [#319][gh-319]
+- Add support for various deflate compression levels [#309][gh-309]
+- Add `Requests::has_capability()` which can be used to determine if SSL is available. [#251][gh-251]
+- Closes #167 - Add json() for json responses [#214][gh-214]
+
+[gh-623]: https://github.com/WordPress/Requests/pull/623
+[gh-622]: https://github.com/WordPress/Requests/pull/622
+[gh-621]: https://github.com/WordPress/Requests/pull/621
+[gh-620]: https://github.com/WordPress/Requests/pull/620
+[gh-618]: https://github.com/WordPress/Requests/pull/618
+[gh-617]: https://github.com/WordPress/Requests/pull/617
+[gh-616]: https://github.com/WordPress/Requests/pull/616
+[gh-615]: https://github.com/WordPress/Requests/pull/615
+[gh-614]: https://github.com/WordPress/Requests/pull/614
+[gh-613]: https://github.com/WordPress/Requests/pull/613
+[gh-612]: https://github.com/WordPress/Requests/pull/612
+[gh-611]: https://github.com/WordPress/Requests/pull/611
+[gh-610]: https://github.com/WordPress/Requests/pull/610
+[gh-609]: https://github.com/WordPress/Requests/pull/609
+[gh-608]: https://github.com/WordPress/Requests/pull/608
+[gh-606]: https://github.com/WordPress/Requests/pull/606
+[gh-605]: https://github.com/WordPress/Requests/pull/605
+[gh-604]: https://github.com/WordPress/Requests/pull/604
+[gh-603]: https://github.com/WordPress/Requests/pull/603
+[gh-602]: https://github.com/WordPress/Requests/pull/602
+[gh-601]: https://github.com/WordPress/Requests/pull/601
+[gh-599]: https://github.com/WordPress/Requests/pull/599
+[gh-595]: https://github.com/WordPress/Requests/pull/595
+[gh-594]: https://github.com/WordPress/Requests/pull/594
+[gh-592]: https://github.com/WordPress/Requests/pull/592
+[gh-591]: https://github.com/WordPress/Requests/pull/591
+[gh-588]: https://github.com/WordPress/Requests/pull/588
+[gh-587]: https://github.com/WordPress/Requests/pull/587
+[gh-586]: https://github.com/WordPress/Requests/pull/586
+[gh-583]: https://github.com/WordPress/Requests/pull/583
+[gh-581]: https://github.com/WordPress/Requests/pull/581
+[gh-579]: https://github.com/WordPress/Requests/pull/579
+[gh-578]: https://github.com/WordPress/Requests/pull/578
+[gh-577]: https://github.com/WordPress/Requests/pull/577
+[gh-575]: https://github.com/WordPress/Requests/pull/575
+[gh-574]: https://github.com/WordPress/Requests/pull/574
+[gh-573]: https://github.com/WordPress/Requests/pull/573
+[gh-572]: https://github.com/WordPress/Requests/pull/572
+[gh-571]: https://github.com/WordPress/Requests/pull/571
+[gh-569]: https://github.com/WordPress/Requests/pull/569
+[gh-566]: https://github.com/WordPress/Requests/pull/566
+[gh-563]: https://github.com/WordPress/Requests/pull/563
+[gh-562]: https://github.com/WordPress/Requests/pull/562
+[gh-561]: https://github.com/WordPress/Requests/pull/561
+[gh-560]: https://github.com/WordPress/Requests/pull/560
+[gh-559]: https://github.com/WordPress/Requests/pull/559
+[gh-558]: https://github.com/WordPress/Requests/pull/558
+[gh-557]: https://github.com/WordPress/Requests/pull/557
+[gh-556]: https://github.com/WordPress/Requests/pull/556
+[gh-555]: https://github.com/WordPress/Requests/pull/555
+[gh-554]: https://github.com/WordPress/Requests/pull/554
+[gh-553]: https://github.com/WordPress/Requests/pull/553
+[gh-552]: https://github.com/WordPress/Requests/pull/552
+[gh-551]: https://github.com/WordPress/Requests/pull/551
+[gh-550]: https://github.com/WordPress/Requests/pull/550
+[gh-549]: https://github.com/WordPress/Requests/pull/549
+[gh-548]: https://github.com/WordPress/Requests/pull/548
+[gh-547]: https://github.com/WordPress/Requests/pull/547
+[gh-545]: https://github.com/WordPress/Requests/pull/545
+[gh-544]: https://github.com/WordPress/Requests/pull/544
+[gh-543]: https://github.com/WordPress/Requests/pull/543
+[gh-542]: https://github.com/WordPress/Requests/pull/542
+[gh-541]: https://github.com/WordPress/Requests/pull/541
+[gh-540]: https://github.com/WordPress/Requests/pull/540
+[gh-539]: https://github.com/WordPress/Requests/pull/539
+[gh-538]: https://github.com/WordPress/Requests/pull/538
+[gh-537]: https://github.com/WordPress/Requests/pull/537
+[gh-536]: https://github.com/WordPress/Requests/pull/536
+[gh-535]: https://github.com/WordPress/Requests/pull/535
+[gh-534]: https://github.com/WordPress/Requests/pull/534
+[gh-532]: https://github.com/WordPress/Requests/pull/532
+[gh-531]: https://github.com/WordPress/Requests/pull/531
+[gh-528]: https://github.com/WordPress/Requests/pull/528
+[gh-526]: https://github.com/WordPress/Requests/pull/526
+[gh-525]: https://github.com/WordPress/Requests/pull/525
+[gh-524]: https://github.com/WordPress/Requests/pull/524
+[gh-523]: https://github.com/WordPress/Requests/pull/523
+[gh-522]: https://github.com/WordPress/Requests/pull/522
+[gh-521]: https://github.com/WordPress/Requests/pull/521
+[gh-520]: https://github.com/WordPress/Requests/pull/520
+[gh-519]: https://github.com/WordPress/Requests/pull/519
+[gh-517]: https://github.com/WordPress/Requests/pull/517
+[gh-516]: https://github.com/WordPress/Requests/pull/516
+[gh-511]: https://github.com/WordPress/Requests/pull/511
+[gh-510]: https://github.com/WordPress/Requests/pull/510
+[gh-509]: https://github.com/WordPress/Requests/pull/509
+[gh-508]: https://github.com/WordPress/Requests/pull/508
+[gh-506]: https://github.com/WordPress/Requests/pull/506
+[gh-505]: https://github.com/WordPress/Requests/pull/505
+[gh-504]: https://github.com/WordPress/Requests/pull/504
+[gh-503]: https://github.com/WordPress/Requests/pull/503
+[gh-501]: https://github.com/WordPress/Requests/pull/501
+[gh-500]: https://github.com/WordPress/Requests/pull/500
+[gh-499]: https://github.com/WordPress/Requests/pull/499
+[gh-494]: https://github.com/WordPress/Requests/pull/494
+[gh-492]: https://github.com/WordPress/Requests/pull/492
+[gh-491]: https://github.com/WordPress/Requests/pull/491
+[gh-490]: https://github.com/WordPress/Requests/pull/490
+[gh-489]: https://github.com/WordPress/Requests/pull/489
+[gh-488]: https://github.com/WordPress/Requests/pull/488
+[gh-470]: https://github.com/WordPress/Requests/pull/470
+[gh-447]: https://github.com/WordPress/Requests/pull/447
+[gh-446]: https://github.com/WordPress/Requests/pull/446
+[gh-444]: https://github.com/WordPress/Requests/pull/444
+[gh-379]: https://github.com/WordPress/Requests/pull/379
+[gh-319]: https://github.com/WordPress/Requests/pull/319
+[gh-309]: https://github.com/WordPress/Requests/pull/309
+[gh-251]: https://github.com/WordPress/Requests/pull/251
+[gh-214]: https://github.com/WordPress/Requests/pull/214
 
 Current open wordpress/requests milestone: 2.0.0
-- Contributors: 10
-- Pull requests: 94
-  Total contributors: 10
-  Total pull requests: 94
-  [@ccrims0n](https://github.com/ccrims0n), [@costdev](https://github.com/costdev), [@datagutten](https://github.com/datagutten), [@dd32](https://github.com/dd32), [@jrfnl](https://github.com/jrfnl), [@schlessera](https://github.com/schlessera), [@soulseekah](https://github.com/soulseekah), [@twdnhfr](https://github.com/twdnhfr), [@wojsmol](https://github.com/wojsmol), [@ZsgsDesign](https://github.com/ZsgsDesign)
+- Contributors: 11
+- Pull requests: 109
+  Total contributors: 11
+  Total pull requests: 109
+  [@ccrims0n][gh-ccrims0n], [@costdev][gh-costdev], [@datagutten][gh-datagutten], [@dd32][gh-dd32], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [@soulseekah][gh-soulseekah], [@szepeviktor][gh-szepeviktor], [@twdnhfr][gh-twdnhfr], [@wojsmol][gh-wojsmol], [@ZsgsDesign][gh-ZsgsDesign]
 
 1.8.1
 -----
@@ -687,6 +812,8 @@ Initial release!
 [gh-beutnagel]: https://github.com/beutnagel
 [gh-carlalexander]: https://github.com/carlalexander
 [gh-catharsisjelly]: https://github.com/catharsisjelly
+[gh-ccrims0n]: https://github.com/ccrims0n
+[gh-costdev]: https://github.com/costdev
 [gh-datagutten]: https://github.com/datagutten
 [gh-dd32]: https://github.com/dd32
 [gh-desrosj]: https://github.com/desrosj
@@ -716,11 +843,15 @@ Initial release!
 [gh-soulseekah]: https://github.com/soulseekah
 [gh-staabm]: https://github.com/staabm
 [gh-stephenharris]: https://github.com/stephenharris
+[gh-szepeviktor]: https://github.com/szepeviktor
 [gh-TimothyBJacobs]: https://github.com/TimothyBJacobs
 [gh-tnorthcutt]: https://github.com/tnorthcutt
 [gh-todeveni]: https://github.com/todeveni
 [gh-tonebender]: https://github.com/tonebender
+[gh-twdnhfr]: https://github.com/twdnhfr
 [gh-TysonAndre]: https://github.com/TysonAndre
 [gh-whyisjake]: https://github.com/whyisjake
+[gh-wojsmol]: https://github.com/wojsmol
 [gh-xknown]: https://github.com/xknown
 [gh-Zegnat]: https://github.com/Zegnat
+[gh-ZsgsDesign]: https://github.com/ZsgsDesign
