@@ -139,7 +139,7 @@ final class Curl implements Transport {
 	 * @throws \WpOrg\Requests\InvalidArgument When the $data parameter is not an array or string.
 	 * @throws \WpOrg\Requests\Exception       On a cURL error (`curlerror`)
 	 */
-	public function request($url, $headers = array(), $data = array(), $options = array()) {
+	public function request($url, $headers = [], $data = [], $options = []) {
 		if (!is_array($data) && !is_string($data)) {
 			if ($data === null) {
 				$data = '';
@@ -154,7 +154,7 @@ final class Curl implements Transport {
 
 		$this->setup_handle($url, $headers, $data, $options);
 
-		$options['hooks']->dispatch('curl.before_send', array(&$this->handle));
+		$options['hooks']->dispatch('curl.before_send', [&$this->handle]);
 
 		if ($options['filename'] !== false) {
 			// phpcs:ignore WordPress.PHP.NoSilencedErrors -- Silenced the PHP native warning in favour of throwing an exception.
@@ -189,7 +189,7 @@ final class Curl implements Transport {
 		curl_exec($this->handle);
 		$response = $this->response_data;
 
-		$options['hooks']->dispatch('curl.after_send', array());
+		$options['hooks']->dispatch('curl.after_send', []);
 
 		if (curl_errno($this->handle) === CURLE_WRITE_ERROR || curl_errno($this->handle) === CURLE_BAD_CONTENT_ENCODING) {
 			// Reset encoding and try again
@@ -221,26 +221,26 @@ final class Curl implements Transport {
 	public function request_multiple($requests, $options) {
 		// If you're not requesting, we can't get any responses ¯\_(ツ)_/¯
 		if (empty($requests)) {
-			return array();
+			return [];
 		}
 
 		$multihandle = curl_multi_init();
-		$subrequests = array();
-		$subhandles  = array();
+		$subrequests = [];
+		$subhandles  = [];
 
 		$class = get_class($this);
 		foreach ($requests as $id => $request) {
 			$subrequests[$id] = new $class();
 			$subhandles[$id]  = $subrequests[$id]->get_subrequest_handle($request['url'], $request['headers'], $request['data'], $request['options']);
-			$request['options']['hooks']->dispatch('curl.before_multi_add', array(&$subhandles[$id]));
+			$request['options']['hooks']->dispatch('curl.before_multi_add', [&$subhandles[$id]]);
 			curl_multi_add_handle($multihandle, $subhandles[$id]);
 		}
 
 		$completed       = 0;
-		$responses       = array();
+		$responses       = [];
 		$subrequestcount = count($subrequests);
 
-		$request['options']['hooks']->dispatch('curl.before_multi_exec', array(&$multihandle));
+		$request['options']['hooks']->dispatch('curl.before_multi_exec', [&$multihandle]);
 
 		do {
 			$active = 0;
@@ -250,7 +250,7 @@ final class Curl implements Transport {
 			}
 			while ($status === CURLM_CALL_MULTI_PERFORM);
 
-			$to_process = array();
+			$to_process = [];
 
 			// Read the information as needed
 			while ($done = curl_multi_info_read($multihandle)) {
@@ -273,26 +273,26 @@ final class Curl implements Transport {
 						$done['result']
 					);
 					$responses[$key] = $exception;
-					$options['hooks']->dispatch('transport.internal.parse_error', array(&$responses[$key], $requests[$key]));
+					$options['hooks']->dispatch('transport.internal.parse_error', [&$responses[$key], $requests[$key]]);
 				}
 				else {
 					$responses[$key] = $subrequests[$key]->process_response($subrequests[$key]->response_data, $options);
 
-					$options['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$key], $requests[$key]));
+					$options['hooks']->dispatch('transport.internal.parse_response', [&$responses[$key], $requests[$key]]);
 				}
 
 				curl_multi_remove_handle($multihandle, $done['handle']);
 				curl_close($done['handle']);
 
 				if (!is_string($responses[$key])) {
-					$options['hooks']->dispatch('multiple.request.complete', array(&$responses[$key], $key));
+					$options['hooks']->dispatch('multiple.request.complete', [&$responses[$key], $key]);
 				}
 				$completed++;
 			}
 		}
 		while ($active || $completed < $subrequestcount);
 
-		$request['options']['hooks']->dispatch('curl.after_multi_exec', array(&$multihandle));
+		$request['options']['hooks']->dispatch('curl.after_multi_exec', [&$multihandle]);
 
 		curl_multi_close($multihandle);
 
@@ -335,7 +335,7 @@ final class Curl implements Transport {
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 */
 	private function setup_handle($url, $headers, $data, $options) {
-		$options['hooks']->dispatch('curl.before_request', array(&$this->handle));
+		$options['hooks']->dispatch('curl.before_request', [&$this->handle]);
 
 		// Force closing the connection for old versions of cURL (<7.22).
 		if (!isset($headers['Connection'])) {
@@ -430,8 +430,8 @@ final class Curl implements Transport {
 		}
 
 		if ($options['blocking'] === true) {
-			curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, array($this, 'stream_headers'));
-			curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, array($this, 'stream_body'));
+			curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, [$this, 'stream_headers']);
+			curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, [$this, 'stream_body']);
 			curl_setopt($this->handle, CURLOPT_BUFFERSIZE, Requests::BUFFER_SIZE);
 		}
 	}
@@ -447,7 +447,7 @@ final class Curl implements Transport {
 	public function process_response($response, $options) {
 		if ($options['blocking'] === false) {
 			$fake_headers = '';
-			$options['hooks']->dispatch('curl.after_request', array(&$fake_headers));
+			$options['hooks']->dispatch('curl.after_request', [&$fake_headers]);
 			return false;
 		}
 		if ($options['filename'] !== false && $this->stream_handle) {
@@ -468,7 +468,7 @@ final class Curl implements Transport {
 		}
 		$this->info = curl_getinfo($this->handle);
 
-		$options['hooks']->dispatch('curl.after_request', array(&$this->headers, &$this->info));
+		$options['hooks']->dispatch('curl.after_request', [&$this->headers, &$this->info]);
 		return $this->headers;
 	}
 
@@ -505,7 +505,7 @@ final class Curl implements Transport {
 	 * @return integer Length of provided data
 	 */
 	public function stream_body($handle, $data) {
-		$this->hooks->dispatch('request.progress', array($data, $this->response_bytes, $this->response_byte_limit));
+		$this->hooks->dispatch('request.progress', [$data, $this->response_bytes, $this->response_byte_limit]);
 		$data_length = strlen($data);
 
 		// Are we limiting the response size?
@@ -573,7 +573,7 @@ final class Curl implements Transport {
 	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
 	 * @return bool Whether the transport can be used.
 	 */
-	public static function test($capabilities = array()) {
+	public static function test($capabilities = []) {
 		if (!function_exists('curl_init') || !function_exists('curl_exec')) {
 			return false;
 		}

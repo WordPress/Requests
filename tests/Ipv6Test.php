@@ -65,10 +65,10 @@ final class Ipv6Test extends TestCase {
 	 * @return array
 	 */
 	public function dataValidInputType() {
-		return array(
-			'string'     => array('::1'),
-			'stringable' => array(new StringableObject('0:1234:dc0:41:216:3eff:fe67:3e01')),
-		);
+		return [
+			'string'     => ['::1'],
+			'stringable' => [new StringableObject('0:1234:dc0:41:216:3eff:fe67:3e01')],
+		];
 	}
 
 	/**
@@ -128,11 +128,11 @@ final class Ipv6Test extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidInputType() {
-		return array(
-			'null'          => array(null),
-			'boolean false' => array(false),
-			'integer'       => array(12345),
-			'array'         => array(array(1, 2, 3)),
-		);
+		return [
+			'null'          => [null],
+			'boolean false' => [false],
+			'integer'       => [12345],
+			'array'         => [[1, 2, 3]],
+		];
 	}
 }

@@ -32,20 +32,20 @@ final class PortTest extends TestCase {
 	 * @return array
 	 */
 	public function dataGetPort() {
-		return array(
-			'lowercase type' => array(
+		return [
+			'lowercase type' => [
 				'input'    => 'https',
 				'expected' => Port::HTTPS,
-			),
-			'mixed type' => array(
+			],
+			'mixed type' => [
 				'input'    => 'Dict',
 				'expected' => Port::DICT,
-			),
-			'uppercase type' => array(
+			],
+			'uppercase type' => [
 				'input'    => 'ACAP',
 				'expected' => Port::ACAP,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -70,10 +70,10 @@ final class PortTest extends TestCase {
 	 * @return array
 	 */
 	public function dataGetPortThrowsExceptionOnInvalidInputType() {
-		return array(
-			'null'                => array(null),
-			'integer port number' => array(443),
-		);
+		return [
+			'null'                => [null],
+			'integer port number' => [443],
+		];
 	}
 
 	/**
@@ -98,9 +98,9 @@ final class PortTest extends TestCase {
 	 * @return array
 	 */
 	public function dataGetPortThrowsExceptionOnUnsupportedPortType() {
-		return array(
-			'type not supported' => array('FTP'),
-			'empty string'       => array(''),
-		);
+		return [
+			'type not supported' => ['FTP'],
+			'empty string'       => [''],
+		];
 	}
 }

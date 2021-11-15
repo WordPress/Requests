@@ -101,6 +101,9 @@
 			 Universal.ControlStructures.IfElseDeclaration sniff from PHPCSExtra. -->
 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
 
+		<!-- WPCS demands long arrays. We'll be using short arrays from now on. -->
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+
 		<!-- Ignore WP specific sniffs as Requests is also used outside of a WP context. -->
 		<exclude name="WordPress.WP"/>
 		<exclude name="WordPress.DateTime"/>
@@ -162,6 +165,11 @@
 		 Disallow Yoda conditions.
 		 ========================================================================== -->
 	<rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
+	<!-- ==========================================================================
+		 Enforce short arrays.
+		 ========================================================================== -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 
 
 	<!--

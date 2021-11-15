@@ -24,11 +24,11 @@ final class BasicTest extends TestCase {
 	public function testUsingArray($transport) {
 		$this->skipWhenTransportNotAvailable($transport);
 
-		$options = array(
-			'auth'      => array('user', 'passwd'),
+		$options = [
+			'auth'      => ['user', 'passwd'],
 			'transport' => $transport,
-		);
-		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
+		];
+		$request = Requests::get(httpbin('/basic-auth/user/passwd'), [], $options);
 
 		// Verify the request succeeded.
 		$this->assertInstanceOf(
@@ -71,11 +71,11 @@ final class BasicTest extends TestCase {
 	public function testUsingInstantiation($transport) {
 		$this->skipWhenTransportNotAvailable($transport);
 
-		$options = array(
-			'auth'      => new Basic(array('user', 'passwd')),
+		$options = [
+			'auth'      => new Basic(['user', 'passwd']),
 			'transport' => $transport,
-		);
-		$request = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
+		];
+		$request = Requests::get(httpbin('/basic-auth/user/passwd'), [], $options);
 
 		// Verify the request succeeded.
 		$this->assertInstanceOf(
@@ -118,14 +118,14 @@ final class BasicTest extends TestCase {
 	public function testUsingInstantiationWithDelayedSettingOfCredentials($transport) {
 		$this->skipWhenTransportNotAvailable($transport);
 
-		$options = array(
+		$options = [
 			'auth'      => new Basic(),
 			'transport' => $transport,
-		);
+		];
 
 		$options['auth']->user = 'user';
 		$options['auth']->pass = 'passwd';
-		$request               = Requests::get(httpbin('/basic-auth/user/passwd'), array(), $options);
+		$request               = Requests::get(httpbin('/basic-auth/user/passwd'), [], $options);
 
 		// Verify the request succeeded.
 		$this->assertInstanceOf(
@@ -168,12 +168,12 @@ final class BasicTest extends TestCase {
 	public function testPOSTUsingInstantiation($transport) {
 		$this->skipWhenTransportNotAvailable($transport);
 
-		$options = array(
-			'auth'      => new Basic(array('user', 'passwd')),
+		$options = [
+			'auth'      => new Basic(['user', 'passwd']),
 			'transport' => $transport,
-		);
+		];
 		$data    = 'test';
-		$request = Requests::post(httpbin('/post'), array(), $data, $options);
+		$request = Requests::post(httpbin('/post'), [], $data, $options);
 
 		// Verify the request succeeded.
 		$this->assertInstanceOf(
@@ -237,10 +237,10 @@ final class BasicTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidInputType() {
-		return array(
-			'boolean false'         => array(false),
-			'authentication string' => array('user:psw'),
-		);
+		return [
+			'boolean false'         => [false],
+			'authentication string' => ['user:psw'],
+		];
 	}
 
 	/**
@@ -265,11 +265,11 @@ final class BasicTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidArgumentCount() {
-		return array(
-			'empty array'                 => array(array()),
-			'array with only one element' => array(array('user')),
-			'array with extra element'    => array(array('user', 'psw', 'port')),
-		);
+		return [
+			'empty array'                 => [[]],
+			'array with only one element' => [['user']],
+			'array with extra element'    => [['user', 'psw', 'port']],
+		];
 	}
 
 	/**

@@ -55,20 +55,20 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return array
 	 */
 	public function dataSerializeDeserializeObjects() {
-		return array(
-			'FilteredIterator object with one value, callback: md5' => array(
-				'value' => new FilteredIterator(array(1), 'md5'),
-			),
-			'FilteredIterator object with two values, callback: sha1' => array(
-				'value' => new FilteredIterator(array(1, 2), 'sha1'),
-			),
-			'FilteredIterator object with three values, non-existent callback' => array(
-				'value' => new FilteredIterator(array(1, 2, 3), 'doesnotexist'),
-			),
-			'ArrayIterator object with three values, no callback' => array(
-				'value' => new ArrayIterator(array(1, 2, 3)),
-			),
-		);
+		return [
+			'FilteredIterator object with one value, callback: md5' => [
+				'value' => new FilteredIterator([1], 'md5'),
+			],
+			'FilteredIterator object with two values, callback: sha1' => [
+				'value' => new FilteredIterator([1, 2], 'sha1'),
+			],
+			'FilteredIterator object with three values, non-existent callback' => [
+				'value' => new FilteredIterator([1, 2, 3], 'doesnotexist'),
+			],
+			'ArrayIterator object with three values, no callback' => [
+				'value' => new ArrayIterator([1, 2, 3]),
+			],
+		];
 	}
 
 	/**
@@ -92,10 +92,10 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorValidData() {
-		return array(
-			'array'           => array(array(1, 2, 3)),
-			'iterable object' => array(new ArrayIterator(array(1, 2, 3))),
-		);
+		return [
+			'array'           => [[1, 2, 3]],
+			'iterable object' => [new ArrayIterator([1, 2, 3])],
+		];
 	}
 
 	/**
@@ -122,11 +122,11 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorInvalidData() {
-		return array(
-			'null'              => array(null),
-			'float'             => array(1.1),
-			'stringable object' => array(new StringableObject('value')),
-		);
+		return [
+			'null'              => [null],
+			'float'             => [1.1],
+			'stringable object' => [new StringableObject('value')],
+		];
 	}
 
 	/**
@@ -141,7 +141,7 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return void
 	 */
 	public function testConstructorValidCallback($input) {
-		$obj = new FilteredIterator(array(), $input);
+		$obj = new FilteredIterator([], $input);
 
 		$reflection = new ReflectionObject($obj);
 		$property   = $reflection->getProperty('callback');
@@ -158,10 +158,10 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorValidCallback() {
-		return array(
-			'existing PHP native function' => array('strtolower'),
-			'dummy callback method'        => array(array($this, 'dummyCallback')),
-		);
+		return [
+			'existing PHP native function' => ['strtolower'],
+			'dummy callback method'        => [[$this, 'dummyCallback']],
+		];
 	}
 
 	/**
@@ -176,7 +176,7 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return void
 	 */
 	public function testConstructorInvalidCallback($input) {
-		$obj = new FilteredIterator(array(), $input);
+		$obj = new FilteredIterator([], $input);
 
 		$reflection = new ReflectionObject($obj);
 		$property   = $reflection->getProperty('callback');
@@ -193,11 +193,11 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorInvalidCallback() {
-		return array(
-			'null'                  => array(null),
-			'non-existent function' => array('functionname'),
-			'plain object'          => array(new stdClass(), 'method'),
-		);
+		return [
+			'null'                  => [null],
+			'non-existent function' => ['functionname'],
+			'plain object'          => [new stdClass(), 'method'],
+		];
 	}
 
 	/**

@@ -109,7 +109,7 @@ class Requests {
 	 *
 	 * @var array
 	 */
-	const OPTION_DEFAULTS = array(
+	const OPTION_DEFAULTS = [
 		'timeout'          => 10,
 		'connect_timeout'  => 10,
 		'useragent'        => 'php-requests/' . self::VERSION,
@@ -129,7 +129,7 @@ class Requests {
 		'transport'        => null,
 		'verify'           => null,
 		'verifyname'       => true,
-	);
+	];
 
 	/**
 	 * Default supported Transport classes.
@@ -138,10 +138,10 @@ class Requests {
 	 *
 	 * @var array
 	 */
-	const DEFAULT_TRANSPORTS = array(
+	const DEFAULT_TRANSPORTS = [
 		Curl::class      => Curl::class,
 		Fsockopen::class => Fsockopen::class,
-	);
+	];
 
 	/**
 	 * Current version of Requests
@@ -157,14 +157,14 @@ class Requests {
 	 *
 	 * @var array
 	 */
-	public static $transport = array();
+	public static $transport = [];
 
 	/**
 	 * Registered transport classes
 	 *
 	 * @var array
 	 */
-	protected static $transports = array();
+	protected static $transports = [];
 
 	/**
 	 * Default certificate path.
@@ -187,13 +187,13 @@ class Requests {
 	 *
 	 * @var array
 	 */
-	private static $magic_compression_headers = array(
+	private static $magic_compression_headers = [
 		"\x1f\x8b" => true, // Gzip marker.
 		"\x78\x01" => true, // Zlib marker - level 1.
 		"\x78\x5e" => true, // Zlib marker - level 2 to 5.
 		"\x78\x9c" => true, // Zlib marker - level 6.
 		"\x78\xda" => true, // Zlib marker - level 7 to 9.
-	);
+	];
 
 	/**
 	 * This is a static class, do not instantiate it
@@ -222,7 +222,7 @@ class Requests {
 	 * @return string FQCN of the transport to use, or an empty string if no transport was
 	 *                found which provided the requested capabilities.
 	 */
-	protected static function get_transport_class(array $capabilities = array()) {
+	protected static function get_transport_class(array $capabilities = []) {
 		// Caching code, don't bother testing coverage.
 		// @codeCoverageIgnoreStart
 		// Array of capabilities as a string to be used as an array key.
@@ -265,7 +265,7 @@ class Requests {
 	 * @return \WpOrg\Requests\Transport
 	 * @throws \WpOrg\Requests\Exception If no valid transport is found (`notransport`).
 	 */
-	protected static function get_transport(array $capabilities = array()) {
+	protected static function get_transport(array $capabilities = []) {
 		$class = self::get_transport_class($capabilities);
 
 		if ($class === '') {
@@ -287,7 +287,7 @@ class Requests {
 	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
 	 * @return bool Whether the transport has the requested capabilities.
 	 */
-	public static function has_capabilities(array $capabilities = array()) {
+	public static function has_capabilities(array $capabilities = []) {
 		return self::get_transport_class($capabilities) !== '';
 	}
 
@@ -301,28 +301,28 @@ class Requests {
 	/**
 	 * Send a GET request
 	 */
-	public static function get($url, $headers = array(), $options = array()) {
+	public static function get($url, $headers = [], $options = []) {
 		return self::request($url, $headers, null, self::GET, $options);
 	}
 
 	/**
 	 * Send a HEAD request
 	 */
-	public static function head($url, $headers = array(), $options = array()) {
+	public static function head($url, $headers = [], $options = []) {
 		return self::request($url, $headers, null, self::HEAD, $options);
 	}
 
 	/**
 	 * Send a DELETE request
 	 */
-	public static function delete($url, $headers = array(), $options = array()) {
+	public static function delete($url, $headers = [], $options = []) {
 		return self::request($url, $headers, null, self::DELETE, $options);
 	}
 
 	/**
 	 * Send a TRACE request
 	 */
-	public static function trace($url, $headers = array(), $options = array()) {
+	public static function trace($url, $headers = [], $options = []) {
 		return self::request($url, $headers, null, self::TRACE, $options);
 	}
 	/**#@-*/
@@ -338,20 +338,20 @@ class Requests {
 	/**
 	 * Send a POST request
 	 */
-	public static function post($url, $headers = array(), $data = array(), $options = array()) {
+	public static function post($url, $headers = [], $data = [], $options = []) {
 		return self::request($url, $headers, $data, self::POST, $options);
 	}
 	/**
 	 * Send a PUT request
 	 */
-	public static function put($url, $headers = array(), $data = array(), $options = array()) {
+	public static function put($url, $headers = [], $data = [], $options = []) {
 		return self::request($url, $headers, $data, self::PUT, $options);
 	}
 
 	/**
 	 * Send an OPTIONS request
 	 */
-	public static function options($url, $headers = array(), $data = array(), $options = array()) {
+	public static function options($url, $headers = [], $data = [], $options = []) {
 		return self::request($url, $headers, $data, self::OPTIONS, $options);
 	}
 
@@ -363,7 +363,7 @@ class Requests {
 	 *
 	 * @link https://tools.ietf.org/html/rfc5789
 	 */
-	public static function patch($url, $headers, $data = array(), $options = array()) {
+	public static function patch($url, $headers, $data = [], $options = []) {
 		return self::request($url, $headers, $data, self::PATCH, $options);
 	}
 	/**#@-*/
@@ -431,7 +431,7 @@ class Requests {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
 	 */
-	public static function request($url, $headers = array(), $data = array(), $type = self::GET, $options = array()) {
+	public static function request($url, $headers = [], $data = [], $type = self::GET, $options = []) {
 		if (InputValidator::is_string_or_stringable($url) === false) {
 			throw InvalidArgument::create(1, '$url', 'string|Stringable', gettype($url));
 		}
@@ -451,7 +451,7 @@ class Requests {
 
 		self::set_defaults($url, $headers, $data, $type, $options);
 
-		$options['hooks']->dispatch('requests.before_request', array(&$url, &$headers, &$data, &$type, &$options));
+		$options['hooks']->dispatch('requests.before_request', [&$url, &$headers, &$data, &$type, &$options]);
 
 		if (!empty($options['transport'])) {
 			$transport = $options['transport'];
@@ -462,12 +462,12 @@ class Requests {
 		}
 		else {
 			$need_ssl     = (stripos($url, 'https://') === 0);
-			$capabilities = array(Capability::SSL => $need_ssl);
+			$capabilities = [Capability::SSL => $need_ssl];
 			$transport    = self::get_transport($capabilities);
 		}
 		$response = $transport->request($url, $headers, $data, $options);
 
-		$options['hooks']->dispatch('requests.before_parse', array(&$response, $url, $headers, $data, $type, $options));
+		$options['hooks']->dispatch('requests.before_parse', [&$response, $url, $headers, $data, $type, $options]);
 
 		return self::parse_response($response, $url, $headers, $data, $options);
 	}
@@ -516,7 +516,7 @@ class Requests {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
-	public static function request_multiple($requests, $options = array()) {
+	public static function request_multiple($requests, $options = []) {
 		if (InputValidator::has_array_access($requests) === false || InputValidator::is_iterable($requests) === false) {
 			throw InvalidArgument::create(1, '$requests', 'array|ArrayAccess&Traversable', gettype($requests));
 		}
@@ -528,7 +528,7 @@ class Requests {
 		$options = array_merge(self::get_default_options(true), $options);
 
 		if (!empty($options['hooks'])) {
-			$options['hooks']->register('transport.internal.parse_response', array(static::class, 'parse_multiple'));
+			$options['hooks']->register('transport.internal.parse_response', [static::class, 'parse_multiple']);
 			if (!empty($options['complete'])) {
 				$options['hooks']->register('multiple.request.complete', $options['complete']);
 			}
@@ -536,10 +536,10 @@ class Requests {
 
 		foreach ($requests as $id => &$request) {
 			if (!isset($request['headers'])) {
-				$request['headers'] = array();
+				$request['headers'] = [];
 			}
 			if (!isset($request['data'])) {
-				$request['data'] = array();
+				$request['data'] = [];
 			}
 			if (!isset($request['type'])) {
 				$request['type'] = self::GET;
@@ -559,7 +559,7 @@ class Requests {
 
 			// Ensure we only hook in once
 			if ($request['options']['hooks'] !== $options['hooks']) {
-				$request['options']['hooks']->register('transport.internal.parse_response', array(static::class, 'parse_multiple'));
+				$request['options']['hooks']->register('transport.internal.parse_response', [static::class, 'parse_multiple']);
 				if (!empty($request['options']['complete'])) {
 					$request['options']['hooks']->register('multiple.request.complete', $request['options']['complete']);
 				}
@@ -585,7 +585,7 @@ class Requests {
 			if (is_string($response)) {
 				$request = $requests[$id];
 				self::parse_multiple($response, $request);
-				$request['options']['hooks']->dispatch('multiple.request.complete', array(&$response, $id));
+				$request['options']['hooks']->dispatch('multiple.request.complete', [&$response, $id]);
 			}
 		}
 
@@ -688,7 +688,7 @@ class Requests {
 		$type = strtoupper($type);
 
 		if (!isset($options['data_format'])) {
-			if (in_array($type, array(self::HEAD, self::GET, self::DELETE), true)) {
+			if (in_array($type, [self::HEAD, self::GET, self::DELETE], true)) {
 				$options['data_format'] = 'query';
 			}
 			else {
@@ -769,7 +769,7 @@ class Requests {
 			unset($return->headers['connection']);
 		}
 
-		$options['hooks']->dispatch('requests.before_redirect_check', array(&$return, $req_headers, $req_data, $options));
+		$options['hooks']->dispatch('requests.before_redirect_check', [&$return, $req_headers, $req_data, $options]);
 
 		if ($return->is_redirect() && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
@@ -784,13 +784,13 @@ class Requests {
 					$location = $location->uri;
 				}
 
-				$hook_args = array(
+				$hook_args = [
 					&$location,
 					&$req_headers,
 					&$req_data,
 					&$options,
 					$return,
-				);
+				];
 				$options['hooks']->dispatch('requests.before_redirect', $hook_args);
 				$redirected            = self::request($location, $req_headers, $req_data, $options['type'], $options);
 				$redirected->history[] = $return;
@@ -803,7 +803,7 @@ class Requests {
 
 		$return->redirects = $options['redirected'];
 
-		$options['hooks']->dispatch('requests.after_request', array(&$return, $req_headers, $req_data, $options));
+		$options['hooks']->dispatch('requests.after_request', [&$return, $req_headers, $req_data, $options]);
 		return $return;
 	}
 
@@ -885,7 +885,7 @@ class Requests {
 			throw InvalidArgument::create(1, '$dictionary', 'iterable', gettype($dictionary));
 		}
 
-		$return = array();
+		$return = [];
 		foreach ($dictionary as $key => $value) {
 			$return[] = sprintf('%s: %s', $key, $value);
 		}

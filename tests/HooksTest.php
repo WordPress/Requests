@@ -41,36 +41,36 @@ class HooksTest extends TestCase {
 	public function testRegister() {
 		// Verify initial state or the hooks property.
 		$this->assertSame(
-			array(),
+			[],
 			$this->getPropertyValue($this->hooks, 'hooks'),
 			'Initial state of $hooks is not an empty array'
 		);
 
 		// Verify that the subkeys are created correctly when they don't exist yet.
-		$this->hooks->register('hookname', array($this, 'dummyCallback1'));
+		$this->hooks->register('hookname', [$this, 'dummyCallback1']);
 		$this->assertSame(
-			array(
-				'hookname' => array(
-					0 => array(
-						array($this, 'dummyCallback1'),
-					),
-				),
-			),
+			[
+				'hookname' => [
+					0 => [
+						[$this, 'dummyCallback1'],
+					],
+				],
+			],
 			$this->getPropertyValue($this->hooks, 'hooks'),
 			'Initial hook registration failed'
 		);
 
 		// Verify that the subkeys are re-used when they already exist.
-		$this->hooks->register('hookname', array($this, 'dummyCallback2'));
+		$this->hooks->register('hookname', [$this, 'dummyCallback2']);
 		$this->assertSame(
-			array(
-				'hookname' => array(
-					0 => array(
-						array($this, 'dummyCallback1'),
-						array($this, 'dummyCallback2'),
-					),
-				),
-			),
+			[
+				'hookname' => [
+					0 => [
+						[$this, 'dummyCallback1'],
+						[$this, 'dummyCallback2'],
+					],
+				],
+			],
 			$this->getPropertyValue($this->hooks, 'hooks'),
 			'Registering a second callback on the same hook with the same priority failed'
 		);
@@ -81,17 +81,17 @@ class HooksTest extends TestCase {
 		 */
 		$this->hooks->register('hookname', 'is_int', '10');
 		$this->assertSame(
-			array(
-				'hookname' => array(
-					0  => array(
-						array($this, 'dummyCallback1'),
-						array($this, 'dummyCallback2'),
-					),
-					10 => array(
+			[
+				'hookname' => [
+					0  => [
+						[$this, 'dummyCallback1'],
+						[$this, 'dummyCallback2'],
+					],
+					10 => [
 						'is_int',
-					),
-				),
-			),
+					],
+				],
+			],
 			$this->getPropertyValue($this->hooks, 'hooks'),
 			'Registering a callback on a different priority for an existing hook failed'
 		);
@@ -140,7 +140,7 @@ class HooksTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchWithoutRegisteredHooksOnDispatchedHook() {
-		$this->hooks->register('hookname', array($this, 'dummyCallback1'));
+		$this->hooks->register('hookname', [$this, 'dummyCallback1']);
 
 		$this->assertFalse($this->hooks->dispatch('other.hookname'));
 	}
@@ -154,13 +154,13 @@ class HooksTest extends TestCase {
 	 */
 	public function testDispatchWithSingleRegisteredHook() {
 		$mock = $this->getMockBuilder(stdClass::class)
-			->setMethods(array('callback'))
+			->setMethods(['callback'])
 			->getMock();
 
 		$mock->expects($this->once())
 			->method('callback');
 
-		$this->hooks->register('hookname', array($mock, 'callback'));
+		$this->hooks->register('hookname', [$mock, 'callback']);
 
 		$this->assertTrue($this->hooks->dispatch('hookname'));
 	}
@@ -174,7 +174,7 @@ class HooksTest extends TestCase {
 	 */
 	public function testDispatchWithMultipleRegisteredHooks() {
 		$mock = $this->getMockBuilder(stdClass::class)
-			->setMethods(array('callback_a', 'callback_b', 'callback_c'))
+			->setMethods(['callback_a', 'callback_b', 'callback_c'])
 			->getMock();
 
 		$mock->expects($this->never())
@@ -194,12 +194,12 @@ class HooksTest extends TestCase {
 				$this->identicalTo('text')
 			);
 
-		$this->hooks->register('hook_a', array($mock, 'callback_a'));
-		$this->hooks->register('hook_b', array($mock, 'callback_b'));
-		$this->hooks->register('hook_b', array($mock, 'callback_b'), 10);
-		$this->hooks->register('hook_b', array($mock, 'callback_c'));
+		$this->hooks->register('hook_a', [$mock, 'callback_a']);
+		$this->hooks->register('hook_b', [$mock, 'callback_b']);
+		$this->hooks->register('hook_b', [$mock, 'callback_b'], 10);
+		$this->hooks->register('hook_b', [$mock, 'callback_c']);
 
-		$this->assertTrue($this->hooks->dispatch('hook_b', array(10, 'text')));
+		$this->assertTrue($this->hooks->dispatch('hook_b', [10, 'text']));
 	}
 
 	/**
@@ -210,20 +210,20 @@ class HooksTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchHandlesParametersPassedByReference() {
-		$this->hooks->register('hookname', array($this, 'dummyCallbackExpectingReferences'));
+		$this->hooks->register('hookname', [$this, 'dummyCallbackExpectingReferences']);
 		$url             = 'original';
-		$headers         = array('original');
+		$headers         = ['original'];
 		$unchanged       = 'original';
 		$not_a_reference = 'original';
 
 		$this->assertTrue(
-			$this->hooks->dispatch('hookname', array(&$url, &$headers, &$unchanged, $not_a_reference)),
+			$this->hooks->dispatch('hookname', [&$url, &$headers, &$unchanged, $not_a_reference]),
 			'Hook dispatch did not return true'
 		);
 
 		// Verify that the variables were updated by reference (when passed as reference).
 		$this->assertSame('changed', $url, 'Value of $url was not changed by reference');
-		$this->assertSame(array('changed'), $headers, 'Value of $headers was not changed by reference');
+		$this->assertSame(['changed'], $headers, 'Value of $headers was not changed by reference');
 		$this->assertSame('original', $unchanged, 'Value of unchanged parameter passed by reference, did not match original value');
 		$this->assertSame('original', $not_a_reference, 'Value of parameter not passed by reference, did not match original value');
 	}
@@ -236,9 +236,9 @@ class HooksTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchDoesntBreakWithKeyedParametersArray() {
-		$this->hooks->register('hookname', array($this, 'dummyCallback1'));
+		$this->hooks->register('hookname', [$this, 'dummyCallback1']);
 
-		$this->assertTrue($this->hooks->dispatch('hookname', array('paramA' => 10, 'paramB' => 'text')));
+		$this->assertTrue($this->hooks->dispatch('hookname', ['paramA' => 10, 'paramB' => 'text']));
 	}
 
 	/**
@@ -283,11 +283,11 @@ class HooksTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidHookname() {
-		return array(
-			'null'              => array(null),
-			'float'             => array(1.1),
-			'stringable object' => array(new StringableObject('value')),
-		);
+		return [
+			'null'              => [null],
+			'float'             => [1.1],
+			'stringable object' => [new StringableObject('value')],
+		];
 	}
 
 	/**
@@ -314,13 +314,13 @@ class HooksTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRegisterInvalidCallback() {
-		return array(
-			'null'                  => array(null),
-			'non-existent function' => array('functionname'),
-			'non-existent method'   => array(array($this, 'dummyCallbackDoesNotExist')),
-			'empty array'           => array(array()),
-			'plain object'          => array(new stdClass(), 'method'),
-		);
+		return [
+			'null'                  => [null],
+			'non-existent function' => ['functionname'],
+			'non-existent method'   => [[$this, 'dummyCallbackDoesNotExist']],
+			'empty array'           => [[]],
+			'plain object'          => [new stdClass(), 'method'],
+		];
 	}
 
 	/**
@@ -338,7 +338,7 @@ class HooksTest extends TestCase {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #3 ($priority) must be of type int');
 
-		$this->hooks->register('hookname', array($this, 'dummyCallback1'), $input);
+		$this->hooks->register('hookname', [$this, 'dummyCallback1'], $input);
 	}
 
 	/**
@@ -347,11 +347,11 @@ class HooksTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRegisterInvalidPriority() {
-		return array(
-			'null'             => array(null),
-			'float'            => array(1.1),
-			'string "123 abc"' => array('123 abc'),
-		);
+		return [
+			'null'             => [null],
+			'float'            => [1.1],
+			'string "123 abc"' => ['123 abc'],
+		];
 	}
 
 	/**
@@ -378,13 +378,13 @@ class HooksTest extends TestCase {
 	 * @return array
 	 */
 	public function dataDispatchInvalidParameters() {
-		return array(
-			'null'                            => array(null),
-			'bool false'                      => array(false),
-			'float'                           => array(1.1),
-			'string'                          => array('param'),
-			'object implementing ArrayAccess' => array(new ArrayAccessibleObject()),
-		);
+		return [
+			'null'                            => [null],
+			'bool false'                      => [false],
+			'float'                           => [1.1],
+			'string'                          => ['param'],
+			'object implementing ArrayAccess' => [new ArrayAccessibleObject()],
+		];
 	}
 
 	/**
@@ -408,7 +408,7 @@ class HooksTest extends TestCase {
 	 */
 	public function dummyCallbackExpectingReferences(&$url, &$headers, &$unchanged, $not_a_reference) {
 		$url             = 'changed';
-		$headers         = array('changed');
+		$headers         = ['changed'];
 		$not_a_reference = 'changed';
 	}
 }

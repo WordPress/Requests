@@ -37,7 +37,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		 *
 		 * @var array
 		 */
-		private static $deprecated_classes = array(
+		private static $deprecated_classes = [
 			// Interfaces.
 			'requests_auth'                              => '\WpOrg\Requests\Auth',
 			'requests_hooker'                            => '\WpOrg\Requests\HookManager',
@@ -98,7 +98,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 			'requests_exception_http_505'                => '\WpOrg\Requests\Exception\Http\Status505',
 			'requests_exception_http_511'                => '\WpOrg\Requests\Exception\Http\Status511',
 			'requests_exception_http_unknown'            => '\WpOrg\Requests\Exception\Http\StatusUnknown',
-		);
+		];
 
 		/**
 		 * Register the autoloader.
@@ -116,7 +116,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 		 */
 		public static function register() {
 			if (defined('REQUESTS_AUTOLOAD_REGISTERED') === false) {
-				spl_autoload_register(array(self::class, 'load'), true);
+				spl_autoload_register([self::class, 'load'], true);
 				define('REQUESTS_AUTOLOAD_REGISTERED', true);
 			}
 		}

@@ -53,11 +53,11 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataCaseInsensitiveArrayAccess() {
-		return array(
-			'access using case as set' => array('Content-Type'),
-			'access using lowercase'   => array('content-type'),
-			'access using uppercase'   => array('CONTENT-TYPE'),
-		);
+		return [
+			'access using case as set' => ['Content-Type'],
+			'access using lowercase'   => ['content-type'],
+			'access using uppercase'   => ['CONTENT-TYPE'],
+		];
 	}
 
 	/**
@@ -107,10 +107,10 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataOffsetSetDoesNotTryToLowercaseNonStringKeys() {
-		return array(
-			'integer key'       => array(10),
-			'boolean false key' => array(false, 0),
-		);
+		return [
+			'integer key'       => [10],
+			'boolean false key' => [false, 0],
+		];
 	}
 
 	/**
@@ -153,12 +153,12 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataOffsetGetReturnsNullForNonRegisteredHeader() {
-		return array(
+		return [
 			// This test case also tests that no "passing null to non-nullable" deprecation is thrown in PHP 8.1.
-			'null'                       => array(null),
-			'non-registered integer key' => array(10),
-			'non-registred string key'   => array('not-content-type'),
-		);
+			'null'                       => [null],
+			'non-registered integer key' => [10],
+			'non-registred string key'   => ['not-content-type'],
+		];
 	}
 
 	/**
@@ -189,35 +189,35 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataGetValues() {
-		return array(
-			'using case as set, single entry header' => array(
+		return [
+			'using case as set, single entry header' => [
 				'key'      => 'Content-Type',
-				'expected' => array(
+				'expected' => [
 					'text/plain',
-				),
-			),
-			'using lowercase, single entry header' => array(
+				],
+			],
+			'using lowercase, single entry header' => [
 				'key'      => 'content-length',
-				'expected' => array(
+				'expected' => [
 					10,
-				),
-			),
-			'using uppercase, multiple entry header' => array(
+				],
+			],
+			'using uppercase, multiple entry header' => [
 				'key'      => 'ACCEPT',
-				'expected' => array(
+				'expected' => [
 					'text/html;q=1.0',
 					'*/*;q=0.1',
-				),
-			),
-			'non-registered string key' => array(
+				],
+			],
+			'non-registered string key' => [
 				'key'      => 'my-custom-header',
 				'expected' => null,
-			),
-			'non-registered integer key' => array(
+			],
+			'non-registered integer key' => [
 				'key'      => 10,
 				'expected' => null,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -245,10 +245,10 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataGetValuesInvalidOffset() {
-		return array(
-			'null'          => array(null),
-			'boolean false' => array(false),
-		);
+		return [
+			'null'          => [null],
+			'boolean false' => [false],
+		];
 	}
 
 	/**
@@ -310,11 +310,11 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataFlatten() {
-		return array(
-			'string'            => array('text', 'text'),
-			'empty array'       => array(array(), ''),
-			'array with values' => array(array('text', 10, 'more text'), 'text,10,more text'),
-		);
+		return [
+			'string'            => ['text', 'text'],
+			'empty array'       => [[], ''],
+			'array with values' => [['text', 10, 'more text'], 'text,10,more text'],
+		];
 	}
 
 	/**
@@ -342,10 +342,10 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataFlattenInvalidValue() {
-		return array(
-			'null'          => array(null),
-			'boolean false' => array(false),
-			'plain object'  => array(new stdClass()),
-		);
+		return [
+			'null'          => [null],
+			'boolean false' => [false],
+			'plain object'  => [new stdClass()],
+		];
 	}
 }

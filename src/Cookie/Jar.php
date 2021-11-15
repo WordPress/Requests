@@ -29,7 +29,7 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @var array
 	 */
-	protected $cookies = array();
+	protected $cookies = [];
 
 	/**
 	 * Create a new jar
@@ -38,7 +38,7 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not an array.
 	 */
-	public function __construct($cookies = array()) {
+	public function __construct($cookies = []) {
 		if (is_array($cookies) === false) {
 			throw InvalidArgument::create(1, '$cookies', 'array', gettype($cookies));
 		}
@@ -129,8 +129,8 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 * @param \WpOrg\Requests\HookManager $hooks Hooking system
 	 */
 	public function register(HookManager $hooks) {
-		$hooks->register('requests.before_request', array($this, 'before_request'));
-		$hooks->register('requests.before_redirect_check', array($this, 'before_redirect_check'));
+		$hooks->register('requests.before_request', [$this, 'before_request']);
+		$hooks->register('requests.before_redirect_check', [$this, 'before_redirect_check']);
 	}
 
 	/**
@@ -150,7 +150,7 @@ class Jar implements ArrayAccess, IteratorAggregate {
 		}
 
 		if (!empty($this->cookies)) {
-			$cookies = array();
+			$cookies = [];
 			foreach ($this->cookies as $key => $cookie) {
 				$cookie = $this->normalize_cookie($cookie, $key);
 

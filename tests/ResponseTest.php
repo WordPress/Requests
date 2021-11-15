@@ -40,14 +40,14 @@ final class ResponseTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidJsonResponse() {
-		$data = array(
-			'text string, not JSON (syntax error)'       => array('Invalid JSON'),
-			'invalid JSON: single quotes (syntax error)' => array("{ 'bar': 'baz' }"),
-		);
+		$data = [
+			'text string, not JSON (syntax error)'       => ['Invalid JSON'],
+			'invalid JSON: single quotes (syntax error)' => ["{ 'bar': 'baz' }"],
+		];
 
 		// An empty string is only regarded as invalid JSON since PHP 7.0.
 		if (PHP_VERSION_ID >= 70000) {
-			$data['empty string (syntax error)'] = array('');
+			$data['empty string (syntax error)'] = [''];
 		}
 
 		return $data;
@@ -67,11 +67,11 @@ final class ResponseTest extends TestCase {
 		$response->body = '{"success": false, "error": [], "data": null}';
 		$decoded_body   = $response->decode_body();
 
-		$expected = array(
+		$expected = [
 			'success' => false,
-			'error'   => array(),
+			'error'   => [],
 			'data'    => null,
-		);
+		];
 
 		$this->assertSame($expected, $decoded_body);
 	}

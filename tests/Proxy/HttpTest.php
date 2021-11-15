@@ -33,11 +33,11 @@ final class HttpTest extends TestCase {
 	public function testConnectWithString($transport) {
 		$this->checkProxyAvailable();
 
-		$options  = array(
+		$options  = [
 			'proxy'     => REQUESTS_HTTP_PROXY,
 			'transport' => $transport,
-		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		];
+		$response = Requests::get(httpbin('/get'), [], $options);
 		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -50,11 +50,11 @@ final class HttpTest extends TestCase {
 	public function testConnectWithArray($transport) {
 		$this->checkProxyAvailable();
 
-		$options  = array(
-			'proxy'     => array(REQUESTS_HTTP_PROXY),
+		$options  = [
+			'proxy'     => [REQUESTS_HTTP_PROXY],
 			'transport' => $transport,
-		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		];
+		$response = Requests::get(httpbin('/get'), [], $options);
 		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -67,13 +67,13 @@ final class HttpTest extends TestCase {
 	public function testConnectInvalidParameters($transport) {
 		$this->checkProxyAvailable();
 
-		$options = array(
-			'proxy'     => array(REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'),
+		$options = [
+			'proxy'     => [REQUESTS_HTTP_PROXY, 'testuser', 'password', 'something'],
 			'transport' => $transport,
-		);
+		];
 		$this->expectException(ArgumentCount::class);
 		$this->expectExceptionMessage('WpOrg\Requests\Proxy\Http::__construct() expects an array with exactly one element or exactly three elements');
-		Requests::get(httpbin('/get'), array(), $options);
+		Requests::get(httpbin('/get'), [], $options);
 	}
 
 	/**
@@ -82,11 +82,11 @@ final class HttpTest extends TestCase {
 	public function testConnectWithInstance($transport) {
 		$this->checkProxyAvailable();
 
-		$options  = array(
+		$options  = [
 			'proxy'     => new Http(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
-		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		];
+		$response = Requests::get(httpbin('/get'), [], $options);
 		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -99,15 +99,15 @@ final class HttpTest extends TestCase {
 	public function testConnectWithAuth($transport) {
 		$this->checkProxyAvailable('auth');
 
-		$options  = array(
-			'proxy'     => array(
+		$options  = [
+			'proxy'     => [
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER,
 				REQUESTS_HTTP_PROXY_AUTH_PASS,
-			),
+			],
 			'transport' => $transport,
-		);
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		];
+		$response = Requests::get(httpbin('/get'), [], $options);
 		$this->assertSame(200, $response->status_code);
 		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
@@ -121,14 +121,14 @@ final class HttpTest extends TestCase {
 	public function testConnectWithInvalidAuth($transport) {
 		$this->checkProxyAvailable('auth');
 
-		$options = array(
-			'proxy'     => array(
+		$options = [
+			'proxy'     => [
 				REQUESTS_HTTP_PROXY_AUTH,
 				REQUESTS_HTTP_PROXY_AUTH_USER . '!',
 				REQUESTS_HTTP_PROXY_AUTH_PASS . '!',
-			),
+			],
 			'transport' => $transport,
-		);
+		];
 
 		if (version_compare(phpversion(), '5.5.0', '>=') === true
 			&& $transport === Fsockopen::class
@@ -138,7 +138,7 @@ final class HttpTest extends TestCase {
 			$this->expectExceptionMessage('fsocket timed out');
 		}
 
-		$response = Requests::get(httpbin('/get'), array(), $options);
+		$response = Requests::get(httpbin('/get'), [], $options);
 		$this->assertSame(407, $response->status_code);
 	}
 

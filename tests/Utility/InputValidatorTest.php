@@ -148,249 +148,249 @@ final class InputValidatorTest extends TestCase {
 			self::$dir_handle  = opendir(__DIR__);
 		}
 
-		return array(
-			'null' => array(
+		return [
+			'null' => [
 				'input'    => null,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'boolean false' => array(
+				],
+			],
+			'boolean false' => [
 				'input'    => false,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'boolean true' => array(
+				],
+			],
+			'boolean true' => [
 				'input'    => true,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'integer 0' => array(
+				],
+			],
+			'integer 0' => [
 				'input'    => 0,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => true,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'negative integer' => array(
+				],
+			],
+			'negative integer' => [
 				'input'    => -123,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => true,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'positive integer' => array(
+				],
+			],
+			'positive integer' => [
 				'input'    => 786687,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => true,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'float 0.0' => array(
+				],
+			],
+			'float 0.0' => [
 				'input'    => 0.0,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'negative float' => array(
+				],
+			],
+			'negative float' => [
 				'input'    => 5.600e-3,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'positive float' => array(
+				],
+			],
+			'positive float' => [
 				'input'    => 124.7,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'empty string' => array(
+				],
+			],
+			'empty string' => [
 				'input'    => '',
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => true,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'string "123"' => array(
+				],
+			],
+			'string "123"' => [
 				'input'    => '123',
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => true,
 					'is_numeric_array_key'    => true,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'string "foobar"' => array(
+				],
+			],
+			'string "foobar"' => [
 				'input'    => 'foobar',
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => true,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'string "123 My Street"' => array(
+				],
+			],
+			'string "123 My Street"' => [
 				'input'    => '123 My Street',
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => true,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'empty array' => array(
-				'input'    => array(),
-				'expected' => array(
+				],
+			],
+			'empty array' => [
+				'input'    => [],
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => true,
 					'is_iterable'             => true,
 					'is_curl_handle'          => false,
-				),
-			),
-			'array with three items, no keys' => array(
-				'input'    => array(1, 2, 3),
-				'expected' => array(
+				],
+			],
+			'array with three items, no keys' => [
+				'input'    => [1, 2, 3],
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => true,
 					'is_iterable'             => true,
 					'is_curl_handle'          => false,
-				),
-			),
-			'array with two items, with keys' => array(
-				'input'    => array('a' => 1, 'b' => 2),
-				'expected' => array(
+				],
+			],
+			'array with two items, with keys' => [
+				'input'    => ['a' => 1, 'b' => 2],
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => true,
 					'is_iterable'             => true,
 					'is_curl_handle'          => false,
-				),
-			),
-			'plain object' => array(
+				],
+			],
+			'plain object' => [
 				'input'    => new stdClass(),
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'object with __toString method' => array(
+				],
+			],
+			'object with __toString method' => [
 				'input'    => new StringableObject('value'),
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => true,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => true,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'object implementing ArrayIterator' => array(
-				'input'    => new ArrayIterator(array(1, 2, 3)),
-				'expected' => array(
+				],
+			],
+			'object implementing ArrayIterator' => [
+				'input'    => new ArrayIterator([1, 2, 3]),
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => true,
 					'is_iterable'             => true,
 					'is_curl_handle'          => false,
-				),
-			),
-			'object implementing ArrayAccess' => array(
+				],
+			],
+			'object implementing ArrayAccess' => [
 				'input'    => new ArrayAccessibleObject(),
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => true,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-			'Curl handle (resource or object depending on PHP version)' => array(
+				],
+			],
+			'Curl handle (resource or object depending on PHP version)' => [
 				'input'    => self::$curl_handle,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => true,
-				),
-			),
-			'Directory handle (resource)' => array(
+				],
+			],
+			'Directory handle (resource)' => [
 				'input'    => self::$dir_handle,
-				'expected' => array(
+				'expected' => [
 					'is_string_or_stringable' => false,
 					'is_numeric_array_key'    => false,
 					'is_stringable_object'    => false,
 					'has_array_access'        => false,
 					'is_iterable'             => false,
 					'is_curl_handle'          => false,
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 }

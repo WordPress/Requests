@@ -28,9 +28,9 @@ $requests_phpdoc_version_updater = function () {
 	// Retrieve the information about the latest release from the GH API.
 	$response = Requests::get(
 		'https://api.github.com/repos/WordPress/Requests/releases/latest',
-		array(
+		[
 			'Accept' => 'application/vnd.github.v3+json',
-		)
+		]
 	);
 
 	if (!($response instanceof Response) || $response->success !== true || $response->status_code !== 200) {

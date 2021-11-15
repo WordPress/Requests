@@ -41,10 +41,10 @@ final class CurlTest extends BaseTestCase {
 	 * @small
 	 */
 	public function testDoesntOverwriteExpectHeaderIfManuallySet() {
-		$headers = array(
+		$headers = [
 			'Expect' => 'foo',
-		);
-		$request = Requests::post(httpbin('/post'), $headers, array(), $this->getOptions());
+		];
+		$request = Requests::post(httpbin('/post'), $headers, [], $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -55,10 +55,10 @@ final class CurlTest extends BaseTestCase {
 	 * @small
 	 */
 	public function testDoesntSetExpectHeaderIfBodyExactly1MbButProtocolIsnt11() {
-		$options = array(
+		$options = [
 			'protocol_version' => 1.0,
-		);
-		$request = Requests::post(httpbin('/post'), array(), str_repeat('x', 1048576), $this->getOptions($options));
+		];
+		$request = Requests::post(httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions($options));
 
 		$result = json_decode($request->body, true);
 
@@ -69,7 +69,7 @@ final class CurlTest extends BaseTestCase {
 	 * @small
 	 */
 	public function testSetsEmptyExpectHeaderWithDefaultSettings() {
-		$request = Requests::post(httpbin('/post'), array(), array(), $this->getOptions());
+		$request = Requests::post(httpbin('/post'), [], [], $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -80,13 +80,13 @@ final class CurlTest extends BaseTestCase {
 	 * @small
 	 */
 	public function testSetsEmptyExpectHeaderIfBodyIsANestedArrayLessThan1Mb() {
-		$data    = array(
+		$data    = [
 			str_repeat('x', 148576),
-			array(
+			[
 				str_repeat('x', 548576),
-			),
-		);
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+			],
+		];
+		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -94,7 +94,7 @@ final class CurlTest extends BaseTestCase {
 	}
 
 	public function testSetsExpectHeaderIfBodyIsExactlyA1MbString() {
-		$request = Requests::post(httpbin('/post'), array(), str_repeat('x', 1048576), $this->getOptions());
+		$request = Requests::post(httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -102,16 +102,16 @@ final class CurlTest extends BaseTestCase {
 	}
 
 	public function testSetsExpectHeaderIfBodyIsANestedArrayGreaterThan1Mb() {
-		$data    = array(
+		$data    = [
 			str_repeat('x', 148576),
-			array(
+			[
 				str_repeat('x', 548576),
-				array(
+				[
 					str_repeat('x', 648576),
-				),
-			),
-		);
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+				],
+			],
+		];
+		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -119,7 +119,7 @@ final class CurlTest extends BaseTestCase {
 	}
 
 	public function testSetsExpectHeaderIfBodyExactly1Mb() {
-		$request = Requests::post(httpbin('/post'), array(), str_repeat('x', 1048576), $this->getOptions());
+		$request = Requests::post(httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -130,7 +130,7 @@ final class CurlTest extends BaseTestCase {
 	 * @small
 	 */
 	public function testSetsEmptyExpectHeaderIfBodySmallerThan1Mb() {
-		$request = Requests::post(httpbin('/post'), array(), str_repeat('x', 1048575), $this->getOptions());
+		$request = Requests::post(httpbin('/post'), [], str_repeat('x', 1048575), $this->getOptions());
 
 		$result = json_decode($request->body, true);
 

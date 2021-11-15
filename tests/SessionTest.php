@@ -35,12 +35,12 @@ final class SessionTest extends TestCase {
 	}
 
 	public function testBasicGET() {
-		$session_headers = array(
+		$session_headers = [
 			'X-Requests-Session' => 'BasicGET',
 			'X-Requests-Request' => 'notset',
-		);
+		];
 		$session         = new Session(httpbin('/'), $session_headers);
-		$response        = $session->get('/get', array('X-Requests-Request' => 'GET'));
+		$response        = $session->get('/get', ['X-Requests-Request' => 'GET']);
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
 
@@ -52,23 +52,23 @@ final class SessionTest extends TestCase {
 	}
 
 	public function testBasicHEAD() {
-		$session_headers = array(
+		$session_headers = [
 			'X-Requests-Session' => 'BasicHEAD',
 			'X-Requests-Request' => 'notset',
-		);
+		];
 		$session         = new Session(httpbin('/'), $session_headers);
-		$response        = $session->head('/get', array('X-Requests-Request' => 'HEAD'));
+		$response        = $session->head('/get', ['X-Requests-Request' => 'HEAD']);
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
 	}
 
 	public function testBasicDELETE() {
-		$session_headers = array(
+		$session_headers = [
 			'X-Requests-Session' => 'BasicDELETE',
 			'X-Requests-Request' => 'notset',
-		);
+		];
 		$session         = new Session(httpbin('/'), $session_headers);
-		$response        = $session->delete('/delete', array('X-Requests-Request' => 'DELETE'));
+		$response        = $session->delete('/delete', ['X-Requests-Request' => 'DELETE']);
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
 
@@ -80,12 +80,12 @@ final class SessionTest extends TestCase {
 	}
 
 	public function testBasicPOST() {
-		$session_headers = array(
+		$session_headers = [
 			'X-Requests-Session' => 'BasicPOST',
 			'X-Requests-Request' => 'notset',
-		);
+		];
 		$session         = new Session(httpbin('/'), $session_headers);
-		$response        = $session->post('/post', array('X-Requests-Request' => 'POST'), array('postdata' => 'exists'));
+		$response        = $session->post('/post', ['X-Requests-Request' => 'POST'], ['postdata' => 'exists']);
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
 
@@ -97,12 +97,12 @@ final class SessionTest extends TestCase {
 	}
 
 	public function testBasicPUT() {
-		$session_headers = array(
+		$session_headers = [
 			'X-Requests-Session' => 'BasicPUT',
 			'X-Requests-Request' => 'notset',
-		);
+		];
 		$session         = new Session(httpbin('/'), $session_headers);
-		$response        = $session->put('/put', array('X-Requests-Request' => 'PUT'), array('postdata' => 'exists'));
+		$response        = $session->put('/put', ['X-Requests-Request' => 'PUT'], ['postdata' => 'exists']);
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
 
@@ -114,12 +114,12 @@ final class SessionTest extends TestCase {
 	}
 
 	public function testBasicPATCH() {
-		$session_headers = array(
+		$session_headers = [
 			'X-Requests-Session' => 'BasicPATCH',
 			'X-Requests-Request' => 'notset',
-		);
+		];
 		$session         = new Session(httpbin('/'), $session_headers);
-		$response        = $session->patch('/patch', array('X-Requests-Request' => 'PATCH'), array('postdata' => 'exists'));
+		$response        = $session->patch('/patch', ['X-Requests-Request' => 'PATCH'], ['postdata' => 'exists']);
 		$response->throw_for_status(false);
 		$this->assertSame(200, $response->status_code);
 
@@ -131,15 +131,15 @@ final class SessionTest extends TestCase {
 	}
 
 	public function testMultiple() {
-		$session   = new Session(httpbin('/'), array('X-Requests-Session' => 'Multiple'));
-		$requests  = array(
-			'test1' => array(
+		$session   = new Session(httpbin('/'), ['X-Requests-Session' => 'Multiple']);
+		$requests  = [
+			'test1' => [
 				'url' => httpbin('/get'),
-			),
-			'test2' => array(
+			],
+			'test2' => [
 				'url' => httpbin('/get'),
-			),
-		);
+			],
+		];
 		$responses = $session->request_multiple($requests);
 
 		// test1
@@ -162,22 +162,22 @@ final class SessionTest extends TestCase {
 	}
 
 	public function testPropertyUsage() {
-		$headers = array(
+		$headers = [
 			'X-TestHeader'  => 'testing',
 			'X-TestHeader2' => 'requests-test',
-		);
-		$data    = array(
+		];
+		$data    = [
 			'testdata' => 'value1',
 			'test2'    => 'value2',
-			'test3'    => array(
+			'test3'    => [
 				'foo' => 'bar',
 				'abc' => 'xyz',
-			),
-		);
-		$options = array(
+			],
+		];
+		$options = [
 			'testoption' => 'test',
 			'foo'        => 'bar',
-		);
+		];
 
 		$session = new Session('http://example.com/', $headers, $data, $options);
 		$this->assertSame('http://example.com/', $session->url);
@@ -209,10 +209,10 @@ final class SessionTest extends TestCase {
 	public function testSharedCookies() {
 		$session = new Session(httpbin('/'));
 
-		$options  = array(
+		$options  = [
 			'follow_redirects' => false,
-		);
-		$response = $session->get('/cookies/set?requests-testcookie=testvalue', array(), $options);
+		];
+		$response = $session->get('/cookies/set?requests-testcookie=testvalue', [], $options);
 		$this->assertSame(302, $response->status_code);
 
 		// Check the cookies
@@ -224,9 +224,9 @@ final class SessionTest extends TestCase {
 		$this->assertNotNull($data);
 		$this->assertArrayHasKey('cookies', $data);
 
-		$cookies = array(
+		$cookies = [
 			'requests-testcookie' => 'testvalue',
-		);
+		];
 		$this->assertSame($cookies, $data['cookies']);
 	}
 
@@ -251,11 +251,11 @@ final class SessionTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorValidUrl() {
-		return array(
-			'null'              => array(null),
-			'string'            => array(httpbin('/')),
-			'stringable object' => array(new Iri(httpbin('/'))),
-		);
+		return [
+			'null'              => [null],
+			'string'            => [httpbin('/')],
+			'stringable object' => [new Iri(httpbin('/'))],
+		];
 	}
 
 	/**
@@ -282,11 +282,11 @@ final class SessionTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorInvalidUrl() {
-		return array(
-			'boolean false'         => array(false),
-			'array'                 => array(array(httpbin('/'))),
-			'non-stringable object' => array(new stdClass('name')),
-		);
+		return [
+			'boolean false'         => [false],
+			'array'                 => [[httpbin('/')]],
+			'non-stringable object' => [new stdClass('name')],
+		];
 	}
 
 	/**
@@ -322,7 +322,7 @@ final class SessionTest extends TestCase {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #3 ($data) must be of type array');
 
-		new Session('/', array(), $input);
+		new Session('/', [], $input);
 	}
 
 	/**
@@ -340,7 +340,7 @@ final class SessionTest extends TestCase {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #4 ($options) must be of type array');
 
-		new Session('/', array(), array(), $input);
+		new Session('/', [], [], $input);
 	}
 
 	/**
@@ -368,12 +368,12 @@ final class SessionTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestMultipleInvalidRequests() {
-		return array(
-			'null'                                 => array(null),
-			'text string'                          => array('array'),
-			'iterator object without array access' => array(new EmptyIterator()),
-			'array accessible object not iterable' => array(new ArrayAccessibleObject(array(1, 2, 3))),
-		);
+		return [
+			'null'                                 => [null],
+			'text string'                          => ['array'],
+			'iterator object without array access' => [new EmptyIterator()],
+			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
+		];
 	}
 
 	/**
@@ -392,7 +392,7 @@ final class SessionTest extends TestCase {
 		$this->expectExceptionMessage('Argument #2 ($options) must be of type array');
 
 		$session = new Session();
-		$session->request_multiple(array(), $input);
+		$session->request_multiple([], $input);
 	}
 
 	/**
@@ -401,10 +401,10 @@ final class SessionTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidTypeNotArray() {
-		return array(
-			'null'                    => array(null),
-			'boolean false'           => array(false),
-			'array accessible object' => array(new ArrayAccessibleObject(array())),
-		);
+		return [
+			'null'                    => [null],
+			'boolean false'           => [false],
+			'array accessible object' => [new ArrayAccessibleObject([])],
+		];
 	}
 }

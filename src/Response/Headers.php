@@ -60,7 +60,7 @@ class Headers extends CaseInsensitiveDictionary {
 		}
 
 		if (!isset($this->data[$offset])) {
-			$this->data[$offset] = array();
+			$this->data[$offset] = [];
 		}
 
 		$this->data[$offset][] = $value;
@@ -119,6 +119,6 @@ class Headers extends CaseInsensitiveDictionary {
 	 * @return \ArrayIterator
 	 */
 	public function getIterator() {
-		return new FilteredIterator($this->data, array($this, 'flatten'));
+		return new FilteredIterator($this->data, [$this, 'flatten']);
 	}
 }

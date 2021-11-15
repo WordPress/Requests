@@ -26,10 +26,10 @@ final class ChunkedDecodingTest extends TestCase {
 		$transport->body    = $body;
 		$transport->chunked = true;
 
-		$options  = array(
+		$options  = [
 			'transport' => $transport,
-		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		];
+		$response = Requests::get('http://example.com/', [], $options);
 
 		$this->assertInstanceOf(Response::class, $response, 'Response is not an instance of the Response class.');
 		$this->assertSame($expected, $response->body, 'Response body does not match expected dechunked body');
@@ -41,32 +41,32 @@ final class ChunkedDecodingTest extends TestCase {
 	 * @return array
 	 */
 	public function dataChunked() {
-		return array(
-			array(
+		return [
+			[
 				'body'     => "25\r\nThis is the data in the first chunk\r\n\r\n1A\r\nand this is the second one\r\n0\r\n",
 				'expected' => "This is the data in the first chunk\r\nand this is the second one",
-			),
-			array(
+			],
+			[
 				'body'     => "02\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0\r\nnothing\n",
 				'expected' => "abra\ncadabra",
-			),
-			array(
+			],
+			[
 				'body'     => "02\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
 				'expected' => "abra\ncadabra\nall we got\n",
-			),
-			array(
+			],
+			[
 				'body'     => "02;foo=bar;hello=world\r\nab\r\n04;foo=baz\r\nra\nc\r\n06;justfoo\r\nadabra\r\n0c\r\n\nall we got\n",
 				'expected' => "abra\ncadabra\nall we got\n",
-			),
-			array(
+			],
+			[
 				'body'     => "02;foo=\"quoted value\"\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
 				'expected' => "abra\ncadabra\nall we got\n",
-			),
-			array(
+			],
+			[
 				'body'     => "02;foo-bar=baz\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n",
 				'expected' => "abra\ncadabra\nall we got\n",
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -83,10 +83,10 @@ final class ChunkedDecodingTest extends TestCase {
 		$transport->body    = $body;
 		$transport->chunked = true;
 
-		$options  = array(
+		$options  = [
 			'transport' => $transport,
-		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		];
+		$response = Requests::get('http://example.com/', [], $options);
 
 		$this->assertInstanceOf(Response::class, $response, 'Response is not an instance of the Response class.');
 		$this->assertSame($transport->body, $response->body, 'Response body does not match original body');
@@ -98,15 +98,15 @@ final class ChunkedDecodingTest extends TestCase {
 	 * @return array
 	 */
 	public function dataNotActuallyChunked() {
-		return array(
-			'empty string'                         => array(''),
-			'invalid chunk size'                   => array('Hello! This is a non-chunked response!'),
-			'invalid chunk extension'              => array('1BNot chunked\r\nLooks chunked but it is not\r\n'),
-			'unquoted chunk-ext-val with space'    => array("02;foo=unquoted with space\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
-			'unquoted chunk-ext-val with forbidden character' => array("02;foo={unquoted}\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
-			'invalid chunk-ext-name'               => array("02;{foo}=bar\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
-			'incomplete quote for chunk-ext-value' => array("02;foo=\"no end quote\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"),
-		);
+		return [
+			'empty string'                         => [''],
+			'invalid chunk size'                   => ['Hello! This is a non-chunked response!'],
+			'invalid chunk extension'              => ['1BNot chunked\r\nLooks chunked but it is not\r\n'],
+			'unquoted chunk-ext-val with space'    => ["02;foo=unquoted with space\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"],
+			'unquoted chunk-ext-val with forbidden character' => ["02;foo={unquoted}\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"],
+			'invalid chunk-ext-name'               => ["02;{foo}=bar\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"],
+			'incomplete quote for chunk-ext-value' => ["02;foo=\"no end quote\r\nab\r\n04\r\nra\nc\r\n06\r\nadabra\r\n0c\r\n\nall we got\n"],
+		];
 	}
 
 	/**
@@ -120,10 +120,10 @@ final class ChunkedDecodingTest extends TestCase {
 		$transport->body    = "02\r\nab\r\nNot actually chunked!";
 		$transport->chunked = true;
 
-		$options  = array(
+		$options  = [
 			'transport' => $transport,
-		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		];
+		$response = Requests::get('http://example.com/', [], $options);
 
 		$this->assertInstanceOf(Response::class, $response, 'Response is not an instance of the Response class.');
 		$this->assertSame($transport->body, $response->body, 'Response body does not match original body');

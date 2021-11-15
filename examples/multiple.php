@@ -7,22 +7,22 @@ require_once dirname(__DIR__) . '/src/Autoload.php';
 WpOrg\Requests\Autoload::register();
 
 // Setup what we want to request
-$requests = array(
-	array(
+$requests = [
+	[
 		'url'     => 'http://httpbin.org/get',
-		'headers' => array('Accept' => 'application/javascript'),
-	),
-	'post'    => array(
+		'headers' => ['Accept' => 'application/javascript'],
+	],
+	'post'    => [
 		'url'  => 'http://httpbin.org/post',
-		'data' => array('mydata' => 'something'),
-	),
-	'delayed' => array(
+		'data' => ['mydata' => 'something'],
+	],
+	'delayed' => [
 		'url'     => 'http://httpbin.org/delay/10',
-		'options' => array(
+		'options' => [
 			'timeout' => 20,
-		),
-	),
-);
+		],
+	],
+];
 
 // Setup a callback
 function my_callback(&$request, $id) {
@@ -30,9 +30,9 @@ function my_callback(&$request, $id) {
 }
 
 // Tell Requests to use the callback
-$options = array(
+$options = [
 	'complete' => 'my_callback',
-);
+];
 
 // Send the request!
 $responses = WpOrg\Requests\Requests::request_multiple($requests, $options);

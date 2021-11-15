@@ -10,7 +10,7 @@ WpOrg\Requests\Autoload::register();
 $c = new WpOrg\Requests\Cookie('login_uid', 'something');
 
 // Now let's make a request!
-$request = WpOrg\Requests\Requests::get('http://httpbin.org/cookies', array('Cookie' => $c->format_for_header()));
+$request = WpOrg\Requests\Requests::get('http://httpbin.org/cookies', ['Cookie' => $c->format_for_header()]);
 
 // Check what we received
 var_dump($request);
