@@ -240,8 +240,19 @@ class Session {
 	 * @param array $requests Requests data (see {@see \WpOrg\Requests\Requests::request_multiple()})
 	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
 	public function request_multiple($requests, $options = array()) {
+		if (InputValidator::has_array_access($requests) === false || InputValidator::is_iterable($requests) === false) {
+			throw InvalidArgument::create(1, '$requests', 'array|ArrayAccess&Traversable', gettype($requests));
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(2, '$options', 'array', gettype($options));
+		}
+
 		foreach ($requests as $key => $request) {
 			$requests[$key] = $this->merge_request($request, false);
 		}
