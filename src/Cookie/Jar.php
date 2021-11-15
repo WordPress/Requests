@@ -13,6 +13,7 @@ use IteratorAggregate;
 use ReturnTypeWillChange;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\HookManager;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response;
@@ -34,8 +35,14 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 * Create a new jar
 	 *
 	 * @param array $cookies Existing cookie values
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not an array.
 	 */
 	public function __construct($cookies = array()) {
+		if (is_array($cookies) === false) {
+			throw InvalidArgument::create(1, '$cookies', 'array', gettype($cookies));
+		}
+
 		$this->cookies = $cookies;
 	}
 
@@ -45,7 +52,7 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 * @param string|\WpOrg\Requests\Cookie $cookie
 	 * @return \WpOrg\Requests\Cookie
 	 */
-	public function normalize_cookie($cookie, $key = null) {
+	public function normalize_cookie($cookie, $key = '') {
 		if ($cookie instanceof Cookie) {
 			return $cookie;
 		}
