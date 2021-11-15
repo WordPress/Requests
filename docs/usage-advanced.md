@@ -15,16 +15,16 @@ default parameters for these.
 Let's simulate communicating with GitHub.
 
 ```php
-$session = new Requests_Session('https://api.github.com/');
+$session = new WpOrg\Requests\Session('https://api.github.com/');
 $session->headers['X-ContactAuthor'] = 'rmccue';
 $session->useragent = 'My-Awesome-App';
 
 $response = $session->get('/zen');
 ```
 
-You can use the `url`, `headers`, `data` and `options` properties of the Session
+You can use the `url`, `headers`, `data` and `options` properties of the `WpOrg\Requests\Session`
 object to set the defaults for this session, and the constructor also takes
-parameters in the same order as `Requests::request()`. Accessing any other
+parameters in the same order as `WpOrg\Requests\Requests::request()`. Accessing any other
 properties will set the corresponding key in the options array; that is:
 
 ```php
@@ -41,7 +41,7 @@ Secure Requests with SSL
 By default, HTTPS requests will use the most secure options available:
 
 ```php
-$response = Requests::get('https://httpbin.org/');
+$response = WpOrg\Requests\Requests::get('https://httpbin.org/');
 ```
 
 Requests bundles certificates from the [Mozilla certificate authority list][],
@@ -54,12 +54,22 @@ accepted by cURL and OpenSSL):
 $options = array(
     'verify' => '/path/to/cacert.pem'
 );
-$response = Requests::get('https://httpbin.org/', array(), $options);
+$response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
 ```
 
 Alternatively, if you want to disable verification completely, this is possible
 with `'verify' => false`, but note that this is extremely insecure and should be
 avoided.
+
+Note that SSL verification might not be available depending on what extensions
+are enabled for your PHP environment. You can test whether Requests has
+access to a transport with SSL capabilities with the following call:
+
+```php
+use WpOrg\Requests\Capability;
+
+$ssl_available = WpOrg\Requests\Requests::test(array(Capability::SSL => true));
+```
 
 ### Security Note
 Requests supports SSL across both cURL and fsockopen in a transparent manner.
@@ -71,9 +81,9 @@ first PHP HTTP library to fully support SSL verification.
 See also the [related PHP][php-bug-47030] and [OpenSSL-related][php-bug-55820]
 bugs in PHP for more information on Subject Alternate Name field.
 
-[Mozilla certificate authority list]: http://www.mozilla.org/projects/security/certs/
-[php-bug-47030]: https://bugs.php.net/bug.php?id=47030
-[php-bug-55820]:https://bugs.php.net/bug.php?id=55820
+[Mozilla certificate authority list]: https://www.mozilla.org/projects/security/certs/
+[php-bug-47030]: https://php.net/47030
+[php-bug-55820]: https://php.net/55820
 
 ***
 
