@@ -33,24 +33,33 @@ $session->options['useragent'] = 'My-Awesome-App';
 
 Secure Requests with SSL
 ------------------------
-By default, HTTPS requests will use the most secure options available:
+Setting the `'verify'` option to `true` enables certificate verification using the certificate authority list provided by the server environment:
 
 ```php
-$response = WpOrg\Requests\Requests::get('https://httpbin.org/');
+// Use server-provided certificate authority list.
+$options  = array('verify' => true);
+$response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
 ```
 
-Requests bundles certificates from the [Mozilla certificate authority list][],
-which is the same list of root certificates used in most browsers. If you're
-accessing sites with certificates from other CAs, or self-signed certificates,
-you can point Requests to a custom CA list in PEM form (the same format
-accepted by cURL and OpenSSL):
+If you're accessing sites with certificates from other CAs, or self-signed certificates, you can point Requests to a custom CA list in PEM form (the same format accepted by cURL and OpenSSL) by using the `'verify'` option with a filepath string:
 
 ```php
+// Use custom certificate authority list.
 $options = array(
     'verify' => '/path/to/cacert.pem'
 );
 $response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
 ```
+
+As a fallback, Requests bundles certificates from the [Mozilla certificate authority list][],
+which is the same list of root certificates used in most browsers. This fallback is used when the `'verify'` option is not provided at all:
+
+```php
+// Use fallback certificate authority list.
+$response = WpOrg\Requests\Requests::get('https://httpbin.org/');
+```
+
+Note however that this fallback should only be used for servers that are not properly configured for SSL verification, as a continuously managed server should provide a more up-to-date certificate authority list than a software package which only gets updates on full releases.
 
 Alternatively, if you want to disable verification completely, this is possible
 with `'verify' => false`, but note that this is extremely insecure and should be
