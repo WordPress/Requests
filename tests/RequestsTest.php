@@ -3,15 +3,111 @@
 namespace WpOrg\Requests\Tests;
 
 use ReflectionProperty;
+use stdClass;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
 use WpOrg\Requests\Tests\Fixtures\RawTransportMock;
+use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\Fixtures\TestTransportMock;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 
 final class RequestsTest extends TestCase {
+
+	/**
+	 * Tests receiving an exception when the constructor received an invalid input type as `$url`.
+	 *
+	 * @dataProvider dataRequestInvalidUrl
+	 *
+	 * @covers \WpOrg\Requests\Requests::request
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestInvalidUrl($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($url) must be of type string|Stringable');
+
+		Requests::request($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRequestInvalidUrl() {
+		return array(
+			'null'                  => array(null),
+			'array'                 => array(array(httpbin('/'))),
+			'non-stringable object' => array(new stdClass('name')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the request() method received an invalid input type as `$type`.
+	 *
+	 * @dataProvider dataInvalidTypeNotString
+	 *
+	 * @covers \WpOrg\Requests\Requests::request
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestInvalidType($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #4 ($type) must be of type string');
+
+		Requests::request('/', array(), array(), $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidTypeNotString() {
+		return array(
+			'null'              => array(null),
+			'stringable object' => array(new StringableObject('type')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the request() method received an invalid input type as `$options`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Requests::request
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestInvalidOptions($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #5 ($options) must be of type array');
+
+		Requests::request('/', array(), array(), Requests::GET, $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidTypeNotArray() {
+		return array(
+			'null'                    => array(null),
+			'array accessible object' => array(new ArrayAccessibleObject(array())),
+		);
+	}
 
 	public function testInvalidProtocol() {
 		$this->expectException(Exception::class);
@@ -20,7 +116,7 @@ final class RequestsTest extends TestCase {
 	}
 
 	public function testDefaultTransport() {
-		$request = Requests::get(httpbin('/get'));
+		$request = Requests::get(new Iri(httpbin('/get')));
 		$this->assertSame(200, $request->status_code);
 	}
 

@@ -15,6 +15,7 @@ use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\IdnaEncoder;
 use WpOrg\Requests\Iri;
@@ -22,6 +23,7 @@ use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * Requests for PHP
@@ -428,16 +430,31 @@ class Requests {
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
 	 *
-	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
-	 *
-	 * @param string $url URL to request
+	 * @param string|Stringable $url URL to request
 	 * @param array $headers Extra headers to send with the request
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use Requests constants)
 	 * @param array $options Options for the request (see description for more information)
 	 * @return \WpOrg\Requests\Response
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $type argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
+	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
 	 */
 	public static function request($url, $headers = array(), $data = array(), $type = self::GET, $options = array()) {
+		if (InputValidator::is_string_or_stringable($url) === false) {
+			throw InvalidArgument::create(1, '$url', 'string|Stringable', gettype($url));
+		}
+
+		if (is_string($type) === false) {
+			throw InvalidArgument::create(4, '$type', 'string', gettype($type));
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(5, '$options', 'array', gettype($options));
+		}
+
 		if (empty($options['type'])) {
 			$options['type'] = $type;
 		}
