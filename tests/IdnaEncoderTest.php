@@ -194,7 +194,7 @@ final class IdnaEncoderTest extends TestCase {
 	 */
 	public function testInvalidInputType($data) {
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($hostname) must be of type string');
+		$this->expectExceptionMessage('Argument #1 ($hostname) must be of type string|Stringable');
 
 		IdnaEncoder::encode($data);
 	}
