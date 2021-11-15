@@ -12,6 +12,7 @@
 namespace WpOrg\Requests;
 
 use WpOrg\Requests\Auth\Basic;
+use WpOrg\Requests\Capability;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
@@ -455,7 +456,7 @@ class Requests {
 		}
 		else {
 			$need_ssl     = (stripos($url, 'https://') === 0);
-			$capabilities = array('ssl' => $need_ssl);
+			$capabilities = array(Capability::SSL => $need_ssl);
 			$transport    = self::get_transport($capabilities);
 		}
 		$response = $transport->request($url, $headers, $data, $options);
