@@ -5,6 +5,7 @@ namespace WpOrg\Requests\Tests;
 use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Ssl;
+use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 
 /**
@@ -57,9 +58,9 @@ final class SslTest extends TestCase {
 	 */
 	public function dataMatch() {
 		return array(
-			'top-level domain' => array(
-				'host'      => 'example.com',
-				'reference' => 'example.com',
+			'top-level domain (stringable object)' => array(
+				'host'      => new StringableObject('example.com'),
+				'reference' => new StringableObject('example.com'),
 			),
 			'subdomain' => array(
 				'host'      => 'test.example.com',
@@ -447,7 +448,7 @@ final class SslTest extends TestCase {
 				'expected'  => false,
 			),
 			'three parts, no wildcard' => array(
-				'reference' => 'www.example.com',
+				'reference' => new StringableObject('www.example.com'),
 				'expected'  => true,
 			),
 			'three parts, no wildcard, has spaces' => array(
