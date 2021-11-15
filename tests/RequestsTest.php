@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests;
 
+use EmptyIterator;
 use ReflectionProperty;
 use stdClass;
 use WpOrg\Requests\Capability;
@@ -95,6 +96,56 @@ final class RequestsTest extends TestCase {
 		$this->expectExceptionMessage('Argument #5 ($options) must be of type array');
 
 		Requests::request('/', array(), array(), Requests::GET, $input);
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$requests`.
+	 *
+	 * @dataProvider dataRequestMultipleInvalidRequests
+	 *
+	 * @covers \WpOrg\Requests\Requests::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleInvalidRequests($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($requests) must be of type array|ArrayAccess&Traversable');
+
+		Requests::request_multiple($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRequestMultipleInvalidRequests() {
+		return array(
+			'null'                                 => array(null),
+			'text string'                          => array('array'),
+			'iterator object without array access' => array(new EmptyIterator()),
+			'array accessible object not iterable' => array(new ArrayAccessibleObject(array(1, 2, 3))),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$option`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Requests::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleInvalidOptions($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($options) must be of type array');
+
+		Requests::request_multiple(array(), $input);
 	}
 
 	/**
