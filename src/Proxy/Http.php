@@ -9,6 +9,7 @@
 namespace WpOrg\Requests\Proxy;
 
 use WpOrg\Requests\Exception\ArgumentCount;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Proxy;
 
@@ -55,11 +56,12 @@ final class Http implements Proxy {
 	 * Constructor
 	 *
 	 * @since 1.6
-	 * @since 2.0 Throws an `ArgumentCount` exception instead of the Requests base `Exception.
 	 *
-	 * @param array|null $args Array of proxy, user and password.
-	 *                         Must have exactly one (proxy) or three elements (proxy, user, password).
+	 * @param array|string|null $args Proxy as a string or an array of proxy, user and password.
+	 *                                When passed as an array, must have exactly one (proxy)
+	 *                                or three elements (proxy, user, password).
 	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not an array, a string or null.
 	 * @throws \WpOrg\Requests\Exception\ArgumentCount On incorrect number of arguments (`proxyhttpbadargs`)
 	 */
 	public function __construct($args = null) {
@@ -81,6 +83,8 @@ final class Http implements Proxy {
 					'proxyhttpbadargs'
 				);
 			}
+		} elseif ($args !== null) {
+			throw InvalidArgument::create(1, '$args', 'array|string|null', gettype($args));
 		}
 	}
 
