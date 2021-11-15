@@ -231,7 +231,7 @@ class Requests {
 	 * @return string FQCN of the transport to use, or an empty string if no transport was
 	 *                found which provided the requested capabilities.
 	 */
-	protected static function get_transport_class($capabilities = array()) {
+	protected static function get_transport_class(array $capabilities = array()) {
 		// Caching code, don't bother testing coverage.
 		// @codeCoverageIgnoreStart
 		// Array of capabilities as a string to be used as an array key.
@@ -274,7 +274,7 @@ class Requests {
 	 * @return \WpOrg\Requests\Transport
 	 * @throws \WpOrg\Requests\Exception If no valid transport is found (`notransport`).
 	 */
-	protected static function get_transport($capabilities = array()) {
+	protected static function get_transport(array $capabilities = array()) {
 		$class = self::get_transport_class($capabilities);
 
 		if ($class === '') {
@@ -296,7 +296,7 @@ class Requests {
 	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
 	 * @return bool Whether the transport has the requested capabilities.
 	 */
-	public static function has_capabilities($capabilities = array()) {
+	public static function has_capabilities(array $capabilities = array()) {
 		return self::get_transport_class($capabilities) !== '';
 	}
 
