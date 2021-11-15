@@ -13,6 +13,7 @@ kramdown:
 plugins:
   - jekyll-github-metadata
   - jekyll-sitemap
+  - jemoji
 
 requests:
     packagist: rmccue/requests
