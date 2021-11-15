@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests;
 
+use ArrayIterator;
 use EmptyIterator;
 use ReflectionProperty;
 use stdClass;
@@ -403,6 +404,70 @@ final class RequestsTest extends TestCase {
 		return array(
 			'null'                  => array(null),
 			'non-stringable object' => array(new stdClass('value')),
+		);
+	}
+
+	/**
+	 * Tests flattening of data arrays.
+	 *
+	 * @dataProvider dataFlattenValidData
+	 *
+	 * @covers \WpOrg\Requests\Requests::flatten
+	 *
+	 * @param mixed $input Valid input.
+	 *
+	 * @return void
+	 */
+	public function testFlattenValidData($input) {
+		$expected = array(
+			0 => 'key1: value1',
+			1 => 'key2: value2',
+		);
+
+		$this->assertSame($expected, Requests::flatten($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataFlattenValidData() {
+		$to_flatten = array('key1' => 'value1', 'key2' => 'value2');
+
+		return array(
+			'array'           => array($to_flatten),
+			'iterable object' => array(new ArrayIterator($to_flatten)),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed as `$dictionary` to the flatten() method.
+	 *
+	 * @dataProvider dataFlattenInvalidData
+	 *
+	 * @covers \WpOrg\Requests\Requests::flatten
+	 *
+	 * @param mixed $input Invalid input.
+	 *
+	 * @return void
+	 */
+	public function testFlattenInvalidData($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($dictionary) must be of type iterable');
+
+		Requests::flatten($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataFlattenInvalidData() {
+		return array(
+			'null'                                 => array(null),
+			'array accessible object not iterable' => array(new ArrayAccessibleObject(array(1, 2, 3))),
 		);
 	}
 }

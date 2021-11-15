@@ -875,10 +875,16 @@ class Requests {
 	/**
 	 * Convert a key => value array to a 'key: value' array for headers
 	 *
-	 * @param array $dictionary Dictionary of header values
+	 * @param iterable $dictionary Dictionary of header values
 	 * @return array List of headers
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not iterable.
 	 */
 	public static function flatten($dictionary) {
+		if (InputValidator::is_iterable($dictionary) === false) {
+			throw InvalidArgument::create(1, '$dictionary', 'iterable', gettype($dictionary));
+		}
+
 		$return = array();
 		foreach ($dictionary as $key => $value) {
 			$return[] = sprintf('%s: %s', $key, $value);
