@@ -42,7 +42,7 @@ final class AutoloadTest extends TestCase {
 	public function testAutoloadOfOldRequestsClassDoesNotThrowAFatalForFinalClass() {
 		define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
 
-		$this->assertInstanceOf(FilteredIterator::class, new Requests_utility_filteredIterator(array(), function() {}));
+		$this->assertInstanceOf(FilteredIterator::class, new Requests_utility_filteredIterator([], function() {}));
 	}
 
 	/**

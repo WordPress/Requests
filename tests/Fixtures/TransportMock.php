@@ -10,7 +10,7 @@ final class TransportMock implements Transport {
 	public $body        = 'Test Body';
 	public $raw_headers = '';
 
-	private static $messages = array(
+	private static $messages = [
 		100 => '100 Continue',
 		101 => '101 Switching Protocols',
 		200 => '200 OK',
@@ -57,9 +57,9 @@ final class TransportMock implements Transport {
 		504 => '504 Gateway Timeout',
 		505 => '505 HTTP Version Not Supported',
 		511 => '511 Network Authentication Required',
-	);
+	];
 
-	public function request($url, $headers = array(), $data = array(), $options = array()) {
+	public function request($url, $headers = [], $data = [], $options = []) {
 		$status    = isset(self::$messages[$this->code]) ? self::$messages[$this->code] : $this->code . ' unknown';
 		$response  = "HTTP/1.0 $status\r\n";
 		$response .= "Content-Type: text/plain\r\n";
@@ -73,7 +73,7 @@ final class TransportMock implements Transport {
 	}
 
 	public function request_multiple($requests, $options) {
-		$responses = array();
+		$responses = [];
 		foreach ($requests as $id => $request) {
 			$handler              = new self();
 			$handler->code        = $request['options']['mock.code'];
@@ -83,15 +83,15 @@ final class TransportMock implements Transport {
 			$responses[$id]       = $handler->request($request['url'], $request['headers'], $request['data'], $request['options']);
 
 			if (!empty($options['mock.parse'])) {
-				$request['options']['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$id], $request));
-				$request['options']['hooks']->dispatch('multiple.request.complete', array(&$responses[$id], $id));
+				$request['options']['hooks']->dispatch('transport.internal.parse_response', [&$responses[$id], $request]);
+				$request['options']['hooks']->dispatch('multiple.request.complete', [&$responses[$id], $id]);
 			}
 		}
 
 		return $responses;
 	}
 
-	public static function test($capabilities = array()) {
+	public static function test($capabilities = []) {
 		return true;
 	}
 }

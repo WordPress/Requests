@@ -40,17 +40,17 @@ final class HttpTest extends TestCase {
 	 * @return array
 	 */
 	public function dataException() {
-		return array(
-			'null (or not passed)' => array(
+		return [
+			'null (or not passed)' => [
 				'expected_msg'    => 'Unknown',
 				'expected_reason' => 'Unknown',
-			),
-			'text string: "testing-1-2-3"' => array(
+			],
+			'text string: "testing-1-2-3"' => [
 				'expected_msg'    => '0 testing-1-2-3',
 				'expected_reason' => 'testing-1-2-3',
 				'reason'          => 'testing-1-2-3',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -75,31 +75,31 @@ final class HttpTest extends TestCase {
 	public function dataGetClass() {
 		$default = StatusUnknown::class;
 
-		return array(
-			'null' => array(
+		return [
+			'null' => [
 				'code'     => null,
 				'expected' => $default,
-			),
-			'false' => array(
+			],
+			'false' => [
 				'code'     => null,
 				'expected' => $default,
-			),
-			'integer 0' => array(
+			],
+			'integer 0' => [
 				'code'     => 0,
 				'expected' => $default,
-			),
-			'integer 404' => array(
+			],
+			'integer 404' => [
 				'code'     => 404,
 				'expected' => '\\' . Status404::class,
-			),
-			'string 404' => array(
+			],
+			'string 404' => [
 				'code'     => '404',
 				'expected' => '\\' . Status404::class,
-			),
-			'integer 422: class does not exist' => array(
+			],
+			'integer 422: class does not exist' => [
 				'code'     => 422,
 				'expected' => $default,
-			),
-		);
+			],
+		];
 	}
 }

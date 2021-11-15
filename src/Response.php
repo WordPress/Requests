@@ -42,7 +42,7 @@ class Response {
 	 *
 	 * @var \WpOrg\Requests\Response\Headers Array-like object representing headers
 	 */
-	public $headers = array();
+	public $headers = [];
 
 	/**
 	 * Status code, false if non-blocking
@@ -84,14 +84,14 @@ class Response {
 	 *
 	 * @var array Array of \WpOrg\Requests\Response objects
 	 */
-	public $history = array();
+	public $history = [];
 
 	/**
 	 * Cookies from the request
 	 *
 	 * @var \WpOrg\Requests\Cookie\Jar Array-like object representing a cookie jar
 	 */
-	public $cookies = array();
+	public $cookies = [];
 
 	/**
 	 * Constructor
@@ -108,7 +108,7 @@ class Response {
 	 */
 	public function is_redirect() {
 		$code = $this->status_code;
-		return in_array($code, array(300, 301, 302, 303, 307), true) || $code > 307 && $code < 400;
+		return in_array($code, [300, 301, 302, 303, 307], true) || $code > 307 && $code < 400;
 	}
 
 	/**

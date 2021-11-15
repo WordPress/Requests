@@ -69,8 +69,8 @@ class Basic implements Auth {
 	 * @param \WpOrg\Requests\Hooks $hooks Hook system
 	 */
 	public function register(Hooks $hooks) {
-		$hooks->register('curl.before_send', array($this, 'curl_before_send'));
-		$hooks->register('fsockopen.after_headers', array($this, 'fsockopen_header'));
+		$hooks->register('curl.before_send', [$this, 'curl_before_send']);
+		$hooks->register('fsockopen.after_headers', [$this, 'fsockopen_header']);
 	}
 
 	/**

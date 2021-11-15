@@ -44,11 +44,11 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestInvalidUrl() {
-		return array(
-			'null'                  => array(null),
-			'array'                 => array(array(httpbin('/'))),
-			'non-stringable object' => array(new stdClass('name')),
-		);
+		return [
+			'null'                  => [null],
+			'array'                 => [[httpbin('/')]],
+			'non-stringable object' => [new stdClass('name')],
+		];
 	}
 
 	/**
@@ -66,7 +66,7 @@ final class RequestsTest extends TestCase {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #4 ($type) must be of type string');
 
-		Requests::request('/', array(), array(), $input);
+		Requests::request('/', [], [], $input);
 	}
 
 	/**
@@ -75,10 +75,10 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidTypeNotString() {
-		return array(
-			'null'              => array(null),
-			'stringable object' => array(new StringableObject('type')),
-		);
+		return [
+			'null'              => [null],
+			'stringable object' => [new StringableObject('type')],
+		];
 	}
 
 	/**
@@ -96,7 +96,7 @@ final class RequestsTest extends TestCase {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #5 ($options) must be of type array');
 
-		Requests::request('/', array(), array(), Requests::GET, $input);
+		Requests::request('/', [], [], Requests::GET, $input);
 	}
 
 	/**
@@ -123,12 +123,12 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestMultipleInvalidRequests() {
-		return array(
-			'null'                                 => array(null),
-			'text string'                          => array('array'),
-			'iterator object without array access' => array(new EmptyIterator()),
-			'array accessible object not iterable' => array(new ArrayAccessibleObject(array(1, 2, 3))),
-		);
+		return [
+			'null'                                 => [null],
+			'text string'                          => ['array'],
+			'iterator object without array access' => [new EmptyIterator()],
+			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
+		];
 	}
 
 	/**
@@ -146,7 +146,7 @@ final class RequestsTest extends TestCase {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #2 ($options) must be of type array');
 
-		Requests::request_multiple(array(), $input);
+		Requests::request_multiple([], $input);
 	}
 
 	/**
@@ -155,10 +155,10 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidTypeNotArray() {
-		return array(
-			'null'                    => array(null),
-			'array accessible object' => array(new ArrayAccessibleObject(array())),
-		);
+		return [
+			'null'                    => [null],
+			'array accessible object' => [new ArrayAccessibleObject([])],
+		];
 	}
 
 	public function testInvalidProtocol() {
@@ -190,10 +190,10 @@ final class RequestsTest extends TestCase {
 			"  three\r\n\r\n" .
 			"stop\r\n";
 
-		$options               = array(
+		$options               = [
 			'transport' => $transport,
-		);
-		$response              = Requests::get('http://example.com/', array(), $options);
+		];
+		$response              = Requests::get('http://example.com/', [], $options);
 		$expected              = new Headers();
 		$expected['host']      = 'localhost,ambiguous';
 		$expected['nospace']   = 'here';
@@ -216,11 +216,11 @@ final class RequestsTest extends TestCase {
 			"HTTP/1.0 200 OK\r\n" .
 			"Host: localhost\r\n\r\n";
 
-		$options = array(
+		$options = [
 			'transport' => $transport,
-		);
+		];
 
-		$response = Requests::get('http://example.com/', array(), $options);
+		$response = Requests::get('http://example.com/', [], $options);
 		$this->assertSame(1.0, $response->protocol_version);
 	}
 
@@ -231,10 +231,10 @@ final class RequestsTest extends TestCase {
 			"Host: localhost\r\n\r\n" .
 			'Test';
 
-		$options  = array(
+		$options  = [
 			'transport' => $transport,
-		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		];
+		$response = Requests::get('http://example.com/', [], $options);
 		$this->assertSame($transport->data, $response->raw);
 	}
 
@@ -245,10 +245,10 @@ final class RequestsTest extends TestCase {
 		$transport       = new RawTransportMock();
 		$transport->data = "HTTP/1.0 200 OK\r\nTest: value\nAnother-Test: value\r\n\r\n";
 
-		$options  = array(
+		$options  = [
 			'transport' => $transport,
-		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		];
+		$response = Requests::get('http://example.com/', [], $options);
 		$this->assertSame('value', $response->headers['test']);
 		$this->assertSame('value', $response->headers['another-test']);
 	}
@@ -263,13 +263,13 @@ final class RequestsTest extends TestCase {
 		$transport       = new RawTransportMock();
 		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
 
-		$options = array(
+		$options = [
 			'transport' => $transport,
-		);
+		];
 
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Response could not be parsed');
-		Requests::get('http://example.com/', array(), $options);
+		Requests::get('http://example.com/', [], $options);
 	}
 
 	/**
@@ -279,45 +279,45 @@ final class RequestsTest extends TestCase {
 		$transport       = new RawTransportMock();
 		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
 
-		$options = array(
+		$options = [
 			'transport' => $transport,
-		);
+		];
 
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Missing header/body separator');
-		Requests::get('http://example.com/', array(), $options);
+		Requests::get('http://example.com/', [], $options);
 	}
 
 	public function testInvalidStatus() {
 		$transport       = new RawTransportMock();
 		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
 
-		$options = array(
+		$options = [
 			'transport' => $transport,
-		);
+		];
 
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Response could not be parsed');
-		Requests::get('http://example.com/', array(), $options);
+		Requests::get('http://example.com/', [], $options);
 	}
 
 	public function test30xWithoutLocation() {
 		$transport       = new TransportMock();
 		$transport->code = 302;
 
-		$options  = array(
+		$options  = [
 			'transport' => $transport,
-		);
-		$response = Requests::get('http://example.com/', array(), $options);
+		];
+		$response = Requests::get('http://example.com/', [], $options);
 		$this->assertSame(302, $response->status_code);
 		$this->assertSame(0, $response->redirects);
 	}
 
 	public function testTimeoutException() {
-		$options = array('timeout' => 0.5);
+		$options = ['timeout' => 0.5];
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('timed out');
-		Requests::get(httpbin('/delay/3'), array(), $options);
+		Requests::get(httpbin('/delay/3'), [], $options);
 	}
 
 	/**
@@ -327,7 +327,7 @@ final class RequestsTest extends TestCase {
 		if (!extension_loaded('curl') && !extension_loaded('openssl')) {
 			$this->markTestSkipped('Testing for SSL requires either the curl or the openssl extension');
 		}
-		$this->assertTrue(Requests::has_capabilities(array(Capability::SSL => true)));
+		$this->assertTrue(Requests::has_capabilities([Capability::SSL => true]));
 	}
 
 	/**
@@ -336,11 +336,11 @@ final class RequestsTest extends TestCase {
 	public function testHasCapabilitiesFailsForUnsupportedCapabilities() {
 		$transports = new ReflectionProperty(Requests::class, 'transports');
 		$transports->setAccessible(true);
-		$transports->setValue(array(TestTransportMock::class));
+		$transports->setValue([TestTransportMock::class]);
 
-		$result = Requests::has_capabilities(array('time-travel' => true));
+		$result = Requests::has_capabilities(['time-travel' => true]);
 
-		$transports->setValue(array());
+		$transports->setValue([]);
 		$transports->setAccessible(false);
 
 		$this->assertFalse($result);
@@ -369,12 +369,12 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataSetCertificatePathValidData() {
-		return array(
-			'boolean false'     => array(false),
-			'boolean true'      => array(true),
-			'string'            => array('path/to/file.pem'),
-			'stringable object' => array(new StringableObject('path/to/file.pem')),
-		);
+		return [
+			'boolean false'     => [false],
+			'boolean true'      => [true],
+			'string'            => ['path/to/file.pem'],
+			'stringable object' => [new StringableObject('path/to/file.pem')],
+		];
 	}
 
 	/**
@@ -401,10 +401,10 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataSetCertificatePathInvalidData() {
-		return array(
-			'null'                  => array(null),
-			'non-stringable object' => array(new stdClass('value')),
-		);
+		return [
+			'null'                  => [null],
+			'non-stringable object' => [new stdClass('value')],
+		];
 	}
 
 	/**
@@ -419,10 +419,10 @@ final class RequestsTest extends TestCase {
 	 * @return void
 	 */
 	public function testFlattenValidData($input) {
-		$expected = array(
+		$expected = [
 			0 => 'key1: value1',
 			1 => 'key2: value2',
-		);
+		];
 
 		$this->assertSame($expected, Requests::flatten($input));
 	}
@@ -433,12 +433,12 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataFlattenValidData() {
-		$to_flatten = array('key1' => 'value1', 'key2' => 'value2');
+		$to_flatten = ['key1' => 'value1', 'key2' => 'value2'];
 
-		return array(
-			'array'           => array($to_flatten),
-			'iterable object' => array(new ArrayIterator($to_flatten)),
-		);
+		return [
+			'array'           => [$to_flatten],
+			'iterable object' => [new ArrayIterator($to_flatten)],
+		];
 	}
 
 	/**
@@ -465,9 +465,9 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataFlattenInvalidData() {
-		return array(
-			'null'                                 => array(null),
-			'array accessible object not iterable' => array(new ArrayAccessibleObject(array(1, 2, 3))),
-		);
+		return [
+			'null'                                 => [null],
+			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
+		];
 	}
 }

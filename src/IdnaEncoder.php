@@ -165,7 +165,7 @@ class IdnaEncoder {
 	 * @throws \WpOrg\Requests\Exception Invalid UTF-8 codepoint (`idna.invalidcodepoint`)
 	 */
 	protected static function utf8_to_codepoints($input) {
-		$codepoints = array();
+		$codepoints = [];
 
 		// Get number of bytes
 		$strlen = strlen($input);
@@ -269,7 +269,7 @@ class IdnaEncoder {
 		$b = 0; // see loop
 		// copy them to the output in order
 		$codepoints = self::utf8_to_codepoints($input);
-		$extended   = array();
+		$extended   = [];
 
 		foreach ($codepoints as $char) {
 			if ($char < 128) {

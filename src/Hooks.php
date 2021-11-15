@@ -22,7 +22,7 @@ class Hooks implements HookManager {
 	 *
 	 * @var array
 	 */
-	protected $hooks = array();
+	protected $hooks = [];
 
 	/**
 	 * Register a callback for a hook
@@ -48,11 +48,11 @@ class Hooks implements HookManager {
 		}
 
 		if (!isset($this->hooks[$hook])) {
-			$this->hooks[$hook] = array(
-				$priority => array(),
-			);
+			$this->hooks[$hook] = [
+				$priority => [],
+			];
 		} elseif (!isset($this->hooks[$hook][$priority])) {
-			$this->hooks[$hook][$priority] = array();
+			$this->hooks[$hook][$priority] = [];
 		}
 
 		$this->hooks[$hook][$priority][] = $callback;
@@ -67,7 +67,7 @@ class Hooks implements HookManager {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $hook argument is not a string.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $parameters argument is not an array.
 	 */
-	public function dispatch($hook, $parameters = array()) {
+	public function dispatch($hook, $parameters = []) {
 		if (is_string($hook) === false) {
 			throw InvalidArgument::create(1, '$hook', 'string', gettype($hook));
 		}

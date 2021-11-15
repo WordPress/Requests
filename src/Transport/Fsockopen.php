@@ -65,7 +65,7 @@ final class Fsockopen implements Transport {
 	 * @throws \WpOrg\Requests\Exception       On failure to connect to socket (`fsockopenerror`)
 	 * @throws \WpOrg\Requests\Exception       On socket timeout (`timeout`)
 	 */
-	public function request($url, $headers = array(), $data = array(), $options = array()) {
+	public function request($url, $headers = [], $data = [], $options = []) {
 		if (!is_array($data) && !is_string($data)) {
 			if ($data === null) {
 				$data = '';
@@ -94,10 +94,10 @@ final class Fsockopen implements Transport {
 				$url_parts['port'] = Port::HTTPS;
 			}
 
-			$context_options = array(
+			$context_options = [
 				'verify_peer'       => true,
 				'capture_peer_cert' => true,
-			);
+			];
 			$verifyname      = true;
 
 			// SNI, if enabled (OpenSSL >=0.9.8j)
@@ -125,7 +125,7 @@ final class Fsockopen implements Transport {
 				$verifyname                          = false;
 			}
 
-			stream_context_set_option($context, array('ssl' => $context_options));
+			stream_context_set_option($context, ['ssl' => $context_options]);
 		}
 		else {
 			$remote_socket = 'tcp://' . $host;
@@ -139,9 +139,9 @@ final class Fsockopen implements Transport {
 		$remote_socket .= ':' . $url_parts['port'];
 
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
-		set_error_handler(array($this, 'connect_error_handler'), E_WARNING | E_NOTICE);
+		set_error_handler([$this, 'connect_error_handler'], E_WARNING | E_NOTICE);
 
-		$options['hooks']->dispatch('fsockopen.remote_socket', array(&$remote_socket));
+		$options['hooks']->dispatch('fsockopen.remote_socket', [&$remote_socket]);
 
 		$socket = stream_socket_client($remote_socket, $errno, $errstr, ceil($options['connect_timeout']), STREAM_CLIENT_CONNECT, $context);
 
@@ -167,10 +167,10 @@ final class Fsockopen implements Transport {
 			$data = '';
 		}
 		else {
-			$path = self::format_get($url_parts, array());
+			$path = self::format_get($url_parts, []);
 		}
 
-		$options['hooks']->dispatch('fsockopen.remote_host_path', array(&$path, $url));
+		$options['hooks']->dispatch('fsockopen.remote_host_path', [&$path, $url]);
 
 		$request_body = '';
 		$out          = sprintf("%s %s HTTP/%.1F\r\n", $options['type'], $path, $options['protocol_version']);
@@ -221,7 +221,7 @@ final class Fsockopen implements Transport {
 			$out .= implode("\r\n", $headers) . "\r\n";
 		}
 
-		$options['hooks']->dispatch('fsockopen.after_headers', array(&$out));
+		$options['hooks']->dispatch('fsockopen.after_headers', [&$out]);
 
 		if (substr($out, -2) !== "\r\n") {
 			$out .= "\r\n";
@@ -233,15 +233,15 @@ final class Fsockopen implements Transport {
 
 		$out .= "\r\n" . $request_body;
 
-		$options['hooks']->dispatch('fsockopen.before_send', array(&$out));
+		$options['hooks']->dispatch('fsockopen.before_send', [&$out]);
 
 		fwrite($socket, $out);
-		$options['hooks']->dispatch('fsockopen.after_send', array($out));
+		$options['hooks']->dispatch('fsockopen.after_send', [$out]);
 
 		if (!$options['blocking']) {
 			fclose($socket);
 			$fake_headers = '';
-			$options['hooks']->dispatch('fsockopen.after_request', array(&$fake_headers));
+			$options['hooks']->dispatch('fsockopen.after_request', [&$fake_headers]);
 			return '';
 		}
 
@@ -287,7 +287,7 @@ final class Fsockopen implements Transport {
 
 			// Are we in body mode now?
 			if ($doingbody) {
-				$options['hooks']->dispatch('request.progress', array($block, $size, $this->max_bytes));
+				$options['hooks']->dispatch('request.progress', [$block, $size, $this->max_bytes]);
 				$data_length = strlen($block);
 				if ($this->max_bytes) {
 					// Have we already hit a limit?
@@ -320,7 +320,7 @@ final class Fsockopen implements Transport {
 		}
 		fclose($socket);
 
-		$options['hooks']->dispatch('fsockopen.after_request', array(&$this->headers, &$this->info));
+		$options['hooks']->dispatch('fsockopen.after_request', [&$this->headers, &$this->info]);
 		return $this->headers;
 	}
 
@@ -332,21 +332,21 @@ final class Fsockopen implements Transport {
 	 * @return array Array of \WpOrg\Requests\Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
 	 */
 	public function request_multiple($requests, $options) {
-		$responses = array();
+		$responses = [];
 		$class     = get_class($this);
 		foreach ($requests as $id => $request) {
 			try {
 				$handler        = new $class();
 				$responses[$id] = $handler->request($request['url'], $request['headers'], $request['data'], $request['options']);
 
-				$request['options']['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$id], $request));
+				$request['options']['hooks']->dispatch('transport.internal.parse_response', [&$responses[$id], $request]);
 			}
 			catch (Exception $e) {
 				$responses[$id] = $e;
 			}
 
 			if (!is_string($responses[$id])) {
-				$request['options']['hooks']->dispatch('multiple.request.complete', array(&$responses[$id], $id));
+				$request['options']['hooks']->dispatch('multiple.request.complete', [&$responses[$id], $id]);
 			}
 		}
 
@@ -359,7 +359,7 @@ final class Fsockopen implements Transport {
 	 * @return string Accept-Encoding header value
 	 */
 	private static function accept_encoding() {
-		$type = array();
+		$type = [];
 		if (function_exists('gzinflate')) {
 			$type[] = 'deflate;q=1.0';
 		}
@@ -458,7 +458,7 @@ final class Fsockopen implements Transport {
 	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
 	 * @return bool Whether the transport can be used.
 	 */
-	public static function test($capabilities = array()) {
+	public static function test($capabilities = []) {
 		if (!function_exists('fsockopen')) {
 			return false;
 		}

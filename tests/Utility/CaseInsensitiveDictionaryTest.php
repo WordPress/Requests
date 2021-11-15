@@ -20,7 +20,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 *
 	 * @var array
 	 */
-	const DATASET = array(
+	const DATASET = [
 		'UPPER CASE'  => 'Uppercase key',
 		'Proper Case' => 'First char in caps in key',
 		'lower case'  => 'Lowercase key',
@@ -29,14 +29,14 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 		true          => 'true key will become integer 1 key',
 		5.0           => 'Float key will be converted to integer key (cut off)',
 		100           => 'Explicit integer numeric key',
-	);
+	];
 
 	/**
 	 * Data to use in the data provider for the array access tests.
 	 *
 	 * @var array
 	 */
-	const DATASET_REVERSED = array(
+	const DATASET_REVERSED = [
 		'Uppercase key'                              => 'UPPER CASE',
 		'First char in caps in key'                  => 'Proper Case',
 		'Lowercase key'                              => 'lower case',
@@ -45,7 +45,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 		'true key will become integer 1 key'         => true,
 		'Float key will be converted to integer key (cut off)' => 5.0,
 		'Explicit integer numeric key'               => 100,
-	);
+	];
 
 	/**
 	 * Text string case changing functions in PHP.
@@ -54,12 +54,12 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 *
 	 * @var array
 	 */
-	const CHANGE_CASE_FUNCTIONS = array(
+	const CHANGE_CASE_FUNCTIONS = [
 		'strtolower' => true,
 		'strtoupper' => true,
 		'ucfirst'    => true,
 		'ucwords'    => true,
-	);
+	];
 
 	/**
 	 * Test setting up a dictionary without entries.
@@ -117,7 +117,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 * @return array
 	 */
 	public function dataArrayAccessForValidEntries() {
-		$data = array();
+		$data = [];
 
 		foreach (self::DATASET_REVERSED as $key => $value) {
 			if (is_string($value)) {
@@ -125,10 +125,10 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 				$value = $fn($value);
 			}
 
-			$data[$key] = array(
+			$data[$key] = [
 				'key'   => $value,
 				'value' => $key,
-			);
+			];
 		}
 
 		return $data;
@@ -172,10 +172,10 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 * @return array
 	 */
 	public function dataArrayAccessForInvalidEntry() {
-		return array(
-			'string key'  => array('Non-existant entry'),
-			'integer key' => array(25),
-		);
+		return [
+			'string key'  => ['Non-existant entry'],
+			'integer key' => [25],
+		];
 	}
 
 	/**
@@ -223,7 +223,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetAll() {
-		$expected = array(
+		$expected = [
 			'upper case'  => 'Uppercase key',
 			'proper case' => 'First char in caps in key',
 			'lower case'  => 'Lowercase key',
@@ -232,7 +232,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 			1             => 'true key will become integer 1 key',
 			5             => 'Float key will be converted to integer key (cut off)',
 			100           => 'Explicit integer numeric key',
-		);
+		];
 
 		$dictionary = new CaseInsensitiveDictionary(self::DATASET);
 		$this->assertSame($expected, $dictionary->getAll());

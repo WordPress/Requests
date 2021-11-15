@@ -57,20 +57,20 @@ final class SslTest extends TestCase {
 	 * @return array
 	 */
 	public function dataMatch() {
-		return array(
-			'top-level domain (stringable object)' => array(
+		return [
+			'top-level domain (stringable object)' => [
 				'host'      => new StringableObject('example.com'),
 				'reference' => new StringableObject('example.com'),
-			),
-			'subdomain' => array(
+			],
+			'subdomain' => [
 				'host'      => 'test.example.com',
 				'reference' => 'test.example.com',
-			),
-			'subdomain with wildcard reference' => array(
+			],
+			'subdomain with wildcard reference' => [
 				'host'      => 'test.example.com',
 				'reference' => '*.example.com',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -79,33 +79,33 @@ final class SslTest extends TestCase {
 	 * @return array
 	 */
 	public function dataMatchViaCertificate() {
-		return array(
-			'top-level domain; missing SAN, fallback to CN' => array(
+		return [
+			'top-level domain; missing SAN, fallback to CN' => [
 				'host'      => 'example.com',
 				'reference' => 'example.com',
 				'with_san'  => false,
-			),
-			'SAN available, multiple alternatives provided; matching is second' => array(
+			],
+			'SAN available, multiple alternatives provided; matching is second' => [
 				'host'      => 'example.net',
 				'reference' => 'example.net',
 				'with_san'  => 'DNS: example.com, DNS: example.net, DNS: example.info',
-			),
-			'SAN available, multiple alternatives provided; matching is last' => array(
+			],
+			'SAN available, multiple alternatives provided; matching is last' => [
 				'host'      => 'example.net',
 				'reference' => 'example.net',
 				'with_san'  => 'DNS: example.com, DNS: example.org, DNS: example.net',
-			),
-			'SAN available, DNS prefix missing in first, not (matching) second' => array(
+			],
+			'SAN available, DNS prefix missing in first, not (matching) second' => [
 				'host'      => 'example.net',
 				'reference' => 'example.com',
 				'with_san'  => 'example.com, DNS: example.net',
-			),
-			'SAN available, DNS prefix missing in all, fallback to CN' => array(
+			],
+			'SAN available, DNS prefix missing in all, fallback to CN' => [
 				'host'      => 'example.net',
 				'reference' => 'example.net',
 				'with_san'  => 'example.com, example.net',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -152,59 +152,59 @@ final class SslTest extends TestCase {
 	 * @return array
 	 */
 	public function dataNoMatch() {
-		return array(
+		return [
 			// Check that we need at least 3 components
-			'not a domain; wildcard reference' => array(
+			'not a domain; wildcard reference' => [
 				'host'      => 'com',
 				'reference' => '*',
-			),
-			'domain name; wildcard on TLD as reference' => array(
+			],
+			'domain name; wildcard on TLD as reference' => [
 				'host'      => 'example.com',
 				'reference' => '*.com',
-			),
+			],
 
 			// Check that double wildcards don't work
-			'domain name; double wildcard in reference' => array(
+			'domain name; double wildcard in reference' => [
 				'host'      => 'abc.def.example.com',
 				'reference' => '*.*.example.com',
-			),
+			],
 
 			// Check that we only match with the correct number of components
-			'four-level domain; three-level reference' => array(
+			'four-level domain; three-level reference' => [
 				'host'      => 'abc.def.example.com',
 				'reference' => 'def.example.com',
-			),
-			'four-level domain; three-level wildcard reference' => array(
+			],
+			'four-level domain; three-level wildcard reference' => [
 				'host'      => 'abc.def.example.com',
 				'reference' => '*.example.com',
-			),
+			],
 
 			// Check that the wildcard only works as the full first component
-			'four-level domain; four-level reference, but wildcard not stand-alone' => array(
+			'four-level domain; four-level reference, but wildcard not stand-alone' => [
 				'host'      => 'abc.def.example.com',
 				'reference' => 'a*.def.example.com',
-			),
+			],
 
 			// Check that wildcards are not allowed for IPs
-			'IP address; wildcard in refence (start)' => array(
+			'IP address; wildcard in refence (start)' => [
 				'host'      => '192.168.0.1',
 				'reference' => '*.168.0.1',
-			),
-			'IP address; wildcard in refence (end)' => array(
+			],
+			'IP address; wildcard in refence (end)' => [
 				'host'      => '192.168.0.1',
 				'reference' => '192.168.0.*',
-			),
+			],
 
 			// IP vs named address.
-			'IP address vs named address' => array(
+			'IP address vs named address' => [
 				'host'      => '192.168.0.1',
 				'reference' => '*.example.com',
-			),
-			'Named address vs IP address' => array(
+			],
+			'Named address vs IP address' => [
 				'host'      => 'example.com',
 				'reference' => '192.168.0.1',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -213,33 +213,33 @@ final class SslTest extends TestCase {
 	 * @return array
 	 */
 	public function dataNoMatchViaCertificate() {
-		return array(
-			'top-level domain; missing SAN, fallback to invalid CN' => array(
+		return [
+			'top-level domain; missing SAN, fallback to invalid CN' => [
 				'host'      => 'example.net',
 				'reference' => 'example.com',
 				'with_san'  => false,
-			),
-			'SAN empty' => array(
+			],
+			'SAN empty' => [
 				'host'      => 'example.net',
 				'reference' => 'example.com',
 				'with_san'  => '',
-			),
-			'SAN available, DNS prefix missing' => array(
+			],
+			'SAN available, DNS prefix missing' => [
 				'host'      => 'example.net',
 				'reference' => 'example.com',
 				'with_san'  => 'example.com',
-			),
-			'SAN available, multiple alternatives provided; none of the SANs match, DNS prefix missing in first, not second' => array(
+			],
+			'SAN available, multiple alternatives provided; none of the SANs match, DNS prefix missing in first, not second' => [
 				'host'      => 'example.net',
 				'reference' => 'example.com',
 				'with_san'  => 'example.com, DNS: example.org',
-			),
-			'SAN available, multiple alternatives provided; none of the SANs match, even though CN does' => array(
+			],
+			'SAN available, multiple alternatives provided; none of the SANs match, even though CN does' => [
 				'host'      => 'example.net',
 				'reference' => 'example.net',
 				'with_san'  => 'DNS: example.com, DNS: example.org, DNS: example.info',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -248,20 +248,20 @@ final class SslTest extends TestCase {
 	 * @return array
 	 */
 	private function fakeCertificate($dnsname, $with_san = true) {
-		$certificate = array(
-			'subject' => array(
+		$certificate = [
+			'subject' => [
 				'CN' => $dnsname,
-			),
-		);
+			],
+		];
 
 		if ($with_san !== false) {
 			// If SAN is set to true, default it to the dNSName
 			if ($with_san === true) {
 				$with_san = 'DNS: ' . $dnsname;
 			}
-			$certificate['extensions'] = array(
+			$certificate['extensions'] = [
 				'subjectAltName' => $with_san,
-			);
+			];
 		}
 
 		return $certificate;
@@ -305,95 +305,95 @@ final class SslTest extends TestCase {
 	 * @return array
 	 */
 	public function dataVerifyCertificateWithInvalidCertificates() {
-		return array(
-			'empty array' => array(
+		return [
+			'empty array' => [
 				'host'        => 'example.com',
-				'certificate' => array(),
+				'certificate' => [],
 				'expected'    => false,
-			),
-			'subject, but missing CN entry; no SAN' => array(
+			],
+			'subject, but missing CN entry; no SAN' => [
 				'host'        => 'example.com',
-				'certificate' => array(
-					'subject' => array(),
-				),
+				'certificate' => [
+					'subject' => [],
+				],
 				'expected'    => false,
-			),
-			'subject with empty CN entry; no SAN' => array(
+			],
+			'subject with empty CN entry; no SAN' => [
 				'host'        => 'example.com',
-				'certificate' => array(
-					'subject' => array(
+				'certificate' => [
+					'subject' => [
 						'CN' => '',
-					),
-				),
+					],
+				],
 				'expected'    => false,
-			),
-			'subject, but missing CN entry; SAN exists, missing DNS' => array(
+			],
+			'subject, but missing CN entry; SAN exists, missing DNS' => [
 				'host'        => 'example.com',
-				'certificate' => array(
-					'subject'    => array(),
-					'extensions' => array(
+				'certificate' => [
+					'subject'    => [],
+					'extensions' => [
 						'subjectAltName' => 'example.net',
-					),
-				),
+					],
+				],
 				'expected'    => false,
-			),
-			'subject with empty CN entry; SAN exists, missing DNS' => array(
+			],
+			'subject with empty CN entry; SAN exists, missing DNS' => [
 				'host'        => 'example.com',
-				'certificate' => array(
-					'subject' => array(
+				'certificate' => [
+					'subject' => [
 						'CN' => '',
-					),
-					'extensions' => array(
+					],
+					'extensions' => [
 						'subjectAltName' => 'example.net',
-					),
-				),
+					],
+				],
 				'expected'    => false,
-			),
-			'subject, but missing CN entry; SAN exists, but non-matching' => array(
+			],
+			'subject, but missing CN entry; SAN exists, but non-matching' => [
 				'host'        => 'example.com',
-				'certificate' => array(
-					'subject'    => array(),
-					'extensions' => array(
+				'certificate' => [
+					'subject'    => [],
+					'extensions' => [
 						'subjectAltName' => 'DNS: example.net',
-					),
-				),
+					],
+				],
 				'expected'    => false,
-			),
-			'subject with empty CN entry; SAN exists, but non-matching' => array(
+			],
+			'subject with empty CN entry; SAN exists, but non-matching' => [
 				'host'        => 'example.com',
-				'certificate' => array(
-					'subject' => array(
+				'certificate' => [
+					'subject' => [
 						'CN' => '',
-					),
-					'extensions' => array(
+					],
+					'extensions' => [
 						'subjectAltName' => 'DNS:   example.net',
-					),
-				),
+					],
+				],
 				'expected'    => false,
-			),
-			'extensions, but missing SAN entry' => array(
+			],
+			'extensions, but missing SAN entry' => [
 				'host'        => 'example.com',
-				'certificate' => array(
-					'subject'    => array(
+				'certificate' => [
+					'subject'    => [
 						'CN' => 'example.net',
-					),
-					'extensions' => array(),
-				),
+					],
+					'extensions' => [],
+				],
 				'expected'    => false,
-			),
-			'extensions with empty SAN entry' => array(
+			],
+			'extensions with empty SAN entry' => [
 				'host'        => 'example.com',
-				'certificate' => array(
-					'subject' => array(
+				'certificate' => [
+					'subject' => [
 						'CN' => 'example.net',
-					),
-					'extensions' => array(
+					],
+					'extensions' => [
 						'subjectAltName' => '',
-					),
-				),
+					],
+				],
 				'expected'    => false,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -418,76 +418,76 @@ final class SslTest extends TestCase {
 	 * @return array
 	 */
 	public function dataVerifyReferenceName() {
-		return array(
-			'empty string' => array(
+		return [
+			'empty string' => [
 				'reference' => '',
 				'expected'  => false,
-			),
-			'one part, no dot' => array(
+			],
+			'one part, no dot' => [
 				'reference' => 'example',
 				'expected'  => true,
-			),
-			'one part, only wildcard' => array(
+			],
+			'one part, only wildcard' => [
 				'reference' => '*',
 				'expected'  => false,
-			),
-			'two parts, no wildcard' => array(
+			],
+			'two parts, no wildcard' => [
 				'reference' => 'example.com',
 				'expected'  => true,
-			),
-			'two parts, wildcard in first' => array(
+			],
+			'two parts, wildcard in first' => [
 				'reference' => '*.com',
 				'expected'  => false,
-			),
-			'two parts, wildcard in last' => array(
+			],
+			'two parts, wildcard in last' => [
 				'reference' => 'example.*',
 				'expected'  => false,
-			),
-			'three parts, only dots' => array(
+			],
+			'three parts, only dots' => [
 				'reference' => '..',
 				'expected'  => false,
-			),
-			'three parts, no wildcard' => array(
+			],
+			'three parts, no wildcard' => [
 				'reference' => new StringableObject('www.example.com'),
 				'expected'  => true,
-			),
-			'three parts, no wildcard, has spaces' => array(
+			],
+			'three parts, no wildcard, has spaces' => [
 				'reference' => 'my dog . and . my cat',
 				'expected'  => false,
-			),
-			'three parts, wildcard in first' => array(
+			],
+			'three parts, wildcard in first' => [
 				'reference' => '*.example.com',
 				'expected'  => true,
-			),
-			'three parts, wildcard in second' => array(
+			],
+			'three parts, wildcard in second' => [
 				'reference' => 'www.*.com',
 				'expected'  => false,
-			),
-			'three parts, wildcard in third' => array(
+			],
+			'three parts, wildcard in third' => [
 				'reference' => 'www.example.*',
 				'expected'  => false,
-			),
-			'three parts, wildcard in first at start with other characters' => array(
+			],
+			'three parts, wildcard in first at start with other characters' => [
 				'reference' => '*ww.example.com',
 				'expected'  => false,
-			),
-			'three parts, wildcard in first at end with other characters' => array(
+			],
+			'three parts, wildcard in first at end with other characters' => [
 				'reference' => 'ww*.example.com',
 				'expected'  => false,
-			),
-			'three parts, wildcard in first and second' => array(
+			],
+			'three parts, wildcard in first and second' => [
 				'reference' => '*.*.com',
 				'expected'  => false,
-			),
-			'three parts, wildcard in second and last' => array(
+			],
+			'three parts, wildcard in second and last' => [
 				'reference' => 'www.*.*',
 				'expected'  => false,
-			),
-			'three parts, wildcard in first and last' => array(
+			],
+			'three parts, wildcard in first and last' => [
 				'reference' => '*.example.*',
 				'expected'  => false,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -505,7 +505,7 @@ final class SslTest extends TestCase {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #1 ($host) must be of type string|Stringable');
 
-		Ssl::verify_certificate($input, array());
+		Ssl::verify_certificate($input, []);
 	}
 
 	/**
@@ -568,9 +568,9 @@ final class SslTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidInputType() {
-		return array(
-			'null'         => array(null),
-			'plain object' => array(new stdClass()),
-		);
+		return [
+			'null'         => [null],
+			'plain object' => [new stdClass()],
+		];
 	}
 }

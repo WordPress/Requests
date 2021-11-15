@@ -24,14 +24,14 @@ class CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
 	 *
 	 * @var array
 	 */
-	protected $data = array();
+	protected $data = [];
 
 	/**
 	 * Creates a case insensitive dictionary.
 	 *
 	 * @param array $data Dictionary/map to convert to case-insensitive
 	 */
-	public function __construct(array $data = array()) {
+	public function __construct(array $data = []) {
 		foreach ($data as $offset => $value) {
 			$this->offsetSet($offset, $value);
 		}

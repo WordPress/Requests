@@ -22,7 +22,7 @@ interface Transport {
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return string Raw HTTP result
 	 */
-	public function request($url, $headers = array(), $data = array(), $options = array());
+	public function request($url, $headers = [], $data = [], $options = []);
 
 	/**
 	 * Send multiple requests simultaneously
@@ -41,5 +41,5 @@ interface Transport {
 	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
 	 * @return bool Whether the transport can be used.
 	 */
-	public static function test($capabilities = array());
+	public static function test($capabilities = []);
 }

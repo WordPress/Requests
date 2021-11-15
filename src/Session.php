@@ -38,7 +38,7 @@ class Session {
 	 *
 	 * @var array
 	 */
-	public $headers = array();
+	public $headers = [];
 
 	/**
 	 * Base data for requests
@@ -48,7 +48,7 @@ class Session {
 	 *
 	 * @var array
 	 */
-	public $data = array();
+	public $data = [];
 
 	/**
 	 * Base options for requests
@@ -61,7 +61,7 @@ class Session {
 	 *
 	 * @var array
 	 */
-	public $options = array();
+	public $options = [];
 
 	/**
 	 * Create a new session
@@ -76,7 +76,7 @@ class Session {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $data argument is not an array.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
-	public function __construct($url = null, $headers = array(), $data = array(), $options = array()) {
+	public function __construct($url = null, $headers = [], $data = [], $options = []) {
 		if ($url !== null && InputValidator::is_string_or_stringable($url) === false) {
 			throw InvalidArgument::create(1, '$url', 'string|Stringable|null', gettype($url));
 		}
@@ -155,21 +155,21 @@ class Session {
 	/**
 	 * Send a GET request
 	 */
-	public function get($url, $headers = array(), $options = array()) {
+	public function get($url, $headers = [], $options = []) {
 		return $this->request($url, $headers, null, Requests::GET, $options);
 	}
 
 	/**
 	 * Send a HEAD request
 	 */
-	public function head($url, $headers = array(), $options = array()) {
+	public function head($url, $headers = [], $options = []) {
 		return $this->request($url, $headers, null, Requests::HEAD, $options);
 	}
 
 	/**
 	 * Send a DELETE request
 	 */
-	public function delete($url, $headers = array(), $options = array()) {
+	public function delete($url, $headers = [], $options = []) {
 		return $this->request($url, $headers, null, Requests::DELETE, $options);
 	}
 	/**#@-*/
@@ -185,14 +185,14 @@ class Session {
 	/**
 	 * Send a POST request
 	 */
-	public function post($url, $headers = array(), $data = array(), $options = array()) {
+	public function post($url, $headers = [], $data = [], $options = []) {
 		return $this->request($url, $headers, $data, Requests::POST, $options);
 	}
 
 	/**
 	 * Send a PUT request
 	 */
-	public function put($url, $headers = array(), $data = array(), $options = array()) {
+	public function put($url, $headers = [], $data = [], $options = []) {
 		return $this->request($url, $headers, $data, Requests::PUT, $options);
 	}
 
@@ -204,7 +204,7 @@ class Session {
 	 *
 	 * @link https://tools.ietf.org/html/rfc5789
 	 */
-	public function patch($url, $headers, $data = array(), $options = array()) {
+	public function patch($url, $headers, $data = [], $options = []) {
 		return $this->request($url, $headers, $data, Requests::PATCH, $options);
 	}
 	/**#@-*/
@@ -226,7 +226,7 @@ class Session {
 	 * @param array $options Options for the request (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return \WpOrg\Requests\Response
 	 */
-	public function request($url, $headers = array(), $data = array(), $type = Requests::GET, $options = array()) {
+	public function request($url, $headers = [], $data = [], $type = Requests::GET, $options = []) {
 		$request = $this->merge_request(compact('url', 'headers', 'data', 'options'));
 
 		return Requests::request($request['url'], $request['headers'], $request['data'], $type, $request['options']);
@@ -244,7 +244,7 @@ class Session {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
-	public function request_multiple($requests, $options = array()) {
+	public function request_multiple($requests, $options = []) {
 		if (InputValidator::has_array_access($requests) === false || InputValidator::is_iterable($requests) === false) {
 			throw InvalidArgument::create(1, '$requests', 'array|ArrayAccess&Traversable', gettype($requests));
 		}
@@ -279,7 +279,7 @@ class Session {
 		}
 
 		if (empty($request['headers'])) {
-			$request['headers'] = array();
+			$request['headers'] = [];
 		}
 		$request['headers'] = array_merge($this->headers, $request['headers']);
 

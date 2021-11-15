@@ -19,9 +19,9 @@ final class JarTest extends TestCase {
 		$jar1['requests-testcookie'] = 'testvalue';
 
 		$jar2 = new Jar(
-			array(
+			[
 				'requests-testcookie' => 'testvalue',
-			)
+			]
 		);
 		$this->assertEquals($jar1, $jar2);
 	}
@@ -45,10 +45,10 @@ final class JarTest extends TestCase {
 	}
 
 	public function testCookieJarIterator() {
-		$cookies = array(
+		$cookies = [
 			'requests-testcookie1' => 'testvalue1',
 			'requests-testcookie2' => 'testvalue2',
-		);
+		];
 		$jar     = new Jar($cookies);
 
 		foreach ($jar as $key => $value) {
@@ -58,9 +58,9 @@ final class JarTest extends TestCase {
 
 	public function testSendingCookieWithJar() {
 		$cookies = new Jar(
-			array(
+			[
 				'requests-testcookie1' => 'testvalue1',
-			)
+			]
 		);
 		$data    = $this->setCookieRequest($cookies);
 
@@ -70,10 +70,10 @@ final class JarTest extends TestCase {
 
 	public function testSendingMultipleCookiesWithJar() {
 		$cookies = new Jar(
-			array(
+			[
 				'requests-testcookie1' => 'testvalue1',
 				'requests-testcookie2' => 'testvalue2',
-			)
+			]
 		);
 		$data    = $this->setCookieRequest($cookies);
 
@@ -86,9 +86,9 @@ final class JarTest extends TestCase {
 
 	public function testSendingPrebakedCookie() {
 		$cookies = new Jar(
-			array(
+			[
 				new Cookie('requests-testcookie', 'testvalue'),
-			)
+			]
 		);
 		$data    = $this->setCookieRequest($cookies);
 
@@ -97,10 +97,10 @@ final class JarTest extends TestCase {
 	}
 
 	private function setCookieRequest($cookies) {
-		$options  = array(
+		$options  = [
 			'cookies' => $cookies,
-		);
-		$response = Requests::get(httpbin('/cookies/set'), array(), $options);
+		];
+		$response = Requests::get(httpbin('/cookies/set'), [], $options);
 
 		$data = json_decode($response->body, true);
 		$this->assertIsArray($data);

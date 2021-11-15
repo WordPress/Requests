@@ -51,8 +51,8 @@ final class CurlTest extends TestCase {
 	 * @return array
 	 */
 	public function dataException() {
-		return array(
-			'Everything set to null (or not passed)' => array(
+		return [
+			'Everything set to null (or not passed)' => [
 				'expected_msg'    => '-1 Unknown',
 				'expected_code'   => -1,
 				'expected_reason' => 'Unknown',
@@ -60,8 +60,8 @@ final class CurlTest extends TestCase {
 				'type'            => null,
 				'data'            => null,
 				'code'            => null,
-			),
-			'Message passed, everything else set to null (or not passed)' => array(
+			],
+			'Message passed, everything else set to null (or not passed)' => [
 				'expected_msg'    => '-1 testing-1-2-3',
 				'expected_code'   => -1,
 				'expected_reason' => 'testing-1-2-3',
@@ -69,8 +69,8 @@ final class CurlTest extends TestCase {
 				'type'            => null,
 				'data'            => null,
 				'code'            => null,
-			),
-			'Type passed, everything else set to null (or not passed)' => array(
+			],
+			'Type passed, everything else set to null (or not passed)' => [
 				'expected_msg'    => '-1 Unknown',
 				'expected_code'   => -1,
 				'expected_reason' => 'Unknown',
@@ -78,8 +78,8 @@ final class CurlTest extends TestCase {
 				'type'            => Curl::EASY,
 				'data'            => null,
 				'code'            => null,
-			),
-			'Code passed, everything else set to null (or not passed)' => array(
+			],
+			'Code passed, everything else set to null (or not passed)' => [
 				'expected_msg'    => CURLE_COULDNT_RESOLVE_HOST . ' Unknown',
 				'expected_code'   => CURLE_COULDNT_RESOLVE_HOST,
 				'expected_reason' => 'Unknown',
@@ -87,8 +87,8 @@ final class CurlTest extends TestCase {
 				'type'            => null,
 				'data'            => null,
 				'code'            => CURLE_COULDNT_RESOLVE_HOST,
-			),
-			'Message and type passed, everything else set to null (or not passed)' => array(
+			],
+			'Message and type passed, everything else set to null (or not passed)' => [
 				'expected_msg'    => '-1 testing-1-2-3',
 				'expected_code'   => -1,
 				'expected_reason' => 'testing-1-2-3',
@@ -96,8 +96,8 @@ final class CurlTest extends TestCase {
 				'type'            => Curl::EASY,
 				'data'            => null,
 				'code'            => null,
-			),
-			'Message and code passed, everything else set to null (or not passed)' => array(
+			],
+			'Message and code passed, everything else set to null (or not passed)' => [
 				'expected_msg'    => CURLE_COULDNT_RESOLVE_HOST . ' testing-1-2-3',
 				'expected_code'   => CURLE_COULDNT_RESOLVE_HOST,
 				'expected_reason' => 'testing-1-2-3',
@@ -105,8 +105,8 @@ final class CurlTest extends TestCase {
 				'type'            => null,
 				'data'            => null,
 				'code'            => CURLE_COULDNT_RESOLVE_HOST,
-			),
-			'Type and code passed, everything else set to null (or not passed)' => array(
+			],
+			'Type and code passed, everything else set to null (or not passed)' => [
 				'expected_msg'    => CURLE_COULDNT_RESOLVE_HOST . ' Unknown',
 				'expected_code'   => CURLE_COULDNT_RESOLVE_HOST,
 				'expected_reason' => 'Unknown',
@@ -114,16 +114,16 @@ final class CurlTest extends TestCase {
 				'type'            => Curl::EASY,
 				'data'            => null,
 				'code'            => CURLE_COULDNT_RESOLVE_HOST,
-			),
-			'Everything set; code not integer' => array(
+			],
+			'Everything set; code not integer' => [
 				'expected_msg'    => '61 testing-1-2-3',
 				'expected_code'   => 61,
 				'expected_reason' => 'testing-1-2-3',
 				'message'         => 'testing-1-2-3',
 				'type'            => Curl::EASY,
-				'data'            => array(),
+				'data'            => [],
 				'code'            => '61 text',
-			),
-		);
+			],
+		];
 	}
 }

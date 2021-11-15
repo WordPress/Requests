@@ -99,12 +99,12 @@ final class Http implements Proxy {
 	 * @param \WpOrg\Requests\Hooks $hooks Hook system
 	 */
 	public function register(Hooks $hooks) {
-		$hooks->register('curl.before_send', array($this, 'curl_before_send'));
+		$hooks->register('curl.before_send', [$this, 'curl_before_send']);
 
-		$hooks->register('fsockopen.remote_socket', array($this, 'fsockopen_remote_socket'));
-		$hooks->register('fsockopen.remote_host_path', array($this, 'fsockopen_remote_host_path'));
+		$hooks->register('fsockopen.remote_socket', [$this, 'fsockopen_remote_socket']);
+		$hooks->register('fsockopen.remote_host_path', [$this, 'fsockopen_remote_host_path']);
 		if ($this->use_authentication) {
-			$hooks->register('fsockopen.after_headers', array($this, 'fsockopen_header'));
+			$hooks->register('fsockopen.after_headers', [$this, 'fsockopen_header']);
 		}
 	}
 

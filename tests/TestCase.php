@@ -13,11 +13,11 @@ abstract class TestCase extends Polyfill_TestCase {
 	 * @var array
 	 */
 	public function transportProvider() {
-		$data = array();
+		$data = [];
 
 		foreach (Requests::DEFAULT_TRANSPORTS as $transport) {
 			$name        = substr($transport, (strrpos($transport, '\\') + 1));
-			$data[$name] = array($transport);
+			$data[$name] = [$transport];
 		}
 
 		return $data;

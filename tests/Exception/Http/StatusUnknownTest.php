@@ -39,22 +39,22 @@ final class StatusUnknownTest extends TestCase {
 
 		$response_without_status = new Response();
 
-		return array(
-			'null (or not passed)' => array(
+		return [
+			'null (or not passed)' => [
 				'expectedCode' => 0,
-			),
-			'integer error code as data' => array(
+			],
+			'integer error code as data' => [
 				'expectedCode' => 0,
 				'data'         => 507,
-			),
-			'Response object with status code' => array(
+			],
+			'Response object with status code' => [
 				'expectedCode' => 12345,
 				'data'         => $response_with_status,
-			),
-			'Response object without status code' => array(
+			],
+			'Response object without status code' => [
 				'expectedCode' => 0,
 				'data'         => $response_without_status,
-			),
-		);
+			],
+		];
 	}
 }

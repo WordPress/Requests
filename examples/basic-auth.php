@@ -7,10 +7,10 @@ require_once dirname(__DIR__) . '/src/Autoload.php';
 WpOrg\Requests\Autoload::register();
 
 // Now let's make a request!
-$options = array(
-	'auth' => array('someuser', 'password'),
-);
-$request = WpOrg\Requests\Requests::get('http://httpbin.org/basic-auth/someuser/password', array(), $options);
+$options = [
+	'auth' => ['someuser', 'password'],
+];
+$request = WpOrg\Requests\Requests::get('http://httpbin.org/basic-auth/someuser/password', [], $options);
 
 // Check what we received
 var_dump($request);

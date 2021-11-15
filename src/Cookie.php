@@ -41,7 +41,7 @@ class Cookie {
 	 *
 	 * @var \WpOrg\Requests\Utility\CaseInsensitiveDictionary|array Array-like object
 	 */
-	public $attributes = array();
+	public $attributes = [];
 
 	/**
 	 * Cookie flags
@@ -51,7 +51,7 @@ class Cookie {
 	 *
 	 * @var array
 	 */
-	public $flags = array();
+	public $flags = [];
 
 	/**
 	 * Reference time for relative calculations
@@ -78,7 +78,7 @@ class Cookie {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $flags argument is not an array.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $reference_time argument is not an integer or null.
 	 */
-	public function __construct($name, $value, $attributes = array(), $flags = array(), $reference_time = null) {
+	public function __construct($name, $value, $attributes = [], $flags = [], $reference_time = null) {
 		if (is_string($name) === false) {
 			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
 		}
@@ -102,12 +102,12 @@ class Cookie {
 		$this->name       = $name;
 		$this->value      = $value;
 		$this->attributes = $attributes;
-		$default_flags    = array(
+		$default_flags    = [
 			'creation'    => time(),
 			'last-access' => time(),
 			'persistent'  => false,
 			'host-only'   => true,
-		);
+		];
 		$this->flags      = array_merge($default_flags, $flags);
 
 		$this->reference_time = time();
@@ -378,7 +378,7 @@ class Cookie {
 	public function format_for_set_cookie() {
 		$header_value = $this->format_for_header();
 		if (!empty($this->attributes)) {
-			$parts = array();
+			$parts = [];
 			foreach ($this->attributes as $key => $value) {
 				// Ignore non-associative attributes
 				if (is_numeric($key)) {
@@ -458,7 +458,7 @@ class Cookie {
 			}
 		}
 
-		return new static($name, $value, $attributes, array(), $reference_time);
+		return new static($name, $value, $attributes, [], $reference_time);
 	}
 
 	/**
@@ -472,10 +472,10 @@ class Cookie {
 	public static function parse_from_headers(Headers $headers, Iri $origin = null, $time = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
-			return array();
+			return [];
 		}
 
-		$cookies = array();
+		$cookies = [];
 		foreach ($cookie_headers as $header) {
 			$parsed = self::parse($header, '', $time);
 
