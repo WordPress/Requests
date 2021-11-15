@@ -6,8 +6,7 @@
  *
  * @internal
  *
- * @package Requests
- * @subpackage GHPages
+ * @package Requests\GHPages
  *
  * @phpcs:disable PHPCompatibility.FunctionDeclarations.NewParamTypeDeclarations.stringFound
  * @phpcs:disable PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.intFound
@@ -193,6 +192,8 @@ title: %s
 	 * Transform all docs in the `docs` directory for use in GH Pages.
 	 *
 	 * @return void
+	 *
+	 * @throws \RuntimeException When no markdown files are found in the docs directory.
 	 */
 	private function update_docs(): void {
 		// Create the file list.
@@ -225,6 +226,8 @@ title: %s
 	 * @param string $target Path to the output file.
 	 *
 	 * @return void
+	 *
+	 * @throws \RuntimeException When the page title could not be found in the contents of a markdown file.
 	 */
 	private function update_doc(string $source, string $target): void {
 		// Read the file.
@@ -252,6 +255,8 @@ title: %s
 	 * @param string $source Path to the source file.
 	 *
 	 * @return void
+	 *
+	 * @throws \RuntimeException When index page could not be split correctly into index and navigation.
 	 */
 	private function update_docs_navigation(string $source): void {
 		// Read the file.
@@ -301,6 +306,8 @@ title: %s
 	 * @param string $source Path to the source file.
 	 *
 	 * @return string
+	 *
+	 * @throws \RuntimeException When the contents of the file could not be retrieved.
 	 */
 	private function get_contents(string $source): string {
 		$contents = file_get_contents($source);
@@ -319,6 +326,9 @@ title: %s
 	 * @param string $type     Type of file to use in error message.
 	 *
 	 * @return string
+	 *
+	 * @throws \RuntimeException When the target directory could not be created.
+	 * @throws \RuntimeException When the file could not be written to the target directory.
 	 */
 	private function put_contents(string $target, string $contents, string $type = 'doc file'): void {
 		// Check if the target directory exists and if not, create it.

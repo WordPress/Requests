@@ -239,7 +239,7 @@ abstract class BaseTestCase extends TestCase {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #3 ($data) must be of type array|string');
 
-		$request = Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
+		Requests::post(httpbin('/post'), array(), $data, $this->getOptions());
 	}
 
 	/**
