@@ -100,17 +100,6 @@ class Requests {
 	const BUFFER_SIZE = 1160;
 
 	/**
-	 * Default certificate path.
-	 *
-	 * @see \WpOrg\Requests\Requests::get_certificate_path()
-	 *
-	 * @since 2.0.0
-	 *
-	 * @var string
-	 */
-	const DEFAULT_CERT_PATH = __DIR__ . '/../certificates/cacert.pem';
-
-	/**
 	 * Option defaults.
 	 *
 	 * @see \WpOrg\Requests\Requests::get_default_options()
@@ -185,7 +174,7 @@ class Requests {
 	 *
 	 * @var string
 	 */
-	protected static $certificate_path;
+	protected static $certificate_path = __DIR__ . '/../certificates/cacert.pem';
 
 	/**
 	 * All (known) valid deflate, gzip header magic markers.
@@ -612,7 +601,7 @@ class Requests {
 	 */
 	protected static function get_default_options($multirequest = false) {
 		$defaults           = static::OPTION_DEFAULTS;
-		$defaults['verify'] = self::get_certificate_path();
+		$defaults['verify'] = self::$certificate_path;
 
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
@@ -626,19 +615,21 @@ class Requests {
 	 * @return string Default certificate path.
 	 */
 	public static function get_certificate_path() {
-		if (!empty(self::$certificate_path)) {
-			return self::$certificate_path;
-		}
-
-		return self::DEFAULT_CERT_PATH;
+		return self::$certificate_path;
 	}
 
 	/**
 	 * Set default certificate path.
 	 *
-	 * @param string $path Certificate path, pointing to a PEM file.
+	 * @param string|Stringable|bool $path Certificate path, pointing to a PEM file.
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or boolean.
 	 */
 	public static function set_certificate_path($path) {
+		if (InputValidator::is_string_or_stringable($path) === false && is_bool($path) === false) {
+			throw InvalidArgument::create(1, '$path', 'string|Stringable|bool', gettype($path));
+		}
+
 		self::$certificate_path = $path;
 	}
 

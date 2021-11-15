@@ -344,4 +344,65 @@ final class RequestsTest extends TestCase {
 
 		$this->assertFalse($result);
 	}
+
+	/**
+	 * Tests setting a custom certificate path with valid data types (though potentially not a valid path).
+	 *
+	 * @dataProvider dataSetCertificatePathValidData
+	 *
+	 * @covers \WpOrg\Requests\Requests::set_certificate_path
+	 *
+	 * @param mixed $input Valid input.
+	 *
+	 * @return void
+	 */
+	public function testSetCertificatePathValidData($input) {
+		Requests::set_certificate_path($input);
+
+		$this->assertSame($input, Requests::get_certificate_path());
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataSetCertificatePathValidData() {
+		return array(
+			'boolean false'     => array(false),
+			'boolean true'      => array(true),
+			'string'            => array('path/to/file.pem'),
+			'stringable object' => array(new StringableObject('path/to/file.pem')),
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed as `$path` to the set_certificate_path() method.
+	 *
+	 * @dataProvider dataSetCertificatePathInvalidData
+	 *
+	 * @covers \WpOrg\Requests\Requests::set_certificate_path
+	 *
+	 * @param mixed $input Invalid input.
+	 *
+	 * @return void
+	 */
+	public function testSetCertificatePathInvalidData($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($path) must be of type string|Stringable|bool');
+
+		Requests::set_certificate_path($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataSetCertificatePathInvalidData() {
+		return array(
+			'null'                  => array(null),
+			'non-stringable object' => array(new stdClass('value')),
+		);
+	}
 }
