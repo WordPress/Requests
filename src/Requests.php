@@ -15,6 +15,7 @@ use WpOrg\Requests\Auth\Basic;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\IdnaEncoder;
 use WpOrg\Requests\Iri;
@@ -22,6 +23,7 @@ use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * Requests for PHP
@@ -98,17 +100,6 @@ class Requests {
 	const BUFFER_SIZE = 1160;
 
 	/**
-	 * Default certificate path.
-	 *
-	 * @see \WpOrg\Requests\Requests::get_certificate_path()
-	 *
-	 * @since 2.0.0
-	 *
-	 * @var string
-	 */
-	const DEFAULT_CERT_PATH = __DIR__ . '/../certificates/cacert.pem';
-
-	/**
 	 * Option defaults.
 	 *
 	 * @see \WpOrg\Requests\Requests::get_default_options()
@@ -183,7 +174,7 @@ class Requests {
 	 *
 	 * @var string
 	 */
-	protected static $certificate_path;
+	protected static $certificate_path = __DIR__ . '/../certificates/cacert.pem';
 
 	/**
 	 * All (known) valid deflate, gzip header magic markers.
@@ -231,7 +222,7 @@ class Requests {
 	 * @return string FQCN of the transport to use, or an empty string if no transport was
 	 *                found which provided the requested capabilities.
 	 */
-	protected static function get_transport_class($capabilities = array()) {
+	protected static function get_transport_class(array $capabilities = array()) {
 		// Caching code, don't bother testing coverage.
 		// @codeCoverageIgnoreStart
 		// Array of capabilities as a string to be used as an array key.
@@ -274,7 +265,7 @@ class Requests {
 	 * @return \WpOrg\Requests\Transport
 	 * @throws \WpOrg\Requests\Exception If no valid transport is found (`notransport`).
 	 */
-	protected static function get_transport($capabilities = array()) {
+	protected static function get_transport(array $capabilities = array()) {
 		$class = self::get_transport_class($capabilities);
 
 		if ($class === '') {
@@ -296,7 +287,7 @@ class Requests {
 	 * @param array<string, bool> $capabilities Optional. Associative array of capabilities to test against, i.e. `['<capability>' => true]`.
 	 * @return bool Whether the transport has the requested capabilities.
 	 */
-	public static function has_capabilities($capabilities = array()) {
+	public static function has_capabilities(array $capabilities = array()) {
 		return self::get_transport_class($capabilities) !== '';
 	}
 
@@ -428,16 +419,31 @@ class Requests {
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
 	 *
-	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
-	 *
-	 * @param string $url URL to request
+	 * @param string|Stringable $url URL to request
 	 * @param array $headers Extra headers to send with the request
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use Requests constants)
 	 * @param array $options Options for the request (see description for more information)
 	 * @return \WpOrg\Requests\Response
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $type argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
+	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
 	 */
 	public static function request($url, $headers = array(), $data = array(), $type = self::GET, $options = array()) {
+		if (InputValidator::is_string_or_stringable($url) === false) {
+			throw InvalidArgument::create(1, '$url', 'string|Stringable', gettype($url));
+		}
+
+		if (is_string($type) === false) {
+			throw InvalidArgument::create(4, '$type', 'string', gettype($type));
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(5, '$options', 'array', gettype($options));
+		}
+
 		if (empty($options['type'])) {
 			$options['type'] = $type;
 		}
@@ -506,8 +512,19 @@ class Requests {
 	 * @param array $requests Requests data (see description for more information)
 	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
 	public static function request_multiple($requests, $options = array()) {
+		if (InputValidator::has_array_access($requests) === false || InputValidator::is_iterable($requests) === false) {
+			throw InvalidArgument::create(1, '$requests', 'array|ArrayAccess&Traversable', gettype($requests));
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(2, '$options', 'array', gettype($options));
+		}
+
 		$options = array_merge(self::get_default_options(true), $options);
 
 		if (!empty($options['hooks'])) {
@@ -584,7 +601,7 @@ class Requests {
 	 */
 	protected static function get_default_options($multirequest = false) {
 		$defaults           = static::OPTION_DEFAULTS;
-		$defaults['verify'] = self::get_certificate_path();
+		$defaults['verify'] = self::$certificate_path;
 
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
@@ -598,19 +615,21 @@ class Requests {
 	 * @return string Default certificate path.
 	 */
 	public static function get_certificate_path() {
-		if (!empty(self::$certificate_path)) {
-			return self::$certificate_path;
-		}
-
-		return self::DEFAULT_CERT_PATH;
+		return self::$certificate_path;
 	}
 
 	/**
 	 * Set default certificate path.
 	 *
-	 * @param string $path Certificate path, pointing to a PEM file.
+	 * @param string|Stringable|bool $path Certificate path, pointing to a PEM file.
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or boolean.
 	 */
 	public static function set_certificate_path($path) {
+		if (InputValidator::is_string_or_stringable($path) === false && is_bool($path) === false) {
+			throw InvalidArgument::create(1, '$path', 'string|Stringable|bool', gettype($path));
+		}
+
 		self::$certificate_path = $path;
 	}
 
@@ -856,10 +875,16 @@ class Requests {
 	/**
 	 * Convert a key => value array to a 'key: value' array for headers
 	 *
-	 * @param array $dictionary Dictionary of header values
+	 * @param iterable $dictionary Dictionary of header values
 	 * @return array List of headers
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not iterable.
 	 */
 	public static function flatten($dictionary) {
+		if (InputValidator::is_iterable($dictionary) === false) {
+			throw InvalidArgument::create(1, '$dictionary', 'iterable', gettype($dictionary));
+		}
+
 		$return = array();
 		foreach ($dictionary as $key => $value) {
 			$return[] = sprintf('%s: %s', $key, $value);
@@ -875,8 +900,14 @@ class Requests {
 	 *
 	 * @param string $data Compressed data in one of the above formats
 	 * @return string Decompressed string
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string.
 	 */
 	public static function decompress($data) {
+		if (is_string($data) === false) {
+			throw InvalidArgument::create(1, '$data', 'string', gettype($data));
+		}
+
 		if (trim($data) === '') {
 			// Empty body does not need further processing.
 			return $data;
@@ -936,8 +967,14 @@ class Requests {
 	 *
 	 * @param string $gz_data String to decompress.
 	 * @return string|bool False on failure.
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string.
 	 */
 	public static function compatible_gzinflate($gz_data) {
+		if (is_string($gz_data) === false) {
+			throw InvalidArgument::create(1, '$gz_data', 'string', gettype($gz_data));
+		}
+
 		if (trim($gz_data) === '') {
 			return false;
 		}
