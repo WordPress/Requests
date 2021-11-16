@@ -2,14 +2,17 @@
 
 namespace WpOrg\Requests\Tests\Transport;
 
+use EmptyIterator;
 use stdClass;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\Http\StatusUnknown;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
+use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
+use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -64,7 +67,7 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testSimpleGET() {
-		$request = Requests::get(httpbin('/get'), [], $this->getOptions());
+		$request = Requests::get(new Iri(httpbin('/get')), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -185,9 +188,62 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	/**
+	 * Tests receiving an exception when the request() method receives an invalid input type as `$url`.
+	 *
+	 * @dataProvider dataRequestInvalidUrl
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestInvalidUrl($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($url) must be of type string|Stringable');
+
+		$transport = new $this->transport();
+		$transport->request($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRequestInvalidUrl() {
+		return [
+			'boolean false'         => [false],
+			'array'                 => [[httpbin('/')]],
+			'non-stringable object' => [new stdClass('name')],
+		];
+	}
+
+	/**
+	 * Tests receiving an exception when the request() method received an invalid input type as `$headers`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestInvalidHeaders($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($headers) must be of type array');
+
+		$transport = new $this->transport();
+		$transport->request('', $input);
+	}
+
+	/**
 	 * Test that when a $data parameter of an incorrect type gets passed, it gets handled correctly.
 	 *
-	 * Only string/array are officially supported as accepted data types, but null, integers and floats
+	 * Only string/array are officially supported as accepted data types, but null
 	 * will also be handled (cast to string).
 	 *
 	 * This test safeguards handling of data types in response to changes in PHP 8.1.
@@ -220,26 +276,28 @@ abstract class BaseTestCase extends TestCase {
 	 */
 	public function dataIncorrectDataTypeAccepted() {
 		return [
-			'null'    => [null, ''],
-			'integer' => [12345, '12345'],
-			'float'   => [12.345, '12.345'],
+			'null' => [null, ''],
 		];
 	}
 
 	/**
-	 * Test that when a $data parameter of an unhandled incorrect type gets passed, an exception gets thrown.
+	 * Tests receiving an exception when the request() method received an invalid input type as `$data`.
 	 *
 	 * @dataProvider dataIncorrectDataTypeException
 	 *
-	 * @param mixed $data Input to be used as the $data parameter.
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 *
+	 * @param mixed $input Invalid parameter input.
 	 *
 	 * @return void
 	 */
-	public function testIncorrectDataTypeExceptionPOST($data) {
+	public function testRequestInvalidData($input) {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #3 ($data) must be of type array|string');
 
-		Requests::post(httpbin('/post'), [], $data, $this->getOptions());
+		$transport = new $this->transport();
+		$transport->request(httpbin('/post'), [], $input, $this->getOptions());
 	}
 
 	/**
@@ -250,7 +308,124 @@ abstract class BaseTestCase extends TestCase {
 	public function dataIncorrectDataTypeException() {
 		return [
 			'boolean' => [true],
+			'integer' => [12345, '12345'],
+			'float'   => [12.345, '12.345'],
 			'object'  => [new stdClass()],
+		];
+	}
+
+	/**
+	 * Tests receiving an exception when the request() method received an invalid input type as `$options`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestInvalidOptions($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #4 ($options) must be of type array');
+
+		$transport = new $this->transport();
+		$transport->request('/', [], [], $input);
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$requests`.
+	 *
+	 * @dataProvider dataRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request_multiple
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty($input) {
+		$transport = new $this->transport();
+		$this->assertSame([], $transport->request_multiple($input, $this->getOptions()));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty() {
+		return [
+			'null'        => [null],
+			'empty array' => [[]],
+		];
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$requests`.
+	 *
+	 * @dataProvider dataRequestMultipleInvalidRequests
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request_multiple
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleInvalidRequests($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($requests) must be of type array|ArrayAccess&Traversable');
+
+		$transport = new $this->transport();
+		$transport->request_multiple($input, $this->getOptions());
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRequestMultipleInvalidRequests() {
+		return [
+			'text string'                          => ['array'],
+			'iterator object without array access' => [new EmptyIterator()],
+			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
+		];
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$option`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request_multiple
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleInvalidOptions($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($options) must be of type array');
+
+		$transport = new $this->transport();
+		$transport->request_multiple(['notempty'], $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidTypeNotArray() {
+		return [
+			'null'                    => [null],
+			'boolean false'           => [false],
+			'array accessible object' => [new ArrayAccessibleObject([])],
 		];
 	}
 

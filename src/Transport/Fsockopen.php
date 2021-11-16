@@ -15,6 +15,7 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Transport;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * fsockopen HTTP transport
@@ -55,25 +56,38 @@ final class Fsockopen implements Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @param string $url URL to request
+	 * @param string|Stringable $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return string Raw HTTP result
 	 *
-	 * @throws \WpOrg\Requests\InvalidArgument When the $data parameter is not an array or string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $headers argument is not an array.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $data parameter is not an array or string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 * @throws \WpOrg\Requests\Exception       On failure to connect to socket (`fsockopenerror`)
 	 * @throws \WpOrg\Requests\Exception       On socket timeout (`timeout`)
 	 */
 	public function request($url, $headers = [], $data = [], $options = []) {
+		if (InputValidator::is_string_or_stringable($url) === false) {
+			throw InvalidArgument::create(1, '$url', 'string|Stringable', gettype($url));
+		}
+
+		if (is_array($headers) === false) {
+			throw InvalidArgument::create(2, '$headers', 'array', gettype($headers));
+		}
+
 		if (!is_array($data) && !is_string($data)) {
 			if ($data === null) {
 				$data = '';
-			} elseif (is_int($data) || is_float($data)) {
-				$data = (string) $data;
 			} else {
 				throw InvalidArgument::create(3, '$data', 'array|string', gettype($data));
 			}
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(4, '$options', 'array', gettype($options));
 		}
 
 		$options['hooks']->dispatch('fsockopen.before_request');
@@ -330,8 +344,24 @@ final class Fsockopen implements Transport {
 	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see \WpOrg\Requests\Transport::request()}
 	 * @param array $options Global options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return array Array of \WpOrg\Requests\Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
 	public function request_multiple($requests, $options) {
+		// If you're not requesting, we can't get any responses ¯\_(ツ)_/¯
+		if (empty($requests)) {
+			return [];
+		}
+
+		if (InputValidator::has_array_access($requests) === false || InputValidator::is_iterable($requests) === false) {
+			throw InvalidArgument::create(1, '$requests', 'array|ArrayAccess&Traversable', gettype($requests));
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(2, '$options', 'array', gettype($options));
+		}
+
 		$responses = [];
 		$class     = get_class($this);
 		foreach ($requests as $id => $request) {
