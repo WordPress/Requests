@@ -147,7 +147,7 @@ setting the value of this constant to `true`.
 
   In case you still run into a PHP 8.1 deprecation notice or other PHP 8.1 related issue, please [open an issue to report it](https://github.com/WordPress/Requests/issues/new/choose).
 
-  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#498][gh-498], [#499][gh-499], [#500][gh-500], [#501][gh-501], [#505][gh-505])
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#498][gh-498], [#499][gh-499], [#500][gh-500], [#501][gh-501], [#505][gh-505], [#634][gh-634])
 
 - **Updated documentation**
 
@@ -187,6 +187,7 @@ setting the value of this constant to `true`.
 - max_bytes not respected in a performant manner [#494][gh-494]
 - Prevent cURL transport from leaking on Exception [#319][gh-319]
 
+[gh-634]: https://github.com/WordPress/Requests/pull/634
 [gh-632]: https://github.com/WordPress/Requests/pull/632
 [gh-630]: https://github.com/WordPress/Requests/pull/630
 [gh-629]: https://github.com/WordPress/Requests/pull/629
