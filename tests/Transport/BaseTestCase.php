@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests\Transport;
 
+use EmptyIterator;
 use stdClass;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
@@ -331,6 +332,88 @@ abstract class BaseTestCase extends TestCase {
 
 		$transport = new $this->transport();
 		$transport->request('/', [], [], $input);
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$requests`.
+	 *
+	 * @dataProvider dataRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request_multiple
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty($input) {
+		$transport = new $this->transport();
+		$this->assertSame([], $transport->request_multiple($input, $this->getOptions()));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty() {
+		return [
+			'null'        => [null],
+			'empty array' => [[]],
+		];
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$requests`.
+	 *
+	 * @dataProvider dataRequestMultipleInvalidRequests
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request_multiple
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleInvalidRequests($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($requests) must be of type array|ArrayAccess&Traversable');
+
+		$transport = new $this->transport();
+		$transport->request_multiple($input, $this->getOptions());
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataRequestMultipleInvalidRequests() {
+		return [
+			'text string'                          => ['array'],
+			'iterator object without array access' => [new EmptyIterator()],
+			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
+		];
+	}
+
+	/**
+	 * Tests receiving an exception when the request_multiple() method received an invalid input type as `$option`.
+	 *
+	 * @dataProvider dataInvalidTypeNotArray
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request_multiple
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request_multiple
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testRequestMultipleInvalidOptions($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($options) must be of type array');
+
+		$transport = new $this->transport();
+		$transport->request_multiple(['notempty'], $input);
 	}
 
 	/**

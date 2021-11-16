@@ -231,11 +231,22 @@ final class Curl implements Transport {
 	 * @param array $requests Request data
 	 * @param array $options Global options
 	 * @return array Array of \WpOrg\Requests\Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 */
 	public function request_multiple($requests, $options) {
 		// If you're not requesting, we can't get any responses ¯\_(ツ)_/¯
 		if (empty($requests)) {
 			return [];
+		}
+
+		if (InputValidator::has_array_access($requests) === false || InputValidator::is_iterable($requests) === false) {
+			throw InvalidArgument::create(1, '$requests', 'array|ArrayAccess&Traversable', gettype($requests));
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(2, '$options', 'array', gettype($options));
 		}
 
 		$multihandle = curl_multi_init();
