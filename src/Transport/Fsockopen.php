@@ -429,11 +429,12 @@ final class Fsockopen implements Transport {
 	 *
 	 * @link https://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
 	 *
-	 * @throws \WpOrg\Requests\Exception On failure to connect via TLS (`fsockopen.ssl.connect_error`)
-	 * @throws \WpOrg\Requests\Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
 	 * @param string $host Host name to verify against
 	 * @param resource $context Stream context
 	 * @return bool
+	 *
+	 * @throws \WpOrg\Requests\Exception On failure to connect via TLS (`fsockopen.ssl.connect_error`)
+	 * @throws \WpOrg\Requests\Exception On not obtaining a match for the host (`fsockopen.ssl.no_match`)
 	 */
 	public function verify_certificate_from_context($host, $context) {
 		$meta = stream_context_get_options($context);
