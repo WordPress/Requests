@@ -217,14 +217,14 @@ class Session {
 	 *
 	 * @see \WpOrg\Requests\Requests::request()
 	 *
-	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
-	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use \WpOrg\Requests\Requests constants)
 	 * @param array $options Options for the request (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return \WpOrg\Requests\Response
+	 *
+	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
 	 */
 	public function request($url, $headers = [], $data = [], $type = Requests::GET, $options = []) {
 		$request = $this->merge_request(compact('url', 'headers', 'data', 'options'));

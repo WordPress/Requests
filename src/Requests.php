@@ -700,16 +700,16 @@ class Requests {
 	/**
 	 * HTTP response parser
 	 *
-	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`requests.no_crlf_separator`)
-	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`noversion`)
-	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`toomanyredirects`)
-	 *
 	 * @param string $headers Full response text including headers and body
 	 * @param string $url Original request URL
 	 * @param array $req_headers Original $headers array passed to {@link request()}, in case we need to follow redirects
 	 * @param array $req_data Original $data array passed to {@link request()}, in case we need to follow redirects
 	 * @param array $options Original $options array passed to {@link request()}, in case we need to follow redirects
 	 * @return \WpOrg\Requests\Response
+	 *
+	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`requests.no_crlf_separator`)
+	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`noversion`)
+	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`toomanyredirects`)
 	 */
 	protected static function parse_response($headers, $url, $req_headers, $req_data, $options) {
 		$return = new Response();
