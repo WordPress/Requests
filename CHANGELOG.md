@@ -4,117 +4,194 @@ Changelog
 2.0.0
 -----
 
-(((CURRENT DUMP)))
-- CS: use short arrays [#623][gh-623]
-- Update docs to provide context about CA list fallback [#622][gh-622]
-- Requests: add input validation [#621][gh-621]
-- Session: add input validation [#620][gh-620]
-- CS/Docs: various minor fixes [#618][gh-618]
-- Requests: remove duplicate `match_domain()` method [#617][gh-617]
-- Requests::request(): use Capability constant [#616][gh-616]
-- Ssl: safeguard support for Stringable objects [#615][gh-615]
-- IdnaEncoder + Ipv6: minor tweaks for Stringable support [#614][gh-614]
-- Iri::__construct(): allow `$iri` to be stringable [#613][gh-613]
-- Session: rename magic method parameters [#612][gh-612]
-- Proxy\Http::__construct(): add input validation [#611][gh-611]
-- Cookie\Jar: add input validation [#610][gh-610]
-- Cookie: add input validation [#609][gh-609]
-- Fix reports by PHPStan [#608][gh-608]
-- Docblocks: update all `@package` tags [#606][gh-606]
-- Response\Headers: add input validation + more defensive coding [#605][gh-605]
-- Class FilteredIterator: add input validation [#604][gh-604]
-- Class Response: improve input handling [#603][gh-603]
-- Class Iri: add input validation [#602][gh-602]
-- Class Ipv6: add input validation [#601][gh-601]
-- PHP 8.0 | Hooks::dispatch(): prevent potential fatal error [#599][gh-599]
-- DecompressionTest: improve tests [#595][gh-595]
-- Autoload: treat PSR-4 case-sensitively and PSR-0 case-insensitively [#594][gh-594]
-- IdnaEncoder::encode(): add input validation [#592][gh-592]
-- Ssl::verify_reference_name(): add more defensive coding [#591][gh-591]
-- Release checklist: minor tweaks [#588][gh-588]
-- Rename interface Hooker => HookManager [#587][gh-587]
-- BC-layer: fix fatal "can not inherit from final class" errors [#586][gh-586]
-- GH Actions: more website update workflow tweaks [#583][gh-583]
-- ChunkedEncodingTest: improve tests [#581][gh-581]
-- GH Actions: improve auto-cancelling of outdated builds [#579][gh-579]
-- Fix the DocBlock for `offsetGet()`. [#578][gh-578]
-- update cacert to the latest version [#577][gh-577]
-- GH Actions: auto-cancel previous builds for same branch [#575][gh-575]
-- Auth\Basic: add input validation to constructor [#574][gh-574]
-- Hooks: add input validation to all methods [#573][gh-573]
-- Ssl: add input validation to all methods [#572][gh-572]
-- Remove expired DST Root CA X3 from bundled cacert.pem [#571][gh-571]
-- GH Actions: minor simplification to website gen workflow [#569][gh-569]
-- PHPUnit: update configuration [#566][gh-566]
-- GH Actions/update website: minor tweak [#563][gh-563]
-- GH Pages/prose docs: improve title consistency [#562][gh-562]
-- QA/PHP 8.0 | Don't use reserved keywords as param names [#561][gh-561]
-- PHP 8.0: ensure parameter names are aligned with PHP native param names [#560][gh-560]
-- Response: add `decode_body()` method [#559][gh-559]
-- Utility\CaseInsensitiveDictionary: add dedicated unit tests + minor bug fix [#558][gh-558]
-- Auth\Basic: improve tests [#557][gh-557]
-- Hooks: add set of dedicated unit tests [#556][gh-556]
-- Response\Headers: improve tests [#555][gh-555]
-- Exception\Transport\Curl: add perfunctory unit tests [#554][gh-554]
-- Exception\Http: add perfunctory unit tests [#553][gh-553]
-- Exception\Http\StatusUnknown: add perfunctory unit tests [#552][gh-552]
-- Ssl: improve tests [#551][gh-551]
-- FilteredIteratorTest: improve tests [#550][gh-550]
-- IdnaEncoderTest: improve tests [#549][gh-549]
-- Tests: move Mock classes to Fixtures directory [#548][gh-548]
-- Introduce new WpOrg\Requests\Utility\InputValidator class [#547][gh-547]
-- GH Actions: add GH Pages update workflow [#545][gh-545]
-- GH Pages: updates for the new automated site generation workflow [#544][gh-544]
-- Various minor docs fixes [#543][gh-543]
-- InvalidArgument: add new `create()` method [#542][gh-542]
-- Requests: set default transports as a constant [#541][gh-541]
-- Issue templates: fix broken emojis [#540][gh-540]
-- Requests: set default options as a constant [#539][gh-539]
-- Introduce WpOrg\Requests\Port class [#538][gh-538]
-- Curl: use Curl extension error constants [#537][gh-537]
-- IdnaEncoder: set maximum length as a constant [#536][gh-536]
-- Requests: set default certificate path as a constant [#535][gh-535]
-- Declare classes as final whenever possible [#534][gh-534]
-- Documentation: review of the `@see` tags [#532][gh-532]
-- CS/QA: fix structure order within classes [#531][gh-531]
-- GH Pages: add QA workflow [#528][gh-528]
-- README: add note about the Slack channel [#526][gh-526]
-- QA/Hooks: remove superfluous constructor [#525][gh-525]
-- Add pull request template [#524][gh-524]
-- Release checklist: add extra check [#523][gh-523]
-- Add issue templates [#522][gh-522]
-- FsockopenTest: add regression test for HTTP string [#521][gh-521]
-- FsockopenTest: add regression test for HTTP string [#520][gh-520]
-- Requests 2.0.0: introduce namespaces [#519][gh-519]
-- Composer: update version constraints [#517][gh-517]
-- Add Roave security advisories for dev dependencies [#516][gh-516]
-- QA: tweak code coverage configuration [#511][gh-511]
-- Clean up: remove previously deprecated methods [#510][gh-510]
-- Drop support for HHVM [#509][gh-509]
-- Tests: only use our own autoloader when testing via a PHAR [#508][gh-508]
-- Modernize: use the magic ::class constant [#506][gh-506]
-- PHP 8.1: fix deprecation warnings [#505][gh-505]
-- Modernize: use magic __DIR__ constant in lib code and example code [#504][gh-504]
-- Tests: introduce namespaces [#503][gh-503]
-- GH Actions: run tests against PHP 8.1 [#501][gh-501]
-- PHP 8.1: fix deprecation notices in `Requests_Transport_cURL` [#500][gh-500]
-- PHP 8.1: improve input validation for `Requests_Transport_(fsockopen|cURL)` [#499][gh-499]
-- max_bytes not respected in a performant manner [#494][gh-494]
-- Add Requests::has_capability() which can be used to determine if SSL is available. [#492][gh-492]
-- Add .editorconfig file [#491][gh-491]
-- Update all branch references [#490][gh-490]
-- Documentation: link review [#489][gh-489]
-- Composer: enhance information [#488][gh-488]
-- Drop support for PHP < 5.6 & PEAR [#470][gh-470]
-- Replace Travis CI with GitHub Actions workflows [#447][gh-447]
-- Replace PHPUnit 6+ compat code with Yoast PHPUnit polyfills package [#446][gh-446]
-- Removed CURLOPT_REFERER [#444][gh-444]
-- Throw exception if invalid filename is provided [#379][gh-379]
-- Prevent cURL transport from leaking on Exception [#319][gh-319]
-- Add support for various deflate compression levels [#309][gh-309]
-- Add `Requests::has_capability()` which can be used to determine if SSL is available. [#251][gh-251]
-- Closes #167 - Add json() for json responses [#214][gh-214]
 
+### IMPORTANT NOTES
+
+#### Breaking changes
+
+As Requests 2.0.0 is a major release, this version contains breaking changes. There is an [upgrade guide](https://requests.ryanmccue.info/docs/upgrading.html) available to guide you through making the necessary changes in your own code.
+
+### Overview of changes
+
+- **New minimum PHP version**
+
+  Support for PHP 5.2 - 5.5 has been dropped. The new minimum supported PHP version is now 5.6.
+  Support for HHVM has also been dropped formally now.
+
+  (props [@datagutten][gh-datagutten], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#378][gh-378], [#470][gh-470], [#509][gh-509])
+
+- **New release branch name**
+
+  The stable version of Requests can be found in the `stable` branch (was `master`).
+  Development of Requests happens in the `develop` branch.
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#463][gh-463], [#490][gh-490])
+
+- **All code is now namespaced (PSR-4)**
+
+  The code within the Requests library has all been namespaced and now lives in the `WpOrg\Requests` namespace.
+  The namespaced classes can be found in the `src` directory. The old `library` directory and the files within are deprecated.
+  For a number of classes, some subtle changes have also been made to their base class name, like renaming the `Hooker` interface to `HookManager`.
+
+  A full backward-compatibility layer is available and using the non-namespaced class names will still work during the 2.x and 3.x release cycles, though a deprecation notice will be thrown the first time a class using one of the old PSR-0 based class names is requested.
+  For the lifetime of Requests 2.x, the deprecation notices can be disabled by defining a global `REQUESTS_SILENCE_PSR0_DEPRECATIONS` constant and
+setting the value of this constant to `true`.
+
+  A complete "translation table" between the Requests 1.x and 2.x class names is available in the [upgrade guide](https://requests.ryanmccue.info/docs/upgrading.html).
+
+  Users of the Requests native custom autoloader will need to adjust their code to initialize the autoloader:
+  ```php
+  // OLD: Using the custom autoloader in Requests 1.x.
+  require_once 'path/to/Requests/library/Requests.php';
+  Requests::register_autoloader();
+
+  // NEW: Using the custom autoloader in Requests 2.x.
+  require_once 'path/to/Requests/src/Autoload.php';
+  WpOrg\Requests\Autoload::register();
+  ```
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#503][gh-503], [#519][gh-519], [#586][gh-586], [#587][gh-587], [#594][gh-594])
+
+- **A large number of classes have been marked as `final`**
+
+  Marking a class as `final` prohibits extending it.
+
+  These changes were made after researching which classes were being extended in userland code and due diligence has been applied before making these changes. If this change is causing problem we didn't anticipate, please [open an issue to report it](https://github.com/WordPress/Requests/issues/new/choose).
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#514][gh-514], [#534][gh-534])
+
+- **Input validation**
+
+  All typical entry point methods in Requests will now, directly or indirectly, validate the received input parameters for being of the correct type.
+  When an incorrect parameter type is received, a catchable `WpOrg\Requests\Exception\InvalidArgument` exception will be thrown.
+
+  The input validation has been set up to be reasonably liberal, so if Requests was being used as per the documentation, this change should not affect you.
+  If you still find the input validation to be too strict and you have a good use-case of why it should be loosened for a particular entry point, please [open an issue to discuss this](https://github.com/WordPress/Requests/issues/new/choose).
+
+  The code within Requests itself has also received various improvements to be more type safe.
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#499][gh-499], [#542][gh-542], [#547][gh-547], [#558][gh-558], [#572][gh-572], [#573][gh-573], [#574][gh-574], [#591][gh-591], [#592][gh-592], [#593][gh-593], [#601][gh-601], [#602][gh-602], [#603][gh-603], [#604][gh-604], [#605][gh-605], [#609][gh-609], [#610][gh-610], [#611][gh-611], [#613][gh-613], [#614][gh-614], [#615][gh-615], [#620][gh-620], [#621][gh-621], [#629][gh-629])
+
+- **Update bundled certificates as of 2021-10-26**
+
+  The bundled certificates were updated.
+
+  Previously the bundled certificates in Requests would include a small subset of expired certificates for legacy reasons.
+  This is no longer the case as of Requests 2.0.0.
+
+  :warning: **Note**: the included certificates bundle is only intended as a fall-back.
+  This fallback should only be used for servers that are not properly configured for SSL verification. A continuously managed server should provide a more up-to-date certificate authority list than a software library which only gets updates once in a while.
+  Setting the `$options['verify']` key to `true` when initiating a request enables certificate verification using the certificate authority list provided by the server environment, which is recommended.
+
+  The [documentation regarding Secure Requests with SSL](https://requests.ryanmccue.info/docs/usage-advanced.html#secure-requests-with-ssl) has also been updated to reflect this and it is recommended to have a read through.
+
+  The included certificates _file_ has now also been moved to a dedicated `/certificates` directory off the project root.
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [@wojsmol][gh-wojsmol], [@ZsgsDesign][gh-ZsgsDesign], [#535][gh-535], [#571][gh-571], [#577][gh-577], [#622][gh-622], [#632][gh-632])
+
+- **New functionality**
+
+  The following new functionality has been added:
+  - A `public static` `WpOrg\Requests\Requests::has_capabilities($capabilities = array())` method is now available to check whether there is a transport available which supports the requested capabilities.
+  - A `public` `WpOrg\Requests\Response::decode_body($associative = true, $depth = 512, $options = 0)` method is now available to handle json decoding a response body.
+    The method parameters correspond to the parameters of the PHP native [`json_decode()`](https://php.net/json-decode) function.
+	The method will throw an `WpOrg\Requests\Exception` when the response body is not valid json.
+  - A `WpOrg\Requests\Capability` interface. This class encapsulates the known capabilities. Transports can be tested whether or not they support these capabilities.
+    Currently, the only capability supported is `Capability::SSL`.
+  - A `WpOrg\Requests\Port` class. This class encapsulates typical port numbers as constants and offers a `static` `Port::get($type)` method to retrieve a port number based on a request type.
+    Using this class when referring to port numbers is recommended.
+  - An `WpOrg\Requests\Exceptions\InvalidArgument` class. This class is intended for internal use only.
+  - An `WpOrg\Requests\Utility\InputValidator` class with helper method for input validation. This class is intended for internal use only.
+
+  (props [@ccrims0n][gh-ccrims0n], [@dd32][gh-dd32], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#167][gh-167], [#214][gh-214], [#250][gh-250], [#251][gh-251], [#492][gh-492], [#499][gh-499], [#538][gh-538], [#542][gh-542], [#547][gh-547], [#559][gh-559])
+
+- **Changed functionality**
+
+  - The `WpOrg\Requests\Requests::decompress()` method has been fixed to recognize more compression levels and handle these correctly.
+  - The method signature of the `WpOrg\Requests\Transport::test()` interface method has been adjusted to enforce support for an optional `$capabilities` parameter.
+    The Request native `WpOrg\Requests\Transport\Curl::test()` and `WpOrg\Requests\Transport\Fsockopen::test()` methods, both already supported this parameter.
+  - The `WpOrg\Requests\Transport\Curl::request()` and the `WpOrg\Requests\Transport\Fsockopen::request()` methods will now throw an `WpOrg\Requests\Exception` when the `$options['filename']` contains an invalid path.
+  - The `WpOrg\Requests\Transport\Curl::request()` method will no longer set the `CURLOPT_REFERER` option.
+  - The default value of the `$key` parameter in the `WpOrg\Requests\Cookie\Jar::normalize_cookie()` method has been changed from `null` to an empty string.
+
+  (props [@datagutten][gh-datagutten], [@dustinrue][gh-dustinrue], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [@soulseekah][gh-soulseekah], [@twdnhfr][gh-twdnhfr], [#301][gh-301], [#309][gh-309], [#379][gh-379], [#444][gh-444], [#492][gh-492], [#610][gh-610])
+
+- **Removed functionality**
+
+  The following method, which were deprecated during the 1.x cycle, have now been removed:
+  - `Requests::flattern()`, use `WpOrg\Requests\Requests::flatten()` instead.
+  - `Requests_Cookie::formatForHeader()`, use `WpOrg\Requests\Cookie::format_for_header()` instead.
+  - `Requests_Cookie::formatForSetCookie()`, use `WpOrg\Requests\Cookie::format_for_set_cookie()` instead.
+  - `Requests_Cookie::parseFromHeaders()`, use `WpOrg\Requests\Cookie::parse_from_headers()` instead.
+  - `Requests_Cookie_Jar::normalizeCookie()`, use `WpOrg\Requests\Cookie\Jar::normalize_cookie()` instead
+
+  A duplicate method has been removed:
+  - `Requests::match_domain()`, use `WpOrg\Requests\Ssl::match_domain()` instead.
+
+  A redundant method has been removed:
+  - `Hooks::__construct()`.
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#510][gh-510], [#525][gh-525], [#617][gh-617])
+
+- **Compatibility with PHP 8.0 named parameters**
+
+  All parameter names have been reviewed to prevent issues for users using PHP 8.0 named parameters and where relevant, a number of parameter names have been changed.
+
+  After this release, a parameter name rename will be treated as a breaking change (reserved for major releases) and will be marked as such in the changelog.
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#533][gh-533], [#560][gh-560], [#561][gh-561], [#599][gh-599], [#612][gh-612])
+
+- **PHP 8.1 compatibility**
+
+  All known PHP 8.1 compatibility issues have been fixed and tests are now running (and passing) against PHP 8.1.
+
+  In case you still run into a PHP 8.1 deprecation notice or other PHP 8.1 related issue, please [open an issue to report it](https://github.com/WordPress/Requests/issues/new/choose).
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#498][gh-498], [#499][gh-499], [#500][gh-500], [#501][gh-501], [#505][gh-505])
+
+- **Updated documentation**
+
+  The [documentation website](https://requests.ryanmccue.info/) has been updated to reflect all the changes in Requests 2.0.0.
+
+  The [API documentation for Requests 2.x](https://requests.ryanmccue.info/api-2.x/) is now generated using [phpDocumentor](https://www.phpdoc.org/) :heart: and available on the website.
+  For the time being, the [Requests 1.x API documentation](https://requests.ryanmccue.info/api/) will still be available on the website as well.
+
+  (props [@costdev][gh-costdev], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [@szepeviktor][gh-szepeviktor], [#476][gh-476], [#480][gh-480], [#489][gh-489], [#495][gh-495], [#526][gh-526], [#528][gh-528], [#532][gh-532], [#543][gh-543], [#562][gh-562], [#578][gh-578], [#590][gh-590], [#606][gh-606], [#607][gh-607], [#608][gh-608], [#618][gh-618], [#622][gh-622], [#625][gh-625], [#626][gh-626], [#630][gh-630], [#630][gh-630])
+
+- **General housekeeping**
+
+  - In a number of places, code modernizations, possible now the minimum PHP version has gone up to PHP 5.6, have been applied.
+    ([#504][gh-504], [#506][gh-506], [#512][gh-512], [#539][gh-539], [#541][gh-541], [#599][gh-599], [#623][gh-623])
+
+  - Lots of improvements were made to render the tests more reliable and increase the coverage.
+    ([#446][gh-446], [#459][gh-459], [#472][gh-472], [#503][gh-503], [#508][gh-508], [#511][gh-511], [#520][gh-520], [#521][gh-521], [#548][gh-548], [#549][gh-549], [#550][gh-550], [#551][gh-551], [#552][gh-552], [#553][gh-553], [#554][gh-554], [#555][gh-555], [#556][gh-556], [#557][gh-557], [#558][gh-558], [#566][gh-566], [#581][gh-581], [#591][gh-591], [#595][gh-595])
+
+  - The move for all CI to GitHub Actions has been finalized. Travis is dead, long live Travis and thanks for all the fish.
+    ([#447][gh-447], [#575][gh-575], [#579][gh-579])
+
+  - A GitHub Actions workflow has been put in place to allow for automatically updating the website on releases.
+    This should allow for more rapid releases from now on.
+    ([#466][gh-466], [#544][gh-544], [#545][gh-545], [#563][gh-563], [#569][gh-569], [#583][gh-583], [#626][gh-626])
+
+  - Dev dependencies have been updated.
+    ([#516][gh-516], [#517][gh-517])
+
+  - Various other general housekeeping and improvements for contributors
+    ([#488][gh-488], [#491][gh-491], [#523][gh-523], [#513][gh-513], [#515][gh-515], [#522][gh-522], [#524][gh-524], [#531][gh-531], [#535][gh-535], [#536][gh-536], [#537][gh-537], [#540][gh-540], [#588][gh-588], [#616][gh-616])
+
+  (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera])
+
+
+(((CURRENT DUMP)))
+
+- max_bytes not respected in a performant manner [#494][gh-494]
+- Prevent cURL transport from leaking on Exception [#319][gh-319]
+
+[gh-632]: https://github.com/WordPress/Requests/pull/632
+[gh-630]: https://github.com/WordPress/Requests/pull/630
+[gh-629]: https://github.com/WordPress/Requests/pull/629
+[gh-626]: https://github.com/WordPress/Requests/pull/626
+[gh-625]: https://github.com/WordPress/Requests/pull/625
 [gh-623]: https://github.com/WordPress/Requests/pull/623
 [gh-622]: https://github.com/WordPress/Requests/pull/622
 [gh-621]: https://github.com/WordPress/Requests/pull/621
@@ -130,6 +207,7 @@ Changelog
 [gh-610]: https://github.com/WordPress/Requests/pull/610
 [gh-609]: https://github.com/WordPress/Requests/pull/609
 [gh-608]: https://github.com/WordPress/Requests/pull/608
+[gh-607]: https://github.com/WordPress/Requests/pull/607
 [gh-606]: https://github.com/WordPress/Requests/pull/606
 [gh-605]: https://github.com/WordPress/Requests/pull/605
 [gh-604]: https://github.com/WordPress/Requests/pull/604
@@ -139,8 +217,10 @@ Changelog
 [gh-599]: https://github.com/WordPress/Requests/pull/599
 [gh-595]: https://github.com/WordPress/Requests/pull/595
 [gh-594]: https://github.com/WordPress/Requests/pull/594
+[gh-593]: https://github.com/WordPress/Requests/issues/593
 [gh-592]: https://github.com/WordPress/Requests/pull/592
 [gh-591]: https://github.com/WordPress/Requests/pull/591
+[gh-590]: https://github.com/WordPress/Requests/issues/590
 [gh-588]: https://github.com/WordPress/Requests/pull/588
 [gh-587]: https://github.com/WordPress/Requests/pull/587
 [gh-586]: https://github.com/WordPress/Requests/pull/586
@@ -185,6 +265,7 @@ Changelog
 [gh-536]: https://github.com/WordPress/Requests/pull/536
 [gh-535]: https://github.com/WordPress/Requests/pull/535
 [gh-534]: https://github.com/WordPress/Requests/pull/534
+[gh-533]: https://github.com/WordPress/Requests/issues/533
 [gh-532]: https://github.com/WordPress/Requests/pull/532
 [gh-531]: https://github.com/WordPress/Requests/pull/531
 [gh-528]: https://github.com/WordPress/Requests/pull/528
@@ -198,6 +279,10 @@ Changelog
 [gh-519]: https://github.com/WordPress/Requests/pull/519
 [gh-517]: https://github.com/WordPress/Requests/pull/517
 [gh-516]: https://github.com/WordPress/Requests/pull/516
+[gh-515]: https://github.com/WordPress/Requests/issues/515
+[gh-514]: https://github.com/WordPress/Requests/issues/514
+[gh-513]: https://github.com/WordPress/Requests/issues/513
+[gh-512]: https://github.com/WordPress/Requests/issues/512
 [gh-511]: https://github.com/WordPress/Requests/pull/511
 [gh-510]: https://github.com/WordPress/Requests/pull/510
 [gh-509]: https://github.com/WordPress/Requests/pull/509
@@ -209,21 +294,34 @@ Changelog
 [gh-501]: https://github.com/WordPress/Requests/pull/501
 [gh-500]: https://github.com/WordPress/Requests/pull/500
 [gh-499]: https://github.com/WordPress/Requests/pull/499
+[gh-498]: https://github.com/WordPress/Requests/issues/498
+[gh-498]: https://github.com/WordPress/Requests/issues/495
 [gh-494]: https://github.com/WordPress/Requests/pull/494
 [gh-492]: https://github.com/WordPress/Requests/pull/492
 [gh-491]: https://github.com/WordPress/Requests/pull/491
 [gh-490]: https://github.com/WordPress/Requests/pull/490
 [gh-489]: https://github.com/WordPress/Requests/pull/489
 [gh-488]: https://github.com/WordPress/Requests/pull/488
+[gh-480]: https://github.com/WordPress/Requests/issues/480
+[gh-476]: https://github.com/WordPress/Requests/issues/476
+[gh-472]: https://github.com/WordPress/Requests/issues/472
 [gh-470]: https://github.com/WordPress/Requests/pull/470
+[gh-466]: https://github.com/WordPress/Requests/issues/466
+[gh-463]: https://github.com/WordPress/Requests/issues/463
+[gh-460]: https://github.com/WordPress/Requests/issues/460
+[gh-459]: https://github.com/WordPress/Requests/issues/459
 [gh-447]: https://github.com/WordPress/Requests/pull/447
 [gh-446]: https://github.com/WordPress/Requests/pull/446
 [gh-444]: https://github.com/WordPress/Requests/pull/444
 [gh-379]: https://github.com/WordPress/Requests/pull/379
+[gh-378]: https://github.com/WordPress/Requests/issues/378
 [gh-319]: https://github.com/WordPress/Requests/pull/319
 [gh-309]: https://github.com/WordPress/Requests/pull/309
+[gh-301]: https://github.com/WordPress/Requests/issues/301
 [gh-251]: https://github.com/WordPress/Requests/pull/251
+[gh-250]: https://github.com/WordPress/Requests/issues/250
 [gh-214]: https://github.com/WordPress/Requests/pull/214
+[gh-167]: https://github.com/WordPress/Requests/issues/167
 
 Current open wordpress/requests milestone: 2.0.0
 - Contributors: 11
@@ -269,9 +367,9 @@ Current open wordpress/requests milestone: 2.0.0
 - **[SECURITY FIX] Disable deserialization in `FilteredIterator`**
 
   A `Deserialization of Untrusted Data` weakness was found in the `FilteredIterator` class.
-  
+
   This security vulnerability was first reported to the WordPress project. The security fix applied to WordPress has been ported back into the library.
-  
+
   GitHub security advisory: [Insecure Deserialization of untrusted data](https://github.com/WordPress/Requests/security/advisories/GHSA-52qp-jpq7-6c54)
 
   CVE: [CVE-2021-29476 - Deserialization of Untrusted Data](https://cve.mitre.org/cgi-bin/cvename.cgi?name=2021-29476)
@@ -284,7 +382,7 @@ Current open wordpress/requests milestone: 2.0.0
 - **Repository moved to `WordPress\Requests`**
 
   The `Requests` library has been moved to the WordPress GitHub organization and can now be found under `https://github.com/WordPress/Requests`.
-  
+
   All links in code and documentation were updated accordingly.
 
   Note: the Composer package name remains unchanged ([`rmccue/requests`](https://packagist.org/packages/rmccue/requests)), as well as the documentation site ([requests.ryanmccue.info](https://requests.ryanmccue.info/)).
@@ -329,7 +427,7 @@ Current open wordpress/requests milestone: 2.0.0
 - **Make `verify => false` work with `fsockopen`**
 
   This allows the `fsockopen` transport now to ignore SSL failures when requested.
-  
+
   (props [@soulseekah][gh-soulseekah], [#310][gh-310], [#311][gh-311])
 
 
@@ -355,7 +453,7 @@ Current open wordpress/requests milestone: 2.0.0
 
 
 - **Improve testing**
-  
+
   Lots of improvements were made to render the tests more reliable and increase the coverage.
 
   And to top it all off, all tests are now run against all supported PHP versions, including PHP 8.0.
@@ -364,7 +462,7 @@ Current open wordpress/requests milestone: 2.0.0
 
 
 - **Improve code quality and style**
-  
+
   A whole swoop of changes has been made to harden the code and make it more consistent.
 
   The code style has been made consistent across both code and tests and is now enforced via a custom PHPCS rule set.
@@ -382,9 +480,9 @@ Current open wordpress/requests milestone: 2.0.0
 
 
 - **Replace Travis CI with GitHub Actions (partial)**
-  
-  The entire CI setup is gradually being moved from Travis CI to GitHub Actions. 
-  
+
+  The entire CI setup is gradually being moved from Travis CI to GitHub Actions.
+
   At this point, GitHub Actions takes over the CI from PHP 5.5 onwards, leaving Travis CI as a fallback for lower PHP versions.
 
   This move will be completed after the planned minimum version bump to PHP 5.6+ with the next release, at which point we will get rid of all the remaining Travis CI integrations.
@@ -815,6 +913,7 @@ Initial release!
 [gh-ccrims0n]: https://github.com/ccrims0n
 [gh-costdev]: https://github.com/costdev
 [gh-datagutten]: https://github.com/datagutten
+[gh-dustinrue]: https://github.com/dustinrue
 [gh-dd32]: https://github.com/dd32
 [gh-desrosj]: https://github.com/desrosj
 [gh-gstrauss]: https://github.com/gstrauss
