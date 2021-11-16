@@ -15,6 +15,7 @@ use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Exception\Transport\Curl as CurlException;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Transport;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * cURL HTTP transport
@@ -130,24 +131,37 @@ final class Curl implements Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @param string $url URL to request
+	 * @param string|Stringable $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return string Raw HTTP result
 	 *
-	 * @throws \WpOrg\Requests\InvalidArgument When the $data parameter is not an array or string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $headers argument is not an array.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $data parameter is not an array or string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
 	 * @throws \WpOrg\Requests\Exception       On a cURL error (`curlerror`)
 	 */
 	public function request($url, $headers = [], $data = [], $options = []) {
+		if (InputValidator::is_string_or_stringable($url) === false) {
+			throw InvalidArgument::create(1, '$url', 'string|Stringable', gettype($url));
+		}
+
+		if (is_array($headers) === false) {
+			throw InvalidArgument::create(2, '$headers', 'array', gettype($headers));
+		}
+
 		if (!is_array($data) && !is_string($data)) {
 			if ($data === null) {
 				$data = '';
-			} elseif (is_int($data) || is_float($data)) {
-				$data = (string) $data;
 			} else {
 				throw InvalidArgument::create(3, '$data', 'array|string', gettype($data));
 			}
+		}
+
+		if (is_array($options) === false) {
+			throw InvalidArgument::create(4, '$options', 'array', gettype($options));
 		}
 
 		$this->hooks = $options['hooks'];
