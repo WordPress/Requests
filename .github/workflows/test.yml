@@ -24,7 +24,7 @@ jobs:
       # - coverage: Whether to run the tests with code coverage.
       # - experimental: Whether the build is "allowed to fail".
       matrix:
-        php: ['7.0', '7.1', '7.2', '7.3', '7.4']
+        php: ['7.0', '7.1', '7.2', '7.3', '7.4', '8.1']
         coverage: [false]
         experimental: [false]
 
@@ -36,11 +36,6 @@ jobs:
           - php: '8.0'
             coverage: true
             experimental: false
-
-          # Test against PHP Nightly.
-          - php: '8.1'
-            coverage: false
-            experimental: true
 
     name: "Test: PHP ${{ matrix.php }}"
 
