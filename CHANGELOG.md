@@ -56,7 +56,7 @@ setting the value of this constant to `true`.
 
   Marking a class as `final` prohibits extending it.
 
-  These changes were made after researching which classes were being extended in userland code and due diligence has been applied before making these changes. If this change is causing problem we didn't anticipate, please [open an issue to report it](https://github.com/WordPress/Requests/issues/new/choose).
+  These changes were made after researching which classes were being extended in userland code and due diligence has been applied before making these changes. If this change is causing a problem we didn't anticipate, please [open an issue to report it](https://github.com/WordPress/Requests/issues/new/choose).
 
   (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#514][gh-514], [#534][gh-534])
 
@@ -79,7 +79,7 @@ setting the value of this constant to `true`.
   Previously the bundled certificates in Requests would include a small subset of expired certificates for legacy reasons.
   This is no longer the case as of Requests 2.0.0.
 
-  :warning: **Note**: the included certificates bundle is only intended as a fall-back.
+  :warning: **Note**: the included certificates bundle is only intended as a fallback.
   This fallback should only be used for servers that are not properly configured for SSL verification. A continuously managed server should provide a more up-to-date certificate authority list than a software library which only gets updates once in a while.
   Setting the `$options['verify']` key to `true` when initiating a request enables certificate verification using the certificate authority list provided by the server environment, which is recommended.
 
@@ -93,15 +93,15 @@ setting the value of this constant to `true`.
 
   The following new functionality has been added:
   - A `public static` `WpOrg\Requests\Requests::has_capabilities($capabilities = array())` method is now available to check whether there is a transport available which supports the requested capabilities.
-  - A `public` `WpOrg\Requests\Response::decode_body($associative = true, $depth = 512, $options = 0)` method is now available to handle json decoding a response body.
+  - A `public` `WpOrg\Requests\Response::decode_body($associative = true, $depth = 512, $options = 0)` method is now available to handle JSON-decoding a response body.
     The method parameters correspond to the parameters of the PHP native [`json_decode()`](https://php.net/json-decode) function.
-	The method will throw an `WpOrg\Requests\Exception` when the response body is not valid json.
-  - A `WpOrg\Requests\Capability` interface. This class encapsulates the known capabilities. Transports can be tested whether or not they support these capabilities.
+	The method will throw an `WpOrg\Requests\Exception` when the response body is not valid JSON.
+  - A `WpOrg\Requests\Capability` interface. This interface provides constants for the known capabilities. Transports can be tested whether or not they support these capabilities.
     Currently, the only capability supported is `Capability::SSL`.
   - A `WpOrg\Requests\Port` class. This class encapsulates typical port numbers as constants and offers a `static` `Port::get($type)` method to retrieve a port number based on a request type.
     Using this class when referring to port numbers is recommended.
   - An `WpOrg\Requests\Exceptions\InvalidArgument` class. This class is intended for internal use only.
-  - An `WpOrg\Requests\Utility\InputValidator` class with helper method for input validation. This class is intended for internal use only.
+  - An `WpOrg\Requests\Utility\InputValidator` class with helper methods for input validation. This class is intended for internal use only.
 
   (props [@ccrims0n][gh-ccrims0n], [@dd32][gh-dd32], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#167][gh-167], [#214][gh-214], [#250][gh-250], [#251][gh-251], [#492][gh-492], [#499][gh-499], [#538][gh-538], [#542][gh-542], [#547][gh-547], [#559][gh-559])
 
@@ -109,7 +109,7 @@ setting the value of this constant to `true`.
 
   - The `WpOrg\Requests\Requests::decompress()` method has been fixed to recognize more compression levels and handle these correctly.
   - The method signature of the `WpOrg\Requests\Transport::test()` interface method has been adjusted to enforce support for an optional `$capabilities` parameter.
-    The Request native `WpOrg\Requests\Transport\Curl::test()` and `WpOrg\Requests\Transport\Fsockopen::test()` methods, both already supported this parameter.
+    The Request native `WpOrg\Requests\Transport\Curl::test()` and `WpOrg\Requests\Transport\Fsockopen::test()` methods both already supported this parameter.
   - The `WpOrg\Requests\Transport\Curl::request()` and the `WpOrg\Requests\Transport\Fsockopen::request()` methods will now throw an `WpOrg\Requests\Exception` when the `$options['filename']` contains an invalid path.
   - The `WpOrg\Requests\Transport\Curl::request()` method will no longer set the `CURLOPT_REFERER` option.
   - The default value of the `$key` parameter in the `WpOrg\Requests\Cookie\Jar::normalize_cookie()` method has been changed from `null` to an empty string.
@@ -118,7 +118,7 @@ setting the value of this constant to `true`.
 
 - **Removed functionality**
 
-  The following method, which were deprecated during the 1.x cycle, have now been removed:
+  The following methods, which were deprecated during the 1.x cycle, have now been removed:
   - `Requests::flattern()`, use `WpOrg\Requests\Requests::flatten()` instead.
   - `Requests_Cookie::formatForHeader()`, use `WpOrg\Requests\Cookie::format_for_header()` instead.
   - `Requests_Cookie::formatForSetCookie()`, use `WpOrg\Requests\Cookie::format_for_set_cookie()` instead.
@@ -173,10 +173,10 @@ setting the value of this constant to `true`.
     This should allow for more rapid releases from now on.
     ([#466][gh-466], [#544][gh-544], [#545][gh-545], [#563][gh-563], [#569][gh-569], [#583][gh-583], [#626][gh-626])
 
-  - Dev dependencies have been updated.
+  - Development-only dependencies have been updated.
     ([#516][gh-516], [#517][gh-517])
 
-  - Various other general housekeeping and improvements for contributors
+  - Various other general housekeeping and improvements for contributors.
     ([#488][gh-488], [#491][gh-491], [#523][gh-523], [#513][gh-513], [#515][gh-515], [#522][gh-522], [#524][gh-524], [#531][gh-531], [#535][gh-535], [#536][gh-536], [#537][gh-537], [#540][gh-540], [#588][gh-588], [#616][gh-616])
 
   (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera])
