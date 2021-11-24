@@ -7,7 +7,7 @@ process along with internal transport hooks.
 Check out the [API documentation for `WpOrg\Requests\Hooks`][requests_hooks] for more
 information on how to use the hook system.
 
-[requests_hooks]: {{ '/api/class-Requests_Hooks.html' | prepend: site.baseurl }}
+[requests_hooks]: {{ '/api-2.x/classes/WpOrg-Requests-Hooks.html' | prepend: site.baseurl }}
 
 Available Hooks
 ---------------

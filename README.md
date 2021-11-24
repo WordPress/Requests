@@ -68,7 +68,7 @@ or
 ```json
 {
     "require": {
-        "rmccue/requests": ">=1.0"
+        "rmccue/requests": "^2.0"
     }
 }
 ```
@@ -124,12 +124,12 @@ After that, take a look at [the documentation for
 `\WpOrg\Requests\Requests::request()`][request_method], where all the parameters are fully
 documented.
 
-Requests is [100% documented with PHPDoc](https://requests.ryanmccue.info/api/).
+Requests is [100% documented with PHPDoc](https://requests.ryanmccue.info/api-2.x/).
 If you find any problems with it, [create a new
 issue](https://github.com/WordPress/Requests/issues/new)!
 
 [prose-based documentation]: https://github.com/WordPress/Requests/blob/stable/docs/README.md
-[request_method]: https://requests.ryanmccue.info/api/class-Requests.html#_request
+[request_method]: https://requests.ryanmccue.info/api-2.x/classes/WpOrg-Requests-Requests.html#method_request
 
 Testing
 -------
