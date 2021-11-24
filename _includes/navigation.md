@@ -9,6 +9,8 @@
 	* [Custom authentication][authentication-custom]
 	* [Requests through proxy][proxy]
 	* [Hooking system][hooks]
+* Upgrading
+    * [Upgrading to Requests 2.0][upgrading]
 
 [goals]: goals.html
 [why-requests]: why-requests.html
@@ -18,3 +20,4 @@
 [authentication-custom]: authentication-custom.html
 [hooks]: hooks.html
 [proxy]: proxy.html
+[upgrading]: upgrading.html
