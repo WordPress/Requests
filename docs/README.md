@@ -19,7 +19,8 @@ here are prose; you might also want to check out the [API documentation][].
 	* [Custom authentication][authentication-custom]
 	* [Requests through proxy][proxy]
 	* [Hooking system][hooks]
-* [Upgrading to Requests 2.0][upgrading]
+* Upgrading
+    * [Upgrading to Requests 2.0][upgrading]
 
 [goals]: goals.md
 [why-requests]: why-requests.md
