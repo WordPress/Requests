@@ -181,12 +181,6 @@ setting the value of this constant to `true`.
 
   (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera])
 
-
-(((CURRENT DUMP)))
-
-- max_bytes not respected in a performant manner [#494][gh-494]
-- Prevent cURL transport from leaking on Exception [#319][gh-319]
-
 [gh-634]: https://github.com/WordPress/Requests/pull/634
 [gh-632]: https://github.com/WordPress/Requests/pull/632
 [gh-630]: https://github.com/WordPress/Requests/pull/630
@@ -297,7 +291,6 @@ setting the value of this constant to `true`.
 [gh-499]: https://github.com/WordPress/Requests/pull/499
 [gh-498]: https://github.com/WordPress/Requests/issues/498
 [gh-498]: https://github.com/WordPress/Requests/issues/495
-[gh-494]: https://github.com/WordPress/Requests/pull/494
 [gh-492]: https://github.com/WordPress/Requests/pull/492
 [gh-491]: https://github.com/WordPress/Requests/pull/491
 [gh-490]: https://github.com/WordPress/Requests/pull/490
@@ -316,7 +309,6 @@ setting the value of this constant to `true`.
 [gh-444]: https://github.com/WordPress/Requests/pull/444
 [gh-379]: https://github.com/WordPress/Requests/pull/379
 [gh-378]: https://github.com/WordPress/Requests/issues/378
-[gh-319]: https://github.com/WordPress/Requests/pull/319
 [gh-309]: https://github.com/WordPress/Requests/pull/309
 [gh-301]: https://github.com/WordPress/Requests/issues/301
 [gh-251]: https://github.com/WordPress/Requests/pull/251
