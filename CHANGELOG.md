@@ -156,7 +156,7 @@ setting the value of this constant to `true`.
   The [API documentation for Requests 2.x](https://requests.ryanmccue.info/api-2.x/) is now generated using [phpDocumentor](https://www.phpdoc.org/) :heart: and available on the website.
   For the time being, the [Requests 1.x API documentation](https://requests.ryanmccue.info/api/) will still be available on the website as well.
 
-  (props [@costdev][gh-costdev], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [@szepeviktor][gh-szepeviktor], [#476][gh-476], [#480][gh-480], [#489][gh-489], [#495][gh-495], [#526][gh-526], [#528][gh-528], [#532][gh-532], [#543][gh-543], [#562][gh-562], [#578][gh-578], [#590][gh-590], [#606][gh-606], [#607][gh-607], [#608][gh-608], [#618][gh-618], [#622][gh-622], [#625][gh-625], [#626][gh-626], [#630][gh-630], [#630][gh-630])
+  (props [@costdev][gh-costdev], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [@szepeviktor][gh-szepeviktor], [#476][gh-476], [#480][gh-480], [#489][gh-489], [#495][gh-495], [#526][gh-526], [#528][gh-528], [#532][gh-532], [#543][gh-543], [#562][gh-562], [#578][gh-578], [#590][gh-590], [#606][gh-606], [#607][gh-607], [#608][gh-608], [#618][gh-618], [#622][gh-622], [#625][gh-625], [#626][gh-626], [#630][gh-630], [#642][gh-642])
 
 - **General housekeeping**
 
@@ -181,6 +181,7 @@ setting the value of this constant to `true`.
 
   (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera])
 
+[gh-642]: https://github.com/WordPress/Requests/pull/642
 [gh-640]: https://github.com/WordPress/Requests/pull/640
 [gh-634]: https://github.com/WordPress/Requests/pull/634
 [gh-632]: https://github.com/WordPress/Requests/pull/632
