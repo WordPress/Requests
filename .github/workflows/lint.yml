@@ -7,6 +7,12 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint: #----------------------------------------------------------------------
     runs-on: ubuntu-latest
@@ -14,12 +20,8 @@ jobs:
     strategy:
       matrix:
         # Lint against the high/low versions of each PHP major.
-        php: ['5.6', '7.0', '7.4', '8.0']
+        php: ['5.6', '7.0', '7.4', '8.0', '8.1']
         experimental: [false]
-
-        include:
-          - php: '8.1'
-            experimental: true
 
     name: "Lint: PHP ${{ matrix.php }}"
     continue-on-error: ${{ matrix.experimental }}
@@ -49,4 +51,9 @@ jobs:
           composer-options: --ignore-platform-reqs
 
       - name: Lint against parse errors
+        if: ${{ matrix.php >= '7.2' }}
         run: composer lint -- --checkstyle | cs2pr
+
+      - name: Lint against parse errors
+        if: ${{ matrix.php < '7.2' }}
+        run: composer lint -- --exclude build --checkstyle | cs2pr

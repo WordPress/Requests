@@ -7,6 +7,12 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   #### QUICK TEST STAGE ####
   # Runs the tests against select PHP versions for pushes to arbitrary branches.
@@ -28,6 +34,15 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
+
+      # At least one test needs a non-en_US locale to be available, so make sure it is.
+      - name: Install locales
+        run: |
+          sudo apt-get update
+          sudo apt-get install locales-all
+
+      - name: Show available locales
+        run: locale -a
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies

@@ -1,0 +1,169 @@
+name: Build website
+
+on:
+  # Trigger the workflow whenever a new tag is created.
+  push:
+    tags:
+      - '2**'
+  # And whenever this workflow or one of the associated scripts is updated.
+  pull_request:
+    paths:
+      - '.github/workflows/update-website.yml'
+      - 'build/ghpages/**'
+  # Also allow manually triggering the workflow.
+  workflow_dispatch:
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  prepare:
+    name: "Prepare website update"
+    # Don't run on forks.
+    if: github.repository == 'WordPress/Requests'
+
+    runs-on: ubuntu-latest
+    steps:
+      # By default use the `stable` branch as the published docs should always
+      # reflect the latest release.
+      # For testing changes to the workflow or the scripts, use the PR branch
+      # to have access to the latest version of the workflow/scripts.
+      - name: Determine branch to use
+        id: base_branch
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo '::set-output name=BRANCH::${{ github.ref }}'
+          else
+            echo '::set-output name=BRANCH::stable'
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.base_branch.outputs.BRANCH }}
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          ini-values: display_errors=On
+          coverage: none
+          tools: phpdoc
+
+      - name: Update the phpDoc configuration
+        run: php build/ghpages/update-docgen-config.php
+
+      - name: Generate the phpDoc documentation
+        run: phpDocumentor
+
+      - name: Transform the markdown docs for use in GH Pages
+        run: php build/ghpages/update-markdown-docs.php
+
+      # Retention is normally 90 days, but this artifact is only for review
+      # and use in the next step, so no need to keep it for more than a day.
+      - name: Upload the artifacts folder
+        uses: actions/upload-artifact@v2
+        if: ${{ success() }}
+        with:
+          name: website-updates
+          path: ./build/ghpages/artifacts
+          if-no-files-found: error
+          retention-days: 1
+
+  createpr:
+    name: "Create website update PR"
+    needs: prepare
+    # Don't run on forks.
+    if: github.repository == 'WordPress/Requests'
+
+    runs-on: ubuntu-latest
+    steps:
+      # PRs based on the "pull request" event trigger will contain changes from the
+      # current `develop` branch, so should not be published as the website should
+      # always be based on the latest release.
+      - name: Determine PR title prefix, body and more
+        id: get_pr_info
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo '::set-output name=REF::${{ github.ref_name }}'
+            echo '::set-output name=PR_TITLE_PREFIX::[TEST | DO NOT MERGE] '
+            echo '::set-output name=PR_BODY::Test run for the website update after changes to the automated scripts.'
+            echo '::set-output name=DRAFT::true'
+          else
+            echo '::set-output name=REF::${{ github.event.release.tag_name }}'
+            echo '::set-output name=PR_TITLE_PREFIX::'
+            echo '::set-output name=PR_BODY::Website update after the release of Requests ${{ github.event.release.tag_name }}.'
+            echo '::set-output name=DRAFT::false'
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+
+      - name: Download the prepared artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: website-updates
+          path: artifacts
+
+      # Different version of phpDocumentor may add/remove files for CSS/JS etc.
+      # Similarly, a new Requests major may remove classes.
+      # So we always need to make sure that the old version of the API docs are
+      # cleared out completely.
+      - name: Clear out the API directory
+        run: rm -vrf ./api-2.x/*
+
+      - name: Move the updated API doc files
+        run: mv -fv artifacts/api-2.x/* ./api-2.x/
+
+      # The commit should contain all changes in the API directory, both tracked and untracked!
+      - name: Commit the API docs separately
+        run: |
+          git config user.name 'GitHub Action'
+          git config user.email '${{ github.actor }}@users.noreply.github.com'
+          git add -A ./api-2.x/
+          git commit --allow-empty --message="GH Pages: update API docs for Requests ${{ steps.get_pr_info.outputs.REF }}"
+
+      # Similar to the API docs, files could be removed from the prose docs, so
+      # make sure that the directory is cleared out completely beforehand.
+      - name: Clear out the docs directory
+        run: rm -vf ./docs/*
+
+      - name: Move the other updated files
+        run: |
+          mv -fv artifacts/docs/* ./docs
+          mv -fv artifacts/_includes/* ./_includes
+          mv -fv artifacts/index.md ./index.md
+
+      - name: Verify artifacts directory is now empty
+        run: ls -alR artifacts
+
+      # The directory is also gitignored, but just to be sure.
+      - name: Remove the artifacts directory
+        run: rmdir --ignore-fail-on-non-empty --verbose ./artifacts
+
+      - name: Show status
+        run: git status -vv --untracked=all
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          base: gh-pages
+          branch: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
+          delete-branch: true
+          commit-message: "GH Pages: update other docs for Requests ${{ steps.get_pr_info.outputs.REF }}"
+          title: "${{ steps.get_pr_info.outputs.PR_TITLE_PREFIX }}:books: Update GHPages website"
+          body: |
+            ${{ steps.get_pr_info.outputs.PR_BODY }}
+
+            This PR is auto-generated by [create-pull-request](https://github.com/peter-evans/create-pull-request).
+          labels: |
+            Type: documentation
+          reviewer: |
+            jrfnl
+            schlessera
+          draft: ${{ steps.get_pr_info.outputs.DRAFT }}

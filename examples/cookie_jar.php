@@ -1,16 +1,16 @@
 <?php
 
-// First, include Requests
-require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
+// First, include the Requests Autoloader.
+require_once dirname(__DIR__) . '/src/Autoload.php';
 
-// Next, make sure Requests can load internal classes
-Requests::register_autoloader();
+// Next, make sure Requests can load internal classes.
+WpOrg\Requests\Autoload::register();
 
 // Say you need to fake a login cookie
-$c = new Requests_Cookie_Jar(['login_uid' => 'something']);
+$c = new WpOrg\Requests\Cookie\Jar(['login_uid' => 'something']);
 
 // Now let's make a request!
-$request = Requests::get(
+$request = WpOrg\Requests\Requests::get(
 	'http://httpbin.org/cookies', // Url
 	[],  // No need to set the headers the Jar does this for us
 	['cookies' => $c] // Pass in the Jar as an option

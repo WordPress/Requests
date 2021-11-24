@@ -1,13 +1,13 @@
 <?php
 
-// First, include Requests
-require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
+// First, include the Requests Autoloader.
+require_once dirname(__DIR__) . '/src/Autoload.php';
 
-// Next, make sure Requests can load internal classes
-Requests::register_autoloader();
+// Next, make sure Requests can load internal classes.
+WpOrg\Requests\Autoload::register();
 
 // Now let's make a request!
-$request = Requests::post('http://httpbin.org/post', array(), array('mydata' => 'something'));
+$request = WpOrg\Requests\Requests::post('http://httpbin.org/post', [], ['mydata' => 'something']);
 
 // Check what we received
 var_dump($request);

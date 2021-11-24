@@ -1,6 +1,6 @@
 codecov:
-    notify:
-        after_n_builds: 2
+  notify:
+    after_n_builds: 2
 
 coverage:
   round: nearest
@@ -11,11 +11,11 @@ coverage:
       default:
         threshold: 1%
         paths:
-          - "library"
+          - "src"
     patch:
       default:
-        threshold: 0%
+        threshold: 3%
         paths:
-          - "library"
+          - "src"
 
 comment: false

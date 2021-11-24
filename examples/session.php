@@ -1,13 +1,13 @@
 <?php
 
-// First, include Requests
-require_once dirname(dirname(__FILE__)) . '/library/Requests.php';
+// First, include the Requests Autoloader.
+require_once dirname(__DIR__) . '/src/Autoload.php';
 
-// Next, make sure Requests can load internal classes
-Requests::register_autoloader();
+// Next, make sure Requests can load internal classes.
+WpOrg\Requests\Autoload::register();
 
 // Set up our session
-$session                    = new Requests_Session('http://httpbin.org/');
+$session                    = new WpOrg\Requests\Session('http://httpbin.org/');
 $session->headers['Accept'] = 'application/json';
 $session->useragent         = 'Awesomesauce';
 
