@@ -164,7 +164,7 @@ setting the value of this constant to `true`.
     ([#504][gh-504], [#506][gh-506], [#512][gh-512], [#539][gh-539], [#541][gh-541], [#599][gh-599], [#623][gh-623])
 
   - Lots of improvements were made to render the tests more reliable and increase the coverage.
-    ([#446][gh-446], [#459][gh-459], [#472][gh-472], [#503][gh-503], [#508][gh-508], [#511][gh-511], [#520][gh-520], [#521][gh-521], [#548][gh-548], [#549][gh-549], [#550][gh-550], [#551][gh-551], [#552][gh-552], [#553][gh-553], [#554][gh-554], [#555][gh-555], [#556][gh-556], [#557][gh-557], [#558][gh-558], [#566][gh-566], [#581][gh-581], [#591][gh-591], [#595][gh-595])
+    ([#446][gh-446], [#459][gh-459], [#472][gh-472], [#503][gh-503], [#508][gh-508], [#511][gh-511], [#520][gh-520], [#521][gh-521], [#548][gh-548], [#549][gh-549], [#550][gh-550], [#551][gh-551], [#552][gh-552], [#553][gh-553], [#554][gh-554], [#555][gh-555], [#556][gh-556], [#557][gh-557], [#558][gh-558], [#566][gh-566], [#581][gh-581], [#591][gh-591], [#595][gh-595], [#640][gh-640])
 
   - The move for all CI to GitHub Actions has been finalized. Travis is dead, long live Travis and thanks for all the fish.
     ([#447][gh-447], [#575][gh-575], [#579][gh-579])
@@ -181,6 +181,7 @@ setting the value of this constant to `true`.
 
   (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera])
 
+[gh-640]: https://github.com/WordPress/Requests/pull/640
 [gh-634]: https://github.com/WordPress/Requests/pull/634
 [gh-632]: https://github.com/WordPress/Requests/pull/632
 [gh-630]: https://github.com/WordPress/Requests/pull/630
@@ -315,13 +316,6 @@ setting the value of this constant to `true`.
 [gh-250]: https://github.com/WordPress/Requests/issues/250
 [gh-214]: https://github.com/WordPress/Requests/pull/214
 [gh-167]: https://github.com/WordPress/Requests/issues/167
-
-Current open wordpress/requests milestone: 2.0.0
-- Contributors: 11
-- Pull requests: 109
-  Total contributors: 11
-  Total pull requests: 109
-  [@ccrims0n][gh-ccrims0n], [@costdev][gh-costdev], [@datagutten][gh-datagutten], [@dd32][gh-dd32], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [@soulseekah][gh-soulseekah], [@szepeviktor][gh-szepeviktor], [@twdnhfr][gh-twdnhfr], [@wojsmol][gh-wojsmol], [@ZsgsDesign][gh-ZsgsDesign]
 
 1.8.1
 -----
