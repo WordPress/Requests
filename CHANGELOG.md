@@ -4,10 +4,7 @@ Changelog
 2.0.0
 -----
 
-
-### IMPORTANT NOTES
-
-#### Breaking changes
+### BREAKING CHANGES
 
 As Requests 2.0.0 is a major release, this version contains breaking changes. There is an [upgrade guide](https://requests.ryanmccue.info/docs/upgrading.html) available to guide you through making the necessary changes in your own code.
 
@@ -16,6 +13,7 @@ As Requests 2.0.0 is a major release, this version contains breaking changes. Th
 - **New minimum PHP version**
 
   Support for PHP 5.2 - 5.5 has been dropped. The new minimum supported PHP version is now 5.6.
+
   Support for HHVM has also been dropped formally now.
 
   (props [@datagutten][gh-datagutten], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#378][gh-378], [#470][gh-470], [#509][gh-509])
@@ -30,7 +28,9 @@ As Requests 2.0.0 is a major release, this version contains breaking changes. Th
 - **All code is now namespaced (PSR-4)**
 
   The code within the Requests library has all been namespaced and now lives in the `WpOrg\Requests` namespace.
+
   The namespaced classes can be found in the `src` directory. The old `library` directory and the files within are deprecated.
+
   For a number of classes, some subtle changes have also been made to their base class name, like renaming the `Hooker` interface to `HookManager`.
 
   A full backward-compatibility layer is available and using the non-namespaced class names will still work during the 2.x and 3.x release cycles, though a deprecation notice will be thrown the first time a class using one of the old PSR-0 based class names is requested.
@@ -72,16 +72,18 @@ setting the value of this constant to `true`.
 
   (props [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera], [#499][gh-499], [#542][gh-542], [#547][gh-547], [#558][gh-558], [#572][gh-572], [#573][gh-573], [#574][gh-574], [#591][gh-591], [#592][gh-592], [#593][gh-593], [#601][gh-601], [#602][gh-602], [#603][gh-603], [#604][gh-604], [#605][gh-605], [#609][gh-609], [#610][gh-610], [#611][gh-611], [#613][gh-613], [#614][gh-614], [#615][gh-615], [#620][gh-620], [#621][gh-621], [#629][gh-629])
 
-- **Update bundled certificates as of 2021-10-26**
+- **Update bundled certificates**
 
-  The bundled certificates were updated.
+  The bundled certificates were updated with the latest version available (published 2021-10-26).
 
   Previously the bundled certificates in Requests would include a small subset of expired certificates for legacy reasons.
   This is no longer the case as of Requests 2.0.0.
 
-  :warning: **Note**: the included certificates bundle is only intended as a fallback.
-  This fallback should only be used for servers that are not properly configured for SSL verification. A continuously managed server should provide a more up-to-date certificate authority list than a software library which only gets updates once in a while.
-  Setting the `$options['verify']` key to `true` when initiating a request enables certificate verification using the certificate authority list provided by the server environment, which is recommended.
+  > :warning: **Note**: the included certificates bundle is only intended as a fallback.
+  >
+  > This fallback should only be used for servers that are not properly configured for SSL verification. A continuously managed server should provide a more up-to-date certificate authority list than a software library which only gets updates once in a while.
+  >
+  > Setting the `$options['verify']` key to `true` when initiating a request enables certificate verification using the certificate authority list provided by the server environment, which is recommended.
 
   The [documentation regarding Secure Requests with SSL](https://requests.ryanmccue.info/docs/usage-advanced.html#secure-requests-with-ssl) has also been updated to reflect this and it is recommended to have a read through.
 
@@ -95,7 +97,7 @@ setting the value of this constant to `true`.
   - A `public static` `WpOrg\Requests\Requests::has_capabilities($capabilities = array())` method is now available to check whether there is a transport available which supports the requested capabilities.
   - A `public` `WpOrg\Requests\Response::decode_body($associative = true, $depth = 512, $options = 0)` method is now available to handle JSON-decoding a response body.
     The method parameters correspond to the parameters of the PHP native [`json_decode()`](https://php.net/json-decode) function.
-	The method will throw an `WpOrg\Requests\Exception` when the response body is not valid JSON.
+    The method will throw an `WpOrg\Requests\Exception` when the response body is not valid JSON.
   - A `WpOrg\Requests\Capability` interface. This interface provides constants for the known capabilities. Transports can be tested whether or not they support these capabilities.
     Currently, the only capability supported is `Capability::SSL`.
   - A `WpOrg\Requests\Port` class. This class encapsulates typical port numbers as constants and offers a `static` `Port::get($type)` method to retrieve a port number based on a request type.
