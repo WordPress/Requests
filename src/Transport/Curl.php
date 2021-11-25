@@ -204,7 +204,7 @@ final class Curl implements Transport {
 		curl_exec($this->handle);
 		$response = $this->response_data;
 
-		$options['hooks']->dispatch('curl.after_send', []);
+		$options['hooks']->dispatch('curl.after_send', [&$this->handle]);
 
 		if (curl_errno($this->handle) === CURLE_WRITE_ERROR || curl_errno($this->handle) === CURLE_BAD_CONTENT_ENCODING) {
 			// Reset encoding and try again
