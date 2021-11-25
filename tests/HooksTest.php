@@ -242,6 +242,73 @@ class HooksTest extends TestCase {
 	}
 
 	/**
+	 * Verify that hooks are executed based on their priority order.
+	 *
+	 * Issue https://github.com/WordPress/Requests/issues/452
+	 *
+	 * @covers ::dispatch
+	 *
+	 * @return void
+	 */
+	public function testDispatchRespectsHookPriority() {
+		// Register multiple callbacks for the same hook with a variation of priorities.
+		$this->hooks->register(
+			'hook_a',
+			function(&$text) {
+				$text .= "no prio 0\n";
+			}
+		);
+		$this->hooks->register(
+			'hook_a',
+			function(&$text) {
+				$text .= "prio 10-1\n";
+			},
+			10
+		);
+		$this->hooks->register(
+			'hook_a',
+			function(&$text) {
+				$text .= "prio -3\n";
+			},
+			-3
+		);
+		$this->hooks->register(
+			'hook_a',
+			function(&$text) {
+				$text .= "prio 5\n";
+			},
+			5
+		);
+		$this->hooks->register(
+			'hook_a',
+			function(&$text) {
+				$text .= "prio 2-1\n";
+			},
+			2
+		);
+		$this->hooks->register(
+			'hook_a',
+			function(&$text) {
+				$text .= "prio 2-2\n";
+			},
+			2
+		);
+		$this->hooks->register(
+			'hook_a',
+			function(&$text) {
+				$text .= "prio 10-2\n";
+			},
+			10
+		);
+
+		$text     = '';
+		$expected = "prio -3\nno prio 0\nprio 2-1\nprio 2-2\nprio 5\nprio 10-1\nprio 10-2\n";
+
+		$this->assertTrue($this->hooks->dispatch('hook_a', [&$text]));
+		$this->assertSame($expected, $text);
+	}
+
+	/**
 	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$hook`.
 	 *
 	 * @dataProvider dataInvalidHookname

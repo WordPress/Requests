@@ -86,6 +86,8 @@ class Hooks implements HookManager {
 			$parameters = array_values($parameters);
 		}
 
+		ksort($this->hooks[$hook]);
+
 		foreach ($this->hooks[$hook] as $priority => $hooked) {
 			foreach ($hooked as $callback) {
 				$callback(...$parameters);
