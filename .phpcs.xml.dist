@@ -95,12 +95,6 @@
 		<!-- This repo complies with PSR 0 for filename conventions. -->
 		<exclude name="WordPress.Files.FileName"/>
 
-		<!-- This code base consistently has the second keyword of multi-part control structures
-			 on a new line.
-			 Once WPCS 3.0.0 comes out, the style used in this repo can be enforced via the
-			 Universal.ControlStructures.IfElseDeclaration sniff from PHPCSExtra. -->
-		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
-
 		<!-- WPCS demands long arrays. We'll be using short arrays from now on. -->
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
 

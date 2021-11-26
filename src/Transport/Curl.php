@@ -190,8 +190,7 @@ final class Curl implements Transport {
 			if ($options['verify'] === false) {
 				curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
 				curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, 0);
-			}
-			elseif (is_string($options['verify'])) {
+			} elseif (is_string($options['verify'])) {
 				curl_setopt($this->handle, CURLOPT_CAINFO, $options['verify']);
 			}
 		}
@@ -272,8 +271,7 @@ final class Curl implements Transport {
 
 			do {
 				$status = curl_multi_exec($multihandle, $active);
-			}
-			while ($status === CURLM_CALL_MULTI_PERFORM);
+			} while ($status === CURLM_CALL_MULTI_PERFORM);
 
 			$to_process = [];
 
@@ -299,8 +297,7 @@ final class Curl implements Transport {
 					);
 					$responses[$key] = $exception;
 					$options['hooks']->dispatch('transport.internal.parse_error', [&$responses[$key], $requests[$key]]);
-				}
-				else {
+				} else {
 					$responses[$key] = $subrequests[$key]->process_response($subrequests[$key]->response_data, $options);
 
 					$options['hooks']->dispatch('transport.internal.parse_response', [&$responses[$key], $requests[$key]]);
@@ -314,8 +311,7 @@ final class Curl implements Transport {
 				}
 				$completed++;
 			}
-		}
-		while ($active || $completed < $subrequestcount);
+		} while ($active || $completed < $subrequestcount);
 
 		$request['options']['hooks']->dispatch('curl.after_multi_exec', [&$multihandle]);
 
@@ -390,8 +386,7 @@ final class Curl implements Transport {
 			if ($data_format === 'query') {
 				$url  = self::format_get($url, $data);
 				$data = '';
-			}
-			elseif (!is_string($data)) {
+			} elseif (!is_string($data)) {
 				$data = http_build_query($data, '', '&');
 			}
 		}
@@ -429,16 +424,14 @@ final class Curl implements Transport {
 
 		if (is_int($timeout) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($timeout));
-		}
-		else {
+		} else {
 			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_timeout_msFound
 			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($timeout * 1000));
 		}
 
 		if (is_int($options['connect_timeout']) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
-		}
-		else {
+		} else {
 			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttimeout_msFound
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
 		}
@@ -449,8 +442,7 @@ final class Curl implements Transport {
 		}
 		if ($options['protocol_version'] === 1.1) {
 			curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		}
-		else {
+		} else {
 			curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 		}
 
@@ -478,8 +470,7 @@ final class Curl implements Transport {
 		if ($options['filename'] !== false && $this->stream_handle) {
 			fclose($this->stream_handle);
 			$this->headers = trim($this->headers);
-		}
-		else {
+		} else {
 			$this->headers .= $response;
 		}
 
@@ -549,8 +540,7 @@ final class Curl implements Transport {
 
 		if ($this->stream_handle) {
 			fwrite($this->stream_handle, $data);
-		}
-		else {
+		} else {
 			$this->response_data .= $data;
 		}
 
@@ -571,8 +561,7 @@ final class Curl implements Transport {
 			$url_parts = parse_url($url);
 			if (empty($url_parts['query'])) {
 				$url_parts['query'] = '';
-			}
-			else {
+			} else {
 				$query = $url_parts['query'];
 			}
 
@@ -581,8 +570,7 @@ final class Curl implements Transport {
 
 			if (empty($url_parts['query'])) {
 				$url .= '?' . $query;
-			}
-			else {
+			} else {
 				$url = str_replace($url_parts['query'], $query, $url);
 			}
 		}

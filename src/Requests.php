@@ -459,8 +459,7 @@ class Requests {
 			if (is_string($options['transport'])) {
 				$transport = new $transport();
 			}
-		}
-		else {
+		} else {
 			$need_ssl     = (stripos($url, 'https://') === 0);
 			$capabilities = [Capability::SSL => $need_ssl];
 			$transport    = self::get_transport($capabilities);
@@ -547,8 +546,7 @@ class Requests {
 			if (!isset($request['options'])) {
 				$request['options']         = $options;
 				$request['options']['type'] = $request['type'];
-			}
-			else {
+			} else {
 				if (empty($request['options']['type'])) {
 					$request['options']['type'] = $request['type'];
 				}
@@ -573,8 +571,7 @@ class Requests {
 			if (is_string($options['transport'])) {
 				$transport = new $transport();
 			}
-		}
-		else {
+		} else {
 			$transport = self::get_transport();
 		}
 		$responses = $transport->request_multiple($requests, $options);
@@ -670,8 +667,7 @@ class Requests {
 
 		if (is_array($options['cookies'])) {
 			$options['cookies'] = new Jar($options['cookies']);
-		}
-		elseif (empty($options['cookies'])) {
+		} elseif (empty($options['cookies'])) {
 			$options['cookies'] = new Jar();
 		}
 		if ($options['cookies'] !== false) {
@@ -690,8 +686,7 @@ class Requests {
 		if (!isset($options['data_format'])) {
 			if (in_array($type, [self::HEAD, self::GET, self::DELETE], true)) {
 				$options['data_format'] = 'query';
-			}
-			else {
+			} else {
 				$options['data_format'] = 'body';
 			}
 		}
@@ -795,8 +790,7 @@ class Requests {
 				$redirected            = self::request($location, $req_headers, $req_data, $options['type'], $options);
 				$redirected->history[] = $return;
 				return $redirected;
-			}
-			elseif ($options['redirected'] >= $options['redirects']) {
+			} elseif ($options['redirected'] >= $options['redirects']) {
 				throw new Exception('Too many redirects', 'toomanyredirects', $return);
 			}
 		}
@@ -824,8 +818,7 @@ class Requests {
 			$data     = $request['data'];
 			$options  = $request['options'];
 			$response = self::parse_response($response, $url, $headers, $data, $options);
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			$response = $e;
 		}
 	}

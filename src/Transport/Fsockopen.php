@@ -128,8 +128,7 @@ final class Fsockopen implements Transport {
 					$context_options['verify_peer']      = false;
 					$context_options['verify_peer_name'] = false;
 					$verifyname                          = false;
-				}
-				elseif (is_string($options['verify'])) {
+				} elseif (is_string($options['verify'])) {
 					$context_options['cafile'] = $options['verify'];
 				}
 			}
@@ -140,8 +139,7 @@ final class Fsockopen implements Transport {
 			}
 
 			stream_context_set_option($context, ['ssl' => $context_options]);
-		}
-		else {
+		} else {
 			$remote_socket = 'tcp://' . $host;
 		}
 
@@ -179,8 +177,7 @@ final class Fsockopen implements Transport {
 		if ($data_format === 'query') {
 			$path = self::format_get($url_parts, $data);
 			$data = '';
-		}
-		else {
+		} else {
 			$path = self::format_get($url_parts, []);
 		}
 
@@ -192,8 +189,7 @@ final class Fsockopen implements Transport {
 		if ($options['type'] !== Requests::TRACE) {
 			if (is_array($data)) {
 				$request_body = http_build_query($data, '', '&');
-			}
-			else {
+			} else {
 				$request_body = $data;
 			}
 
@@ -262,8 +258,7 @@ final class Fsockopen implements Transport {
 		$timeout_sec = (int) floor($options['timeout']);
 		if ($timeout_sec === $options['timeout']) {
 			$timeout_msec = 0;
-		}
-		else {
+		} else {
 			$timeout_msec = self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
 		}
 		stream_set_timeout($socket, $timeout_sec, $timeout_msec);
@@ -318,8 +313,7 @@ final class Fsockopen implements Transport {
 				$size += strlen($block);
 				if ($download) {
 					fwrite($download, $block);
-				}
-				else {
+				} else {
 					$body .= $block;
 				}
 			}
@@ -328,8 +322,7 @@ final class Fsockopen implements Transport {
 
 		if ($download) {
 			fclose($download);
-		}
-		else {
+		} else {
 			$this->headers .= "\r\n\r\n" . $body;
 		}
 		fclose($socket);
@@ -370,8 +363,7 @@ final class Fsockopen implements Transport {
 				$responses[$id] = $handler->request($request['url'], $request['headers'], $request['data'], $request['options']);
 
 				$request['options']['hooks']->dispatch('transport.internal.parse_response', [&$responses[$id], $request]);
-			}
-			catch (Exception $e) {
+			} catch (Exception $e) {
 				$responses[$id] = $e;
 			}
 
@@ -422,12 +414,10 @@ final class Fsockopen implements Transport {
 		if (isset($url_parts['path'])) {
 			if (isset($url_parts['query'])) {
 				$get = $url_parts['path'] . '?' . $url_parts['query'];
-			}
-			else {
+			} else {
 				$get = $url_parts['path'];
 			}
-		}
-		else {
+		} else {
 			$get = '/';
 		}
 		return $get;

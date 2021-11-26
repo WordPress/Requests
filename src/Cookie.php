@@ -331,8 +331,7 @@ class Cookie {
 				$delta_seconds = (int) $value;
 				if ($delta_seconds <= 0) {
 					$expiry_time = 0;
-				}
-				else {
+				} else {
 					$expiry_time = $this->reference_time + $delta_seconds;
 				}
 
@@ -383,8 +382,7 @@ class Cookie {
 				// Ignore non-associative attributes
 				if (is_numeric($key)) {
 					$parts[] = $value;
-				}
-				else {
+				} else {
 					$parts[] = sprintf('%s=%s', $key, $value);
 				}
 			}
@@ -423,8 +421,7 @@ class Cookie {
 
 		if (!empty($name)) {
 			$value = $cookie_header;
-		}
-		elseif (strpos($kvparts, '=') === false) {
+		} elseif (strpos($kvparts, '=') === false) {
 			// Some sites might only have a value without the equals separator.
 			// Deviate from RFC 6265 and pretend it was actually a blank name
 			// (`=foo`)
@@ -432,8 +429,7 @@ class Cookie {
 			// https://bugzilla.mozilla.org/show_bug.cgi?id=169091
 			$name  = '';
 			$value = $kvparts;
-		}
-		else {
+		} else {
 			list($name, $value) = explode('=', $kvparts, 2);
 		}
 		$name  = trim($name);
@@ -447,8 +443,7 @@ class Cookie {
 				if (strpos($part, '=') === false) {
 					$part_key   = $part;
 					$part_value = true;
-				}
-				else {
+				} else {
 					list($part_key, $part_value) = explode('=', $part, 2);
 					$part_value                  = trim($part_value);
 				}
@@ -483,8 +478,7 @@ class Cookie {
 			if (empty($parsed->attributes['domain']) && !empty($origin)) {
 				$parsed->attributes['domain'] = $origin->host;
 				$parsed->flags['host-only']   = true;
-			}
-			else {
+			} else {
 				$parsed->flags['host-only'] = false;
 			}
 
@@ -498,14 +492,12 @@ class Cookie {
 					// the uri-path is not a %x2F ("/") character, output
 					// %x2F ("/") and skip the remaining steps.
 					$path = '/';
-				}
-				elseif (substr_count($path, '/') === 1) {
+				} elseif (substr_count($path, '/') === 1) {
 					// If the uri-path contains no more than one %x2F ("/")
 					// character, output %x2F ("/") and skip the remaining
 					// step.
 					$path = '/';
-				}
-				else {
+				} else {
 					// Output the characters of the uri-path from the first
 					// character up to, but not including, the right-most
 					// %x2F ("/").
