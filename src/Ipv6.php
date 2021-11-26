@@ -185,6 +185,7 @@ final class Ipv6 {
 					return false;
 				}
 			}
+
 			if (count($ipv4) === 4) {
 				foreach ($ipv4 as $ipv4_part) {
 					$value = (int) $ipv4_part;
@@ -193,6 +194,7 @@ final class Ipv6 {
 					}
 				}
 			}
+
 			return true;
 		} else {
 			return false;

@@ -16,6 +16,7 @@ final class TestTransportMock implements Transport {
 		if (isset($capabilities['time-travel']) && $capabilities['time-travel']) {
 			return false;
 		}
+
 		return true;
 	}
 }

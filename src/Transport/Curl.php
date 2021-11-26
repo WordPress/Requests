@@ -109,10 +109,12 @@ final class Curl implements Transport {
 		if ($this->version >= self::CURL_7_10_5) {
 			curl_setopt($this->handle, CURLOPT_ENCODING, '');
 		}
+
 		if (defined('CURLOPT_PROTOCOLS')) {
 			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_protocolsFound
 			curl_setopt($this->handle, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 		}
+
 		if (defined('CURLOPT_REDIR_PROTOCOLS')) {
 			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_redir_protocolsFound
 			curl_setopt($this->handle, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -309,6 +311,7 @@ final class Curl implements Transport {
 				if (!is_string($responses[$key])) {
 					$options['hooks']->dispatch('multiple.request.complete', [&$responses[$key], $key]);
 				}
+
 				$completed++;
 			}
 		} while ($active || $completed < $subrequestcount);
@@ -342,6 +345,7 @@ final class Curl implements Transport {
 		if ($options['max_bytes'] !== false) {
 			$this->response_byte_limit = $options['max_bytes'];
 		}
+
 		$this->hooks = $options['hooks'];
 
 		return $this->handle;
@@ -435,11 +439,13 @@ final class Curl implements Transport {
 			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttimeout_msFound
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
 		}
+
 		curl_setopt($this->handle, CURLOPT_URL, $url);
 		curl_setopt($this->handle, CURLOPT_USERAGENT, $options['useragent']);
 		if (!empty($headers)) {
 			curl_setopt($this->handle, CURLOPT_HTTPHEADER, $headers);
 		}
+
 		if ($options['protocol_version'] === 1.1) {
 			curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 		} else {
@@ -467,6 +473,7 @@ final class Curl implements Transport {
 			$options['hooks']->dispatch('curl.after_request', [&$fake_headers]);
 			return false;
 		}
+
 		if ($options['filename'] !== false && $this->stream_handle) {
 			fclose($this->stream_handle);
 			$this->headers = trim($this->headers);
@@ -482,6 +489,7 @@ final class Curl implements Transport {
 			);
 			throw new Exception($error, 'curlerror', $this->handle);
 		}
+
 		$this->info = curl_getinfo($this->handle);
 
 		$options['hooks']->dispatch('curl.after_request', [&$this->headers, &$this->info]);
@@ -503,11 +511,13 @@ final class Curl implements Transport {
 			$this->headers      = '';
 			$this->done_headers = false;
 		}
+
 		$this->headers .= $headers;
 
 		if ($headers === "\r\n") {
 			$this->done_headers = true;
 		}
+
 		return strlen($headers);
 	}
 
@@ -574,6 +584,7 @@ final class Curl implements Transport {
 				$url = str_replace($url_parts['query'], $query, $url);
 			}
 		}
+
 		return $url;
 	}
 

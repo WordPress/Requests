@@ -389,6 +389,7 @@ class Cookie {
 
 			$header_value .= '; ' . implode('; ', $parts);
 		}
+
 		return $header_value;
 	}
 
@@ -432,6 +433,7 @@ class Cookie {
 		} else {
 			list($name, $value) = explode('=', $kvparts, 2);
 		}
+
 		$name  = trim($name);
 		$value = trim($value);
 
@@ -503,6 +505,7 @@ class Cookie {
 					// %x2F ("/").
 					$path = substr($path, 0, strrpos($path, '/'));
 				}
+
 				$parsed->attributes['path'] = $path;
 			}
 

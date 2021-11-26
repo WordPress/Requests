@@ -67,6 +67,7 @@ class IdnaEncoder {
 		foreach ($parts as &$part) {
 			$part = self::to_ascii($part);
 		}
+
 		return implode('.', $parts);
 	}
 
@@ -198,6 +199,7 @@ class IdnaEncoder {
 				if ($position + $length > $strlen) {
 					throw new Exception('Invalid Unicode codepoint', 'idna.invalidcodepoint', $character);
 				}
+
 				for ($position++; $remaining > 0; $position++) {
 					$value = ord($input[$position]);
 
@@ -209,6 +211,7 @@ class IdnaEncoder {
 					--$remaining;
 					$character |= ($value & 0x3F) << ($remaining * 6);
 				}
+
 				$position--;
 			}
 
@@ -279,6 +282,7 @@ class IdnaEncoder {
 				$extended[$char] = true;
 			}
 		}
+
 		$extended = array_keys($extended);
 		sort($extended);
 		$b = $h;
@@ -286,6 +290,7 @@ class IdnaEncoder {
 		if (strlen($output) > 0) {
 			$output .= '-';
 		}
+
 		// {if the input contains a non-basic code point < n then fail}
 		// while h < length(input) do begin
 		$codepointcount = count($codepoints);
@@ -317,10 +322,12 @@ class IdnaEncoder {
 						} else {
 							$t = $k - $bias;
 						}
+
 						// if q < t then break
 						if ($q < $t) {
 							break;
 						}
+
 						// output the code point for digit t + ((q - t) mod (base - t))
 						$digit   = $t + (($q - $t) % (self::BOOTSTRAP_BASE - $t));
 						$output .= self::digit_to_char($digit);
@@ -361,6 +368,7 @@ class IdnaEncoder {
 		if ($digit < 0 || $digit > 35) {
 			throw new Exception(sprintf('Invalid digit %d', $digit), 'idna.invalid_digit', $digit);
 		}
+
 		// @codeCoverageIgnoreEnd
 		$digits = 'abcdefghijklmnopqrstuvwxyz0123456789';
 		return substr($digits, $digit, 1);
@@ -385,6 +393,7 @@ class IdnaEncoder {
 			// else let delta = delta div 2
 			$delta = floor($delta / 2);
 		}
+
 		// let delta = delta + (delta div numpoints)
 		$delta += floor($delta / $numpoints);
 		// let k = 0

@@ -135,8 +135,6 @@
 
 	<!-- Include replacement sniffs which enforce the opposite of WPCS for several excluded sniffs. -->
 	<rule ref="Squiz.WhiteSpace.ControlStructureSpacing">
-		<!-- Note: These two violations should potentially be addressed at a later point in time. -->
-		<exclude name="Squiz.WhiteSpace.ControlStructureSpacing.NoLineAfterClose"/>
 		<exclude name="Squiz.WhiteSpace.ControlStructureSpacing.LineAfterClose"/>
 	</rule>
 

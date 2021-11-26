@@ -259,6 +259,7 @@ final class SslTest extends TestCase {
 			if ($with_san === true) {
 				$with_san = 'DNS: ' . $dnsname;
 			}
+
 			$certificate['extensions'] = [
 				'subjectAltName' => $with_san,
 			];

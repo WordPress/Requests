@@ -339,8 +339,7 @@ title: %s
 			if (@mkdir($target_dir, 0777, true) === false) {
 				throw new RuntimeException(sprintf('Failed to create the %s directory.', $target_dir));
 			}
-		}
-		// phpcs:enable WordPress
+		} // phpcs:enable WordPress
 
 		// Make sure the file always ends on a new line.
 		$contents = rtrim($contents) . "\n";

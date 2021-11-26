@@ -281,6 +281,7 @@ class Session {
 		if (empty($request['headers'])) {
 			$request['headers'] = [];
 		}
+
 		$request['headers'] = array_merge($this->headers, $request['headers']);
 
 		if (empty($request['data'])) {

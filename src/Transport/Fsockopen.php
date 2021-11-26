@@ -96,6 +96,7 @@ final class Fsockopen implements Transport {
 		if (empty($url_parts)) {
 			throw new Exception('Invalid URL.', 'invalidurl', $url);
 		}
+
 		$host                     = $url_parts['host'];
 		$context                  = stream_context_create();
 		$verifyname               = false;
@@ -148,6 +149,7 @@ final class Fsockopen implements Transport {
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = Port::HTTP;
 		}
+
 		$remote_socket .= ':' . $url_parts['port'];
 
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
@@ -213,6 +215,7 @@ final class Fsockopen implements Transport {
 			if (($scheme_lower === 'http' && $url_parts['port'] !== Port::HTTP) || ($scheme_lower === 'https' && $url_parts['port'] !== Port::HTTPS)) {
 				$out .= ':' . $url_parts['port'];
 			}
+
 			$out .= "\r\n";
 		}
 
@@ -261,6 +264,7 @@ final class Fsockopen implements Transport {
 		} else {
 			$timeout_msec = self::SECOND_IN_MICROSECONDS * $options['timeout'] % self::SECOND_IN_MICROSECONDS;
 		}
+
 		stream_set_timeout($socket, $timeout_sec, $timeout_msec);
 
 		$response   = '';
@@ -303,6 +307,7 @@ final class Fsockopen implements Transport {
 					if ($size === $this->max_bytes) {
 						continue;
 					}
+
 					if (($size + $data_length) > $this->max_bytes) {
 						// Limit the length
 						$limited_length = ($this->max_bytes - $size);
@@ -318,6 +323,7 @@ final class Fsockopen implements Transport {
 				}
 			}
 		}
+
 		$this->headers = $headers;
 
 		if ($download) {
@@ -325,6 +331,7 @@ final class Fsockopen implements Transport {
 		} else {
 			$this->headers .= "\r\n\r\n" . $body;
 		}
+
 		fclose($socket);
 
 		$options['hooks']->dispatch('fsockopen.after_request', [&$this->headers, &$this->info]);
@@ -411,6 +418,7 @@ final class Fsockopen implements Transport {
 			$url_parts['query'] .= '&' . http_build_query($data, '', '&');
 			$url_parts['query']  = trim($url_parts['query'], '&');
 		}
+
 		if (isset($url_parts['path'])) {
 			if (isset($url_parts['query'])) {
 				$get = $url_parts['path'] . '?' . $url_parts['query'];
@@ -420,6 +428,7 @@ final class Fsockopen implements Transport {
 		} else {
 			$get = '/';
 		}
+
 		return $get;
 	}
 

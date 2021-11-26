@@ -397,17 +397,21 @@ final class CookiesTest extends TestCase {
 		if (isset($expected['name'])) {
 			$this->assertSame($expected['name'], $cookie->name);
 		}
+
 		if (isset($expected['value'])) {
 			$this->assertSame($expected['value'], $cookie->value);
 		}
+
 		if (isset($expected['expired'])) {
 			$this->assertSame($expected['expired'], $cookie->is_expired());
 		}
+
 		if (isset($expected_attributes)) {
 			foreach ($expected_attributes as $attr_key => $attr_val) {
 				$this->assertSame($attr_val, $cookie->attributes[$attr_key], "$attr_key should match supplied");
 			}
 		}
+
 		if (isset($expected_flags)) {
 			foreach ($expected_flags as $flag_key => $flag_val) {
 				$this->assertSame($flag_val, $cookie->flags[$flag_key], "$flag_key should match supplied");
@@ -586,6 +590,7 @@ final class CookiesTest extends TestCase {
 			$this->assertCount(0, $parsed);
 			return;
 		}
+
 		$this->assertCount(1, $parsed);
 
 		$cookie = reset($parsed);
