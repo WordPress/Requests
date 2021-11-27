@@ -26,20 +26,15 @@ jobs:
       matrix:
         php: ['7.0', '7.1', '7.2', '7.3', '7.4', '8.1']
         coverage: [false]
-        experimental: [false]
 
         include:
           # Run code coverage on high/low PHP.
           - php: '5.6'
             coverage: true
-            experimental: false
           - php: '8.0'
             coverage: true
-            experimental: false
 
     name: "Test: PHP ${{ matrix.php }}"
-
-    continue-on-error: ${{ matrix.experimental }}
 
     steps:
       - name: Checkout code
@@ -74,15 +69,7 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
-        if: ${{ startsWith( matrix.php, '8' ) == false && matrix.php != 'latest' }}
         uses: "ramsey/composer-install@v1"
-
-      # For PHP 8.0 and "nightly", we need to install with ignore platform reqs.
-      - name: Install Composer dependencies - with ignore platform
-        if: ${{ startsWith( matrix.php, '8' ) || matrix.php == 'latest' }}
-        uses: "ramsey/composer-install@v1"
-        with:
-          composer-options: --ignore-platform-reqs
 
       - name: Setup problem matcher to provide annotations for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
