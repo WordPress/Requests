@@ -25,6 +25,7 @@ use WpOrg\Requests\Utility\InputValidator;
 final class Curl implements Transport {
 	const CURL_7_10_5 = 0x070A05;
 	const CURL_7_16_2 = 0x071002;
+	const CURL_7_22_0 = 0x071600;
 
 	/**
 	 * Raw HTTP data
@@ -363,8 +364,10 @@ final class Curl implements Transport {
 		$options['hooks']->dispatch('curl.before_request', [&$this->handle]);
 
 		// Force closing the connection for old versions of cURL (<7.22).
-		if (!isset($headers['Connection'])) {
-			$headers['Connection'] = 'close';
+		if ($this->version < self::CURL_7_22_0) {
+			if (!isset($headers['Connection'])) {
+				$headers['Connection'] = 'close';
+			}
 		}
 
 		/**
