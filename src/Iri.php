@@ -53,7 +53,7 @@ use WpOrg\Requests\Utility\InputValidator;
  * @link http://hg.gsnedders.com/iri/
  *
  * @property string $iri IRI we're working with
- * @property-read string $uri IRI in URI form, {@see \WpOrg\Requests\IRI::to_uri()}
+ * @property-read string $uri IRI in URI form, {@see \WpOrg\Requests\Iri::to_uri()}
  * @property string $scheme Scheme part of the IRI
  * @property string $authority Authority part, formatted for a URI (userinfo + host + port)
  * @property string $iauthority Authority part of the IRI (userinfo + host + port)
@@ -1000,7 +1000,7 @@ class Iri {
 	/**
 	 * Convert an IRI to a URI (or parts thereof)
 	 *
-	 * @param string|bool $iri IRI to convert (or false from {@see \WpOrg\Requests\IRI::get_iri()})
+	 * @param string|bool $iri IRI to convert (or false from {@see \WpOrg\Requests\Iri::get_iri()})
 	 * @return string|false URI if IRI is valid, false otherwise.
 	 */
 	protected function to_uri($iri) {
