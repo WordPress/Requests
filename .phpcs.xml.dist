@@ -92,7 +92,7 @@
 			 Miscellaneous other exclusions.
 			 ========================================================================== -->
 
-		<!-- This repo complies with PSR 0 for filename conventions. -->
+		<!-- This repo complies with PSR 4 for filename conventions. -->
 		<exclude name="WordPress.Files.FileName"/>
 
 		<!-- WPCS demands long arrays. We'll be using short arrays from now on. -->
@@ -215,26 +215,8 @@
 	-->
 
 	<!-- ==========================================================================
-		 Package code
-		 ========================================================================== -->
-
-	<!-- Don't rename existing classes to prevent a BC break. -->
-	<rule ref="PEAR.NamingConventions.ValidClassName.Invalid">
-		<exclude-pattern>*/library/Deprecated\.php$</exclude-pattern>
-	</rule>
-
-	<rule ref="Generic.Files.OneObjectStructurePerFile.MultipleFound">
-		<exclude-pattern>*/library/Deprecated\.php$</exclude-pattern>
-	</rule>
-
-	<!-- ==========================================================================
 		 Example code
 		 ========================================================================== -->
-
-	<!-- Using short arrays in example code is fine. -->
-	<rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
-		<exclude-pattern>/examples/cookie_jar\.php$</exclude-pattern>
-	</rule>
 
 	<!-- Using var_dump() in example code is fine. -->
 	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_var_dump">
