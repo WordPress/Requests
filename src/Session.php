@@ -281,14 +281,14 @@ class Session {
 		if (empty($request['headers'])) {
 			$request['headers'] = [];
 		}
+
 		$request['headers'] = array_merge($this->headers, $request['headers']);
 
 		if (empty($request['data'])) {
 			if (is_array($this->data)) {
 				$request['data'] = $this->data;
 			}
-		}
-		elseif (is_array($request['data']) && is_array($this->data)) {
+		} elseif (is_array($request['data']) && is_array($this->data)) {
 			$request['data'] = array_merge($this->data, $request['data']);
 		}
 

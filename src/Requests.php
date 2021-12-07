@@ -447,6 +447,7 @@ class Requests {
 		if (empty($options['type'])) {
 			$options['type'] = $type;
 		}
+
 		$options = array_merge(self::get_default_options(), $options);
 
 		self::set_defaults($url, $headers, $data, $type, $options);
@@ -459,12 +460,12 @@ class Requests {
 			if (is_string($options['transport'])) {
 				$transport = new $transport();
 			}
-		}
-		else {
+		} else {
 			$need_ssl     = (stripos($url, 'https://') === 0);
 			$capabilities = [Capability::SSL => $need_ssl];
 			$transport    = self::get_transport($capabilities);
 		}
+
 		$response = $transport->request($url, $headers, $data, $options);
 
 		$options['hooks']->dispatch('requests.before_parse', [&$response, $url, $headers, $data, $type, $options]);
@@ -538,20 +539,23 @@ class Requests {
 			if (!isset($request['headers'])) {
 				$request['headers'] = [];
 			}
+
 			if (!isset($request['data'])) {
 				$request['data'] = [];
 			}
+
 			if (!isset($request['type'])) {
 				$request['type'] = self::GET;
 			}
+
 			if (!isset($request['options'])) {
 				$request['options']         = $options;
 				$request['options']['type'] = $request['type'];
-			}
-			else {
+			} else {
 				if (empty($request['options']['type'])) {
 					$request['options']['type'] = $request['type'];
 				}
+
 				$request['options'] = array_merge($options, $request['options']);
 			}
 
@@ -565,6 +569,7 @@ class Requests {
 				}
 			}
 		}
+
 		unset($request);
 
 		if (!empty($options['transport'])) {
@@ -573,10 +578,10 @@ class Requests {
 			if (is_string($options['transport'])) {
 				$transport = new $transport();
 			}
-		}
-		else {
+		} else {
 			$transport = self::get_transport();
 		}
+
 		$responses = $transport->request_multiple($requests, $options);
 
 		foreach ($responses as $id => &$response) {
@@ -606,6 +611,7 @@ class Requests {
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
 		}
+
 		return $defaults;
 	}
 
@@ -657,6 +663,7 @@ class Requests {
 		if (is_array($options['auth'])) {
 			$options['auth'] = new Basic($options['auth']);
 		}
+
 		if ($options['auth'] !== false) {
 			$options['auth']->register($options['hooks']);
 		}
@@ -664,16 +671,17 @@ class Requests {
 		if (is_string($options['proxy']) || is_array($options['proxy'])) {
 			$options['proxy'] = new Http($options['proxy']);
 		}
+
 		if ($options['proxy'] !== false) {
 			$options['proxy']->register($options['hooks']);
 		}
 
 		if (is_array($options['cookies'])) {
 			$options['cookies'] = new Jar($options['cookies']);
-		}
-		elseif (empty($options['cookies'])) {
+		} elseif (empty($options['cookies'])) {
 			$options['cookies'] = new Jar();
 		}
+
 		if ($options['cookies'] !== false) {
 			$options['cookies']->register($options['hooks']);
 		}
@@ -690,8 +698,7 @@ class Requests {
 		if (!isset($options['data_format'])) {
 			if (in_array($type, [self::HEAD, self::GET, self::DELETE], true)) {
 				$options['data_format'] = 'query';
-			}
-			else {
+			} else {
 				$options['data_format'] = 'body';
 			}
 		}
@@ -735,6 +742,7 @@ class Requests {
 				$return->body = $body;
 			}
 		}
+
 		// Pretend CRLF = LF for compatibility (RFC 2616, section 19.3)
 		$headers = str_replace("\r\n", "\n", $headers);
 		// Unfold headers (replace [CRLF] 1*( SP | HT ) with SP) as per RFC 2616 (section 2.2)
@@ -744,6 +752,7 @@ class Requests {
 		if (empty($matches)) {
 			throw new Exception('Response could not be parsed', 'noversion', $headers);
 		}
+
 		$return->protocol_version = (float) $matches[1];
 		$return->status_code      = (int) $matches[2];
 		if ($return->status_code >= 200 && $return->status_code < 300) {
@@ -756,10 +765,12 @@ class Requests {
 			preg_replace('#(\s+)#i', ' ', $value);
 			$return->headers[$key] = $value;
 		}
+
 		if (isset($return->headers['transfer-encoding'])) {
 			$return->body = self::decode_chunked($return->body);
 			unset($return->headers['transfer-encoding']);
 		}
+
 		if (isset($return->headers['content-encoding'])) {
 			$return->body = self::decompress($return->body);
 		}
@@ -776,6 +787,7 @@ class Requests {
 				if ($return->status_code === 303) {
 					$options['type'] = self::GET;
 				}
+
 				$options['redirected']++;
 				$location = $return->headers['location'];
 				if (strpos($location, 'http://') !== 0 && strpos($location, 'https://') !== 0) {
@@ -795,8 +807,7 @@ class Requests {
 				$redirected            = self::request($location, $req_headers, $req_data, $options['type'], $options);
 				$redirected->history[] = $return;
 				return $redirected;
-			}
-			elseif ($options['redirected'] >= $options['redirects']) {
+			} elseif ($options['redirected'] >= $options['redirects']) {
 				throw new Exception('Too many redirects', 'toomanyredirects', $return);
 			}
 		}
@@ -824,8 +835,7 @@ class Requests {
 			$data     = $request['data'];
 			$options  = $request['options'];
 			$response = self::parse_response($response, $url, $headers, $data, $options);
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			$response = $e;
 		}
 	}
@@ -889,6 +899,7 @@ class Requests {
 		foreach ($dictionary as $key => $value) {
 			$return[] = sprintf('%s: %s', $key, $value);
 		}
+
 		return $return;
 	}
 
@@ -989,16 +1000,20 @@ class Requests {
 					list($xlen) = unpack('v', substr($gz_data, $i, 2));
 					$i         += 2 + $xlen;
 				}
+
 				if ($flg & 8) {
 					$i = strpos($gz_data, "\0", $i) + 1;
 				}
+
 				if ($flg & 16) {
 					$i = strpos($gz_data, "\0", $i) + 1;
 				}
+
 				if ($flg & 2) {
 					$i += 2;
 				}
 			}
+
 			$decompressed = self::compatible_gzinflate(substr($gz_data, $i));
 			if ($decompressed !== false) {
 				return $decompressed;
@@ -1058,6 +1073,7 @@ class Requests {
 			if ($decompressed !== false) {
 				return $decompressed;
 			}
+
 			return false;
 		}
 

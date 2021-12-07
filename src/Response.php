@@ -124,8 +124,7 @@ class Response {
 			if ($allow_redirects !== true) {
 				throw new Exception('Redirection not allowed', 'response.no_redirects', $this);
 			}
-		}
-		elseif (!$this->success) {
+		} elseif (!$this->success) {
 			$exception = Http::get_class($this->status_code);
 			throw new $exception(null, $this);
 		}

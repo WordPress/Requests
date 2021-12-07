@@ -67,16 +67,13 @@ final class Http implements Proxy {
 	public function __construct($args = null) {
 		if (is_string($args)) {
 			$this->proxy = $args;
-		}
-		elseif (is_array($args)) {
+		} elseif (is_array($args)) {
 			if (count($args) === 1) {
 				list($this->proxy) = $args;
-			}
-			elseif (count($args) === 3) {
+			} elseif (count($args) === 3) {
 				list($this->proxy, $this->user, $this->pass) = $args;
 				$this->use_authentication                    = true;
-			}
-			else {
+			} else {
 				throw ArgumentCount::create(
 					'an array with exactly one element or exactly three elements',
 					count($args),
