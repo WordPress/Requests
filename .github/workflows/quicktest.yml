@@ -33,6 +33,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          tools: composer:2.2.4
           coverage: none
 
       # At least one test needs a non-en_US locale to be available, so make sure it is.
