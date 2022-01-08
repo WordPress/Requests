@@ -55,7 +55,7 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: error_reporting=-1, display_errors=On, log_errors_max_len=0
           coverage: ${{ steps.set_cov.outputs.COV }}
-          tools: cs2pr,composer:2.2.4
+          tools: cs2pr,composer:2.1.14
 
       # At least one test needs a non-en_US locale to be available, so make sure it is.
       - name: Install locales
