@@ -5,7 +5,6 @@ Template to use for release PRs from `develop` to `stable`
 
 PR for tracking changes for the x.x.x release. Target release date: **DOW MONTH DAY YEAR**.
 - [ ] Check if any dependencies need updating.
-- [ ] Check if the `certificates/cacert.pem` file needs updating.
 - [ ] Update the version constant in `src/Requests.php`.
 - [ ] Add changelog for the release - PR #xxx
 - [ ] Merge this PR.
