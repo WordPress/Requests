@@ -35,11 +35,15 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
 
+      - name: Ensure apt tools are in a usable state
+        run: sudo apt --fix-broken install
+
+      - name: Update apt tools
+        run: sudo apt-get update
+
       # At least one test needs a non-en_US locale to be available, so make sure it is.
       - name: Install locales
-        run: |
-          sudo apt-get update
-          sudo apt-get install locales-all
+        run: sudo apt-get install locales-all
 
       - name: Show available locales
         run: locale -a
