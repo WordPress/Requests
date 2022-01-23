@@ -37,35 +37,10 @@ cURL is only used for better performance over sockets.
 
 ## Coding Style
 
-Where possible, follow the existing style. That looks something like this:
-
-```php
-/**
- * Class that does a thing.
- */
-class Requests_Some_Class_Name {
-	/**
-	 * Do a thing.
-	 *
-	 * There might be a longer description here too. All sentences and phrases
-	 * should be ended with a period. Wrap at 80 characters.
-	 *
-	 * The short description should be in the imperative form (as a command).
-	 *
-	 * @param boolean $with Param docs.
-	 * @param array $args Further docs.
-	 * @return boolean Description if required. If no value is returned, omit.
-	 */
-	public function some_method($with, $args) {
-		if ($with) {
-			do_something($with, $args);
-		}
-		if (!$args || $with === $args) {
-			do_another_thing();
-		}
-	}
-}
-```
+Please follow the existing coding style. This project uses [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)
+to detect coding standard violations and apply automated fixes (whenever possible).  
+All files can be checked for coding standard violations by running `composer run checkcs`.
+Any automatically applicable fixes can be applied by running `composer run fixcs`.
 
 
 ## Unit Tests
