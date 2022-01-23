@@ -54,6 +54,38 @@ The master branch may drop below 90% if features are merged independently of the
 
 For complex features by third-parties, PRs may be merged that drop coverage below the 90% threshold, with the intent of increasing tests back up in a subsequent PR.
 
+### Prerequisites
+- PHP >= 5.6
+- Composer
+- Python 3
+- pip3
+- mitmproxy (`pip3 install mitmproxy`)
+
+### Running the Tests
+```bash
+# Start the test server
+PORT=8080 vendor/bin/start.sh
+export "REQUESTS_TEST_HOST_HTTP=localhost:8080"
+
+# Start the proxy server
+PORT=9002 tests/utils/proxy/start.sh
+PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
+export "REQUESTS_HTTP_PROXY=localhost:9002"
+export "REQUESTS_HTTP_PROXY_AUTH=localhost:9003"
+export "REQUESTS_HTTP_PROXY_AUTH_USER=test"
+export "REQUESTS_HTTP_PROXY_AUTH_PASS=pass"
+
+# Run the tests
+composer test
+
+# Stop the proxy server
+PORT=9002 tests/utils/proxy/stop.sh
+PORT=9003 tests/utils/proxy/stop.sh
+
+# Stop the test server
+vendor/bin/stop.sh
+```
+
 
 ## Licensing
 
