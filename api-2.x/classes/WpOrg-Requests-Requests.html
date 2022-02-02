@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Requests 2.0.0 API</title>
+            <title>Requests 2.0.0 API</title>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
@@ -54,10 +55,12 @@
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
-                                    <h4 class="phpdocumentor-sidebar__root-namespace"><a href="namespaces/wporg.html">WpOrg</a></h4>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/wporg.html" class="">WpOrg</a>
+</h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="namespaces/wporg-requests.html">Requests</a>
+                <a href="namespaces/wporg-requests.html" class="">Requests</a>
                 
             </li>
             </ul>
@@ -65,43 +68,47 @@
                         </section>
                 <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
-                                    <h4 class="phpdocumentor-sidebar__root-namespace"><a href="packages/Requests.html">Requests</a></h4>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Requests.html" class="">Requests</a>
+</h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="packages/Requests-Authentication.html">Authentication</a>
+                <a href="packages/Requests-Authentication.html" class="">Authentication</a>
                 
             </li>
                     <li>
-                <a href="packages/Requests-Utilities.html">Utilities</a>
+                <a href="packages/Requests-Utilities.html" class="">Utilities</a>
                 
             </li>
                     <li>
-                <a href="packages/Requests-Cookies.html">Cookies</a>
+                <a href="packages/Requests-Cookies.html" class="">Cookies</a>
                 
             </li>
                     <li>
-                <a href="packages/Requests-Exceptions.html">Exceptions</a>
+                <a href="packages/Requests-Exceptions.html" class="">Exceptions</a>
                 
             </li>
                     <li>
-                <a href="packages/Requests-EventDispatcher.html">EventDispatcher</a>
+                <a href="packages/Requests-EventDispatcher.html" class="">EventDispatcher</a>
                 
             </li>
                     <li>
-                <a href="packages/Requests-Proxy.html">Proxy</a>
+                <a href="packages/Requests-Proxy.html" class="">Proxy</a>
                 
             </li>
                     <li>
-                <a href="packages/Requests-SessionHandler.html">SessionHandler</a>
+                <a href="packages/Requests-SessionHandler.html" class="">SessionHandler</a>
                 
             </li>
                     <li>
-                <a href="packages/Requests-Transport.html">Transport</a>
+                <a href="packages/Requests-Transport.html" class="">Transport</a>
                 
             </li>
             </ul>
 
-                                    <h4 class="phpdocumentor-sidebar__root-namespace"><a href="packages/Application.html">Application</a></h4>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Application.html" class="">Application</a>
+</h4>
 
                         </section>
             
@@ -168,273 +175,273 @@
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_BUFFER_SIZE">BUFFER_SIZE</a>
     <span>
-        &nbsp;= 1160                    </span>
+        &nbsp;= 1160                            </span>
 </dt>
 <dd>Default size of buffer size to read streams</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_DEFAULT_TRANSPORTS">DEFAULT_TRANSPORTS</a>
     <span>
-        &nbsp;= [WpOrgRequestsTransportCurl::class =&gt; WpOrgRequestsTransportCurl::class, WpOrgRequestsTransportFsockopen::class =&gt; WpOrgRequestsTransportFsockopen::class]                    </span>
+        &nbsp;= [\WpOrg\Requests\Transport\Curl::class =&gt; \WpOrg\Requests\Transport\Curl::class, \WpOrg\Requests\Transport\Fsockopen::class =&gt; \WpOrg\Requests\Transport\Fsockopen::class]                            </span>
 </dt>
 <dd>Default supported Transport classes.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_DELETE">DELETE</a>
     <span>
-        &nbsp;= &#039;DELETE&#039;                    </span>
+        &nbsp;= &#039;DELETE&#039;                            </span>
 </dt>
 <dd>DELETE method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_GET">GET</a>
     <span>
-        &nbsp;= &#039;GET&#039;                    </span>
+        &nbsp;= &#039;GET&#039;                            </span>
 </dt>
 <dd>GET method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_HEAD">HEAD</a>
     <span>
-        &nbsp;= &#039;HEAD&#039;                    </span>
+        &nbsp;= &#039;HEAD&#039;                            </span>
 </dt>
 <dd>HEAD method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_OPTION_DEFAULTS">OPTION_DEFAULTS</a>
     <span>
-        &nbsp;= [&#039;timeout&#039; =&gt; 10, &#039;connect_timeout&#039; =&gt; 10, &#039;useragent&#039; =&gt; &#039;php-requests/&#039; . self::VERSION, &#039;protocol_version&#039; =&gt; 1.1, &#039;redirected&#039; =&gt; 0, &#039;redirects&#039; =&gt; 10, &#039;follow_redirects&#039; =&gt; true, &#039;blocking&#039; =&gt; true, &#039;type&#039; =&gt; self::GET, &#039;filename&#039; =&gt; false, &#039;auth&#039; =&gt; false, &#039;proxy&#039; =&gt; false, &#039;cookies&#039; =&gt; false, &#039;max_bytes&#039; =&gt; false, &#039;idn&#039; =&gt; true, &#039;hooks&#039; =&gt; null, &#039;transport&#039; =&gt; null, &#039;verify&#039; =&gt; null, &#039;verifyname&#039; =&gt; true]                    </span>
+        &nbsp;= [&#039;timeout&#039; =&gt; 10, &#039;connect_timeout&#039; =&gt; 10, &#039;useragent&#039; =&gt; &#039;php-requests/&#039; . self::VERSION, &#039;protocol_version&#039; =&gt; 1.1, &#039;redirected&#039; =&gt; 0, &#039;redirects&#039; =&gt; 10, &#039;follow_redirects&#039; =&gt; true, &#039;blocking&#039; =&gt; true, &#039;type&#039; =&gt; self::GET, &#039;filename&#039; =&gt; false, &#039;auth&#039; =&gt; false, &#039;proxy&#039; =&gt; false, &#039;cookies&#039; =&gt; false, &#039;max_bytes&#039; =&gt; false, &#039;idn&#039; =&gt; true, &#039;hooks&#039; =&gt; null, &#039;transport&#039; =&gt; null, &#039;verify&#039; =&gt; null, &#039;verifyname&#039; =&gt; true]                            </span>
 </dt>
 <dd>Option defaults.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_OPTIONS">OPTIONS</a>
     <span>
-        &nbsp;= &#039;OPTIONS&#039;                    </span>
+        &nbsp;= &#039;OPTIONS&#039;                            </span>
 </dt>
 <dd>OPTIONS method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_PATCH">PATCH</a>
     <span>
-        &nbsp;= &#039;PATCH&#039;                    </span>
+        &nbsp;= &#039;PATCH&#039;                            </span>
 </dt>
 <dd>PATCH method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_POST">POST</a>
     <span>
-        &nbsp;= &#039;POST&#039;                    </span>
+        &nbsp;= &#039;POST&#039;                            </span>
 </dt>
 <dd>POST method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_PUT">PUT</a>
     <span>
-        &nbsp;= &#039;PUT&#039;                    </span>
+        &nbsp;= &#039;PUT&#039;                            </span>
 </dt>
 <dd>PUT method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_TRACE">TRACE</a>
     <span>
-        &nbsp;= &#039;TRACE&#039;                    </span>
+        &nbsp;= &#039;TRACE&#039;                            </span>
 </dt>
 <dd>TRACE method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/WpOrg-Requests-Requests.html#constant_VERSION">VERSION</a>
     <span>
-        &nbsp;= &#039;2.0.0&#039;                    </span>
+        &nbsp;= &#039;2.0.0&#039;                            </span>
 </dt>
 <dd>Current version of Requests</dd>
 
-                <dt class="phpdocumentor-table-of-contents__entry -property -public">
+                    <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/WpOrg-Requests-Requests.html#property_transport">$transport</a>
     <span>
-                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Selected transport name</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/WpOrg-Requests-Requests.html#property_certificate_path">$certificate_path</a>
     <span>
-                &nbsp;: string            </span>
+                        &nbsp;: string            </span>
 </dt>
 <dd>Default certificate path.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/WpOrg-Requests-Requests.html#property_transports">$transports</a>
     <span>
-                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Registered transport classes</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_add_transport">add_transport()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Register a transport</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_compatible_gzinflate">compatible_gzinflate()</a>
     <span>
-                        &nbsp;: string|bool    </span>
+                                &nbsp;: string|bool    </span>
 </dt>
 <dd>Decompression of deflated string while staying compatible with the majority of servers.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_decompress">decompress()</a>
     <span>
-                        &nbsp;: string    </span>
+                                &nbsp;: string    </span>
 </dt>
 <dd>Decompress an encoded body</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_delete">delete()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Send a DELETE request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_flatten">flatten()</a>
     <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Convert a key =&gt; value array to a &#039;key: value&#039; array for headers</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_get">get()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Send a GET request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_get_certificate_path">get_certificate_path()</a>
     <span>
-                        &nbsp;: string    </span>
+                                &nbsp;: string    </span>
 </dt>
 <dd>Get default certificate path.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_has_capabilities">has_capabilities()</a>
     <span>
-                        &nbsp;: bool    </span>
+                                &nbsp;: bool    </span>
 </dt>
 <dd>Checks to see if we have a transport for the capabilities requested.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_head">head()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Send a HEAD request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_options">options()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Send an OPTIONS request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_parse_multiple">parse_multiple()</a>
     <span>
-                        &nbsp;: void    </span>
+                                &nbsp;: void    </span>
 </dt>
 <dd>Callback for `transport.internal.parse_response`</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_patch">patch()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Send a PATCH request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_post">post()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Send a POST request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_put">put()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Send a PUT request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_request">request()</a>
     <span>
-                        &nbsp;: <a href="classes/WpOrg-Requests-Response.html"><abbr title="\WpOrg\Requests\Response">Response</abbr></a>    </span>
+                                &nbsp;: <a href="classes/WpOrg-Requests-Response.html"><abbr title="\WpOrg\Requests\Response">Response</abbr></a>    </span>
 </dt>
 <dd>Main interface for HTTP requests</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_request_multiple">request_multiple()</a>
     <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Send multiple HTTP requests simultaneously</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_set_certificate_path">set_certificate_path()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Set default certificate path.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Requests.html#method_trace">trace()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Send a TRACE request</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/WpOrg-Requests-Requests.html#method_decode_chunked">decode_chunked()</a>
     <span>
-                        &nbsp;: string    </span>
+                                &nbsp;: string    </span>
 </dt>
 <dd>Decoded a chunked body as per RFC 2616</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/WpOrg-Requests-Requests.html#method_get_default_options">get_default_options()</a>
     <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Get the default options</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/WpOrg-Requests-Requests.html#method_get_transport">get_transport()</a>
     <span>
-                        &nbsp;: <a href="classes/WpOrg-Requests-Transport.html"><abbr title="\WpOrg\Requests\Transport">Transport</abbr></a>    </span>
+                                &nbsp;: <a href="classes/WpOrg-Requests-Transport.html"><abbr title="\WpOrg\Requests\Transport">Transport</abbr></a>    </span>
 </dt>
 <dd>Get a working transport.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/WpOrg-Requests-Requests.html#method_get_transport_class">get_transport_class()</a>
     <span>
-                        &nbsp;: string    </span>
+                                &nbsp;: string    </span>
 </dt>
 <dd>Get the fully qualified class name (FQCN) for a working transport.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/WpOrg-Requests-Requests.html#method_parse_response">parse_response()</a>
     <span>
-                        &nbsp;: <a href="classes/WpOrg-Requests-Response.html"><abbr title="\WpOrg\Requests\Response">Response</abbr></a>    </span>
+                                &nbsp;: <a href="classes/WpOrg-Requests-Response.html"><abbr title="\WpOrg\Requests\Response">Response</abbr></a>    </span>
 </dt>
 <dd>HTTP response parser</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/WpOrg-Requests-Requests.html#method_set_defaults">set_defaults()</a>
     <span>
-                        &nbsp;: void    </span>
+                                &nbsp;: void    </span>
 </dt>
 <dd>Set the default values</dd>
 
@@ -465,7 +472,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">int</span>
+        <span class="phpdocumentor-signature__type">int</span>
     <span class="phpdocumentor-signature__name">BUFFER_SIZE</span>
     = <span class="phpdocumentor-signature__default-value">1160</span>
 </code>
@@ -493,9 +500,9 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">DEFAULT_TRANSPORTS</span>
-    = <span class="phpdocumentor-signature__default-value">[WpOrgRequestsTransportCurl::class =&gt; WpOrgRequestsTransportCurl::class, WpOrgRequestsTransportFsockopen::class =&gt; WpOrgRequestsTransportFsockopen::class]</span>
+    = <span class="phpdocumentor-signature__default-value">[\WpOrg\Requests\Transport\Curl::class =&gt; \WpOrg\Requests\Transport\Curl::class, \WpOrg\Requests\Transport\Fsockopen::class =&gt; \WpOrg\Requests\Transport\Fsockopen::class]</span>
 </code>
 
 
@@ -535,7 +542,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">DELETE</span>
     = <span class="phpdocumentor-signature__default-value">&#039;DELETE&#039;</span>
 </code>
@@ -563,7 +570,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">GET</span>
     = <span class="phpdocumentor-signature__default-value">&#039;GET&#039;</span>
 </code>
@@ -591,7 +598,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">HEAD</span>
     = <span class="phpdocumentor-signature__default-value">&#039;HEAD&#039;</span>
 </code>
@@ -619,7 +626,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">OPTION_DEFAULTS</span>
     = <span class="phpdocumentor-signature__default-value">[&#039;timeout&#039; =&gt; 10, &#039;connect_timeout&#039; =&gt; 10, &#039;useragent&#039; =&gt; &#039;php-requests/&#039; . self::VERSION, &#039;protocol_version&#039; =&gt; 1.1, &#039;redirected&#039; =&gt; 0, &#039;redirects&#039; =&gt; 10, &#039;follow_redirects&#039; =&gt; true, &#039;blocking&#039; =&gt; true, &#039;type&#039; =&gt; self::GET, &#039;filename&#039; =&gt; false, &#039;auth&#039; =&gt; false, &#039;proxy&#039; =&gt; false, &#039;cookies&#039; =&gt; false, &#039;max_bytes&#039; =&gt; false, &#039;idn&#039; =&gt; true, &#039;hooks&#039; =&gt; null, &#039;transport&#039; =&gt; null, &#039;verify&#039; =&gt; null, &#039;verifyname&#039; =&gt; true]</span>
 </code>
@@ -679,7 +686,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">OPTIONS</span>
     = <span class="phpdocumentor-signature__default-value">&#039;OPTIONS&#039;</span>
 </code>
@@ -707,7 +714,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">PATCH</span>
     = <span class="phpdocumentor-signature__default-value">&#039;PATCH&#039;</span>
 </code>
@@ -748,7 +755,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">POST</span>
     = <span class="phpdocumentor-signature__default-value">&#039;POST&#039;</span>
 </code>
@@ -776,7 +783,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">PUT</span>
     = <span class="phpdocumentor-signature__default-value">&#039;PUT&#039;</span>
 </code>
@@ -804,7 +811,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">TRACE</span>
     = <span class="phpdocumentor-signature__default-value">&#039;TRACE&#039;</span>
 </code>
@@ -832,7 +839,7 @@
 
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">VERSION</span>
     = <span class="phpdocumentor-signature__default-value">&#039;2.0.0&#039;</span>
 </code>
@@ -1039,7 +1046,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">973</span>
+    <span class="phpdocumentor-element-found-in__line">984</span>
 
     </aside>
 
@@ -1139,7 +1146,7 @@ https://core.trac.wordpress.org/ticket/18273</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">906</span>
+    <span class="phpdocumentor-element-found-in__line">917</span>
 
     </aside>
 
@@ -1265,7 +1272,7 @@ to decode.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">883</span>
+    <span class="phpdocumentor-element-found-in__line">893</span>
 
     </aside>
 
@@ -1388,7 +1395,7 @@ to decode.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">617</span>
+    <span class="phpdocumentor-element-found-in__line">623</span>
 
     </aside>
 
@@ -1603,7 +1610,7 @@ interface as constants.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">820</span>
+    <span class="phpdocumentor-element-found-in__line">831</span>
 
     </aside>
 
@@ -2073,7 +2080,7 @@ HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)</li>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">519</span>
+    <span class="phpdocumentor-element-found-in__line">520</span>
 
     </aside>
 
@@ -2194,7 +2201,7 @@ per-request basis, although that's a little silly)
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">628</span>
+    <span class="phpdocumentor-element-found-in__line">634</span>
 
     </aside>
 
@@ -2315,7 +2322,7 @@ per-request basis, although that's a little silly)
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">840</span>
+    <span class="phpdocumentor-element-found-in__line">850</span>
 
     </aside>
 
@@ -2375,7 +2382,7 @@ per-request basis, although that's a little silly)
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">602</span>
+    <span class="phpdocumentor-element-found-in__line">607</span>
 
     </aside>
 
@@ -2547,7 +2554,7 @@ found which provided the requested capabilities.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">714</span>
+    <span class="phpdocumentor-element-found-in__line">721</span>
 
     </aside>
 
@@ -2664,7 +2671,7 @@ found which provided the requested capabilities.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Requests.php"><a href="files/src-requests.html"><abbr title="src/Requests.php">Requests.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">648</span>
+    <span class="phpdocumentor-element-found-in__line">654</span>
 
     </aside>
 
