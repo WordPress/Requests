@@ -58,25 +58,24 @@ final class Ipv6 {
 		if (strpos($ip2, '.') !== false) {
 			$c2++;
 		}
-		// ::
+
 		if ($c1 === -1 && $c2 === -1) {
+			// ::
 			$ip = '0:0:0:0:0:0:0:0';
-		}
-		// ::xxx
-		elseif ($c1 === -1) {
+		} elseif ($c1 === -1) {
+			// ::xxx
 			$fill = str_repeat('0:', 7 - $c2);
 			$ip   = str_replace('::', $fill, $ip);
-		}
-		// xxx::
-		elseif ($c2 === -1) {
+		} elseif ($c2 === -1) {
+			// xxx::
 			$fill = str_repeat(':0', 7 - $c1);
 			$ip   = str_replace('::', $fill, $ip);
-		}
-		// xxx::xxx
-		else {
+		} else {
+			// xxx::xxx
 			$fill = ':' . str_repeat('0:', 6 - $c2 - $c1);
 			$ip   = str_replace('::', $fill, $ip);
 		}
+
 		return $ip;
 	}
 
@@ -90,7 +89,7 @@ final class Ipv6 {
 	 * Example:  FF01:0:0:0:0:0:0:101   ->  FF01::101
 	 *           0:0:0:0:0:0:0:1        ->  ::1
 	 *
-	 * @see \WpOrg\Requests\IPv6::uncompress()
+	 * @see \WpOrg\Requests\Ipv6::uncompress()
 	 *
 	 * @param string $ip An IPv6 address
 	 * @return string The compressed IPv6 address
@@ -120,8 +119,7 @@ final class Ipv6 {
 
 		if ($ip_parts[1] !== '') {
 			return implode(':', $ip_parts);
-		}
-		else {
+		} else {
 			return $ip_parts[0];
 		}
 	}
@@ -144,8 +142,7 @@ final class Ipv6 {
 			$ipv6_part = substr($ip, 0, $pos);
 			$ipv4_part = substr($ip, $pos + 1);
 			return [$ipv6_part, $ipv4_part];
-		}
-		else {
+		} else {
 			return [$ip, ''];
 		}
 	}
@@ -188,6 +185,7 @@ final class Ipv6 {
 					return false;
 				}
 			}
+
 			if (count($ipv4) === 4) {
 				foreach ($ipv4 as $ipv4_part) {
 					$value = (int) $ipv4_part;
@@ -196,9 +194,9 @@ final class Ipv6 {
 					}
 				}
 			}
+
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

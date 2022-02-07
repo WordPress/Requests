@@ -676,8 +676,7 @@ abstract class BaseTestCase extends TestCase {
 			if ($code >= 400) {
 				$this->expectException('\WpOrg\Requests\Exception\Http\Status' . $code);
 				$this->expectExceptionCode($code);
-			}
-			elseif ($code >= 300 && $code < 400) {
+			} elseif ($code >= 300 && $code < 400) {
 				$this->expectException(Exception::class);
 			}
 		}
@@ -1081,13 +1080,11 @@ abstract class BaseTestCase extends TestCase {
 
 		try {
 			$request = Requests::get('http://portquiz.net:8080/', [], $this->getOptions());
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			// Retry the request as it often times-out.
 			try {
 				$request = Requests::get('http://portquiz.net:8080/', [], $this->getOptions());
-			}
-			catch (Exception $e) {
+			} catch (Exception $e) {
 				// If it still times out, mark the test as skipped.
 				$this->markTestSkipped(
 					$e->getMessage()

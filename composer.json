@@ -3,6 +3,7 @@
   "description": "A HTTP library written in PHP, for human beings.",
   "homepage": "https://requests.ryanmccue.info/",
   "license": "ISC",
+  "type": "library",
   "keywords": [
     "http",
     "idna",
@@ -39,8 +40,13 @@
     "php": ">=5.6",
     "ext-json": "*"
   },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
   "require-dev": {
-    "requests/test-server": "dev-master",
+    "requests/test-server": "dev-main",
     "squizlabs/php_codesniffer": "^3.6",
     "phpcompatibility/php-compatibility": "^9.0",
     "wp-coding-standards/wpcs": "^2.0",
@@ -50,7 +56,6 @@
     "yoast/phpunit-polyfills": "^1.0.0",
     "roave/security-advisories": "dev-latest"
   },
-  "type": "library",
   "autoload": {
     "psr-4": {
       "WpOrg\\Requests\\": "src/"

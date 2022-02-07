@@ -6,8 +6,7 @@ function define_from_env($name, $fallback = false) {
 	$env = getenv($name);
 	if ($env) {
 		define($name, $env);
-	}
-	else {
+	} else {
 		define($name, $fallback);
 	}
 }

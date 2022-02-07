@@ -67,6 +67,7 @@ class IdnaEncoder {
 		foreach ($parts as &$part) {
 			$part = self::to_ascii($part);
 		}
+
 		return implode('.', $parts);
 	}
 
@@ -174,32 +175,23 @@ class IdnaEncoder {
 		for ($position = 0; $position < $strlen; $position++) {
 			$value = ord($input[$position]);
 
-			// One byte sequence:
-			if ((~$value & 0x80) === 0x80) {
+			if ((~$value & 0x80) === 0x80) {            // One byte sequence:
 				$character = $value;
 				$length    = 1;
 				$remaining = 0;
-			}
-			// Two byte sequence:
-			elseif (($value & 0xE0) === 0xC0) {
+			} elseif (($value & 0xE0) === 0xC0) {       // Two byte sequence:
 				$character = ($value & 0x1F) << 6;
 				$length    = 2;
 				$remaining = 1;
-			}
-			// Three byte sequence:
-			elseif (($value & 0xF0) === 0xE0) {
+			} elseif (($value & 0xF0) === 0xE0) {       // Three byte sequence:
 				$character = ($value & 0x0F) << 12;
 				$length    = 3;
 				$remaining = 2;
-			}
-			// Four byte sequence:
-			elseif (($value & 0xF8) === 0xF0) {
+			} elseif (($value & 0xF8) === 0xF0) {       // Four byte sequence:
 				$character = ($value & 0x07) << 18;
 				$length    = 4;
 				$remaining = 3;
-			}
-			// Invalid byte:
-			else {
+			} else {                                    // Invalid byte:
 				throw new Exception('Invalid Unicode codepoint', 'idna.invalidcodepoint', $value);
 			}
 
@@ -207,6 +199,7 @@ class IdnaEncoder {
 				if ($position + $length > $strlen) {
 					throw new Exception('Invalid Unicode codepoint', 'idna.invalidcodepoint', $character);
 				}
+
 				for ($position++; $remaining > 0; $position++) {
 					$value = ord($input[$position]);
 
@@ -218,6 +211,7 @@ class IdnaEncoder {
 					--$remaining;
 					$character |= ($value & 0x3F) << ($remaining * 6);
 				}
+
 				$position--;
 			}
 
@@ -277,18 +271,18 @@ class IdnaEncoder {
 				// TODO: this should also check if it's valid for a URL
 				$output .= chr($char);
 				$h++;
-			}
-			// Check if the character is non-ASCII, but below initial n
-			// This never occurs for Punycode, so ignore in coverage
-			// @codeCoverageIgnoreStart
-			elseif ($char < $n) {
+
+				// Check if the character is non-ASCII, but below initial n
+				// This never occurs for Punycode, so ignore in coverage
+				// @codeCoverageIgnoreStart
+			} elseif ($char < $n) {
 				throw new Exception('Invalid character', 'idna.character_outside_domain', $char);
-			}
-			// @codeCoverageIgnoreEnd
-			else {
+				// @codeCoverageIgnoreEnd
+			} else {
 				$extended[$char] = true;
 			}
 		}
+
 		$extended = array_keys($extended);
 		sort($extended);
 		$b = $h;
@@ -296,6 +290,7 @@ class IdnaEncoder {
 		if (strlen($output) > 0) {
 			$output .= '-';
 		}
+
 		// {if the input contains a non-basic code point < n then fail}
 		// while h < length(input) do begin
 		$codepointcount = count($codepoints);
@@ -313,9 +308,7 @@ class IdnaEncoder {
 				// if c < n then increment delta, fail on overflow
 				if ($c < $n) {
 					$delta++;
-				}
-				// if c == n then begin
-				elseif ($c === $n) {
+				} elseif ($c === $n) { // if c == n then begin
 					// let q = delta
 					$q = $delta;
 					// for k = base to infinity in steps of base do begin
@@ -324,17 +317,17 @@ class IdnaEncoder {
 						//     tmax if k >= bias + tmax, or k - bias otherwise
 						if ($k <= ($bias + self::BOOTSTRAP_TMIN)) {
 							$t = self::BOOTSTRAP_TMIN;
-						}
-						elseif ($k >= ($bias + self::BOOTSTRAP_TMAX)) {
+						} elseif ($k >= ($bias + self::BOOTSTRAP_TMAX)) {
 							$t = self::BOOTSTRAP_TMAX;
-						}
-						else {
+						} else {
 							$t = $k - $bias;
 						}
+
 						// if q < t then break
 						if ($q < $t) {
 							break;
 						}
+
 						// output the code point for digit t + ((q - t) mod (base - t))
 						$digit   = $t + (($q - $t) % (self::BOOTSTRAP_BASE - $t));
 						$output .= self::digit_to_char($digit);
@@ -375,6 +368,7 @@ class IdnaEncoder {
 		if ($digit < 0 || $digit > 35) {
 			throw new Exception(sprintf('Invalid digit %d', $digit), 'idna.invalid_digit', $digit);
 		}
+
 		// @codeCoverageIgnoreEnd
 		$digits = 'abcdefghijklmnopqrstuvwxyz0123456789';
 		return substr($digits, $digit, 1);
@@ -395,11 +389,11 @@ class IdnaEncoder {
 		// if firsttime then let delta = delta div damp
 		if ($firsttime) {
 			$delta = floor($delta / self::BOOTSTRAP_DAMP);
-		}
-		// else let delta = delta div 2
-		else {
+		} else {
+			// else let delta = delta div 2
 			$delta = floor($delta / 2);
 		}
+
 		// let delta = delta + (delta div numpoints)
 		$delta += floor($delta / $numpoints);
 		// let k = 0

@@ -327,6 +327,7 @@ final class RequestsTest extends TestCase {
 		if (!extension_loaded('curl') && !extension_loaded('openssl')) {
 			$this->markTestSkipped('Testing for SSL requires either the curl or the openssl extension');
 		}
+
 		$this->assertTrue(Requests::has_capabilities([Capability::SSL => true]));
 	}
 

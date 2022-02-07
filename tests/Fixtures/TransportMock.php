@@ -66,6 +66,7 @@ final class TransportMock implements Transport {
 		if ($this->chunked) {
 			$response .= "Transfer-Encoding: chunked\r\n";
 		}
+
 		$response .= $this->raw_headers;
 		$response .= "Connection: close\r\n\r\n";
 		$response .= $this->body;

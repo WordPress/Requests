@@ -25,26 +25,42 @@ $requests_phpdoc_version_updater = function () {
 	require_once $project_root . '/src/Autoload.php';
 	Autoload::register();
 
-	// Retrieve the information about the latest release from the GH API.
+	// Retrieve the information about all available tags from the GH API.
 	$response = Requests::get(
-		'https://api.github.com/repos/WordPress/Requests/releases/latest',
+		'https://api.github.com/repos/WordPress/Requests/tags',
 		[
 			'Accept' => 'application/vnd.github.v3+json',
 		]
 	);
 
 	if (!($response instanceof Response) || $response->success !== true || $response->status_code !== 200) {
-		echo 'ERROR: GH API request to retrieve the version number of the last release failed.', PHP_EOL;
+		echo 'ERROR: GH API request to retrieve the tags failed.', PHP_EOL;
 		exit(1);
 	}
 
-	$decoded = json_decode($response->body, true);
-	if (!isset($decoded['tag_name'])) {
-		echo 'ERROR: GH API request to retrieve the version number of the last release failed to retrieve a version number.', PHP_EOL;
+	$decoded = $response->decode_body(true);
+	if (!is_array($decoded)) {
+		echo 'ERROR: GH API request to retrieve the tags failed to retrieve the tags list.', PHP_EOL;
 		exit(1);
 	}
 
-	$tagname = ltrim($decoded['tag_name'], 'v');
+	/*
+	 * In most cases, the GH API will return the tags list latest first and descending from there.
+	 * However, this is not guaranteed, so to ensure we actually find the highest tag, we need to sort
+	 * the tag array by comparing the semantic version tags.
+	 */
+
+	// First simplify the array to just the tag information.
+	$tags = [];
+	foreach ($decoded as $tag_info) {
+		$tags[] = ltrim($tag_info['name'], 'v');
+	}
+
+	// Now sort the array based on the semantic version tags.
+	usort($tags, 'version_compare');
+
+	// And retrieve the latest tag.
+	$tagname = end($tags);
 
 	if (file_exists($project_root . '/phpdoc.xml')) {
 		echo 'WARNING: Detected pre-existing "phpdoc.xml" file.', PHP_EOL;
