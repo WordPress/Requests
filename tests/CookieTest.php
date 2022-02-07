@@ -14,7 +14,7 @@ use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
-final class CookiesTest extends TestCase {
+final class CookieTest extends TestCase {
 	public function testBasicCookie() {
 		$cookie = new Cookie('requests-testcookie', 'testvalue');
 
