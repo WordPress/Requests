@@ -254,7 +254,8 @@ final class Fsockopen implements Transport {
 		if (!$options['blocking']) {
 			fclose($socket);
 			$fake_headers = '';
-			$options['hooks']->dispatch('fsockopen.after_request', [&$fake_headers]);
+			$fake_info    = [];
+			$options['hooks']->dispatch('fsockopen.after_request', [&$fake_headers, &$fake_info]);
 			return '';
 		}
 
