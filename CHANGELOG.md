@@ -1,6 +1,36 @@
 Changelog
 =========
 
+2.0.1
+-----
+
+### Overview of changes
+- Update bundled certificates as of 2022-02-01. [#670]
+- Bug fix: Hook priority should be respected. [#452], [#647]
+- Docs: the Hook documentation has been updated to reflect the current available hooks. [#646]
+- General housekeeping. [#635], [#649], [#650], [#653], [#655], [#658], [#660], [#661], [#662], [#669], [#671], [#672], [#674]
+
+Props [@alpipego][gh-alpipego], [@costdev][gh-costdev], [@jegrandet][gh-jegrandet] [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera]
+
+[#674]: https://github.com/WordPress/Requests/pull/674
+[#672]: https://github.com/WordPress/Requests/pull/672
+[#671]: https://github.com/WordPress/Requests/pull/671
+[#670]: https://github.com/WordPress/Requests/pull/670
+[#669]: https://github.com/WordPress/Requests/pull/669
+[#662]: https://github.com/WordPress/Requests/pull/662
+[#661]: https://github.com/WordPress/Requests/pull/661
+[#660]: https://github.com/WordPress/Requests/pull/660
+[#658]: https://github.com/WordPress/Requests/pull/658
+[#655]: https://github.com/WordPress/Requests/pull/655
+[#653]: https://github.com/WordPress/Requests/pull/653
+[#650]: https://github.com/WordPress/Requests/pull/650
+[#649]: https://github.com/WordPress/Requests/pull/649
+[#647]: https://github.com/WordPress/Requests/pull/647
+[#646]: https://github.com/WordPress/Requests/pull/646
+[#635]: https://github.com/WordPress/Requests/issues/635
+[#452]: https://github.com/WordPress/Requests/issues/452
+
+
 2.0.0
 -----
 
@@ -896,6 +926,7 @@ Initial release!
 
 [gh-aaronjorbin]: https://github.com/aaronjorbin
 [gh-adri]: https://github.com/adri
+[gh-alpipego]: https://github.com/alpipego/
 [gh-amandato]: https://github.com/amandato
 [gh-beutnagel]: https://github.com/beutnagel
 [gh-carlalexander]: https://github.com/carlalexander
@@ -909,6 +940,7 @@ Initial release!
 [gh-gstrauss]: https://github.com/gstrauss
 [gh-ifwe]: https://github.com/ifwe
 [gh-imsaintx]: https://github.com/imsaintx
+[gh-jegrandet]: https://github.com/jegrandet
 [gh-JustinyAhin]: https://github.com/JustinyAhin
 [gh-jrfnl]: https://github.com/jrfnl
 [gh-KasperFranz]: https://github.com/KasperFranz
