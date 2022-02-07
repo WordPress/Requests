@@ -51,6 +51,16 @@ Search.appendIndex(
             "summary": "Register\u0020hooks\u0020as\u0020needed",
             "url": "classes/WpOrg-Requests-Auth.html#method_register"
         },                {
+            "fqsen": "\\WpOrg\\Requests\\Autoload",
+            "name": "Autoload",
+            "summary": "Autoloader\u0020for\u0020Requests\u0020for\u0020PHP.",
+            "url": "classes/WpOrg-Requests-Autoload.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Autoload\u003A\u003Aload\u0028\u0029",
+            "name": "load",
+            "summary": "Autoloader.",
+            "url": "classes/WpOrg-Requests-Autoload.html#method_load"
+        },                {
             "fqsen": "\\WpOrg\\Requests\\Capability",
             "name": "Capability",
             "summary": "Capability\u0020interface\u0020declaring\u0020the\u0020known\u0020capabilities.",
