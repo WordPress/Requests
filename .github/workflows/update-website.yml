@@ -33,9 +33,11 @@ jobs:
       # to have access to the latest version of the workflow/scripts.
       - name: Determine branch to use
         id: base_branch
+        env:
+          REF: ${{ github.ref }}
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo '::set-output name=BRANCH::${{ github.ref }}'
+            echo "::set-output name=BRANCH::$REF"
           else
             echo '::set-output name=BRANCH::stable'
           fi
@@ -86,16 +88,19 @@ jobs:
       # always be based on the latest release.
       - name: Determine PR title prefix, body and more
         id: get_pr_info
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo '::set-output name=REF::${{ github.ref_name }}'
+            echo "::set-output name=REF::$REF_NAME"
             echo '::set-output name=PR_TITLE_PREFIX::[TEST | DO NOT MERGE] '
             echo '::set-output name=PR_BODY::Test run for the website update after changes to the automated scripts.'
             echo '::set-output name=DRAFT::true'
           else
-            echo '::set-output name=REF::${{ github.event.release.tag_name }}'
+            echo "::set-output name=REF::$TAG_NAME"
             echo '::set-output name=PR_TITLE_PREFIX::'
-            echo '::set-output name=PR_BODY::Website update after the release of Requests ${{ github.event.release.tag_name }}.'
+            echo "::set-output name=PR_BODY::Website update after the release of Requests $TAG_NAME."
             echo '::set-output name=DRAFT::false'
           fi
 
@@ -122,9 +127,11 @@ jobs:
 
       # The commit should contain all changes in the API directory, both tracked and untracked!
       - name: Commit the API docs separately
+        env:
+          ACTOR: ${{ github.actor }}
         run: |
           git config user.name 'GitHub Action'
-          git config user.email '${{ github.actor }}@users.noreply.github.com'
+          git config user.email "$ACTOR@users.noreply.github.com"
           git add -A ./api-2.x/
           git commit --allow-empty --message="GH Pages: update API docs for Requests ${{ steps.get_pr_info.outputs.REF }}"
 
