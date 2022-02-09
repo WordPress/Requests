@@ -5,6 +5,7 @@ namespace WpOrg\Requests\Tests;
 use Requests_Exception_Transport_cURL;
 use Requests_Utility_FilteredIterator;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Autoload;
 use WpOrg\Requests\Utility\FilteredIterator;
 
 final class AutoloadTest extends TestCase {
@@ -52,5 +53,12 @@ final class AutoloadTest extends TestCase {
 	 */
 	public function testConstantDeclarationDoesntInfluenceFurtherTests() {
 		$this->assertFalse(defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS'));
+	}
+
+	/**
+	 * Verify that the get_deprecated_classes() method returns an array with 57 items.
+	 */
+	public function testGetDeprecatedClassesReturnsAnArrayWithCorrectAmountOfItems() {
+		$this->assertCount(57, Autoload::get_deprecated_classes());
 	}
 }
