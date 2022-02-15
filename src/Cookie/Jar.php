@@ -50,6 +50,7 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 * Normalise cookie data into a \WpOrg\Requests\Cookie
 	 *
 	 * @param string|\WpOrg\Requests\Cookie $cookie
+	 * @param string                        $key    Optional. The name for this cookie.
 	 * @return \WpOrg\Requests\Cookie
 	 */
 	public function normalize_cookie($cookie, $key = '') {

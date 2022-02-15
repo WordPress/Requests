@@ -17,7 +17,8 @@ final class ChunkedDecodingTest extends TestCase {
 	 *
 	 * @dataProvider dataChunked
 	 *
-	 * @param string $body Not really chunked response body.
+	 * @param string $body     Not really chunked response body.
+	 * @param string $expected Expected chunked data.
 	 *
 	 * @return void
 	 */
