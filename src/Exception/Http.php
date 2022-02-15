@@ -37,7 +37,7 @@ class Http extends Exception {
 	 * subclass used. Reason phrases can vary, however.
 	 *
 	 * @param string|null $reason Reason phrase
-	 * @param mixed $data Associated data
+	 * @param mixed       $data   Associated data
 	 */
 	public function __construct($reason = null, $data = null) {
 		if ($reason !== null) {

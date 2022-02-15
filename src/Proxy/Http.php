@@ -136,7 +136,7 @@ final class Http implements Proxy {
 	 *
 	 * @since 1.6
 	 * @param string $path Path to send in HTTP request string ("GET ...")
-	 * @param string $url Full URL we're requesting
+	 * @param string $url  Full URL we're requesting
 	 */
 	public function fsockopen_remote_host_path(&$path, $url) {
 		$path = $url;

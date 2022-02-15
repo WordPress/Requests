@@ -380,8 +380,8 @@ class IdnaEncoder {
 	 * Adapt the bias
 	 *
 	 * @link https://tools.ietf.org/html/rfc3492#section-6.1
-	 * @param int $delta
-	 * @param int $numpoints
+	 * @param int  $delta
+	 * @param int  $numpoints
 	 * @param bool $firsttime
 	 * @return int|float New bias
 	 */

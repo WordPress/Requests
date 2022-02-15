@@ -66,10 +66,10 @@ class Session {
 	/**
 	 * Create a new session
 	 *
-	 * @param string|\Stringable|null $url Base URL for requests
-	 * @param array $headers Default headers for requests
-	 * @param array $data Default data for requests
-	 * @param array $options Default options for requests
+	 * @param string|\Stringable|null $url     Base URL for requests
+	 * @param array                   $headers Default headers for requests
+	 * @param array                   $data    Default data for requests
+	 * @param array                   $options Default options for requests
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or null.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $headers argument is not an array.
@@ -120,8 +120,8 @@ class Session {
 	/**
 	 * Set a property's value
 	 *
-	 * @param string $name Property name.
-	 * @param mixed $value Property value
+	 * @param string $name  Property name.
+	 * @param mixed  $value Property value
 	 */
 	public function __set($name, $value) {
 		$this->options[$name] = $value;
@@ -217,11 +217,11 @@ class Session {
 	 *
 	 * @see \WpOrg\Requests\Requests::request()
 	 *
-	 * @param string $url URL to request
-	 * @param array $headers Extra headers to send with the request
-	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
-	 * @param string $type HTTP request type (use \WpOrg\Requests\Requests constants)
-	 * @param array $options Options for the request (see {@see \WpOrg\Requests\Requests::request()})
+	 * @param string     $url     URL to request
+	 * @param array      $headers Extra headers to send with the request
+	 * @param array|null $data    Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param string     $type    HTTP request type (use \WpOrg\Requests\Requests constants)
+	 * @param array      $options Options for the request (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return \WpOrg\Requests\Response
 	 *
 	 * @throws \WpOrg\Requests\Exception On invalid URLs (`nonhttp`)
@@ -238,7 +238,7 @@ class Session {
 	 * @see \WpOrg\Requests\Requests::request_multiple()
 	 *
 	 * @param array $requests Requests data (see {@see \WpOrg\Requests\Requests::request_multiple()})
-	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request()})
+	 * @param array $options  Global and default options (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
@@ -268,8 +268,8 @@ class Session {
 	/**
 	 * Merge a request's data with the default data
 	 *
-	 * @param array $request Request data (same form as {@see \WpOrg\Requests\Session::request_multiple()})
-	 * @param bool $merge_options Should we merge options as well?
+	 * @param array $request       Request data (same form as {@see \WpOrg\Requests\Session::request_multiple()})
+	 * @param bool  $merge_options Should we merge options as well?
 	 * @return array Request data
 	 */
 	protected function merge_request($request, $merge_options = true) {
