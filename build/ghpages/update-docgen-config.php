@@ -19,7 +19,7 @@ use WpOrg\Requests\Autoload;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
 
-$requests_phpdoc_version_updater = function () {
+$requests_phpdoc_version_updater = static function () {
 	// Include Requests.
 	$project_root = dirname(__DIR__, 2);
 	require_once $project_root . '/src/Autoload.php';
