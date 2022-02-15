@@ -66,7 +66,7 @@ class Session {
 	/**
 	 * Create a new session
 	 *
-	 * @param string|Stringable|null $url Base URL for requests
+	 * @param string|\Stringable|null $url Base URL for requests
 	 * @param array $headers Default headers for requests
 	 * @param array $data Default data for requests
 	 * @param array $options Default options for requests

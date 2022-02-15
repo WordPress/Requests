@@ -54,7 +54,7 @@ class IdnaEncoder {
 	/**
 	 * Encode a hostname using Punycode
 	 *
-	 * @param string|Stringable $hostname Hostname
+	 * @param string|\Stringable $hostname Hostname
 	 * @return string Punycode-encoded hostname
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string or a stringable object.
 	 */

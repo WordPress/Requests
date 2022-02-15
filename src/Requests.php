@@ -419,7 +419,7 @@ class Requests {
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
 	 *
-	 * @param string|Stringable $url URL to request
+	 * @param string|\Stringable $url URL to request
 	 * @param array $headers Extra headers to send with the request
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use Requests constants)
@@ -627,7 +627,7 @@ class Requests {
 	/**
 	 * Set default certificate path.
 	 *
-	 * @param string|Stringable|bool $path Certificate path, pointing to a PEM file.
+	 * @param string|\Stringable|bool $path Certificate path, pointing to a PEM file.
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or boolean.
 	 */

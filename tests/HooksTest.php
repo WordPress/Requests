@@ -18,7 +18,7 @@ class HooksTest extends TestCase {
 	/**
 	 * Object under test.
 	 *
-	 * @var \Requests\Hooks
+	 * @var \WpOrg\Requests\Hooks
 	 */
 	public $hooks;
 
