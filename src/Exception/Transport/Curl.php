@@ -23,7 +23,7 @@ final class Curl extends Transport {
 	/**
 	 * cURL error code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $code = -1;
 

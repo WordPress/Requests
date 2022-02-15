@@ -92,7 +92,7 @@ final class Ssl {
 	 * the third rule.
 	 *
 	 * @param string|\Stringable $reference Reference dNSName
-	 * @return boolean Is the name valid?
+	 * @return bool Is the name valid?
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string or a stringable object.
 	 */
 	public static function verify_reference_name($reference) {
@@ -146,7 +146,7 @@ final class Ssl {
 	 *
 	 * @param string|\Stringable $host Requested host
 	 * @param string|\Stringable $reference dNSName to match against
-	 * @return boolean Does the domain match?
+	 * @return bool Does the domain match?
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When either of the passed arguments is not a string or a stringable object.
 	 */
 	public static function match_domain($host, $reference) {

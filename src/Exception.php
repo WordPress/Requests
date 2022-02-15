@@ -35,7 +35,7 @@ class Exception extends PHPException {
 	 * @param string $message Exception message
 	 * @param string $type Exception type
 	 * @param mixed $data Associated data
-	 * @param integer $code Exception numerical code, if applicable
+	 * @param int $code Exception numerical code, if applicable
 	 */
 	public function __construct($message, $type, $data = null, $code = 0) {
 		parent::__construct($message, $code);

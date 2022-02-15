@@ -133,7 +133,7 @@ class Cookie {
 	 * Checks the age against $this->reference_time to determine if the cookie
 	 * is expired.
 	 *
-	 * @return boolean True if expired, false if time is valid.
+	 * @return bool True if expired, false if time is valid.
 	 */
 	public function is_expired() {
 		// RFC6265, s. 4.1.2.2:
@@ -157,7 +157,7 @@ class Cookie {
 	 * Check if a cookie is valid for a given URI
 	 *
 	 * @param \WpOrg\Requests\Iri $uri URI to check
-	 * @return boolean Whether the cookie is valid for the given URI
+	 * @return bool Whether the cookie is valid for the given URI
 	 */
 	public function uri_matches(Iri $uri) {
 		if (!$this->domain_matches($uri->host)) {
@@ -175,7 +175,7 @@ class Cookie {
 	 * Check if a cookie is valid for a given domain
 	 *
 	 * @param string $domain Domain to check
-	 * @return boolean Whether the cookie is valid for the given domain
+	 * @return bool Whether the cookie is valid for the given domain
 	 */
 	public function domain_matches($domain) {
 		if (is_string($domain) === false) {
@@ -228,7 +228,7 @@ class Cookie {
 	 * From the path-match check in RFC 6265 section 5.1.4
 	 *
 	 * @param string $request_path Path to check
-	 * @return boolean Whether the cookie is valid for the given path
+	 * @return bool Whether the cookie is valid for the given path
 	 */
 	public function path_matches($request_path) {
 		if (empty($request_path)) {
@@ -274,7 +274,7 @@ class Cookie {
 	/**
 	 * Normalize cookie and attributes
 	 *
-	 * @return boolean Whether the cookie was successfully normalized
+	 * @return bool Whether the cookie was successfully normalized
 	 */
 	public function normalize() {
 		foreach ($this->attributes as $key => $value) {
@@ -299,7 +299,7 @@ class Cookie {
 	 * Handles parsing individual attributes from the cookie values.
 	 *
 	 * @param string $name Attribute name
-	 * @param string|boolean $value Attribute value (string value, or true if empty/flag)
+	 * @param string|bool $value Attribute value (string value, or true if empty/flag)
 	 * @return mixed Value if available, or null if the attribute value is invalid (and should be skipped)
 	 */
 	protected function normalize_attribute($name, $value) {

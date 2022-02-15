@@ -71,7 +71,7 @@ final class Curl implements Transport {
 	/**
 	 * Have we finished the headers yet?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $done_headers = false;
 
@@ -501,7 +501,7 @@ final class Curl implements Transport {
 	 *
 	 * @param resource|\CurlHandle $handle cURL handle
 	 * @param string $headers Header string
-	 * @return integer Length of provided header
+	 * @return int Length of provided header
 	 */
 	public function stream_headers($handle, $headers) {
 		// Why do we do this? cURL will send both the final response and any
@@ -528,7 +528,7 @@ final class Curl implements Transport {
 	 *
 	 * @param resource|\CurlHandle $handle cURL handle
 	 * @param string $data Body data
-	 * @return integer Length of provided data
+	 * @return int Length of provided data
 	 */
 	public function stream_body($handle, $data) {
 		$this->hooks->dispatch('request.progress', [$data, $this->response_bytes, $this->response_byte_limit]);

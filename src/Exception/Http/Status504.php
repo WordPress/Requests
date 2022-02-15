@@ -18,7 +18,7 @@ final class Status504 extends Http {
 	/**
 	 * HTTP status code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $code = 504;
 

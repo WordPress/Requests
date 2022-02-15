@@ -26,7 +26,7 @@ final class Fsockopen implements Transport {
 	/**
 	 * Second to microsecond conversion
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const SECOND_IN_MICROSECONDS = 1000000;
 

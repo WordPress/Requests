@@ -18,7 +18,7 @@ final class Status401 extends Http {
 	/**
 	 * HTTP status code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $code = 401;
 

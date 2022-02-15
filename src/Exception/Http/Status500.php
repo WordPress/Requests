@@ -18,7 +18,7 @@ final class Status500 extends Http {
 	/**
 	 * HTTP status code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $code = 500;
 

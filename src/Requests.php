@@ -95,7 +95,7 @@ class Requests {
 	/**
 	 * Default size of buffer size to read streams
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const BUFFER_SIZE = 1160;
 
@@ -386,22 +386,22 @@ class Requests {
 	 * - `useragent`: Useragent to send to the server
 	 *    (string, default: php-requests/$version)
 	 * - `follow_redirects`: Should we follow 3xx redirects?
-	 *    (boolean, default: true)
+	 *    (bool, default: true)
 	 * - `redirects`: How many times should we redirect before erroring?
-	 *    (integer, default: 10)
+	 *    (int, default: 10)
 	 * - `blocking`: Should we block processing on this request?
-	 *    (boolean, default: true)
+	 *    (bool, default: true)
 	 * - `filename`: File to stream the body to instead.
-	 *    (string|boolean, default: false)
+	 *    (string|bool, default: false)
 	 * - `auth`: Authentication handler or array of user/password details to use
 	 *    for Basic authentication
-	 *    (\WpOrg\Requests\Auth|array|boolean, default: false)
+	 *    (\WpOrg\Requests\Auth|array|bool, default: false)
 	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
-	 *    (\WpOrg\Requests\Proxy|array|string|boolean, default: false)
+	 *    (\WpOrg\Requests\Proxy|array|string|bool, default: false)
 	 * - `max_bytes`: Limit for the response body size.
-	 *    (integer|boolean, default: false)
+	 *    (int|bool, default: false)
 	 * - `idn`: Enable IDN parsing
-	 *    (boolean, default: true)
+	 *    (bool, default: true)
 	 * - `transport`: Custom transport. Either a class name, or a
 	 *    transport object. Defaults to the first working transport from
 	 *    {@see \WpOrg\Requests\Requests::getTransport()}
@@ -412,9 +412,9 @@ class Requests {
 	 *    certificate file as a string. (Using true uses the system-wide root
 	 *    certificate store instead, but this may have different behaviour
 	 *    across transports.)
-	 *    (string|boolean, default: certificates/cacert.pem)
+	 *    (string|bool, default: certificates/cacert.pem)
 	 * - `verifyname`: Should we verify the common name in the SSL certificate?
-	 *    (boolean, default: true)
+	 *    (bool, default: true)
 	 * - `data_format`: How should we send the `$data` parameter?
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
@@ -601,7 +601,7 @@ class Requests {
 	 * Get the default options
 	 *
 	 * @see \WpOrg\Requests\Requests::request() for values returned by this method
-	 * @param boolean $multirequest Is this a multirequest?
+	 * @param bool $multirequest Is this a multirequest?
 	 * @return array Default option values
 	 */
 	protected static function get_default_options($multirequest = false) {

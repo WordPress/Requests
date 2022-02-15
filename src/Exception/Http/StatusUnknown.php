@@ -19,7 +19,7 @@ final class StatusUnknown extends Http {
 	/**
 	 * HTTP status code
 	 *
-	 * @var integer|bool Code if available, false if an error occurred
+	 * @var int|bool Code if available, false if an error occurred
 	 */
 	protected $code = 0;
 

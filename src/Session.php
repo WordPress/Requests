@@ -269,7 +269,7 @@ class Session {
 	 * Merge a request's data with the default data
 	 *
 	 * @param array $request Request data (same form as {@see \WpOrg\Requests\Session::request_multiple()})
-	 * @param boolean $merge_options Should we merge options as well?
+	 * @param bool $merge_options Should we merge options as well?
 	 * @return array Request data
 	 */
 	protected function merge_request($request, $merge_options = true) {

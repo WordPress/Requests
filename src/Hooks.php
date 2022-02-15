@@ -63,7 +63,7 @@ class Hooks implements HookManager {
 	 *
 	 * @param string $hook Hook name
 	 * @param array $parameters Parameters to pass to callbacks
-	 * @return boolean Successfulness
+	 * @return bool Successfulness
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $hook argument is not a string.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $parameters argument is not an array.
 	 */
