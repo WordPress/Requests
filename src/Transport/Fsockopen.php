@@ -51,6 +51,11 @@ final class Fsockopen implements Transport {
 	 */
 	private $max_bytes = false;
 
+	/**
+	 * Cache for received connection errors.
+	 *
+	 * @var string
+	 */
 	private $connect_error = '';
 
 	/**
