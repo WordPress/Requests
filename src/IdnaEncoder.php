@@ -381,7 +381,7 @@ class IdnaEncoder {
 	 * @param int $delta
 	 * @param int $numpoints
 	 * @param bool $firsttime
-	 * @return int New bias
+	 * @return int|float New bias
 	 *
 	 * function adapt(delta,numpoints,firsttime):
 	 */

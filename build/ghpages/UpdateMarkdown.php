@@ -325,7 +325,7 @@ title: %s
 	 * @param string $contents File contents to write.
 	 * @param string $type     Type of file to use in error message.
 	 *
-	 * @return string
+	 * @return void
 	 *
 	 * @throws \RuntimeException When the target directory could not be created.
 	 * @throws \RuntimeException When the file could not be written to the target directory.
