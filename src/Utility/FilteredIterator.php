@@ -46,7 +46,7 @@ final class FilteredIterator extends ArrayIterator {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 *
 	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
 	 */
@@ -75,7 +75,7 @@ final class FilteredIterator extends ArrayIterator {
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 */
 	#[ReturnTypeWillChange]
 	public function unserialize($data) {}
