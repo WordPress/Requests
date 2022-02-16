@@ -382,8 +382,6 @@ class IdnaEncoder {
 	 * @param int $numpoints
 	 * @param bool $firsttime
 	 * @return int|float New bias
-	 *
-	 * function adapt(delta,numpoints,firsttime):
 	 */
 	protected static function adapt($delta, $numpoints, $firsttime) {
 		// if firsttime then let delta = delta div damp
