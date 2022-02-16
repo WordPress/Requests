@@ -85,8 +85,8 @@ final class HeadersTest extends TestCase {
 	 *
 	 * @dataProvider dataOffsetSetDoesNotTryToLowercaseNonStringKeys
 	 *
-	 * @param mixed      $key         Key to set.
-	 * @param string|int $request_key Key to retrieve if different.
+	 * @param mixed           $key         Key to set.
+	 * @param string|int|null $request_key Key to retrieve if different.
 	 *
 	 * @return void
 	 */

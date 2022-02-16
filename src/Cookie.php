@@ -299,7 +299,7 @@ class Cookie {
 	 * Handles parsing individual attributes from the cookie values.
 	 *
 	 * @param string $name Attribute name
-	 * @param string|boolean $value Attribute value (string value, or true if empty/flag)
+	 * @param string|int|bool $value Attribute value (string/integer value, or true if empty/flag)
 	 * @return mixed Value if available, or null if the attribute value is invalid (and should be skipped)
 	 */
 	protected function normalize_attribute($name, $value) {
