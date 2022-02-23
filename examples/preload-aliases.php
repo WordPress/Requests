@@ -25,7 +25,7 @@ $preload['requests'] = '\WpOrg\Requests\Requests';
 
 // Preload the class aliases for the Requests 1.x classes to ensure only Requests 2.x classes get loaded.
 foreach ($preload as $old => $new) {
-	// Make sure we don't get "Class already exists errors" from autoloading chains
+	// Make sure we don't get "Class already exists errors" from autoloading chains.
 	// Think: an `implements` causing an interface to be loaded before we explicitly request it.
 	if (class_exists($old) === false && interface_exists($old) === false) {
 		WpOrg\Requests\Autoload::load($old);
