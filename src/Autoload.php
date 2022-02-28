@@ -183,5 +183,14 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 
 			return false;
 		}
+
+		/**
+		 * Get the array of deprecated Requests 1.x classes mapped to their equivalent Requests 2.x implementation.
+		 *
+		 * @return array
+		 */
+		public static function get_deprecated_classes() {
+			return self::$deprecated_classes;
+		}
 	}
 }
