@@ -7,6 +7,7 @@ use WpOrg\Requests\Exception\ArgumentCount;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Transport\Fsockopen;
 
@@ -140,6 +141,44 @@ final class HttpTest extends TestCase {
 
 		$response = Requests::get(httpbin('/get'), [], $options);
 		$this->assertSame(407, $response->status_code);
+	}
+
+	/**
+	 * @dataProvider transportProvider
+	 */
+	public function testMultipleConnectWithString($transport) {
+		$this->checkProxyAvailable();
+
+		$requests = [
+			'test1' => [
+				'url' => httpbin('/get'),
+			],
+			'test2' => [
+				'url' => httpbin('/get'),
+			],
+		];
+
+		$options = [
+			'proxy'     => REQUESTS_HTTP_PROXY,
+			'transport' => $transport,
+		];
+
+		$responses = Requests::request_multiple($requests, $options);
+
+		foreach (['test1', 'test2'] as $key) {
+			$this->assertArrayHasKey($key, $responses);
+
+			$response = $responses[$key];
+			$this->assertInstanceOf(Response::class, $response);
+			$this->assertSame(200, $response->status_code);
+			$this->assertArrayHasKey('x-requests-proxied', $response->headers);
+			$this->assertSame('http', $response->headers['x-requests-proxied']);
+
+			$result = json_decode($response->body, true);
+			$this->assertSame(httpbin('/get'), $result['url']);
+			$this->assertEmpty($result['args']);
+			$this->assertSame('http', $result['headers']['x-requests-proxy']);
+		}
 	}
 
 	/**
