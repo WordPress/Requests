@@ -26,7 +26,7 @@ final class Fsockopen implements Transport {
 	/**
 	 * Second to microsecond conversion
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const SECOND_IN_MICROSECONDS = 1000000;
 
@@ -56,7 +56,7 @@ final class Fsockopen implements Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @param string|Stringable $url URL to request
+	 * @param string|\Stringable $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation

@@ -19,7 +19,7 @@ class Http extends Exception {
 	/**
 	 * HTTP status code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $code = 0;
 

@@ -47,28 +47,28 @@ class Response {
 	/**
 	 * Status code, false if non-blocking
 	 *
-	 * @var integer|boolean
+	 * @var int|bool
 	 */
 	public $status_code = false;
 
 	/**
 	 * Protocol version, false if non-blocking
 	 *
-	 * @var float|boolean
+	 * @var float|bool
 	 */
 	public $protocol_version = false;
 
 	/**
 	 * Whether the request succeeded or not
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $success = false;
 
 	/**
 	 * Number of redirects the request used
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $redirects = 0;
 
@@ -104,7 +104,7 @@ class Response {
 	/**
 	 * Is the response a redirect?
 	 *
-	 * @return boolean True if redirect (3xx status), false if not.
+	 * @return bool True if redirect (3xx status), false if not.
 	 */
 	public function is_redirect() {
 		$code = $this->status_code;
@@ -114,7 +114,7 @@ class Response {
 	/**
 	 * Throws an exception if the request was not successful
 	 *
-	 * @param boolean $allow_redirects Set to false to throw on a 3xx as well
+	 * @param bool $allow_redirects Set to false to throw on a 3xx as well
 	 *
 	 * @throws \WpOrg\Requests\Exception If `$allow_redirects` is false, and code is 3xx (`response.no_redirects`)
 	 * @throws \WpOrg\Requests\Exception\Http On non-successful status code. Exception class corresponds to "Status" + code (e.g. {@see \WpOrg\Requests\Exception\Http\Status404})
@@ -137,16 +137,16 @@ class Response {
 	 *
 	 * @link https://php.net/json-decode
 	 *
-	 * @param ?bool $associative Optional. When `true`, JSON objects will be returned as associative arrays;
-	 *                           When `false`, JSON objects will be returned as objects.
-	 *                           When `null`, JSON objects will be returned as associative arrays
-	 *                           or objects depending on whether `JSON_OBJECT_AS_ARRAY` is set in the flags.
-	 *                           Defaults to `true` (in contrast to the PHP native default of `null`).
-	 * @param int   $depth       Optional. Maximum nesting depth of the structure being decoded.
-	 *                           Defaults to `512`.
-	 * @param int   $options     Optional. Bitmask of JSON_BIGINT_AS_STRING, JSON_INVALID_UTF8_IGNORE,
-	 *                           JSON_INVALID_UTF8_SUBSTITUTE, JSON_OBJECT_AS_ARRAY, JSON_THROW_ON_ERROR.
-	 *                           Defaults to `0` (no options set).
+	 * @param bool|null $associative Optional. When `true`, JSON objects will be returned as associative arrays;
+	 *                               When `false`, JSON objects will be returned as objects.
+	 *                               When `null`, JSON objects will be returned as associative arrays
+	 *                               or objects depending on whether `JSON_OBJECT_AS_ARRAY` is set in the flags.
+	 *                               Defaults to `true` (in contrast to the PHP native default of `null`).
+	 * @param int       $depth       Optional. Maximum nesting depth of the structure being decoded.
+	 *                               Defaults to `512`.
+	 * @param int       $options     Optional. Bitmask of JSON_BIGINT_AS_STRING, JSON_INVALID_UTF8_IGNORE,
+	 *                               JSON_INVALID_UTF8_SUBSTITUTE, JSON_OBJECT_AS_ARRAY, JSON_THROW_ON_ERROR.
+	 *                               Defaults to `0` (no options set).
 	 *
 	 * @return array
 	 *

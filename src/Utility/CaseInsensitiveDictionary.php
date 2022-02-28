@@ -41,7 +41,7 @@ class CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
 	 * Check if the given item exists
 	 *
 	 * @param string $offset Item key
-	 * @return boolean Does the item exist?
+	 * @return bool Does the item exist?
 	 */
 	#[ReturnTypeWillChange]
 	public function offsetExists($offset) {

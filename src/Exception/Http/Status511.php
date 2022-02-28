@@ -22,7 +22,7 @@ final class Status511 extends Http {
 	/**
 	 * HTTP status code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $code = 511;
 

@@ -95,7 +95,7 @@ class Requests {
 	/**
 	 * Default size of buffer size to read streams
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const BUFFER_SIZE = 1160;
 
@@ -387,22 +387,22 @@ class Requests {
 	 * - `useragent`: Useragent to send to the server
 	 *    (string, default: php-requests/$version)
 	 * - `follow_redirects`: Should we follow 3xx redirects?
-	 *    (boolean, default: true)
+	 *    (bool, default: true)
 	 * - `redirects`: How many times should we redirect before erroring?
-	 *    (integer, default: 10)
+	 *    (int, default: 10)
 	 * - `blocking`: Should we block processing on this request?
-	 *    (boolean, default: true)
+	 *    (bool, default: true)
 	 * - `filename`: File to stream the body to instead.
-	 *    (string|boolean, default: false)
+	 *    (string|bool, default: false)
 	 * - `auth`: Authentication handler or array of user/password details to use
 	 *    for Basic authentication
-	 *    (\WpOrg\Requests\Auth|array|boolean, default: false)
+	 *    (\WpOrg\Requests\Auth|array|bool, default: false)
 	 * - `proxy`: Proxy details to use for proxy by-passing and authentication
-	 *    (\WpOrg\Requests\Proxy|array|string|boolean, default: false)
+	 *    (\WpOrg\Requests\Proxy|array|string|bool, default: false)
 	 * - `max_bytes`: Limit for the response body size.
-	 *    (integer|boolean, default: false)
+	 *    (int|bool, default: false)
 	 * - `idn`: Enable IDN parsing
-	 *    (boolean, default: true)
+	 *    (bool, default: true)
 	 * - `transport`: Custom transport. Either a class name, or a
 	 *    transport object. Defaults to the first working transport from
 	 *    {@see \WpOrg\Requests\Requests::getTransport()}
@@ -413,14 +413,14 @@ class Requests {
 	 *    certificate file as a string. (Using true uses the system-wide root
 	 *    certificate store instead, but this may have different behaviour
 	 *    across transports.)
-	 *    (string|boolean, default: certificates/cacert.pem)
+	 *    (string|bool, default: certificates/cacert.pem)
 	 * - `verifyname`: Should we verify the common name in the SSL certificate?
-	 *    (boolean, default: true)
+	 *    (bool, default: true)
 	 * - `data_format`: How should we send the `$data` parameter?
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
 	 *
-	 * @param string|Stringable $url URL to request
+	 * @param string|\Stringable $url URL to request
 	 * @param array $headers Extra headers to send with the request
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type (use Requests constants)
@@ -602,7 +602,7 @@ class Requests {
 	 * Get the default options
 	 *
 	 * @see \WpOrg\Requests\Requests::request() for values returned by this method
-	 * @param boolean $multirequest Is this a multirequest?
+	 * @param bool $multirequest Is this a multirequest?
 	 * @return array Default option values
 	 */
 	protected static function get_default_options($multirequest = false) {
@@ -628,7 +628,7 @@ class Requests {
 	/**
 	 * Set default certificate path.
 	 *
-	 * @param string|Stringable|bool $path Certificate path, pointing to a PEM file.
+	 * @param string|\Stringable|bool $path Certificate path, pointing to a PEM file.
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or boolean.
 	 */
@@ -643,12 +643,14 @@ class Requests {
 	/**
 	 * Set the default values
 	 *
+	 * The $options parameter is updated with the results.
+	 *
 	 * @param string $url URL to request
 	 * @param array $headers Extra headers to send with the request
 	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
 	 * @param string $type HTTP request type
 	 * @param array $options Options for the request
-	 * @return void $options is updated with the results
+	 * @return void
 	 *
 	 * @throws \WpOrg\Requests\Exception When the $url is not an http(s) URL.
 	 */
@@ -825,9 +827,11 @@ class Requests {
 	 * Internal use only. Converts a raw HTTP response to a \WpOrg\Requests\Response
 	 * while still executing a multiple request.
 	 *
+	 * `$response` is either set to a \WpOrg\Requests\Response instance, or a \WpOrg\Requests\Exception object
+	 *
 	 * @param string $response Full response text including headers and body (will be overwritten with Response instance)
 	 * @param array $request Request data as passed into {@see \WpOrg\Requests\Requests::request_multiple()}
-	 * @return void `$response` is either set to a \WpOrg\Requests\Response instance, or a \WpOrg\Requests\Exception object
+	 * @return void
 	 */
 	public static function parse_multiple(&$response, $request) {
 		try {

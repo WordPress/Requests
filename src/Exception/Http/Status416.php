@@ -18,7 +18,7 @@ final class Status416 extends Http {
 	/**
 	 * HTTP status code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $code = 416;
 

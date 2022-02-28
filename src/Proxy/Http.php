@@ -48,7 +48,7 @@ final class Http implements Proxy {
 	/**
 	 * Do we need to authenticate? (ie username & password have been provided)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $use_authentication;
 

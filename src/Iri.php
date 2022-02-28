@@ -246,7 +246,7 @@ class Iri {
 	/**
 	 * Create a new IRI object, from a specified string
 	 *
-	 * @param string|Stringable|null $iri
+	 * @param string|\Stringable|null $iri
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $iri argument is not a string, Stringable or null.
 	 */

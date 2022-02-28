@@ -54,7 +54,7 @@ class IdnaEncoder {
 	/**
 	 * Encode a hostname using Punycode
 	 *
-	 * @param string|Stringable $hostname Hostname
+	 * @param string|\Stringable $hostname Hostname
 	 * @return string Punycode-encoded hostname
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not a string or a stringable object.
 	 */
@@ -333,7 +333,8 @@ class IdnaEncoder {
 						$output .= self::digit_to_char($digit);
 						// let q = (q - t) div (base - t)
 						$q = floor(($q - $t) / (self::BOOTSTRAP_BASE - $t));
-					} // end
+					}
+
 					// output the code point for digit q
 					$output .= self::digit_to_char($q);
 					// let bias = adapt(delta, h + 1, test h equals b?)
@@ -342,12 +343,13 @@ class IdnaEncoder {
 					$delta = 0;
 					// increment h
 					$h++;
-				} // end
-			} // end
+				}
+			}
+
 			// increment delta and n
 			$delta++;
 			$n++;
-		} // end
+		}
 
 		return $output;
 	}
@@ -381,9 +383,7 @@ class IdnaEncoder {
 	 * @param int $delta
 	 * @param int $numpoints
 	 * @param bool $firsttime
-	 * @return int New bias
-	 *
-	 * function adapt(delta,numpoints,firsttime):
+	 * @return int|float New bias
 	 */
 	protected static function adapt($delta, $numpoints, $firsttime) {
 		// if firsttime then let delta = delta div damp
@@ -405,7 +405,8 @@ class IdnaEncoder {
 			$delta = floor($delta / (self::BOOTSTRAP_BASE - self::BOOTSTRAP_TMIN));
 			// let k = k + base
 			$k += self::BOOTSTRAP_BASE;
-		} // end
+		}
+
 		// return k + (((base - tmin + 1) * delta) div (delta + skew))
 		return $k + floor(((self::BOOTSTRAP_BASE - self::BOOTSTRAP_TMIN + 1) * $delta) / ($delta + self::BOOTSTRAP_SKEW));
 	}

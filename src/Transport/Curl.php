@@ -71,7 +71,7 @@ final class Curl implements Transport {
 	/**
 	 * Have we finished the headers yet?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $done_headers = false;
 
@@ -133,7 +133,7 @@ final class Curl implements Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @param string|Stringable $url URL to request
+	 * @param string|\Stringable $url URL to request
 	 * @param array $headers Associative array of request headers
 	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
 	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
@@ -501,7 +501,7 @@ final class Curl implements Transport {
 	 *
 	 * @param resource|\CurlHandle $handle cURL handle
 	 * @param string $headers Header string
-	 * @return integer Length of provided header
+	 * @return int Length of provided header
 	 */
 	public function stream_headers($handle, $headers) {
 		// Why do we do this? cURL will send both the final response and any
@@ -528,7 +528,7 @@ final class Curl implements Transport {
 	 *
 	 * @param resource|\CurlHandle $handle cURL handle
 	 * @param string $data Body data
-	 * @return integer Length of provided data
+	 * @return int Length of provided data
 	 */
 	public function stream_body($handle, $data) {
 		$this->hooks->dispatch('request.progress', [$data, $this->response_bytes, $this->response_byte_limit]);

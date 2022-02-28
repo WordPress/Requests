@@ -10,7 +10,7 @@ abstract class TestCase extends Polyfill_TestCase {
 	/**
 	 * Data provider for use in tests which need to be run against all default supported transports.
 	 *
-	 * @var array
+	 * @return array
 	 */
 	public function transportProvider() {
 		$data = [];

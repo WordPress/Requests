@@ -27,7 +27,7 @@ interface HookManager {
 	 *
 	 * @param string $hook Hook name
 	 * @param array $parameters Parameters to pass to callbacks
-	 * @return boolean Successfulness
+	 * @return bool Successfulness
 	 */
 	public function dispatch($hook, $parameters = []);
 }
