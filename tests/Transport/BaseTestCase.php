@@ -1076,8 +1076,6 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testAlternatePort() {
-		$this->markTestSkipped('The portquiz.net service is having technical issues.');
-
 		try {
 			$request = Requests::get('http://portquiz.net:8080/', [], $this->getOptions());
 		} catch (Exception $e) {
