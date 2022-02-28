@@ -1182,6 +1182,6 @@ abstract class BaseTestCase extends TestCase {
 		$request = Requests::post(httpbin('/status/303', true), array(), $data, $this->getOptions(array('follow_redirects' => true)));
 
 		$this->assertSame(200, $request->status_code);
-		$this->assertSame(httpbin('/get'), $request->url);
+		$this->assertSame('/get', substr($request->url, -4));
 	}
 }
