@@ -50,7 +50,7 @@ jobs:
         uses: "ramsey/composer-install@v2"
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: '3.8'
 
