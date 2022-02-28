@@ -120,7 +120,6 @@ class HooksTest extends TestCase {
 		$this->assertInstanceof(Closure::class, $hooks_prop['hookname'][0][0], 'Closure callback is not registered correctly');
 	}
 
-
 	/**
 	 * Verify that the return value of the dispatch method is false when no hooks are registered.
 	 *

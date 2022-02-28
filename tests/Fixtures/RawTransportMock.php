@@ -6,9 +6,11 @@ use WpOrg\Requests\Transport;
 
 final class RawTransportMock implements Transport {
 	public $data = '';
+
 	public function request($url, $headers = [], $data = [], $options = []) {
 		return $this->data;
 	}
+
 	public function request_multiple($requests, $options) {
 		foreach ($requests as $id => &$request) {
 			$handler       = new self();
@@ -18,6 +20,7 @@ final class RawTransportMock implements Transport {
 
 		return $requests;
 	}
+
 	public static function test($capabilities = []) {
 		return true;
 	}
