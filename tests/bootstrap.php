@@ -49,7 +49,7 @@ if (defined('__PHPUNIT_PHAR__')) {
 	 * in a non-Composer context.
 	 */
 	spl_autoload_register(
-		function ($class_name) {
+		static function ($class_name) {
 			// Only try & load our own classes.
 			if (stripos($class_name, 'WpOrg\\Requests\\Tests\\') !== 0) {
 				return false;
