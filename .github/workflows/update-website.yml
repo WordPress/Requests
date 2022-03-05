@@ -45,7 +45,7 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ steps.base_branch.outputs.BRANCH }}
 
@@ -69,7 +69,7 @@ jobs:
       # Retention is normally 90 days, but this artifact is only for review
       # and use in the next step, so no need to keep it for more than a day.
       - name: Upload the artifacts folder
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: ${{ success() }}
         with:
           name: website-updates
@@ -107,12 +107,12 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: gh-pages
 
       - name: Download the prepared artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: website-updates
           path: artifacts
