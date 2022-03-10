@@ -245,6 +245,12 @@ final class SslTest extends TestCase {
 	/**
 	 * Test helper to mock a certificate.
 	 *
+	 * @param string      $dnsname  DNS name to match against.
+	 * @param bool|string $with_san Optional. How to generate the fake certificate.
+	 *                              - false:  plain, CN only;
+	 *                              - true:   CN + subjectAltName, alt set to same as CN;
+	 *                              - string: CN + subjectAltName, alt set to string value.
+	 *
 	 * @return array
 	 */
 	private function fakeCertificate($dnsname, $with_san = true) {
