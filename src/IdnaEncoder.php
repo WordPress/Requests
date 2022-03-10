@@ -137,7 +137,7 @@ class IdnaEncoder {
 	 *
 	 * @internal (Testing found regex was the fastest implementation)
 	 *
-	 * @param string $text
+	 * @param string $text Text to examine.
 	 * @return bool Is the text string ASCII-only?
 	 */
 	protected static function is_ascii($text) {
@@ -148,7 +148,7 @@ class IdnaEncoder {
 	 * Prepare a text string for use as an IDNA name
 	 *
 	 * @todo Implement this based on RFC 3491 and the newer 5891
-	 * @param string $text
+	 * @param string $text Text to prepare.
 	 * @return string Prepared string
 	 */
 	protected static function nameprep($text) {
@@ -160,7 +160,7 @@ class IdnaEncoder {
 	 *
 	 * Based on \WpOrg\Requests\Iri::replace_invalid_with_pct_encoding()
 	 *
-	 * @param string $input
+	 * @param string $input Text to convert.
 	 * @return array Unicode code points
 	 *
 	 * @throws \WpOrg\Requests\Exception Invalid UTF-8 codepoint (`idna.invalidcodepoint`)
