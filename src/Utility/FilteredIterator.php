@@ -46,14 +46,25 @@ final class FilteredIterator extends ArrayIterator {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Prevent unserialization of the object for security reasons.
 	 *
 	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
+	 *
+	 * @param array $data Restored array of data originally serialized.
+	 *
+	 * @return void
 	 */
 	#[ReturnTypeWillChange]
 	public function __unserialize($data) {}
 	// phpcs:enable
 
+	/**
+	 * Perform reinitialization tasks.
+	 *
+	 * Prevents a callback from being injected during unserialization of an object.
+	 *
+	 * @return void
+	 */
 	public function __wakeup() {
 		unset($this->callback);
 	}
@@ -75,7 +86,11 @@ final class FilteredIterator extends ArrayIterator {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Prevent creating a PHP value from a stored representation of the object for security reasons.
+	 *
+	 * @param string $data The serialized string.
+	 *
+	 * @return void
 	 */
 	#[ReturnTypeWillChange]
 	public function unserialize($data) {}
