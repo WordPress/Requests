@@ -46,7 +46,7 @@ class Headers extends CaseInsensitiveDictionary {
 	 * Set the given item
 	 *
 	 * @param string $offset Item name
-	 * @param string $value Item value
+	 * @param string $value  Item value
 	 *
 	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 */

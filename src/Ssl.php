@@ -27,7 +27,7 @@ final class Ssl {
 	 * @link https://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
 	 *
 	 * @param string|\Stringable $host Host name to verify against
-	 * @param array $cert Certificate data from openssl_x509_parse()
+	 * @param array              $cert Certificate data from openssl_x509_parse()
 	 * @return bool
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $host argument is not a string or a stringable object.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $cert argument is not an array or array accessible.
@@ -144,7 +144,7 @@ final class Ssl {
 	/**
 	 * Match a hostname against a dNSName reference
 	 *
-	 * @param string|\Stringable $host Requested host
+	 * @param string|\Stringable $host      Requested host
 	 * @param string|\Stringable $reference dNSName to match against
 	 * @return bool Does the domain match?
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When either of the passed arguments is not a string or a stringable object.

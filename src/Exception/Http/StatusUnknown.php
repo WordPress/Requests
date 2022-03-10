@@ -37,7 +37,7 @@ final class StatusUnknown extends Http {
 	 * code from it. Otherwise, sets as 0
 	 *
 	 * @param string|null $reason Reason phrase
-	 * @param mixed $data Associated data
+	 * @param mixed       $data   Associated data
 	 */
 	public function __construct($reason = null, $data = null) {
 		if ($data instanceof Response) {

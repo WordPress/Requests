@@ -420,11 +420,11 @@ class Requests {
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
 	 *
-	 * @param string|\Stringable $url URL to request
-	 * @param array $headers Extra headers to send with the request
-	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
-	 * @param string $type HTTP request type (use Requests constants)
-	 * @param array $options Options for the request (see description for more information)
+	 * @param string|\Stringable $url     URL to request
+	 * @param array              $headers Extra headers to send with the request
+	 * @param array|null         $data    Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param string             $type    HTTP request type (use Requests constants)
+	 * @param array              $options Options for the request (see description for more information)
 	 * @return \WpOrg\Requests\Response
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
@@ -512,7 +512,7 @@ class Requests {
 	 *    (callback)
 	 *
 	 * @param array $requests Requests data (see description for more information)
-	 * @param array $options Global and default options (see {@see \WpOrg\Requests\Requests::request()})
+	 * @param array $options  Global and default options (see {@see \WpOrg\Requests\Requests::request()})
 	 * @return array Responses (either \WpOrg\Requests\Response or a \WpOrg\Requests\Exception object)
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
@@ -645,11 +645,11 @@ class Requests {
 	 *
 	 * The $options parameter is updated with the results.
 	 *
-	 * @param string $url URL to request
-	 * @param array $headers Extra headers to send with the request
-	 * @param array|null $data Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
-	 * @param string $type HTTP request type
-	 * @param array $options Options for the request
+	 * @param string     $url     URL to request
+	 * @param array      $headers Extra headers to send with the request
+	 * @param array|null $data    Data to send either as a query string for GET/HEAD requests, or in the body for POST requests
+	 * @param string     $type    HTTP request type
+	 * @param array      $options Options for the request
 	 * @return void
 	 *
 	 * @throws \WpOrg\Requests\Exception When the $url is not an http(s) URL.
@@ -710,11 +710,11 @@ class Requests {
 	/**
 	 * HTTP response parser
 	 *
-	 * @param string $headers Full response text including headers and body
-	 * @param string $url Original request URL
-	 * @param array $req_headers Original $headers array passed to {@link request()}, in case we need to follow redirects
-	 * @param array $req_data Original $data array passed to {@link request()}, in case we need to follow redirects
-	 * @param array $options Original $options array passed to {@link request()}, in case we need to follow redirects
+	 * @param string $headers     Full response text including headers and body
+	 * @param string $url         Original request URL
+	 * @param array  $req_headers Original $headers array passed to {@link request()}, in case we need to follow redirects
+	 * @param array  $req_data    Original $data array passed to {@link request()}, in case we need to follow redirects
+	 * @param array  $options     Original $options array passed to {@link request()}, in case we need to follow redirects
 	 * @return \WpOrg\Requests\Response
 	 *
 	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`requests.no_crlf_separator`)
@@ -830,7 +830,7 @@ class Requests {
 	 * `$response` is either set to a \WpOrg\Requests\Response instance, or a \WpOrg\Requests\Exception object
 	 *
 	 * @param string $response Full response text including headers and body (will be overwritten with Response instance)
-	 * @param array $request Request data as passed into {@see \WpOrg\Requests\Requests::request_multiple()}
+	 * @param array  $request  Request data as passed into {@see \WpOrg\Requests\Requests::request_multiple()}
 	 * @return void
 	 */
 	public static function parse_multiple(&$response, $request) {

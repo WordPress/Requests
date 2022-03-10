@@ -91,7 +91,7 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 * Set the given item
 	 *
 	 * @param string $offset Item name
-	 * @param string $value Item value
+	 * @param string $value  Item value
 	 *
 	 * @throws \WpOrg\Requests\Exception On attempting to use dictionary as list (`invalidset`)
 	 */
@@ -140,10 +140,10 @@ class Jar implements ArrayAccess, IteratorAggregate {
 	 * As per RFC 6265, cookies are separated by '; '
 	 *
 	 * @param string $url
-	 * @param array $headers
-	 * @param array $data
+	 * @param array  $headers
+	 * @param array  $data
 	 * @param string $type
-	 * @param array $options
+	 * @param array  $options
 	 */
 	public function before_request($url, &$headers, &$data, &$type, &$options) {
 		if (!$url instanceof Iri) {

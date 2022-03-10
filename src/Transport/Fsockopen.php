@@ -61,10 +61,10 @@ final class Fsockopen implements Transport {
 	/**
 	 * Perform a request
 	 *
-	 * @param string|\Stringable $url URL to request
-	 * @param array $headers Associative array of request headers
-	 * @param string|array $data Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
-	 * @param array $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
+	 * @param string|\Stringable $url     URL to request
+	 * @param array              $headers Associative array of request headers
+	 * @param string|array       $data    Data to send either as the POST body, or as parameters in the URL for a GET/HEAD
+	 * @param array              $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return string Raw HTTP result
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
@@ -348,7 +348,7 @@ final class Fsockopen implements Transport {
 	 * Send multiple requests simultaneously
 	 *
 	 * @param array $requests Request data (array of 'url', 'headers', 'data', 'options') as per {@see \WpOrg\Requests\Transport::request()}
-	 * @param array $options Global options, see {@see \WpOrg\Requests\Requests::response()} for documentation
+	 * @param array $options  Global options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 * @return array Array of \WpOrg\Requests\Response objects (may contain \WpOrg\Requests\Exception or string responses as well)
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
@@ -412,7 +412,7 @@ final class Fsockopen implements Transport {
 	 * Format a URL given GET data
 	 *
 	 * @param array        $url_parts Array of URL parts as received from {@link https://www.php.net/parse_url}
-	 * @param array|object $data Data to build query using, see {@link https://www.php.net/http_build_query}
+	 * @param array|object $data      Data to build query using, see {@link https://www.php.net/http_build_query}
 	 * @return string URL with data
 	 */
 	private static function format_get($url_parts, $data) {
@@ -441,7 +441,7 @@ final class Fsockopen implements Transport {
 	/**
 	 * Error handler for stream_socket_client()
 	 *
-	 * @param int $errno Error number (e.g. E_WARNING)
+	 * @param int    $errno  Error number (e.g. E_WARNING)
 	 * @param string $errstr Error message
 	 */
 	public function connect_error_handler($errno, $errstr) {
@@ -464,7 +464,7 @@ final class Fsockopen implements Transport {
 	 *
 	 * @link https://tools.ietf.org/html/rfc2818#section-3.1 RFC2818, Section 3.1
 	 *
-	 * @param string $host Host name to verify against
+	 * @param string   $host    Host name to verify against
 	 * @param resource $context Stream context
 	 * @return bool
 	 *
