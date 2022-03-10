@@ -28,7 +28,7 @@ final class FilteredIterator extends ArrayIterator {
 	/**
 	 * Create a new iterator
 	 *
-	 * @param array $data
+	 * @param array    $data     The array or object to be iterated on.
 	 * @param callable $callback Callback to be called on each value
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $data argument is not iterable.

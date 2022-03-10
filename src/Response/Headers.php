@@ -27,7 +27,7 @@ class Headers extends CaseInsensitiveDictionary {
 	 * Avoid using this where commas may be used unquoted in values, such as
 	 * Set-Cookie headers.
 	 *
-	 * @param string $offset
+	 * @param string $offset Name of the header to retrieve.
 	 * @return string|null Header value
 	 */
 	public function offsetGet($offset) {
@@ -69,7 +69,7 @@ class Headers extends CaseInsensitiveDictionary {
 	/**
 	 * Get all values for a given header
 	 *
-	 * @param string $offset
+	 * @param string $offset Name of the header to retrieve.
 	 * @return array|null Header values
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not valid as an array key.

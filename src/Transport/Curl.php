@@ -561,7 +561,7 @@ final class Curl implements Transport {
 	/**
 	 * Format a URL given GET data
 	 *
-	 * @param string $url
+	 * @param string       $url  Original URL.
 	 * @param array|object $data Data to build query using, see {@link https://www.php.net/http_build_query}
 	 * @return string URL with data
 	 */
