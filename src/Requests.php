@@ -471,11 +471,8 @@ class Requests {
 			$options['hooks']->dispatch('requests.before_parse', [&$response, $url, $headers, $data, $type, $options]);
 
 			$parsed_response = self::parse_response($response, $url, $headers, $data, $options);
-		} catch (Exception $e) {
-			$options['hooks']->dispatch('requests.failed', [$e, $url, $headers, $data, $type, $options]);
-			throw $e;
-		} catch (InvalidArgument $e) {
-			$options['hooks']->dispatch('requests.failed', [$e, $url, $headers, $data, $type, $options]);
+		} catch (Exception|InvalidArgument $e) {
+			$options['hooks']->dispatch('requests.failed', [&$e, $url, $headers, $data, $type, $options]);
 			throw $e;
 		}
 
