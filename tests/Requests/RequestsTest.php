@@ -408,7 +408,7 @@ final class RequestsTest extends TestCase {
 		$transport                       = new TransportRedirectMock();
 		$transport->redirected_transport = new TransportFailedMock();
 
-		$options  = [
+		$options = [
 			'hooks'     => $hooks,
 			'transport' => $transport,
 		];
@@ -431,7 +431,7 @@ final class RequestsTest extends TestCase {
 		$transport                       = new TransportRedirectMock();
 		$transport->redirected_transport = new TransportInvalidArgumentMock();
 
-		$options  = [
+		$options = [
 			'hooks'     => $hooks,
 			'transport' => $transport,
 		];

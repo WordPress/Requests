@@ -12,7 +12,7 @@ final class TransportRedirectMock implements Transport {
 
 	private $redirected = [];
 
-	public $redirected_transport = NULL;
+	public $redirected_transport = null;
 
 	private static $messages = [
 		100 => '100 Continue',
@@ -64,12 +64,11 @@ final class TransportRedirectMock implements Transport {
 	];
 
 	public function request($url, $headers = [], $data = [], $options = []) {
-		if (array_key_exists($url, $this->redirected))
-		{
+		if (array_key_exists($url, $this->redirected)) {
 			return $this->redirected_transport->request($url, $headers, $data, $options);
 		}
 
-		$redirect_url = "https://example.com/redirected?url=" . urlencode($url);
+		$redirect_url = 'https://example.com/redirected?url=' . urlencode($url);
 
 		$status    = isset(self::$messages[$this->code]) ? self::$messages[$this->code] : $this->code . ' unknown';
 		$response  = "HTTP/1.0 $status\r\n";
@@ -77,13 +76,14 @@ final class TransportRedirectMock implements Transport {
 		if ($this->chunked) {
 			$response .= "Transfer-Encoding: chunked\r\n";
 		}
+
 		$response .= "Location: $redirect_url\r\n";
 		$response .= $this->raw_headers;
 		$response .= "Connection: close\r\n\r\n";
 		$response .= $this->body;
 
-		$this->redirected[$url] = TRUE;
-		$this->redirected[$redirect_url] = TRUE;
+		$this->redirected[$url]          = true;
+		$this->redirected[$redirect_url] = true;
 
 		return $response;
 	}

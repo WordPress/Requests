@@ -472,16 +472,16 @@ class Requests {
 
 			$parsed_response = self::parse_response($response, $url, $headers, $data, $options);
 		} catch (Exception $e) {
-			if ($e->failed_hook_handled === FALSE) {
+			if ($e->failed_hook_handled === false) {
 				$options['hooks']->dispatch('requests.failed', [&$e, $url, $headers, $data, $type, $options]);
-				$e->failed_hook_handled = TRUE;
+				$e->failed_hook_handled = true;
 			}
 
 			throw $e;
 		} catch (InvalidArgument $e) {
-			if ($e->failed_hook_handled === FALSE) {
+			if ($e->failed_hook_handled === false) {
 				$options['hooks']->dispatch('requests.failed', [&$e, $url, $headers, $data, $type, $options]);
-				$e->failed_hook_handled = TRUE;
+				$e->failed_hook_handled = true;
 			}
 
 			throw $e;

@@ -36,7 +36,7 @@ class Exception extends PHPException {
 	 *
 	 * @var boolean
 	 */
-	public $failed_hook_handled = FALSE;
+	public $failed_hook_handled = false;
 
 	/**
 	 * Create a new exception
