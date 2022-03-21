@@ -48,10 +48,10 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Restore etags cache for certificate files
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: certificates/etag-*.txt
           key: curl-etag-${{ hashFiles('certificates/cacert.pem') }}-${{ hashFiles('certificates/cacert.pem.sha256') }}
