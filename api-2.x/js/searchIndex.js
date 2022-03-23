@@ -51,16 +51,6 @@ Search.appendIndex(
             "summary": "Register\u0020hooks\u0020as\u0020needed",
             "url": "classes/WpOrg-Requests-Auth.html#method_register"
         },                {
-            "fqsen": "\\WpOrg\\Requests\\Autoload",
-            "name": "Autoload",
-            "summary": "Autoloader\u0020for\u0020Requests\u0020for\u0020PHP.",
-            "url": "classes/WpOrg-Requests-Autoload.html"
-        },                {
-            "fqsen": "\\WpOrg\\Requests\\Autoload\u003A\u003Aload\u0028\u0029",
-            "name": "load",
-            "summary": "Autoloader.",
-            "url": "classes/WpOrg-Requests-Autoload.html#method_load"
-        },                {
             "fqsen": "\\WpOrg\\Requests\\Capability",
             "name": "Capability",
             "summary": "Capability\u0020interface\u0020declaring\u0020the\u0020known\u0020capabilities.",
@@ -1893,12 +1883,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003A__unserialize\u0028\u0029",
             "name": "__unserialize",
-            "summary": "",
+            "summary": "Prevent\u0020unserialization\u0020of\u0020the\u0020object\u0020for\u0020security\u0020reasons.",
             "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method___unserialize"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003A__wakeup\u0028\u0029",
             "name": "__wakeup",
-            "summary": "",
+            "summary": "Perform\u0020reinitialization\u0020tasks.",
             "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method___wakeup"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003Acurrent\u0028\u0029",
@@ -1908,7 +1898,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003Aunserialize\u0028\u0029",
             "name": "unserialize",
-            "summary": "",
+            "summary": "Prevent\u0020creating\u0020a\u0020PHP\u0020value\u0020from\u0020a\u0020stored\u0020representation\u0020of\u0020the\u0020object\u0020for\u0020security\u0020reasons.",
             "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method_unserialize"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\InputValidator",
