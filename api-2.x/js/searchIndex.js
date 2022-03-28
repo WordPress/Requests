@@ -51,6 +51,16 @@ Search.appendIndex(
             "summary": "Register\u0020hooks\u0020as\u0020needed",
             "url": "classes/WpOrg-Requests-Auth.html#method_register"
         },                {
+            "fqsen": "\\REQUESTS_AUTOLOAD_REGISTERED",
+            "name": "REQUESTS_AUTOLOAD_REGISTERED",
+            "summary": "",
+            "url": "namespaces/default.html#constant_REQUESTS_AUTOLOAD_REGISTERED"
+        },                {
+            "fqsen": "\\REQUESTS_SILENCE_PSR0_DEPRECATIONS",
+            "name": "REQUESTS_SILENCE_PSR0_DEPRECATIONS",
+            "summary": "",
+            "url": "namespaces/default.html#constant_REQUESTS_SILENCE_PSR0_DEPRECATIONS"
+        },                {
             "fqsen": "\\WpOrg\\Requests\\Autoload",
             "name": "Autoload",
             "summary": "Autoloader\u0020for\u0020Requests\u0020for\u0020PHP.",
