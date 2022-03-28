@@ -7,8 +7,8 @@ highlighter: rouge
 repository: "WordPress/Requests"
 
 kramdown:
-    input: GFM
-    parse_block_html: false
+  input: GFM
+  parse_block_html: false
 
 plugins:
   - jekyll-github-metadata
@@ -16,33 +16,33 @@ plugins:
   - jemoji
 
 requests:
-    packagist: rmccue/requests
-    ci_tests_url: 'https://github.com/WordPress/Requests/actions/workflows/test.yml'
-    ci_tests_img: 'https://img.shields.io/github/workflow/status/WordPress/Requests/Test/stable?label=build'
-    ci_codecov_url: 'https://app.codecov.io/gh/WordPress/Requests/branch/stable'
-    ci_codecov_img: 'https://img.shields.io/codecov/c/github/WordPress/Requests/stable.svg?style=flat-square'
+  packagist: rmccue/requests
+  ci_tests_url: 'https://github.com/WordPress/Requests/actions/workflows/test.yml'
+  ci_tests_img: 'https://img.shields.io/github/workflow/status/WordPress/Requests/Test/stable?label=build'
+  ci_codecov_url: 'https://app.codecov.io/gh/WordPress/Requests/branch/stable'
+  ci_codecov_img: 'https://img.shields.io/codecov/c/github/WordPress/Requests/stable.svg?style=flat-square'
 
 # Files to exclude when generating the site.
 exclude:
-   - .sass-cache/
-   - .jekyll-cache/
-   - gemfiles/
-   - Gemfile
-   - Gemfile.lock
-   - artifacts/
-   - node_modules/
-   - vendor/bundle/
-   - vendor/cache/
-   - vendor/gems/
-   - vendor/ruby/
-   - CNAME
-   - CONTRIBUTING.md
-   - LICENSE
-   - README.md
-   - Vagrantfile
-   - vagrant-provision.sh
-   - .gitignore
-   - .github
-   - .jekyll-metadata
-   - '*.bak'
-   - '*.orig'
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - artifacts/
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - CNAME
+  - CONTRIBUTING.md
+  - LICENSE
+  - README.md
+  - Vagrantfile
+  - vagrant-provision.sh
+  - .gitignore
+  - .github
+  - .jekyll-metadata
+  - '*.bak'
+  - '*.orig'
