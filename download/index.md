@@ -38,6 +38,7 @@ or
 ```
 
 And if you don't do so already, make sure you load the Composer autoload file.
+
 ```php
 require_once dirname(__FILE__) . '/vendor/autoload.php';
 ```
