@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.0.2
+-----
+
+### Overview of changes
+- Update bundled certificates as of 2022-03-18. [#697]
+
+[#697]: https://github.com/WordPress/Requests/pull/697
+
 2.0.1
 -----
 
