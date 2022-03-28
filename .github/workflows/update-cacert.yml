@@ -37,14 +37,21 @@ jobs:
         id: branches
         env:
           HEAD_REF: ${{ github.head_ref }}
+          PR_NUM: ${{ github.event.pull_request.number }}
         run: |
           if [[ "${{ github.event_name }}" == 'schedule' ]]; then
             echo "::set-output name=BASE::develop"
+            echo "::set-output name=PR_BRANCH::feature/auto-update-cacert"
           elif [[ "${{ github.event_name }}" == 'push' ]]; then
-            # Pull requests should always go to develop, even when triggered via stable.
+            # Pull requests should always go to develop, even when triggered via a push to stable.
             echo "::set-output name=BASE::develop"
-          else # = PR or manual run.
+            echo "::set-output name=PR_BRANCH::feature/auto-update-cacert"
+          elif [[ $PR_NUM != '' ]]; then # = PR or manual (re-)run for a workflow triggered by a PR.
             echo "::set-output name=BASE::$HEAD_REF"
+            echo "::set-output name=PR_BRANCH::feature/auto-update-cacert-$PR_NUM"
+          else # = manual run.
+            echo "::set-output name=BASE::$HEAD_REF"
+            echo "::set-output name=PR_BRANCH::feature/auto-update-cacert-misc"
           fi
 
       - name: Checkout code
@@ -82,12 +89,12 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           base: ${{ steps.branches.outputs.BASE }}
-          branch: "feature/auto-update-cacert"
+          branch: ${{ steps.branches.outputs.PR_BRANCH }}
           delete-branch: true
           commit-message: ":lock_with_ink_pen: Update certificate bundle"
           title: ":lock_with_ink_pen: Update certificate bundle"
           body: |
-            Updated certificate bundle as of ${{ steps.get-date.outputs.DATE }}.
+            Updated certificate bundle, last verified on ${{ steps.get-date.outputs.DATE }}.
 
             Source: https://curl.se/docs/caextract.html
 
