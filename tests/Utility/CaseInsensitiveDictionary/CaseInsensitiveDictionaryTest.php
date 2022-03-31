@@ -62,20 +62,6 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	];
 
 	/**
-	 * Test setting up a dictionary without entries.
-	 *
-	 * @covers ::__construct
-	 *
-	 * @return void
-	 */
-	public function testInitialDictionaryIsEmptyArray() {
-		$dictionary = new CaseInsensitiveDictionary();
-
-		$this->assertIsIterable($dictionary, 'Empty dictionary is not iterable');
-		$this->assertCount(0, $dictionary, 'Empty dictionary has a count not equal to 0');
-	}
-
-	/**
 	 * Test array access for entries which exist.
 	 *
 	 * @covers ::__construct
