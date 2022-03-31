@@ -64,7 +64,6 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	/**
 	 * Test array access for entries which exist.
 	 *
-	 * @covers ::__construct
 	 * @covers ::offsetExists
 	 * @covers ::offsetGet
 	 * @covers ::offsetSet
