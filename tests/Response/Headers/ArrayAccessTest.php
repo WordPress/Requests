@@ -9,7 +9,7 @@ use WpOrg\Requests\Tests\TestCase;
 /**
  * @coversDefaultClass \WpOrg\Requests\Response\Headers
  */
-final class HeadersTest extends TestCase {
+final class ArrayAccessTest extends TestCase {
 
 	/**
 	 * Test receiving an Exception when no key is provided when setting an entry.
