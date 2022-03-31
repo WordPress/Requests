@@ -66,4 +66,28 @@ final class ConstructorTest extends TestCase {
 			'array with extra element'    => [['user', 'psw', 'port']],
 		];
 	}
+
+	/**
+	 * Tests valid instantiation of the class with a user and password.
+	 *
+	 * @return void
+	 */
+	public function testInstantiateWithValidInput() {
+		$instance = new Basic(['user', 'psw']);
+
+		$this->assertSame('user', $instance->user);
+		$this->assertSame('psw', $instance->pass);
+	}
+
+	/**
+	 * Tests valid instantiation of the class with passing any parameters.
+	 *
+	 * @return void
+	 */
+	public function testInstantiateWithNoInput() {
+		$instance = new Basic();
+
+		$this->assertNull($instance->user);
+		$this->assertNull($instance->pass);
+	}
 }
