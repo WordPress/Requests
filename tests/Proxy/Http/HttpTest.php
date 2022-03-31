@@ -4,12 +4,10 @@ namespace WpOrg\Requests\Tests\Proxy\Http;
 
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\ArgumentCount;
-use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
-use WpOrg\Requests\Tests\TypeProviderHelper;
 use WpOrg\Requests\Transport\Fsockopen;
 
 final class HttpTest extends TestCase {
@@ -180,36 +178,5 @@ final class HttpTest extends TestCase {
 			$this->assertEmpty($result['args']);
 			$this->assertSame('http', $result['headers']['x-requests-proxy']);
 		}
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed to the Proxy\Http constructor.
-	 *
-	 * @covers \WpOrg\Requests\Proxy\Http::__construct
-	 *
-	 * @dataProvider dataConstructorInvalidParameterType
-	 *
-	 * @param mixed $input Input to pass to the function.
-	 *
-	 * @return void
-	 */
-	public function testConstructorInvalidParameterType($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($args) must be of type array|string|null');
-
-		new Http($input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataConstructorInvalidParameterType() {
-		return TypeProviderHelper::getAllExcept(
-			TypeProviderHelper::GROUP_NULL,
-			TypeProviderHelper::GROUP_STRING,
-			TypeProviderHelper::GROUP_ARRAY
-		);
 	}
 }
