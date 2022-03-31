@@ -269,17 +269,4 @@ final class BasicTest extends TestCase {
 			'array with extra element'    => [['user', 'psw', 'port']],
 		];
 	}
-
-	/**
-	 * Helper function to skip select tests when the transport under test is not available.
-	 *
-	 * @param string $transport Transport to use.
-	 *
-	 * @return void
-	 */
-	public function skipWhenTransportNotAvailable($transport) {
-		if (!$transport::test()) {
-			$this->markTestSkipped('Transport "' . $transport . '" is not available');
-		}
-	}
 }
