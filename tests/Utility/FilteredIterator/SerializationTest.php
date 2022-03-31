@@ -8,18 +8,16 @@ use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\FilteredIterator;
 
 /**
- * @coversDefaultClass \WpOrg\Requests\Utility\FilteredIterator
+ * @covers \WpOrg\Requests\Utility\FilteredIterator::unserialize
+ * @covers \WpOrg\Requests\Utility\FilteredIterator::__unserialize
+ * @covers \WpOrg\Requests\Utility\FilteredIterator::__wakeup
  */
-final class FilteredIteratorTest extends TestCase {
+final class SerializationTest extends TestCase {
 
 	/**
 	 * Tests against insecure deserialization of untrusted data.
 	 *
 	 * @link https://github.com/WordPress/Requests/security/advisories/GHSA-52qp-jpq7-6c54
-	 *
-	 * @covers ::unserialize
-	 * @covers ::__unserialize
-	 * @covers ::__wakeup
 	 *
 	 * @dataProvider dataSerializeDeserializeObjects
 	 *
@@ -27,7 +25,7 @@ final class FilteredIteratorTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testDeserializeRequestUtilityFilteredIteratorObjects($value) {
+	public function testSerializeDeserializeObjects($value) {
 		$serialized = serialize($value);
 		if (get_class($value) === FilteredIterator::class) {
 			$new_value  = unserialize($serialized);
