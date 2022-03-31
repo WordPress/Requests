@@ -192,24 +192,4 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 		$dictionary   = new CaseInsensitiveDictionary();
 		$dictionary[] = 'value';
 	}
-
-	/**
-	 * Test iterating over a dictionary.
-	 *
-	 * @covers ::getIterator
-	 *
-	 * @return void
-	 */
-	public function testGetIterator() {
-		// Initial set up.
-		$dictionary = new CaseInsensitiveDictionary(self::DATASET);
-
-		$this->assertCount(8, $dictionary, 'Dictionary is not countable');
-
-		// If foreach() works and actually enters the loop, we're good.
-		foreach ($dictionary as $key => $value) {
-			$this->assertTrue(true, 'Dictionary is not iterable');
-			break;
-		}
-	}
 }
