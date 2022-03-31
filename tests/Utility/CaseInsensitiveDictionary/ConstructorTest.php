@@ -3,7 +3,7 @@
 namespace WpOrg\Requests\Tests\Utility\CaseInsensitiveDictionary;
 
 use WpOrg\Requests\Tests\TestCase;
-use WpOrg\Requests\Tests\Utility\CaseInsensitiveDictionary\CaseInsensitiveDictionaryTest;
+use WpOrg\Requests\Tests\Utility\CaseInsensitiveDictionary\ArrayAccessTest;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 /**
@@ -29,12 +29,12 @@ class ConstructorTest extends TestCase {
 	 * @return void
 	 */
 	public function testInitialDictionaryHasEntries() {
-		$dictionary = new CaseInsensitiveDictionary(CaseInsensitiveDictionaryTest::DATASET);
+		$dictionary = new CaseInsensitiveDictionary(ArrayAccessTest::DATASET);
 		$property   = $this->getPropertyValue($dictionary, 'data');
 
 		$this->assertIsArray($property, 'Dictionary is not an array');
 		$this->assertCount(
-			count(CaseInsensitiveDictionaryTest::DATASET),
+			count(ArrayAccessTest::DATASET),
 			$property,
 			'Entry count for initial dictionary does not match expectation'
 		);

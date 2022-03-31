@@ -9,7 +9,7 @@ use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 /**
  * @coversDefaultClass \WpOrg\Requests\Utility\CaseInsensitiveDictionary
  */
-class CaseInsensitiveDictionaryTest extends TestCase {
+class ArrayAccessTest extends TestCase {
 
 	/**
 	 * Base data set for array access tests.
@@ -62,6 +62,21 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	];
 
 	/**
+	 * Test trying to create an array entry without a key.
+	 *
+	 * @covers ::offsetSet
+	 *
+	 * @return void
+	 */
+	public function testOffsetSetWithoutKey() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Object is a dictionary, not a list');
+
+		$dictionary   = new CaseInsensitiveDictionary();
+		$dictionary[] = 'value';
+	}
+
+	/**
 	 * Test array access for entries which exist.
 	 *
 	 * @covers ::offsetExists
@@ -69,14 +84,14 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 * @covers ::offsetSet
 	 * @covers ::offsetUnset
 	 *
-	 * @dataProvider dataArrayAccessForValidEntries
+	 * @dataProvider dataAccessValidEntries
 	 *
 	 * @param mixed  $key   Item key.
 	 * @param string $value Unused for this test. Item value.
 	 *
 	 * @return void
 	 */
-	public function testArrayAccessForValidEntries($key, $value) {
+	public function testAccessValidEntries($key, $value) {
 		// Initial set up.
 		$dictionary = new CaseInsensitiveDictionary(self::DATASET);
 
@@ -101,7 +116,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataArrayAccessForValidEntries() {
+	public function dataAccessValidEntries() {
 		$data = [];
 
 		foreach (self::DATASET_REVERSED as $key => $value) {
@@ -122,7 +137,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	/**
 	 * Test array access for an entry which (initially) doesn't exist.
 	 *
-	 * @dataProvider dataArrayAccessForInvalidEntry
+	 * @dataProvider dataAccessInvalidEntry
 	 *
 	 * @covers ::offsetExists
 	 * @covers ::offsetGet
@@ -133,7 +148,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testArrayAccessForInvalidEntry($key) {
+	public function testAccessInvalidEntry($key) {
 		// Initial set up.
 		$dictionary = new CaseInsensitiveDictionary(self::DATASET);
 
@@ -156,25 +171,10 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataArrayAccessForInvalidEntry() {
+	public function dataAccessInvalidEntry() {
 		return [
 			'string key'  => ['Non-existant entry'],
 			'integer key' => [25],
 		];
-	}
-
-	/**
-	 * Test trying to create an array entry without a key.
-	 *
-	 * @covers ::offsetSet
-	 *
-	 * @return void
-	 */
-	public function testOffsetSetWithoutKey() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Object is a dictionary, not a list');
-
-		$dictionary   = new CaseInsensitiveDictionary();
-		$dictionary[] = 'value';
 	}
 }

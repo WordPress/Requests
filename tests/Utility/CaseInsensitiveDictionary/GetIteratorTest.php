@@ -3,7 +3,7 @@
 namespace WpOrg\Requests\Tests\Utility\CaseInsensitiveDictionary;
 
 use WpOrg\Requests\Tests\TestCase;
-use WpOrg\Requests\Tests\Utility\CaseInsensitiveDictionary\CaseInsensitiveDictionaryTest;
+use WpOrg\Requests\Tests\Utility\CaseInsensitiveDictionary\ArrayAccessTest;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 /**
@@ -18,7 +18,7 @@ class GetIteratorTest extends TestCase {
 	 */
 	public function testGetIterator() {
 		// Initial set up.
-		$dictionary = new CaseInsensitiveDictionary(CaseInsensitiveDictionaryTest::DATASET);
+		$dictionary = new CaseInsensitiveDictionary(ArrayAccessTest::DATASET);
 
 		$this->assertCount(8, $dictionary, 'Dictionary is not countable');
 
