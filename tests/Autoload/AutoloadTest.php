@@ -29,7 +29,7 @@ final class AutoloadTest extends TestCase {
 		$this->expectDeprecation();
 		$this->expectDeprecationMessage(self::MSG);
 
-		echo Requests_Exception_Transport_cURL::EASY;
+		$this->assertNotEmpty(Requests_Exception_Transport_cURL::EASY);
 	}
 
 	/**
