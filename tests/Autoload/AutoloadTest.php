@@ -10,12 +10,15 @@ use WpOrg\Requests\Exception\Http\Status417;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\FilteredIterator;
 
+/**
+ * @covers \WpOrg\Requests\Autoload
+ */
 final class AutoloadTest extends TestCase {
 
 	const MSG = 'The PSR-0 `Requests_...` class names in the Request library are deprecated.';
 
 	/**
-	 * Verify that a deprecation notice is thrown when the "old" Requests class is loaded.
+	 * Verify that a deprecation notice is thrown when the "old" Requests class is loaded via a require/include.
 	 */
 	public function testDeprecationNoticeThrownForOldRequestsClass() {
 		$this->expectDeprecation();
@@ -118,7 +121,7 @@ final class AutoloadTest extends TestCase {
 	}
 
 	/**
-	 * Verify that the constant declaration in the previous test doesn't affect other tests.
+	 * Verify that the constant declaration in the previous test(s) doesn't affect other tests.
 	 *
 	 * @coversNothing
 	 */
