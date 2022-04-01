@@ -237,4 +237,9 @@
 		<exclude-pattern>/tests/*\.php$</exclude-pattern>
 	</rule>
 
+	<!-- Method declarations in test classes can use camelCase for compatibility with PHPUnit and consistency. -->
+	<rule ref="WordPress.NamingConventions.ValidFunctionName">
+		<exclude-pattern>/tests/*\.php$</exclude-pattern>
+	</rule>
+
 </ruleset>
