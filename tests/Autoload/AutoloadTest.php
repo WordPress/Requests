@@ -47,6 +47,22 @@ final class AutoloadTest extends TestCase {
 	}
 
 	/**
+	 * Perfunctory test of the register() method.
+	 *
+	 * Note: "perfunctory" as the test bootstrap already registers the autoloader.
+	 *
+	 * @preserveGlobalState disabled
+	 * @runInSeparateProcess
+	 */
+	public function testRegister() {
+		Autoload::register();
+
+		$this->assertContains([Autoload::class, 'load'], spl_autoload_functions(), 'Autoload method is not registered.');
+		$this->assertTrue(defined('REQUESTS_AUTOLOAD_REGISTERED'), 'Constant is not declared');
+		$this->assertTrue(REQUESTS_AUTOLOAD_REGISTERED, 'Constant is not set to true');
+	}
+
+	/**
 	 * Verify that the constant declaration in the previous test doesn't affect other tests.
 	 *
 	 * @coversNothing
