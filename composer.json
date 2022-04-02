@@ -70,7 +70,7 @@
   },
   "scripts": {
     "lint": [
-      "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+      "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . --show-deprecated -e php --exclude vendor --exclude .git"
     ],
     "checkcs": [
       "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
