@@ -242,4 +242,9 @@
 		<exclude-pattern>/tests/*\.php$</exclude-pattern>
 	</rule>
 
+	<!-- Using var_export() in test code is fine. -->
+	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_var_export">
+		<exclude-pattern>/tests/*\.php$</exclude-pattern>
+	</rule>
+
 </ruleset>
