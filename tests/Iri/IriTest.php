@@ -42,11 +42,11 @@
 
 namespace WpOrg\Requests\Tests\Iri;
 
-use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 final class IriTest extends TestCase
 {
@@ -452,10 +452,6 @@ final class IriTest extends TestCase
 	 * @return array
 	 */
 	public function dataConstructorInvalidInput() {
-		return array(
-			'boolean false'         => array(false),
-			'float'                 => array(1.1),
-			'non-stringable object' => array(new stdClass('value')),
-		);
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 }

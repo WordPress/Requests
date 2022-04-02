@@ -6,6 +6,7 @@ use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Ipv6;
 use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * Test for the Ipv6 class.
@@ -128,11 +129,6 @@ final class Ipv6Test extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidInputType() {
-		return [
-			'null'          => [null],
-			'boolean false' => [false],
-			'integer'       => [12345],
-			'array'         => [[1, 2, 3]],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 }

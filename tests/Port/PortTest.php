@@ -6,6 +6,7 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Port;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * @covers \WpOrg\Requests\Port::get
@@ -70,10 +71,7 @@ final class PortTest extends TestCase {
 	 * @return array
 	 */
 	public function dataGetPortThrowsExceptionOnInvalidInputType() {
-		return [
-			'null'                => [null],
-			'integer port number' => [443],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
 	/**

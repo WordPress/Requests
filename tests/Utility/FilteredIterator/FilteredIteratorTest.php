@@ -7,8 +7,8 @@ use ReflectionClass;
 use ReflectionObject;
 use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 use WpOrg\Requests\Utility\FilteredIterator;
 
 /**
@@ -92,10 +92,7 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorValidData() {
-		return [
-			'array'           => [[1, 2, 3]],
-			'iterable object' => [new ArrayIterator([1, 2, 3])],
-		];
+		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_ITERABLE);
 	}
 
 	/**
@@ -122,11 +119,7 @@ final class FilteredIteratorTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorInvalidData() {
-		return [
-			'null'              => [null],
-			'float'             => [1.1],
-			'stringable object' => [new StringableObject('value')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ITERABLE);
 	}
 
 	/**

@@ -3,21 +3,19 @@
 namespace WpOrg\Requests\Tests\Requests;
 
 use ArrayIterator;
-use EmptyIterator;
 use ReflectionProperty;
-use stdClass;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
-use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
 use WpOrg\Requests\Tests\Fixtures\RawTransportMock;
 use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\Fixtures\TestTransportMock;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 final class RequestsTest extends TestCase {
 
@@ -45,11 +43,7 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestInvalidUrl() {
-		return [
-			'null'                  => [null],
-			'array'                 => [[httpbin('/')]],
-			'non-stringable object' => [new stdClass('name')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
 	/**
@@ -76,10 +70,7 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidTypeNotString() {
-		return [
-			'null'              => [null],
-			'stringable object' => [new StringableObject('type')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
 	/**
@@ -124,12 +115,8 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestMultipleInvalidRequests() {
-		return [
-			'null'                                 => [null],
-			'text string'                          => ['array'],
-			'iterator object without array access' => [new EmptyIterator()],
-			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
-		];
+		$except = array_intersect(TypeProviderHelper::GROUP_ITERABLE, TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
+		return TypeProviderHelper::getAllExcept($except);
 	}
 
 	/**
@@ -156,10 +143,7 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidTypeNotArray() {
-		return [
-			'null'                    => [null],
-			'array accessible object' => [new ArrayAccessibleObject([])],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
 	public function testInvalidProtocol() {
@@ -403,10 +387,7 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataSetCertificatePathInvalidData() {
-		return [
-			'null'                  => [null],
-			'non-stringable object' => [new stdClass('value')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_BOOL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
 	/**
@@ -467,9 +448,6 @@ final class RequestsTest extends TestCase {
 	 * @return array
 	 */
 	public function dataFlattenInvalidData() {
-		return [
-			'null'                                 => [null],
-			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ITERABLE);
 	}
 }

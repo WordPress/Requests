@@ -8,6 +8,7 @@ use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * @covers \WpOrg\Requests\Auth\Basic
@@ -237,10 +238,7 @@ final class BasicTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidInputType() {
-		return [
-			'boolean false'         => [false],
-			'authentication string' => ['user:psw'],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_ARRAY);
 	}
 
 	/**

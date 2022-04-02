@@ -2,7 +2,6 @@
 
 namespace WpOrg\Requests\Tests\Transport;
 
-use EmptyIterator;
 use stdClass;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
@@ -12,9 +11,9 @@ use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
-use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 abstract class BaseTestCase extends TestCase {
 
@@ -213,11 +212,7 @@ abstract class BaseTestCase extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestInvalidUrl() {
-		return [
-			'boolean false'         => [false],
-			'array'                 => [[httpbin('/')]],
-			'non-stringable object' => [new stdClass('name')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
 	/**
@@ -306,12 +301,11 @@ abstract class BaseTestCase extends TestCase {
 	 * @return array
 	 */
 	public function dataIncorrectDataTypeException() {
-		return [
-			'boolean' => [true],
-			'integer' => [12345, '12345'],
-			'float'   => [12.345, '12.345'],
-			'object'  => [new stdClass()],
-		];
+		return TypeProviderHelper::getAllExcept(
+			TypeProviderHelper::GROUP_NULL,
+			TypeProviderHelper::GROUP_STRING,
+			TypeProviderHelper::GROUP_ARRAY
+		);
 	}
 
 	/**
@@ -357,10 +351,7 @@ abstract class BaseTestCase extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty() {
-		return [
-			'null'        => [null],
-			'empty array' => [[]],
-		];
+		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_EMPTY);
 	}
 
 	/**
@@ -389,11 +380,8 @@ abstract class BaseTestCase extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestMultipleInvalidRequests() {
-		return [
-			'text string'                          => ['array'],
-			'iterator object without array access' => [new EmptyIterator()],
-			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
-		];
+		$except = array_intersect(TypeProviderHelper::GROUP_ITERABLE, TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
+		return TypeProviderHelper::getAllExcept($except, TypeProviderHelper::GROUP_EMPTY);
 	}
 
 	/**
@@ -422,11 +410,7 @@ abstract class BaseTestCase extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidTypeNotArray() {
-		return [
-			'null'                    => [null],
-			'boolean false'           => [false],
-			'array accessible object' => [new ArrayAccessibleObject([])],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
 	public function testFormPost() {

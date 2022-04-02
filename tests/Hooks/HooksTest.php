@@ -6,9 +6,8 @@ use Closure;
 use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
-use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * @coversDefaultClass \WpOrg\Requests\Hooks
@@ -349,11 +348,7 @@ class HooksTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidHookname() {
-		return [
-			'null'              => [null],
-			'float'             => [1.1],
-			'stringable object' => [new StringableObject('value')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
 	/**
@@ -413,11 +408,7 @@ class HooksTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRegisterInvalidPriority() {
-		return [
-			'null'             => [null],
-			'float'            => [1.1],
-			'string "123 abc"' => ['123 abc'],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, ['numeric string']);
 	}
 
 	/**
@@ -444,13 +435,7 @@ class HooksTest extends TestCase {
 	 * @return array
 	 */
 	public function dataDispatchInvalidParameters() {
-		return [
-			'null'                            => [null],
-			'bool false'                      => [false],
-			'float'                           => [1.1],
-			'string'                          => ['param'],
-			'object implementing ArrayAccess' => [new ArrayAccessibleObject()],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
 	/**

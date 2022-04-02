@@ -2,14 +2,12 @@
 
 namespace WpOrg\Requests\Tests\Session;
 
-use EmptyIterator;
-use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Session;
-use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 final class SessionTest extends TestCase {
 	public function testURLResolution() {
@@ -282,11 +280,7 @@ final class SessionTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorInvalidUrl() {
-		return [
-			'boolean false'         => [false],
-			'array'                 => [[httpbin('/')]],
-			'non-stringable object' => [new stdClass('name')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
 	/**
@@ -368,12 +362,8 @@ final class SessionTest extends TestCase {
 	 * @return array
 	 */
 	public function dataRequestMultipleInvalidRequests() {
-		return [
-			'null'                                 => [null],
-			'text string'                          => ['array'],
-			'iterator object without array access' => [new EmptyIterator()],
-			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
-		];
+		$except = array_intersect(TypeProviderHelper::GROUP_ITERABLE, TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
+		return TypeProviderHelper::getAllExcept($except);
 	}
 
 	/**
@@ -401,10 +391,6 @@ final class SessionTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidTypeNotArray() {
-		return [
-			'null'                    => [null],
-			'boolean false'           => [false],
-			'array accessible object' => [new ArrayAccessibleObject([])],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 }
