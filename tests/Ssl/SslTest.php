@@ -13,22 +13,6 @@ use WpOrg\Requests\Tests\TypeProviderHelper;
 final class SslTest extends SslTestCase {
 
 	/**
-	 * Test handling of matching host and DNS names.
-	 *
-	 * @dataProvider dataMatch
-	 *
-	 * @covers ::match_domain
-	 *
-	 * @param string $host      Host name to verify.
-	 * @param string $reference DNS name to match against.
-	 *
-	 * @return void
-	 */
-	public function testMatch($host, $reference) {
-		$this->assertTrue(Ssl::match_domain($host, $reference));
-	}
-
-	/**
 	 * Test handling of matching host and DNS names based on certificate.
 	 *
 	 * @dataProvider dataMatch
@@ -83,22 +67,6 @@ final class SslTest extends SslTestCase {
 				'with_san'  => 'example.com, example.net',
 			],
 		];
-	}
-
-	/**
-	 * Test handling of non-matching host and DNS names.
-	 *
-	 * @dataProvider dataNoMatch
-	 *
-	 * @covers ::match_domain
-	 *
-	 * @param string $host      Host name to verify.
-	 * @param string $reference DNS name to match against.
-	 *
-	 * @return void
-	 */
-	public function testNoMatch($host, $reference) {
-		$this->assertFalse(Ssl::match_domain($host, $reference));
 	}
 
 	/**
@@ -330,24 +298,6 @@ final class SslTest extends SslTestCase {
 	 */
 	public function dataInvalidInputTypeArrayAccess() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed.
-	 *
-	 * @dataProvider dataInvalidInputTypeStringable
-	 *
-	 * @covers ::match_domain
-	 *
-	 * @param mixed $input Input data.
-	 *
-	 * @return void
-	 */
-	public function testMatchDomainInvalidInputType($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($host) must be of type string|Stringable');
-
-		Ssl::match_domain($input, 'reference');
 	}
 
 	/**
