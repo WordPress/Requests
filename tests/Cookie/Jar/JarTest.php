@@ -5,10 +5,8 @@ namespace WpOrg\Requests\Tests\Cookie\Jar;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
-use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
-use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * @covers \WpOrg\Requests\Cookie\Jar
@@ -107,30 +105,5 @@ final class JarTest extends TestCase {
 		$this->assertIsArray($data);
 		$this->assertArrayHasKey('cookies', $data);
 		return $data['cookies'];
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed to the class constructor.
-	 *
-	 * @dataProvider dataConstructorInvalidInputType
-	 *
-	 * @param mixed $input Invalid parameter input.
-	 *
-	 * @return void
-	 */
-	public function testConstructorInvalidInputType($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($cookies) must be of type array');
-
-		new Jar($input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataConstructorInvalidInputType() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 }
