@@ -12,18 +12,6 @@ use WpOrg\Requests\Tests\TestCase;
  */
 final class JarTest extends TestCase {
 
-	public function testCookieJarIterator() {
-		$cookies = [
-			'requests-testcookie1' => 'testvalue1',
-			'requests-testcookie2' => 'testvalue2',
-		];
-		$jar     = new Jar($cookies);
-
-		foreach ($jar as $key => $value) {
-			$this->assertSame($cookies[$key], $value);
-		}
-	}
-
 	public function testSendingCookieWithJar() {
 		$cookies = new Jar(
 			[
