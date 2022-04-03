@@ -30,54 +30,6 @@ final class InputValidatorTest extends TestCase {
 	}
 
 	/**
-	 * Test whether a received input parameter is correctly identified as usable as a valid numeric (integer) array key.
-	 *
-	 * @dataProvider dataIsNumericArrayKeyValid
-	 *
-	 * @covers ::is_numeric_array_key
-	 *
-	 * @param mixed $input Input parameter to verify.
-	 *
-	 * @return void
-	 */
-	public function testIsNumericArrayKeyValid($input) {
-		$this->assertTrue(InputValidator::is_numeric_array_key($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataIsNumericArrayKeyValid() {
-		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_INT, ['numeric string']);
-	}
-
-	/**
-	 * Test whether a received input parameter is correctly identified as NOT valid as a numeric (integer) array key.
-	 *
-	 * @dataProvider dataIsNumericArrayKeyInvalid
-	 *
-	 * @covers ::is_numeric_array_key
-	 *
-	 * @param mixed $input Input parameter to verify.
-	 *
-	 * @return void
-	 */
-	public function testIsNumericArrayKeyInvalid($input) {
-		$this->assertFalse(InputValidator::is_numeric_array_key($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataIsNumericArrayKeyInvalid() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, ['numeric string']);
-	}
-
-	/**
 	 * Test whether a received input parameter is correctly identified as "stringable".
 	 *
 	 * @dataProvider dataIsStringableObjectValid
