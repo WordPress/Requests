@@ -4,14 +4,13 @@ namespace WpOrg\Requests\Tests\Ssl;
 
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Ssl;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
-use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\Ssl\SslTestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * @coversDefaultClass \WpOrg\Requests\Ssl
  */
-final class SslTest extends TestCase {
+final class SslTest extends SslTestCase {
 
 	/**
 	 * Test handling of matching host and DNS names.
@@ -49,28 +48,6 @@ final class SslTest extends TestCase {
 	public function testMatchViaCertificate($host, $reference, $with_san = true) {
 		$certificate = $this->fakeCertificate($reference, $with_san);
 		$this->assertTrue(Ssl::verify_certificate($host, $certificate));
-	}
-
-	/**
-	 * Data provider.
-	 *
-	 * @return array
-	 */
-	public function dataMatch() {
-		return [
-			'top-level domain (stringable object)' => [
-				'host'      => new StringableObject('example.com'),
-				'reference' => new StringableObject('example.com'),
-			],
-			'subdomain' => [
-				'host'      => 'test.example.com',
-				'reference' => 'test.example.com',
-			],
-			'subdomain with wildcard reference' => [
-				'host'      => 'test.example.com',
-				'reference' => '*.example.com',
-			],
-		];
 	}
 
 	/**
@@ -147,67 +124,6 @@ final class SslTest extends TestCase {
 	}
 
 	/**
-	 * Data provider.
-	 *
-	 * @return array
-	 */
-	public function dataNoMatch() {
-		return [
-			// Check that we need at least 3 components
-			'not a domain; wildcard reference' => [
-				'host'      => 'com',
-				'reference' => '*',
-			],
-			'domain name; wildcard on TLD as reference' => [
-				'host'      => 'example.com',
-				'reference' => '*.com',
-			],
-
-			// Check that double wildcards don't work
-			'domain name; double wildcard in reference' => [
-				'host'      => 'abc.def.example.com',
-				'reference' => '*.*.example.com',
-			],
-
-			// Check that we only match with the correct number of components
-			'four-level domain; three-level reference' => [
-				'host'      => 'abc.def.example.com',
-				'reference' => 'def.example.com',
-			],
-			'four-level domain; three-level wildcard reference' => [
-				'host'      => 'abc.def.example.com',
-				'reference' => '*.example.com',
-			],
-
-			// Check that the wildcard only works as the full first component
-			'four-level domain; four-level reference, but wildcard not stand-alone' => [
-				'host'      => 'abc.def.example.com',
-				'reference' => 'a*.def.example.com',
-			],
-
-			// Check that wildcards are not allowed for IPs
-			'IP address; wildcard in refence (start)' => [
-				'host'      => '192.168.0.1',
-				'reference' => '*.168.0.1',
-			],
-			'IP address; wildcard in refence (end)' => [
-				'host'      => '192.168.0.1',
-				'reference' => '192.168.0.*',
-			],
-
-			// IP vs named address.
-			'IP address vs named address' => [
-				'host'      => '192.168.0.1',
-				'reference' => '*.example.com',
-			],
-			'Named address vs IP address' => [
-				'host'      => 'example.com',
-				'reference' => '192.168.0.1',
-			],
-		];
-	}
-
-	/**
 	 * Data provider for additional test cases specific to the Ssl::verify_certificate() method.
 	 *
 	 * @return array
@@ -240,38 +156,6 @@ final class SslTest extends TestCase {
 				'with_san'  => 'DNS: example.com, DNS: example.org, DNS: example.info',
 			],
 		];
-	}
-
-	/**
-	 * Test helper to mock a certificate.
-	 *
-	 * @param string      $dnsname  DNS name to match against.
-	 * @param bool|string $with_san Optional. How to generate the fake certificate.
-	 *                              - false:  plain, CN only;
-	 *                              - true:   CN + subjectAltName, alt set to same as CN;
-	 *                              - string: CN + subjectAltName, alt set to string value.
-	 *
-	 * @return array
-	 */
-	private function fakeCertificate($dnsname, $with_san = true) {
-		$certificate = [
-			'subject' => [
-				'CN' => $dnsname,
-			],
-		];
-
-		if ($with_san !== false) {
-			// If SAN is set to true, default it to the dNSName
-			if ($with_san === true) {
-				$with_san = 'DNS: ' . $dnsname;
-			}
-
-			$certificate['extensions'] = [
-				'subjectAltName' => $with_san,
-			];
-		}
-
-		return $certificate;
 	}
 
 	/**
