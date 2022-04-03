@@ -30,54 +30,6 @@ final class InputValidatorTest extends TestCase {
 	}
 
 	/**
-	 * Test whether a received input parameter is correctly identified as "accessible as array".
-	 *
-	 * @dataProvider dataHasArrayAccessValid
-	 *
-	 * @covers ::has_array_access
-	 *
-	 * @param mixed $input Input parameter to verify.
-	 *
-	 * @return void
-	 */
-	public function testHasArrayAccessValid($input) {
-		$this->assertTrue(InputValidator::has_array_access($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataHasArrayAccessValid() {
-		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
-	}
-
-	/**
-	 * Test whether a received input parameter is correctly identified as NOT "accessible as array".
-	 *
-	 * @dataProvider dataHasArrayAccessInvalid
-	 *
-	 * @covers ::has_array_access
-	 *
-	 * @param mixed $input Input parameter to verify.
-	 *
-	 * @return void
-	 */
-	public function testHasArrayAccessInvalid($input) {
-		$this->assertFalse(InputValidator::has_array_access($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataHasArrayAccessInvalid() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
-	}
-
-	/**
 	 * Test whether a received input parameter is correctly identified as "iterable".
 	 *
 	 * @dataProvider dataIsIterableValid
