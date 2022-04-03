@@ -10,7 +10,6 @@ use WpOrg\Requests\Utility\FilteredIterator;
 /**
  * @covers \WpOrg\Requests\Utility\FilteredIterator::unserialize
  * @covers \WpOrg\Requests\Utility\FilteredIterator::__unserialize
- * @covers \WpOrg\Requests\Utility\FilteredIterator::__wakeup
  */
 final class SerializationTest extends TestCase {
 

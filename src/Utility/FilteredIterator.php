@@ -73,17 +73,6 @@ final class FilteredIterator extends ArrayIterator {
 	public function unserialize($data) {}
 
 	/**
-	 * Perform reinitialization tasks.
-	 *
-	 * Prevents a callback from being injected during unserialization of an object.
-	 *
-	 * @return void
-	 */
-	public function __wakeup() {
-		unset($this->callback);
-	}
-
-	/**
 	 * Get the current item's value after filtering
 	 *
 	 * @return string
