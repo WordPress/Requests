@@ -2,7 +2,6 @@
 
 namespace WpOrg\Requests\Tests\Hooks;
 
-use Closure;
 use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
@@ -31,95 +30,6 @@ class HooksTest extends TestCase {
 	}
 
 	/**
-	 * Technical test to verify the functionality of the Hooks::register() method.
-	 *
-	 * @covers ::register
-	 *
-	 * @return void
-	 */
-	public function testRegister() {
-		// Verify initial state or the hooks property.
-		$this->assertSame(
-			[],
-			$this->getPropertyValue($this->hooks, 'hooks'),
-			'Initial state of $hooks is not an empty array'
-		);
-
-		// Verify that the subkeys are created correctly when they don't exist yet.
-		$this->hooks->register('hookname', [$this, 'dummyCallback1']);
-		$this->assertSame(
-			[
-				'hookname' => [
-					0 => [
-						[$this, 'dummyCallback1'],
-					],
-				],
-			],
-			$this->getPropertyValue($this->hooks, 'hooks'),
-			'Initial hook registration failed'
-		);
-
-		// Verify that the subkeys are re-used when they already exist.
-		$this->hooks->register('hookname', [$this, 'dummyCallback2']);
-		$this->assertSame(
-			[
-				'hookname' => [
-					0 => [
-						[$this, 'dummyCallback1'],
-						[$this, 'dummyCallback2'],
-					],
-				],
-			],
-			$this->getPropertyValue($this->hooks, 'hooks'),
-			'Registering a second callback on the same hook with the same priority failed'
-		);
-
-		/*
-		 * Verify that new subkeys are created when needed.
-		 * Also verifies that the input validation isn't too strict for the priority.
-		 */
-		$this->hooks->register('hookname', 'is_int', '10');
-		$this->assertSame(
-			[
-				'hookname' => [
-					0  => [
-						[$this, 'dummyCallback1'],
-						[$this, 'dummyCallback2'],
-					],
-					10 => [
-						'is_int',
-					],
-				],
-			],
-			$this->getPropertyValue($this->hooks, 'hooks'),
-			'Registering a callback on a different priority for an existing hook failed'
-		);
-	}
-
-	/**
-	 * Technical test to verify and safeguard Hooks::register() accepts closure callbacks.
-	 *
-	 * @covers ::register
-	 *
-	 * @return void
-	 */
-	public function testRegisterClosureCallback() {
-		$this->hooks->register(
-			'hookname',
-			static function($param) {
-				return true;
-			}
-		);
-
-		$hooks_prop = $this->getPropertyValue($this->hooks, 'hooks');
-
-		$this->assertArrayHasKey('hookname', $hooks_prop, '$hooks property does not have key ["hookname"]');
-		$this->assertArrayHasKey(0, $hooks_prop['hookname'], '$hooks property does not have key ["hookname"][0]');
-		$this->assertArrayHasKey(0, $hooks_prop['hookname'][0], '$hooks property does not have key ["hookname"][0][0]');
-		$this->assertInstanceof(Closure::class, $hooks_prop['hookname'][0][0], 'Closure callback is not registered correctly');
-	}
-
-	/**
 	 * Verify that the return value of the dispatch method is false when no hooks are registered.
 	 *
 	 * @covers ::dispatch
@@ -138,7 +48,7 @@ class HooksTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchWithoutRegisteredHooksOnDispatchedHook() {
-		$this->hooks->register('hookname', [$this, 'dummyCallback1']);
+		$this->hooks->register('hookname', [$this, 'dummyCallback']);
 
 		$this->assertFalse($this->hooks->dispatch('other.hookname'));
 	}
@@ -234,7 +144,7 @@ class HooksTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchDoesntBreakWithKeyedParametersArray() {
-		$this->hooks->register('hookname', [$this, 'dummyCallback1']);
+		$this->hooks->register('hookname', [$this, 'dummyCallback']);
 
 		$this->assertTrue($this->hooks->dispatch('hookname', ['paramA' => 10, 'paramB' => 'text']));
 	}
@@ -307,24 +217,6 @@ class HooksTest extends TestCase {
 	}
 
 	/**
-	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$hook`.
-	 *
-	 * @dataProvider dataInvalidHookname
-	 *
-	 * @covers ::register
-	 *
-	 * @param mixed $input Invalid hook name input.
-	 *
-	 * @return void
-	 */
-	public function testRegisterInvalidHookname($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($hook) must be of type string');
-
-		$this->hooks->register($input, 'is_string');
-	}
-
-	/**
 	 * Tests receiving an exception when an invalid input type is passed to `dispatch()` as `$hook`.
 	 *
 	 * @dataProvider dataInvalidHookname
@@ -349,66 +241,6 @@ class HooksTest extends TestCase {
 	 */
 	public function dataInvalidHookname() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$callback`.
-	 *
-	 * @dataProvider dataRegisterInvalidCallback
-	 *
-	 * @covers ::register
-	 *
-	 * @param mixed $input Invalid callback.
-	 *
-	 * @return void
-	 */
-	public function testRegisterInvalidCallback($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #2 ($callback) must be of type callable');
-
-		$this->hooks->register('hookname', $input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataRegisterInvalidCallback() {
-		return [
-			'null'                  => [null],
-			'non-existent function' => ['functionname'],
-			'non-existent method'   => [[$this, 'dummyCallbackDoesNotExist']],
-			'empty array'           => [[]],
-			'plain object'          => [new stdClass(), 'method'],
-		];
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed to `register()` as `$priority`.
-	 *
-	 * @dataProvider dataRegisterInvalidPriority
-	 *
-	 * @covers ::register
-	 *
-	 * @param mixed $input Invalid priority.
-	 *
-	 * @return void
-	 */
-	public function testRegisterInvalidPriority($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #3 ($priority) must be of type int');
-
-		$this->hooks->register('hookname', [$this, 'dummyCallback1'], $input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataRegisterInvalidPriority() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, ['numeric string']);
 	}
 
 	/**
@@ -443,14 +275,7 @@ class HooksTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function dummyCallback1() {}
-
-	/**
-	 * Dummy callback method.
-	 *
-	 * @return void
-	 */
-	public function dummyCallback2() {}
+	public function dummyCallback() {}
 
 	/**
 	 * Dummy callback method.
