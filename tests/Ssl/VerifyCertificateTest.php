@@ -8,17 +8,65 @@ use WpOrg\Requests\Tests\Ssl\SslTestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
- * @coversDefaultClass \WpOrg\Requests\Ssl
+ * @covers \WpOrg\Requests\Ssl::verify_certificate
  */
-final class SslTest extends SslTestCase {
+final class VerifyCertificateTest extends SslTestCase {
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed as $host.
+	 *
+	 * @dataProvider dataInvalidInputHost
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testInvalidInputHost($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($host) must be of type string|Stringable');
+
+		Ssl::verify_certificate($input, []);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInputHost() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
+	}
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed as $cert.
+	 *
+	 * @dataProvider dataInvalidInputCert
+	 *
+	 * @param mixed $input Input data.
+	 *
+	 * @return void
+	 */
+	public function testInvalidInputCert($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($cert) must be of type array|ArrayAccess');
+
+		Ssl::verify_certificate('host', $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInputCert() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
+	}
 
 	/**
 	 * Test handling of matching host and DNS names based on certificate.
 	 *
 	 * @dataProvider dataMatch
 	 * @dataProvider dataMatchViaCertificate
-	 *
-	 * @covers ::verify_certificate
 	 *
 	 * @param string      $host      Host name to verify.
 	 * @param string      $reference DNS name to match against.
@@ -74,8 +122,6 @@ final class SslTest extends SslTestCase {
 	 *
 	 * @dataProvider dataNoMatch
 	 * @dataProvider dataNoMatchViaCertificate
-	 *
-	 * @covers ::verify_certificate
 	 *
 	 * @param string      $host      Host name to verify.
 	 * @param string      $reference DNS name to match against.
@@ -133,8 +179,6 @@ final class SslTest extends SslTestCase {
 	 * the value of the CN field.
 	 *
 	 * @link https://tools.ietf.org/html/rfc2818#section-3.1
-	 *
-	 * @covers ::verify_certificate
 	 */
 	public function testIgnoreCNWithSAN() {
 		$certificate = $this->fakeCertificate('example.net', 'DNS: example.com');
@@ -146,7 +190,7 @@ final class SslTest extends SslTestCase {
 	/**
 	 * Test handling of non-compliant certificates.
 	 *
-	 * @dataProvider dataVerifyCertificateWithInvalidCertificates
+	 * @dataProvider dataWithInvalidCertificates
 	 *
 	 * @param string $host        Host name to verify.
 	 * @param array  $certificate A (faked) certificate to verify against.
@@ -154,7 +198,7 @@ final class SslTest extends SslTestCase {
 	 *
 	 * @return void
 	 */
-	public function testVerifyCertificateWithInvalidCertificates($host, $certificate, $expected) {
+	public function testWithInvalidCertificates($host, $certificate, $expected) {
 		$this->assertSame($expected, Ssl::verify_certificate($host, $certificate));
 	}
 
@@ -163,7 +207,7 @@ final class SslTest extends SslTestCase {
 	 *
 	 * @return array
 	 */
-	public function dataVerifyCertificateWithInvalidCertificates() {
+	public function dataWithInvalidCertificates() {
 		return [
 			'empty array' => [
 				'host'        => 'example.com',
@@ -253,59 +297,5 @@ final class SslTest extends SslTestCase {
 				'expected'    => false,
 			],
 		];
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed as $host.
-	 *
-	 * @dataProvider dataInvalidInputTypeStringable
-	 *
-	 * @covers ::verify_certificate
-	 *
-	 * @param mixed $input Input data.
-	 *
-	 * @return void
-	 */
-	public function testVerifyCertificateInvalidInputHost($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($host) must be of type string|Stringable');
-
-		Ssl::verify_certificate($input, []);
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed as $cert.
-	 *
-	 * @dataProvider dataInvalidInputTypeArrayAccess
-	 *
-	 * @covers ::verify_certificate
-	 *
-	 * @param mixed $input Input data.
-	 *
-	 * @return void
-	 */
-	public function testVerifyCertificateInvalidInputCert($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #2 ($cert) must be of type array|ArrayAccess');
-
-		Ssl::verify_certificate('host', $input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataInvalidInputTypeArrayAccess() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataInvalidInputTypeStringable() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 }
