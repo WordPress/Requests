@@ -48,6 +48,8 @@ final class FilteredIterator extends ArrayIterator {
 	/**
 	 * Prevent unserialization of the object for security reasons.
 	 *
+	 * This method is used on PHP 7.4+.
+	 *
 	 * @phpcs:disable PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__unserializeFound
 	 *
 	 * @param array $data Restored array of data originally serialized.
@@ -57,6 +59,18 @@ final class FilteredIterator extends ArrayIterator {
 	#[ReturnTypeWillChange]
 	public function __unserialize($data) {}
 	// phpcs:enable
+
+	/**
+	 * Prevent creating a PHP value from a stored representation of the object for security reasons.
+	 *
+	 * This method is used on PHP < 7.4.
+	 *
+	 * @param string $data The serialized string.
+	 *
+	 * @return void
+	 */
+	#[ReturnTypeWillChange]
+	public function unserialize($data) {}
 
 	/**
 	 * Perform reinitialization tasks.
@@ -84,14 +98,4 @@ final class FilteredIterator extends ArrayIterator {
 
 		return $value;
 	}
-
-	/**
-	 * Prevent creating a PHP value from a stored representation of the object for security reasons.
-	 *
-	 * @param string $data The serialized string.
-	 *
-	 * @return void
-	 */
-	#[ReturnTypeWillChange]
-	public function unserialize($data) {}
 }
