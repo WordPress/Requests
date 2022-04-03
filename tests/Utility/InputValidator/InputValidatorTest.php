@@ -30,54 +30,6 @@ final class InputValidatorTest extends TestCase {
 	}
 
 	/**
-	 * Test whether a received input parameter is correctly identified as "stringable".
-	 *
-	 * @dataProvider dataIsStringableObjectValid
-	 *
-	 * @covers ::is_stringable_object
-	 *
-	 * @param mixed $input Input parameter to verify.
-	 *
-	 * @return void
-	 */
-	public function testIsStringableObjectValid($input) {
-		$this->assertTrue(InputValidator::is_stringable_object($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataIsStringableObjectValid() {
-		return TypeProviderHelper::getSelection(['Stringable object']);
-	}
-
-	/**
-	 * Test whether a received input parameter is correctly identified as NOT "stringable".
-	 *
-	 * @dataProvider dataIsStringableObjectInvalid
-	 *
-	 * @covers ::is_stringable_object
-	 *
-	 * @param mixed $input Input parameter to verify.
-	 *
-	 * @return void
-	 */
-	public function testIsStringableObjectInvalid($input) {
-		$this->assertFalse(InputValidator::is_stringable_object($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataIsStringableObjectInvalid() {
-		return TypeProviderHelper::getAllExcept(['Stringable object']);
-	}
-
-	/**
 	 * Test whether a received input parameter is correctly identified as "accessible as array".
 	 *
 	 * @dataProvider dataHasArrayAccessValid
