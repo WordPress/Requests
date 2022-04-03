@@ -30,54 +30,6 @@ final class InputValidatorTest extends TestCase {
 	}
 
 	/**
-	 * Test that a received input parameter is correctly identified as a valid string or "stringable".
-	 *
-	 * @dataProvider dataIsStringOrStringableValid
-	 *
-	 * @covers ::is_string_or_stringable
-	 *
-	 * @param mixed $input Input parameter to verify.
-	 *
-	 * @return void
-	 */
-	public function testIsStringOrStringableValid($input) {
-		$this->assertTrue(InputValidator::is_string_or_stringable($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataIsStringOrStringableValid() {
-		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_STRINGABLE);
-	}
-
-	/**
-	 * Test that a received input parameter is correctly identified as NOT valid as a string or "stringable".
-	 *
-	 * @dataProvider dataIsStringOrStringableInvalid
-	 *
-	 * @covers ::is_string_or_stringable
-	 *
-	 * @param mixed $input Input parameter to verify.
-	 *
-	 * @return void
-	 */
-	public function testIsStringOrStringableInvalid($input) {
-		$this->assertFalse(InputValidator::is_string_or_stringable($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataIsStringOrStringableInvalid() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
-	}
-
-	/**
 	 * Test whether a received input parameter is correctly identified as usable as a valid numeric (integer) array key.
 	 *
 	 * @dataProvider dataIsNumericArrayKeyValid
