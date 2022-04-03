@@ -3,7 +3,6 @@
 namespace WpOrg\Requests\Tests\Session;
 
 use WpOrg\Requests\Exception\InvalidArgument;
-use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Session;
 use WpOrg\Requests\Tests\TestCase;
@@ -226,115 +225,6 @@ final class SessionTest extends TestCase {
 			'requests-testcookie' => 'testvalue',
 		];
 		$this->assertSame($cookies, $data['cookies']);
-	}
-
-	/**
-	 * Tests that valid input for the $url parameter for a new Session object is handled correctly.
-	 *
-	 * @dataProvider dataConstructorValidUrl
-	 *
-	 * @covers \WpOrg\Requests\Session::__construct
-	 *
-	 * @param mixed $input Valid parameter input.
-	 *
-	 * @return void
-	 */
-	public function testConstructorValidUrl($input) {
-		$this->assertInstanceOf(Session::class, new Session($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataConstructorValidUrl() {
-		return [
-			'null'              => [null],
-			'string'            => [httpbin('/')],
-			'stringable object' => [new Iri(httpbin('/'))],
-		];
-	}
-
-	/**
-	 * Tests receiving an exception when the constructor received an invalid input type as `$url`.
-	 *
-	 * @dataProvider dataConstructorInvalidUrl
-	 *
-	 * @covers \WpOrg\Requests\Session::__construct
-	 *
-	 * @param mixed $input Invalid parameter input.
-	 *
-	 * @return void
-	 */
-	public function testConstructorInvalidUrl($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($url) must be of type string|Stringable|null');
-
-		new Session($input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataConstructorInvalidUrl() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_STRINGABLE);
-	}
-
-	/**
-	 * Tests receiving an exception when the constructor received an invalid input type as `$headers`.
-	 *
-	 * @dataProvider dataInvalidTypeNotArray
-	 *
-	 * @covers \WpOrg\Requests\Session::__construct
-	 *
-	 * @param mixed $input Invalid parameter input.
-	 *
-	 * @return void
-	 */
-	public function testConstructorInvalidHeaders($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #2 ($headers) must be of type array');
-
-		new Session(null, $input);
-	}
-
-	/**
-	 * Tests receiving an exception when the constructor received an invalid input type as `$data`.
-	 *
-	 * @dataProvider dataInvalidTypeNotArray
-	 *
-	 * @covers \WpOrg\Requests\Session::__construct
-	 *
-	 * @param mixed $input Invalid parameter input.
-	 *
-	 * @return void
-	 */
-	public function testConstructorInvalidData($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #3 ($data) must be of type array');
-
-		new Session('/', [], $input);
-	}
-
-	/**
-	 * Tests receiving an exception when the constructor received an invalid input type as `$options`.
-	 *
-	 * @dataProvider dataInvalidTypeNotArray
-	 *
-	 * @covers \WpOrg\Requests\Session::__construct
-	 *
-	 * @param mixed $input Invalid parameter input.
-	 *
-	 * @return void
-	 */
-	public function testConstructorInvalidOptions($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #4 ($options) must be of type array');
-
-		new Session('/', [], [], $input);
 	}
 
 	/**
