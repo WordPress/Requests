@@ -2,11 +2,8 @@
 
 namespace WpOrg\Requests\Tests\Utility\InputValidator;
 
-use ArrayIterator;
-use stdClass;
-use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 use WpOrg\Requests\Utility\InputValidator;
 
 /**
@@ -22,13 +19,6 @@ final class InputValidatorTest extends TestCase {
 	private static $curl_handle;
 
 	/**
-	 * Directory handle.
-	 *
-	 * @var resource
-	 */
-	private static $dir_handle;
-
-	/**
 	 * Clean up after the tests.
 	 */
 	public static function tear_down_after_test() {
@@ -36,361 +26,300 @@ final class InputValidatorTest extends TestCase {
 			curl_close(self::$curl_handle);
 		}
 
-		if (isset(self::$dir_handle)) {
-			closedir(self::$dir_handle);
-		}
+		parent::tear_down_after_test();
 	}
 
 	/**
-	 * Test that a received input parameter is correctly identified as string or "stringable".
+	 * Test that a received input parameter is correctly identified as a valid string or "stringable".
 	 *
-	 * @dataProvider dataInput
+	 * @dataProvider dataIsStringOrStringableValid
 	 *
 	 * @covers ::is_string_or_stringable
 	 *
-	 * @param mixed $input    Input parameter to verify.
-	 * @param array $expected Expected output for the respective functions.
+	 * @param mixed $input Input parameter to verify.
 	 *
 	 * @return void
 	 */
-	public function testIsStringOrStringable($input, $expected) {
-		$this->assertSame($expected['is_string_or_stringable'], InputValidator::is_string_or_stringable($input));
+	public function testIsStringOrStringableValid($input) {
+		$this->assertTrue(InputValidator::is_string_or_stringable($input));
 	}
 
 	/**
-	 * Test whether a received input parameter is correctly identified as usable as a numeric (integer) array key.
+	 * Data Provider.
 	 *
-	 * @dataProvider dataInput
+	 * @return array
+	 */
+	public function dataIsStringOrStringableValid() {
+		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_STRINGABLE);
+	}
+
+	/**
+	 * Test that a received input parameter is correctly identified as NOT valid as a string or "stringable".
 	 *
-	 * @covers ::is_numeric_array_key
+	 * @dataProvider dataIsStringOrStringableInvalid
 	 *
-	 * @param mixed $input    Input parameter to verify.
-	 * @param array $expected Expected output for the respective functions.
+	 * @covers ::is_string_or_stringable
+	 *
+	 * @param mixed $input Input parameter to verify.
 	 *
 	 * @return void
 	 */
-	public function testIsNumericArrayKey($input, $expected) {
-		$this->assertSame($expected['is_numeric_array_key'], InputValidator::is_numeric_array_key($input));
+	public function testIsStringOrStringableInvalid($input) {
+		$this->assertFalse(InputValidator::is_string_or_stringable($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataIsStringOrStringableInvalid() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
+	}
+
+	/**
+	 * Test whether a received input parameter is correctly identified as usable as a valid numeric (integer) array key.
+	 *
+	 * @dataProvider dataIsNumericArrayKeyValid
+	 *
+	 * @covers ::is_numeric_array_key
+	 *
+	 * @param mixed $input Input parameter to verify.
+	 *
+	 * @return void
+	 */
+	public function testIsNumericArrayKeyValid($input) {
+		$this->assertTrue(InputValidator::is_numeric_array_key($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataIsNumericArrayKeyValid() {
+		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_INT, ['numeric string']);
+	}
+
+	/**
+	 * Test whether a received input parameter is correctly identified as NOT valid as a numeric (integer) array key.
+	 *
+	 * @dataProvider dataIsNumericArrayKeyInvalid
+	 *
+	 * @covers ::is_numeric_array_key
+	 *
+	 * @param mixed $input Input parameter to verify.
+	 *
+	 * @return void
+	 */
+	public function testIsNumericArrayKeyInvalid($input) {
+		$this->assertFalse(InputValidator::is_numeric_array_key($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataIsNumericArrayKeyInvalid() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, ['numeric string']);
 	}
 
 	/**
 	 * Test whether a received input parameter is correctly identified as "stringable".
 	 *
-	 * @dataProvider dataInput
+	 * @dataProvider dataIsStringableObjectValid
 	 *
 	 * @covers ::is_stringable_object
 	 *
-	 * @param mixed $input    Input parameter to verify.
-	 * @param array $expected Expected output for the respective functions.
+	 * @param mixed $input Input parameter to verify.
 	 *
 	 * @return void
 	 */
-	public function testIsStringableObject($input, $expected) {
-		$this->assertSame($expected['is_stringable_object'], InputValidator::is_stringable_object($input));
+	public function testIsStringableObjectValid($input) {
+		$this->assertTrue(InputValidator::is_stringable_object($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataIsStringableObjectValid() {
+		return TypeProviderHelper::getSelection(['Stringable object']);
+	}
+
+	/**
+	 * Test whether a received input parameter is correctly identified as NOT "stringable".
+	 *
+	 * @dataProvider dataIsStringableObjectInvalid
+	 *
+	 * @covers ::is_stringable_object
+	 *
+	 * @param mixed $input Input parameter to verify.
+	 *
+	 * @return void
+	 */
+	public function testIsStringableObjectInvalid($input) {
+		$this->assertFalse(InputValidator::is_stringable_object($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataIsStringableObjectInvalid() {
+		return TypeProviderHelper::getAllExcept(['Stringable object']);
 	}
 
 	/**
 	 * Test whether a received input parameter is correctly identified as "accessible as array".
 	 *
-	 * @dataProvider dataInput
+	 * @dataProvider dataHasArrayAccessValid
 	 *
 	 * @covers ::has_array_access
 	 *
-	 * @param mixed $input    Input parameter to verify.
-	 * @param array $expected Expected output for the respective functions.
+	 * @param mixed $input Input parameter to verify.
 	 *
 	 * @return void
 	 */
-	public function testHasArrayAccess($input, $expected) {
-		$this->assertSame($expected['has_array_access'], InputValidator::has_array_access($input));
+	public function testHasArrayAccessValid($input) {
+		$this->assertTrue(InputValidator::has_array_access($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataHasArrayAccessValid() {
+		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
+	}
+
+	/**
+	 * Test whether a received input parameter is correctly identified as NOT "accessible as array".
+	 *
+	 * @dataProvider dataHasArrayAccessInvalid
+	 *
+	 * @covers ::has_array_access
+	 *
+	 * @param mixed $input Input parameter to verify.
+	 *
+	 * @return void
+	 */
+	public function testHasArrayAccessInvalid($input) {
+		$this->assertFalse(InputValidator::has_array_access($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataHasArrayAccessInvalid() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
 	}
 
 	/**
 	 * Test whether a received input parameter is correctly identified as "iterable".
 	 *
-	 * @dataProvider dataInput
+	 * @dataProvider dataIsIterableValid
 	 *
 	 * @covers ::is_iterable
 	 *
-	 * @param mixed $input    Input parameter to verify.
-	 * @param array $expected Expected output for the respective functions.
+	 * @param mixed $input Input parameter to verify.
 	 *
 	 * @return void
 	 */
-	public function testIsIterable($input, $expected) {
-		$this->assertSame($expected['is_iterable'], InputValidator::is_iterable($input));
+	public function testIsIterableValid($input) {
+		$this->assertTrue(InputValidator::is_iterable($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataIsIterableValid() {
+		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_ITERABLE);
+	}
+
+	/**
+	 * Test whether a received input parameter is correctly identified as NOT "iterable".
+	 *
+	 * @dataProvider dataIsIterableInvalid
+	 *
+	 * @covers ::is_iterable
+	 *
+	 * @param mixed $input Input parameter to verify.
+	 *
+	 * @return void
+	 */
+	public function testIsIterableInvalid($input) {
+		$this->assertFalse(InputValidator::is_iterable($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataIsIterableInvalid() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ITERABLE);
 	}
 
 	/**
 	 * Test whether a received input parameter is correctly identified as a Curl handle.
 	 *
-	 * @dataProvider dataInput
+	 * @dataProvider dataIsCurlHandleValid
 	 *
 	 * @covers ::is_curl_handle
 	 *
-	 * @param mixed $input    Input parameter to verify.
-	 * @param array $expected Expected output for the respective functions.
+	 * @param mixed $input Input parameter to verify.
 	 *
 	 * @return void
 	 */
-	public function testIsCurlHandle($input, $expected) {
-		$this->assertSame($expected['is_curl_handle'], InputValidator::is_curl_handle($input));
+	public function testIsCurlHandleValid($input) {
+		$this->assertTrue(InputValidator::is_curl_handle($input));
 	}
 
 	/**
-	 * Data provider.
+	 * Data Provider.
 	 *
 	 * @return array
 	 */
-	public function dataInput() {
-		if (isset(self::$curl_handle, self::$dir_handle) === false) {
+	public function dataIsCurlHandleValid() {
+		if (isset(self::$curl_handle) === false) {
 			self::$curl_handle = curl_init('http://httpbin.org/anything');
-			self::$dir_handle  = opendir(__DIR__);
 		}
 
 		return [
-			'null' => [
-				'input'    => null,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'boolean false' => [
-				'input'    => false,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'boolean true' => [
-				'input'    => true,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'integer 0' => [
-				'input'    => 0,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => true,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'negative integer' => [
-				'input'    => -123,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => true,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'positive integer' => [
-				'input'    => 786687,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => true,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'float 0.0' => [
-				'input'    => 0.0,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'negative float' => [
-				'input'    => 5.600e-3,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'positive float' => [
-				'input'    => 124.7,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'empty string' => [
-				'input'    => '',
-				'expected' => [
-					'is_string_or_stringable' => true,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'string "123"' => [
-				'input'    => '123',
-				'expected' => [
-					'is_string_or_stringable' => true,
-					'is_numeric_array_key'    => true,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'string "foobar"' => [
-				'input'    => 'foobar',
-				'expected' => [
-					'is_string_or_stringable' => true,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'string "123 My Street"' => [
-				'input'    => '123 My Street',
-				'expected' => [
-					'is_string_or_stringable' => true,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'empty array' => [
-				'input'    => [],
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => true,
-					'is_iterable'             => true,
-					'is_curl_handle'          => false,
-				],
-			],
-			'array with three items, no keys' => [
-				'input'    => [1, 2, 3],
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => true,
-					'is_iterable'             => true,
-					'is_curl_handle'          => false,
-				],
-			],
-			'array with two items, with keys' => [
-				'input'    => ['a' => 1, 'b' => 2],
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => true,
-					'is_iterable'             => true,
-					'is_curl_handle'          => false,
-				],
-			],
-			'plain object' => [
-				'input'    => new stdClass(),
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'object with __toString method' => [
-				'input'    => new StringableObject('value'),
-				'expected' => [
-					'is_string_or_stringable' => true,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => true,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'object implementing ArrayIterator' => [
-				'input'    => new ArrayIterator([1, 2, 3]),
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => true,
-					'is_iterable'             => true,
-					'is_curl_handle'          => false,
-				],
-			],
-			'object implementing ArrayAccess' => [
-				'input'    => new ArrayAccessibleObject(),
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => true,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
-			'Curl handle (resource or object depending on PHP version)' => [
-				'input'    => self::$curl_handle,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => true,
-				],
-			],
-			'Directory handle (resource)' => [
-				'input'    => self::$dir_handle,
-				'expected' => [
-					'is_string_or_stringable' => false,
-					'is_numeric_array_key'    => false,
-					'is_stringable_object'    => false,
-					'has_array_access'        => false,
-					'is_iterable'             => false,
-					'is_curl_handle'          => false,
-				],
-			],
+			'Curl handle (resource or object depending on PHP version)' => [self::$curl_handle],
 		];
+	}
+
+	/**
+	 * Test whether a received input parameter is correctly identified as a Curl handle.
+	 *
+	 * @dataProvider dataIsCurlHandleInvalid
+	 *
+	 * @covers ::is_curl_handle
+	 *
+	 * @param mixed $input Input parameter to verify.
+	 *
+	 * @return void
+	 */
+	public function testIsCurlHandleInvalid($input) {
+		$this->assertFalse(InputValidator::is_curl_handle($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataIsCurlHandleInvalid() {
+		return TypeProviderHelper::getAll();
 	}
 }
