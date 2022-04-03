@@ -10,9 +10,37 @@ use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
- * @covers \WpOrg\Requests\IdnaEncoder
+ * @coversDefaultClass \WpOrg\Requests\IdnaEncoder
+ * @covers             \WpOrg\Requests\IdnaEncoder
  */
 final class IdnaEncoderTest extends TestCase {
+
+	/**
+	 * Tests receiving an exception when an invalid input type is passed.
+	 *
+	 * @covers ::encode
+	 *
+	 * @dataProvider dataInvalidInputType
+	 *
+	 * @param mixed $data Data to encode.
+	 *
+	 * @return void
+	 */
+	public function testInvalidInputType($data) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($hostname) must be of type string|Stringable');
+
+		IdnaEncoder::encode($data);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInputType() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
+	}
 
 	/**
 	 * Tests encoding a hostname using Punycode.
@@ -154,7 +182,47 @@ final class IdnaEncoderTest extends TestCase {
 	}
 
 	/**
+	 * Verify an exception is thrown when the received input is too long.
+	 *
+	 * @covers ::to_ascii
+	 */
+	public function testASCIITooLong() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Provided string is too long');
+
+		$data = str_repeat('abcd', 20);
+		IdnaEncoder::encode($data);
+	}
+
+	/**
+	 * Verify an exception is thrown when the received input is already prefixed.
+	 *
+	 * @covers ::to_ascii
+	 */
+	public function testAlreadyPrefixed() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Provided string begins with ACE prefix');
+
+		IdnaEncoder::encode("xn--\xe4\xbb\x96");
+	}
+
+	/**
+	 * Verify an exception is thrown when the string once encoded is too long.
+	 *
+	 * @covers ::to_ascii
+	 */
+	public function testEncodedTooLong() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Encoded string is too long');
+
+		$data = str_repeat("\xe4\xbb\x96", 60);
+		IdnaEncoder::encode($data);
+	}
+
+	/**
 	 * Tests receiving an exception when trying to encode a hostname containing invalid unicode.
+	 *
+	 * @covers ::utf8_to_codepoints
 	 *
 	 * @dataProvider dataInvalidUnicode
 	 *
@@ -182,53 +250,5 @@ final class IdnaEncoderTest extends TestCase {
 			'Unfinished multibyte'                   => ["\xc2"],
 			'Partial multibyte'                      => ["\xc2\xc2\xb6"],
 		];
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed.
-	 *
-	 * @dataProvider dataInvalidInputType
-	 *
-	 * @param mixed $data Data to encode.
-	 *
-	 * @return void
-	 */
-	public function testInvalidInputType($data) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($hostname) must be of type string|Stringable');
-
-		IdnaEncoder::encode($data);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataInvalidInputType() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
-	}
-
-	public function testASCIITooLong() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Provided string is too long');
-
-		$data = str_repeat('abcd', 20);
-		IdnaEncoder::encode($data);
-	}
-
-	public function testEncodedTooLong() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Encoded string is too long');
-
-		$data = str_repeat("\xe4\xbb\x96", 60);
-		IdnaEncoder::encode($data);
-	}
-
-	public function testAlreadyPrefixed() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Provided string begins with ACE prefix');
-
-		IdnaEncoder::encode("xn--\xe4\xbb\x96");
 	}
 }
