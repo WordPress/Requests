@@ -19,20 +19,6 @@ use WpOrg\Requests\Tests\TypeProviderHelper;
 final class Ipv6Test extends TestCase {
 
 	/**
-	 * Tests that the Ipv6::uncompress() method accepts string/stringable as an $ip parameter.
-	 *
-	 * @covers       ::uncompress
-	 * @dataProvider dataValidInputType
-	 *
-	 * @param string $ip An IPv6 address.
-	 *
-	 * @return void
-	 */
-	public function testUncompressValidInputType($ip) {
-		$this->assertIsString(Ipv6::uncompress($ip));
-	}
-
-	/**
 	 * Tests that the Ipv6::compress() method accepts string/stringable as an $ip parameter.
 	 *
 	 * @covers       ::compress
@@ -70,23 +56,6 @@ final class Ipv6Test extends TestCase {
 			'string'     => ['::1'],
 			'stringable' => [new StringableObject('0:1234:dc0:41:216:3eff:fe67:3e01')],
 		];
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed to the Ipv6::uncompress() method.
-	 *
-	 * @covers       ::uncompress
-	 * @dataProvider dataInvalidInputType
-	 *
-	 * @param mixed $ip Parameter to test input validation with.
-	 *
-	 * @return void
-	 */
-	public function testUncompressInvalidInputType($ip) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($ip) must be of type string|Stringable');
-
-		Ipv6::uncompress($ip);
 	}
 
 	/**
