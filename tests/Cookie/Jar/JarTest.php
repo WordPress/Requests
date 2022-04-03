@@ -8,7 +8,12 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
 
 /**
- * @covers \WpOrg\Requests\Cookie\Jar
+ * Integration tests for the Jar class.
+ *
+ * @covers \WpOrg\Requests\Cookie\Jar::normalize_cookie
+ * @covers \WpOrg\Requests\Cookie\Jar::register
+ * @covers \WpOrg\Requests\Cookie\Jar::before_request
+ * @covers \WpOrg\Requests\Cookie\Jar::before_redirect_check
  */
 final class JarTest extends TestCase {
 
@@ -52,6 +57,13 @@ final class JarTest extends TestCase {
 		$this->assertSame('testvalue', $data['requests-testcookie']);
 	}
 
+	/**
+	 * Test helper.
+	 *
+	 * @param \WpOrg\Requests\Cookie\Jar $cookies Cookies.
+	 *
+	 * @return array
+	 */
 	private function setCookieRequest($cookies) {
 		$options  = [
 			'cookies' => $cookies,
