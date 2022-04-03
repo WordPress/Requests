@@ -11,43 +11,7 @@ use WpOrg\Requests\Tests\TypeProviderHelper;
 /**
  * @covers \WpOrg\Requests\Port::get
  */
-final class PortTest extends TestCase {
-
-	/**
-	 * Test retrieving a port based on a passed input value.
-	 *
-	 * @dataProvider dataGetPort
-	 *
-	 * @param mixed $input    Input to pass to the function.
-	 * @param int   $expected Expected function return value.
-	 *
-	 * @return void
-	 */
-	public function testGetPort($input, $expected) {
-		$this->assertSame($expected, Port::get($input));
-	}
-
-	/**
-	 * Data provider.
-	 *
-	 * @return array
-	 */
-	public function dataGetPort() {
-		return [
-			'lowercase type' => [
-				'input'    => 'https',
-				'expected' => Port::HTTPS,
-			],
-			'mixed type' => [
-				'input'    => 'Dict',
-				'expected' => Port::DICT,
-			],
-			'uppercase type' => [
-				'input'    => 'ACAP',
-				'expected' => Port::ACAP,
-			],
-		];
-	}
+final class GetTest extends TestCase {
 
 	/**
 	 * Test that when a $type parameter of an incorrect type gets passed, an exception gets thrown.
@@ -99,6 +63,42 @@ final class PortTest extends TestCase {
 		return [
 			'type not supported' => ['FTP'],
 			'empty string'       => [''],
+		];
+	}
+
+	/**
+	 * Test retrieving a port based on a passed input value.
+	 *
+	 * @dataProvider dataGetPort
+	 *
+	 * @param mixed $input    Input to pass to the function.
+	 * @param int   $expected Expected function return value.
+	 *
+	 * @return void
+	 */
+	public function testGetPort($input, $expected) {
+		$this->assertSame($expected, Port::get($input));
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataGetPort() {
+		return [
+			'lowercase type' => [
+				'input'    => 'https',
+				'expected' => Port::HTTPS,
+			],
+			'mixed type' => [
+				'input'    => 'Dict',
+				'expected' => Port::DICT,
+			],
+			'uppercase type' => [
+				'input'    => 'ACAP',
+				'expected' => Port::ACAP,
+			],
 		];
 	}
 }
