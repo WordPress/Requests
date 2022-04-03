@@ -9,7 +9,6 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
-use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 final class CookieTest extends TestCase {
 	public function testBasicCookie() {
@@ -123,40 +122,6 @@ final class CookieTest extends TestCase {
 
 		$this->assertArrayHasKey('requests-testcookie2', $data);
 		$this->assertSame('testvalue2', $data['requests-testcookie2']);
-	}
-
-	public function pathMatchProvider() {
-		return [
-			'Invalid check path (type): null'    => ['/', null, true],
-			'Invalid check path (type): true'    => ['/', true, false],
-			'Invalid check path (type): integer' => ['/', 123, false],
-			'Invalid check path (type): array'   => ['/', [1, 2], false],
-			['/', '', true],
-			['/', '/', true],
-
-			['/', '/test', true],
-			['/', '/test/', true],
-
-			['/test', '/', false],
-			['/test', '/test', true],
-			['/test', '/testing', false],
-			['/test', '/test/', true],
-			['/test', '/test/ing', true],
-			['/test', '/test/ing/', true],
-
-			['/test/', '/test/', true],
-			['/test/', '/', false],
-		];
-	}
-
-	/**
-	 * @dataProvider pathMatchProvider
-	 */
-	public function testPathMatch($original, $check, $matches) {
-		$attributes         = new CaseInsensitiveDictionary();
-		$attributes['path'] = $original;
-		$cookie             = new Cookie('requests-testcookie', 'testvalue', $attributes);
-		$this->assertSame($matches, $cookie->path_matches($check));
 	}
 
 	/**
