@@ -9,7 +9,6 @@ use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\Fixtures\RawTransportMock;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
@@ -300,64 +299,6 @@ final class RequestsTest extends TestCase {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('timed out');
 		Requests::get(httpbin('/delay/3'), [], $options);
-	}
-
-	/**
-	 * Tests setting a custom certificate path with valid data types (though potentially not a valid path).
-	 *
-	 * @dataProvider dataSetCertificatePathValidData
-	 *
-	 * @covers \WpOrg\Requests\Requests::set_certificate_path
-	 *
-	 * @param mixed $input Valid input.
-	 *
-	 * @return void
-	 */
-	public function testSetCertificatePathValidData($input) {
-		Requests::set_certificate_path($input);
-
-		$this->assertSame($input, Requests::get_certificate_path());
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataSetCertificatePathValidData() {
-		return [
-			'boolean false'     => [false],
-			'boolean true'      => [true],
-			'string'            => ['path/to/file.pem'],
-			'stringable object' => [new StringableObject('path/to/file.pem')],
-		];
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed as `$path` to the set_certificate_path() method.
-	 *
-	 * @dataProvider dataSetCertificatePathInvalidData
-	 *
-	 * @covers \WpOrg\Requests\Requests::set_certificate_path
-	 *
-	 * @param mixed $input Invalid input.
-	 *
-	 * @return void
-	 */
-	public function testSetCertificatePathInvalidData($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($path) must be of type string|Stringable|bool');
-
-		Requests::set_certificate_path($input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataSetCertificatePathInvalidData() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_BOOL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
 	/**
