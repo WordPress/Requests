@@ -74,6 +74,12 @@ final class PathMatchesTest extends TestCase {
 					'matches'  => true,
 				];
 
+				$data['Non-match: "/test" vs ' . $key] = [
+					'original' => '/test',
+					'check'    => $value['input'],
+					'matches'  => false,
+				];
+
 				continue;
 			}
 
