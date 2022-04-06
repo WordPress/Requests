@@ -5,6 +5,7 @@ namespace WpOrg\Requests\Tests\Cookie\Jar;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
 
 /**
@@ -25,8 +26,8 @@ final class JarTest extends TestCase {
 		);
 		$data    = $this->setCookieRequest($cookies);
 
-		$this->assertArrayHasKey('requests-testcookie1', $data);
-		$this->assertSame('testvalue1', $data['requests-testcookie1']);
+		$this->assertArrayHasKey('requests-testcookie1', $data, 'Key "requests-testcookie1" does not exist in the array');
+		$this->assertSame('testvalue1', $data['requests-testcookie1'], 'Value for cookie does not match expectation');
 	}
 
 	public function testSendingMultipleCookiesWithJar() {
@@ -38,11 +39,11 @@ final class JarTest extends TestCase {
 		);
 		$data    = $this->setCookieRequest($cookies);
 
-		$this->assertArrayHasKey('requests-testcookie1', $data);
-		$this->assertSame('testvalue1', $data['requests-testcookie1']);
+		$this->assertArrayHasKey('requests-testcookie1', $data, 'Key "requests-testcookie1" does not exist in the array');
+		$this->assertSame('testvalue1', $data['requests-testcookie1'], 'Value for cookie 1 does not match expectation');
 
-		$this->assertArrayHasKey('requests-testcookie2', $data);
-		$this->assertSame('testvalue2', $data['requests-testcookie2']);
+		$this->assertArrayHasKey('requests-testcookie2', $data, 'Key "requests-testcookie2" does not exist in the array');
+		$this->assertSame('testvalue2', $data['requests-testcookie2'], 'Value for cookie 2 does not match expectation');
 	}
 
 	public function testSendingPrebakedCookie() {
@@ -53,8 +54,8 @@ final class JarTest extends TestCase {
 		);
 		$data    = $this->setCookieRequest($cookies);
 
-		$this->assertArrayHasKey('requests-testcookie', $data);
-		$this->assertSame('testvalue', $data['requests-testcookie']);
+		$this->assertArrayHasKey('requests-testcookie', $data, 'Key "requests-testcookie" does not exist in the array');
+		$this->assertSame('testvalue', $data['requests-testcookie'], 'Value for cookie does not match expectation');
 	}
 
 	/**
@@ -70,9 +71,13 @@ final class JarTest extends TestCase {
 		];
 		$response = Requests::get(httpbin('/cookies/set'), [], $options);
 
+		$this->assertInstanceOf(Response::class, $response, 'GET request did not return a Response object');
 		$data = json_decode($response->body, true);
-		$this->assertIsArray($data);
-		$this->assertArrayHasKey('cookies', $data);
+
+		$this->assertIsArray($data, 'Decoded response is not an array');
+		$this->assertArrayHasKey('cookies', $data, 'Decoded response array does not contain the key "cookie"');
+		$this->assertIsArray($data['cookies'], '"Cookie" key in the decoded response is not an array');
+
 		return $data['cookies'];
 	}
 }
