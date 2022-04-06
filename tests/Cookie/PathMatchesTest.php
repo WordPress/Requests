@@ -103,6 +103,16 @@ final class PathMatchesTest extends TestCase {
 				'check'    => '/',
 				'matches'  => true,
 			],
+			'Exact match: "/test"' => [
+				'original' => '/test',
+				'check'    => '/test',
+				'matches'  => true,
+			],
+			'Exact match: "/test/" (with trailing slash' => [
+				'original' => '/test/',
+				'check'    => '/test/',
+				'matches'  => true,
+			],
 
 			'Partial match: "/" vs "/test"' => [
 				'original' => '/',
@@ -113,22 +123,6 @@ final class PathMatchesTest extends TestCase {
 				'original' => '/',
 				'check'    => '/test/',
 				'matches'  => true,
-			],
-
-			'Partial non-match: "/test" vs "/"' => [
-				'original' => '/test',
-				'check'    => '/',
-				'matches'  => false,
-			],
-			'Exact match: "/test"' => [
-				'original' => '/test',
-				'check'    => '/test',
-				'matches'  => true,
-			],
-			'Partial non-match: "/test" vs "/testing"' => [
-				'original' => '/test',
-				'check'    => '/testing',
-				'matches'  => false,
 			],
 			'Partial match: "/test" vs "/test/" (without vs with trailing slash)' => [
 				'original' => '/test',
@@ -146,10 +140,15 @@ final class PathMatchesTest extends TestCase {
 				'matches'  => true,
 			],
 
-			'Exact match: "/test/" (with trailing slash' => [
-				'original' => '/test/',
-				'check'    => '/test/',
-				'matches'  => true,
+			'Partial non-match: "/test" vs "/"' => [
+				'original' => '/test',
+				'check'    => '/',
+				'matches'  => false,
+			],
+			'Partial non-match: "/test" vs "/testing"' => [
+				'original' => '/test',
+				'check'    => '/testing',
+				'matches'  => false,
 			],
 			'Partial non-match: "/test/" (with trailing slash) vs "/"' => [
 				'original' => '/test/',
