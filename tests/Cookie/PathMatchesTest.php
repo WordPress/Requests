@@ -98,20 +98,64 @@ final class PathMatchesTest extends TestCase {
 	 */
 	public function dataPathMatch() {
 		return [
-			['/', '/', true],
+			'Exact match: "/"' => [
+				'original' => '/',
+				'check'    => '/',
+				'matches'  => true,
+			],
 
-			['/', '/test', true],
-			['/', '/test/', true],
+			'Partial match: "/" vs "/test"' => [
+				'original' => '/',
+				'check'    => '/test',
+				'matches'  => true,
+			],
+			'Partial match: "/" vs "/test/" (with trailing slash)' => [
+				'original' => '/',
+				'check'    => '/test/',
+				'matches'  => true,
+			],
 
-			['/test', '/', false],
-			['/test', '/test', true],
-			['/test', '/testing', false],
-			['/test', '/test/', true],
-			['/test', '/test/ing', true],
-			['/test', '/test/ing/', true],
+			'Partial non-match: "/test" vs "/"' => [
+				'original' => '/test',
+				'check'    => '/',
+				'matches'  => false,
+			],
+			'Exact match: "/test"' => [
+				'original' => '/test',
+				'check'    => '/test',
+				'matches'  => true,
+			],
+			'Partial non-match: "/test" vs "/testing"' => [
+				'original' => '/test',
+				'check'    => '/testing',
+				'matches'  => false,
+			],
+			'Partial match: "/test" vs "/test/" (without vs with trailing slash)' => [
+				'original' => '/test',
+				'check'    => '/test/',
+				'matches'  => true,
+			],
+			'Partial match: "/test" vs "/test/ing"' => [
+				'original' => '/test',
+				'check'    => '/test/ing',
+				'matches'  => true,
+			],
+			'Partial match: "/test" vs "/test/ing/" (with trailing slash)' => [
+				'original' => '/test',
+				'check'    => '/test/ing/',
+				'matches'  => true,
+			],
 
-			['/test/', '/test/', true],
-			['/test/', '/', false],
+			'Exact match: "/test/" (with trailing slash' => [
+				'original' => '/test/',
+				'check'    => '/test/',
+				'matches'  => true,
+			],
+			'Partial non-match: "/test/" (with trailing slash) vs "/"' => [
+				'original' => '/test/',
+				'check'    => '/',
+				'matches'  => false,
+			],
 		];
 	}
 }
