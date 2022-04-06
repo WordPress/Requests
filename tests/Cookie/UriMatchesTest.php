@@ -46,28 +46,112 @@ final class UriMatchesTest extends TestCase {
 	 */
 	public function dataUrlMatch() {
 		return [
-			// Domain handling
-			['example.com', '/', 'http://example.com/', true, true],
-			['example.com', '/', 'http://www.example.com/', false, true],
-			['example.com', '/', 'http://example.net/', false, false],
-			['example.com', '/', 'http://www.example.net/', false, false],
+			// Domain handling.
+			'Domain handling: same domain name, same TLD' => [
+				'domain'         => 'example.com',
+				'path'           => '/',
+				'check'          => 'http://example.com/',
+				'matched'        => true,
+				'domain_matches' => true,
+			],
+			'Domain handling: same domain name, same TLD, different subdomain' => [
+				'domain'         => 'example.com',
+				'path'           => '/',
+				'check'          => 'http://www.example.com/',
+				'matched'        => false,
+				'domain_matches' => true,
+			],
+			'Domain handling: same domain name, different TLD' => [
+				'domain'         => 'example.com',
+				'path'           => '/',
+				'check'          => 'http://example.net/',
+				'matched'        => false,
+				'domain_matches' => false,
+			],
+			'Domain handling: same domain name, different TLD, different subdomain' => [
+				'domain'         => 'example.com',
+				'path'           => '/',
+				'check'          => 'http://www.example.net/',
+				'matched'        => false,
+				'domain_matches' => false,
+			],
 
-			// /test
-			['example.com', '/test', 'http://example.com/', false, false],
-			['example.com', '/test', 'http://www.example.com/', false, false],
+			// Path handling - /test (no trailing slash).
+			'Path handling "/test": same domain name, same TLD, URI provided without path' => [
+				'domain'         => 'example.com',
+				'path'           => '/test',
+				'check'          => 'http://example.com/',
+				'matched'        => false,
+				'domain_matches' => false,
+			],
+			'Path handling "/test": same domain name, same TLD, different subdomain, URI provided without path' => [
+				'domain'         => 'example.com',
+				'path'           => '/test',
+				'check'          => 'http://www.example.com/',
+				'matched'        => false,
+				'domain_matches' => false,
+			],
 
-			['example.com', '/test', 'http://example.com/test', true, true],
-			['example.com', '/test', 'http://www.example.com/test', false, true],
+			'Path handling "/test": same domain name, same TLD, URI provided including path' => [
+				'domain'         => 'example.com',
+				'path'           => '/test',
+				'check'          => 'http://example.com/test',
+				'matched'        => true,
+				'domain_matches' => true,
+			],
+			'Path handling "/test": same domain name, same TLD, different subdomain, URI provided including path' => [
+				'domain'         => 'example.com',
+				'path'           => '/test',
+				'check'          => 'http://www.example.com/test',
+				'matched'        => false,
+				'domain_matches' => true,
+			],
 
-			['example.com', '/test', 'http://example.com/testing', false, false],
-			['example.com', '/test', 'http://www.example.com/testing', false, false],
+			'Path handling "/test": same domain name, same TLD, different path' => [
+				'domain'         => 'example.com',
+				'path'           => '/test',
+				'check'          => 'http://example.com/testing',
+				'matched'        => false,
+				'domain_matches' => false,
+			],
+			'Path handling "/test": same domain name, same TLD, different subdomain, different path' => [
+				'domain'         => 'example.com',
+				'path'           => '/test',
+				'check'          => 'http://www.example.com/testing',
+				'matched'        => false,
+				'domain_matches' => false,
+			],
 
-			['example.com', '/test', 'http://example.com/test/', true, true],
-			['example.com', '/test', 'http://www.example.com/test/', false, true],
+			'Path handling "/test": same domain name, same TLD, URI provided including path with trailing slash' => [
+				'domain'         => 'example.com',
+				'path'           => '/test',
+				'check'          => 'http://example.com/test/',
+				'matched'        => true,
+				'domain_matches' => true,
+			],
+			'Path handling "/test": same domain name, same TLD, different subdomain, URI provided including path with trailing slash' => [
+				'domain'         => 'example.com',
+				'path'           => '/test',
+				'check'          => 'http://www.example.com/test/',
+				'matched'        => false,
+				'domain_matches' => true,
+			],
 
-			// /test/
-			['example.com', '/test/', 'http://example.com/', false, false],
-			['example.com', '/test/', 'http://www.example.com/', false, false],
+			// Path handling - /test/ (with trailing slash).
+			'Path handling "/test/" (incl trailing slash): same domain name, same TLD, URI provided without path' => [
+				'domain'         => 'example.com',
+				'path'           => '/test/',
+				'check'          => 'http://example.com/',
+				'matched'        => false,
+				'domain_matches' => false,
+			],
+			'Path handling "/test/" (incl trailing slash): same domain name, same TLD, different subdomain, URI provided without path' => [
+				'domain'         => 'example.com',
+				'path'           => '/test/',
+				'check'          => 'http://www.example.com/',
+				'matched'        => false,
+				'domain_matches' => false,
+			],
 		];
 	}
 
