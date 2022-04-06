@@ -4,6 +4,7 @@ namespace WpOrg\Requests\Tests\Cookie;
 
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 /**
@@ -47,6 +48,7 @@ final class PathMatchesTest extends TestCase {
 	}
 
 	/**
+	 * @dataProvider dataPathMatchUndesiredInputTypes
 	 * @dataProvider dataPathMatch
 	 */
 	public function testPathMatch($original, $check, $matches) {
@@ -57,17 +59,45 @@ final class PathMatchesTest extends TestCase {
 	}
 
 	/**
-	 * Data provider.
+	 * Data provider for checking data type handling.
+	 *
+	 * @return array
+	 */
+	public function dataPathMatchUndesiredInputTypes() {
+		$data      = [];
+		$all_types = TypeProviderHelper::getAll();
+		foreach ($all_types as $key => $value) {
+			if (in_array($key, TypeProviderHelper::GROUP_EMPTY, true)) {
+				$data['Match:     "/" vs ' . $key] = [
+					'original' => '/',
+					'check'    => $value['input'],
+					'matches'  => true,
+				];
+
+				continue;
+			}
+
+			/*
+			 * The other type inputs should all lead to a `false` result.
+			 * Non-scalar types for being non-scalar and the string types for not actually being a path.
+			 */
+			$data['Non-match: "/" vs ' . $key] = [
+				'original' => '/',
+				'check'    => $value['input'],
+				'matches'  => false,
+			];
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Data provider for checking the actual functionality.
 	 *
 	 * @return array
 	 */
 	public function dataPathMatch() {
 		return [
-			'Invalid check path (type): null'    => ['/', null, true],
-			'Invalid check path (type): true'    => ['/', true, false],
-			'Invalid check path (type): integer' => ['/', 123, false],
-			'Invalid check path (type): array'   => ['/', [1, 2], false],
-			['/', '', true],
 			['/', '/', true],
 
 			['/', '/test', true],
