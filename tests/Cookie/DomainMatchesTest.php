@@ -72,7 +72,16 @@ final class DomainMatchesTest extends TestCase {
 	}
 
 	/**
+	 * Verify domain_matches() correctly identifies exact domain matches.
+	 *
 	 * @dataProvider dataDomainMatch
+	 *
+	 * @param string $original       Original, known domain.
+	 * @param string $check          Domain to verify for a match.
+	 * @param bool   $matches        The expected function return value for an exact match.
+	 * @param bool   $domain_matches The expected function return value for a domain only match.
+	 *
+	 * @return void
 	 */
 	public function testDomainExactMatch($original, $check, $matches, $domain_matches) {
 		$attributes           = new CaseInsensitiveDictionary();
@@ -82,7 +91,16 @@ final class DomainMatchesTest extends TestCase {
 	}
 
 	/**
+	 * Verify domain_matches() correctly identifies domain matches disregarding subdomains.
+	 *
 	 * @dataProvider dataDomainMatch
+	 *
+	 * @param string $original       Original, known domain.
+	 * @param string $check          Domain to verify for a match.
+	 * @param bool   $matches        The expected function return value for an exact match.
+	 * @param bool   $domain_matches The expected function return value for a domain only match.
+	 *
+	 * @return void
 	 */
 	public function testDomainMatch($original, $check, $matches, $domain_matches) {
 		$attributes           = new CaseInsensitiveDictionary();
