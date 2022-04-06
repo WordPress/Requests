@@ -48,13 +48,22 @@ final class PathMatchesTest extends TestCase {
 	}
 
 	/**
+	 * Verify path_matches() correctly identifies whether a given path matches.
+	 *
 	 * @dataProvider dataPathMatchUndesiredInputTypes
 	 * @dataProvider dataPathMatch
+	 *
+	 * @param string $original Original, known path.
+	 * @param mixed  $check    Path to verify for a match.
+	 * @param bool   $matches  The expected function return value for an exact match.
+	 *
+	 * @return void
 	 */
 	public function testPathMatch($original, $check, $matches) {
 		$attributes         = new CaseInsensitiveDictionary();
 		$attributes['path'] = $original;
 		$cookie             = new Cookie('requests-testcookie', 'testvalue', $attributes);
+
 		$this->assertSame($matches, $cookie->path_matches($check));
 	}
 
