@@ -4,12 +4,39 @@ namespace WpOrg\Requests\Tests\Cookie;
 
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 /**
  * @covers \WpOrg\Requests\Cookie::domain_matches
  */
 final class DomainMatchesTest extends TestCase {
+
+	/**
+	 * Verify that invalid input will always result in a non-match.
+	 *
+	 * @dataProvider dataInvalidInput
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testInvalidInput($input) {
+		$attributes           = new CaseInsensitiveDictionary();
+		$attributes['domain'] = 'example.com';
+		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes);
+
+		$this->assertFalse($cookie->domain_matches($input));
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInput() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
+	}
 
 	/**
 	 * Manually set cookies without a domain/path set should always be valid.
@@ -74,8 +101,6 @@ final class DomainMatchesTest extends TestCase {
 	 */
 	public function dataDomainMatch() {
 		return [
-			'Invalid check domain (type): null'         => ['example.com', null, false, false],
-			'Invalid check domain (type): boolean true' => ['example.com', true, false, false],
 			['example.com', 'example.com', true, true],
 			['example.com', 'www.example.com', false, true],
 			['example.com', 'example.net', false, false],
