@@ -101,26 +101,86 @@ final class DomainMatchesTest extends TestCase {
 	 */
 	public function dataDomainMatch() {
 		return [
-			['example.com', 'example.com', true, true],
-			['example.com', 'www.example.com', false, true],
-			['example.com', 'example.net', false, false],
+			'Domain: exact match' => [
+				'original'       => 'example.com',
+				'check'          => 'example.com',
+				'matches'        => true,
+				'domain_matches' => true,
+			],
+			'Domain: same domain, same TLD, different subdomain' => [
+				'original'       => 'example.com',
+				'check'          => 'www.example.com',
+				'matches'        => false,
+				'domain_matches' => true,
+			],
+			'Domain: same domain, different TLD' => [
+				'original'       => 'example.com',
+				'check'          => 'example.net',
+				'matches'        => false,
+				'domain_matches' => false,
+			],
 
-			// Leading period
-			['.example.com', 'example.com', true, true],
-			['.example.com', 'www.example.com', false, true],
-			['.example.com', 'example.net', false, false],
+			// Leading period.
+			'Original domain with leading period, otherwise exact match' => [
+				'original'       => '.example.com',
+				'check'          => 'example.com',
+				'matches'        => true,
+				'domain_matches' => true,
+			],
+			'Original domain with leading period, same domain, same TLD, different subdomain' => [
+				'original'       => '.example.com',
+				'check'          => 'www.example.com',
+				'matches'        => false,
+				'domain_matches' => true,
+			],
+			'Original domain with leading period, same domain, different TLD' => [
+				'original'       => '.example.com',
+				'check'          => 'example.net',
+				'matches'        => false,
+				'domain_matches' => false,
+			],
 
-			// Prefix, but not subdomain
-			['example.com', 'notexample.com', false, false],
-			['example.com', 'notexample.net', false, false],
+			// Prefix, but not subdomain.
+			'Overlap: different domain with original domain substring of check' => [
+				'original'       => 'example.com',
+				'check'          => 'notexample.com',
+				'matches'        => false,
+				'domain_matches' => false,
+			],
+			'Overlap: different domain with original domain substring of check, different TLD' => [
+				'original'       => 'example.com',
+				'check'          => 'notexample.net',
+				'matches'        => false,
+				'domain_matches' => false,
+			],
 
-			// Reject IP address prefixes
-			['127.0.0.1', '127.0.0.1', true, true],
-			['127.0.0.1', 'abc.127.0.0.1', false, false],
-			['127.0.0.1', 'example.com', false, false],
+			// Reject IP address prefixes.
+			'IP addresses: exact match' => [
+				'original'       => '127.0.0.1',
+				'check'          => '127.0.0.1',
+				'matches'        => true,
+				'domain_matches' => true,
+			],
+			'IP address: original is IP, check appears to have subdomain prefix' => [
+				'original'       => '127.0.0.1',
+				'check'          => 'abc.127.0.0.1',
+				'matches'        => false,
+				'domain_matches' => false,
+			],
+			'IP addresses: non-matching' => [
+				'original'       => '127.0.0.1',
+				'check'          => 'example.com',
+				'matches'        => false,
+				'domain_matches' => false,
+			],
 
-			// Check that we're checking the actual length
-			['127.com', 'test.127.com', false, true],
+			// Check that we're checking the actual length.
+			'Actual length check' => [
+				'original'       => '127.com',
+				'check'          => 'test.127.com',
+				'matches'        => false,
+				'domain_matches' => true,
+			],
 		];
 	}
 }
