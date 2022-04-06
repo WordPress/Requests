@@ -254,14 +254,19 @@ class Cookie {
 			return true;
 		}
 
-		if (strlen($request_path) > strlen($cookie_path) && substr($request_path, 0, strlen($cookie_path)) === $cookie_path) {
+		$cookie_path_length = strlen($cookie_path);
+		if (strlen($request_path) <= $cookie_path_length) {
+			return false;
+		}
+
+		if (substr($request_path, 0, $cookie_path_length) === $cookie_path) {
 			if (substr($cookie_path, -1) === '/') {
 				// The cookie-path is a prefix of the request-path, and the last
 				// character of the cookie-path is %x2F ("/").
 				return true;
 			}
 
-			if (substr($request_path, strlen($cookie_path), 1) === '/') {
+			if (substr($request_path, $cookie_path_length, 1) === '/') {
 				// The cookie-path is a prefix of the request-path, and the
 				// first character of the request-path that is not included in
 				// the cookie-path is a %x2F ("/") character.
