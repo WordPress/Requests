@@ -124,6 +124,11 @@ final class PathMatchesTest extends TestCase {
 				'check'    => '/test/',
 				'matches'  => true,
 			],
+			'Partial match: "/test/" (with trailing slash) vs "/test/ing"' => [
+				'original' => '/test/',
+				'check'    => '/test/ing',
+				'matches'  => true,
+			],
 			'Partial match: "/test" vs "/test/" (without vs with trailing slash)' => [
 				'original' => '/test',
 				'check'    => '/test/',
