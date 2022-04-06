@@ -18,6 +18,13 @@ use WpOrg\Requests\Tests\TestCase;
  */
 final class JarTest extends TestCase {
 
+	public function testSendingCookieWithEmptyJar() {
+		$cookies = new Jar();
+		$data    = $this->setCookieRequest($cookies);
+
+		$this->assertCount(0, $data);
+	}
+
 	public function testSendingCookieWithJar() {
 		$cookies = new Jar(
 			[
