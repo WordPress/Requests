@@ -13,19 +13,41 @@ use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 final class UriMatchesTest extends TestCase {
 
 	/**
+	 * Verify uri_matches() correctly identifies exact URI matches.
+	 *
 	 * @dataProvider dataUrlMatch
+	 *
+	 * @param string $domain         Base domain.
+	 * @param string $path           Path to be appended to the domain.
+	 * @param string $check          The URI to verify for a match.
+	 * @param bool   $matches        The expected function return value for an exact match.
+	 * @param bool   $domain_matches The expected function return value for a domain only match.
+	 *
+	 * @return void
 	 */
 	public function testUrlExactMatch($domain, $path, $check, $matches, $domain_matches) {
 		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = $domain;
 		$attributes['path']   = $path;
-		$check                = new Iri($check);
-		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes);
+
+		$check  = new Iri($check);
+		$cookie = new Cookie('requests-testcookie', 'testvalue', $attributes);
+
 		$this->assertSame($matches, $cookie->uri_matches($check));
 	}
 
 	/**
+	 * Verify uri_matches() correctly identifies URI matches disregarding subdomains.
+	 *
 	 * @dataProvider dataUrlMatch
+	 *
+	 * @param string $domain         Base domain.
+	 * @param string $path           Path to be appended to the domain.
+	 * @param string $check          The URI to verify for a match.
+	 * @param bool   $matches        The expected function return value for an exact match.
+	 * @param bool   $domain_matches The expected function return value for a domain only match.
+	 *
+	 * @return void
 	 */
 	public function testUrlMatch($domain, $path, $check, $matches, $domain_matches) {
 		$attributes           = new CaseInsensitiveDictionary();
@@ -34,8 +56,10 @@ final class UriMatchesTest extends TestCase {
 		$flags                = [
 			'host-only' => false,
 		];
-		$check                = new Iri($check);
-		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+
+		$check  = new Iri($check);
+		$cookie = new Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
+
 		$this->assertSame($domain_matches, $cookie->uri_matches($check));
 	}
 
