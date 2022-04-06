@@ -17,7 +17,7 @@
 
 	<!-- Third party files and build files don't need to comply with these coding standards. -->
 	<exclude-pattern>*/src/Iri\.php$</exclude-pattern>
-	<exclude-pattern>*/tests/IriTest\.php$</exclude-pattern>
+	<exclude-pattern>*/tests/Iri/IriTest\.php$</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/coverage/</exclude-pattern>
 
