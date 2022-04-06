@@ -207,12 +207,12 @@ class Cookie {
 			return false;
 		}
 
-		if (substr($domain, -1 * strlen($cookie_domain)) !== $cookie_domain) {
+		if (substr($domain, -(strlen($cookie_domain))) !== $cookie_domain) {
 			// The cookie domain should be a suffix of the passed domain.
 			return false;
 		}
 
-		$prefix = substr($domain, 0, strlen($domain) - strlen($cookie_domain));
+		$prefix = substr($domain, 0, -strlen($cookie_domain));
 		if (substr($prefix, -1) !== '.') {
 			// The last character of the passed domain that is not included in the
 			// domain string should be a %x2E (".") character.
