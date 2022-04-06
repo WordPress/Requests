@@ -101,6 +101,13 @@ final class DomainMatchesTest extends TestCase {
 	 */
 	public function dataDomainMatch() {
 		return [
+			'Empty string' => [
+				'original'       => 'example.com',
+				'check'          => '',
+				'matches'        => false,
+				'domain_matches' => false,
+			],
+
 			'Domain: exact match' => [
 				'original'       => 'example.com',
 				'check'          => 'example.com',
@@ -180,6 +187,12 @@ final class DomainMatchesTest extends TestCase {
 				'check'          => 'test.127.com',
 				'matches'        => false,
 				'domain_matches' => true,
+			],
+			'Length check: check domain shorter than original' => [
+				'original'       => '127.com',
+				'check'          => '27.com',
+				'matches'        => false,
+				'domain_matches' => false,
 			],
 		];
 	}
