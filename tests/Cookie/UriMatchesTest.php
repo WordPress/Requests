@@ -179,22 +179,61 @@ final class UriMatchesTest extends TestCase {
 		];
 	}
 
-	public function testUrlMatchSecure() {
+	/**
+	 * Verify identifying URI matches correctly when the secure attribute is set.
+	 *
+	 * @dataProvider dataUrlMatchSecure
+	 *
+	 * @param bool   $secure   Value for the secure attribute.
+	 * @param string $scheme   Which scheme to use in the check.
+	 * @param bool   $expected The expected function return value.
+	 *
+	 * @return void
+	 */
+	public function testUrlMatchSecure($secure, $scheme, $expected) {
 		$attributes           = new CaseInsensitiveDictionary();
 		$attributes['domain'] = 'example.com';
 		$attributes['path']   = '/';
-		$attributes['secure'] = true;
+		$attributes['secure'] = $secure;
 		$flags                = [
 			'host-only' => false,
 		];
 		$cookie               = new Cookie('requests-testcookie', 'testvalue', $attributes, $flags);
 
-		$this->assertTrue($cookie->uri_matches(new Iri('https://example.com/')));
-		$this->assertFalse($cookie->uri_matches(new Iri('http://example.com/')));
+		$this->assertSame($expected, $cookie->uri_matches(new Iri($scheme . '://example.com/')), 'Expectation for exact match failed');
 
-		// Double-check host-only
-		$this->assertTrue($cookie->uri_matches(new Iri('https://www.example.com/')));
-		$this->assertFalse($cookie->uri_matches(new Iri('http://www.example.com/')));
+		// Double-check host-only.
+		$this->assertSame($expected, $cookie->uri_matches(new Iri($scheme . '://www.example.com/')), 'Expectation for domain only match failed');
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataUrlMatchSecure() {
+		return [
+			'Secure matching: off, scheme: http' => [
+				'secure'    => false,
+				'scheme'    => 'http',
+				'expected'  => true,
+			],
+			'Secure matching: off, scheme: https' => [
+				'secure'    => false,
+				'scheme'    => 'https',
+				'expected'  => true,
+			],
+			'Secure matching: on, scheme: http' => [
+				'secure'    => true,
+				'scheme'    => 'http',
+				'expected'  => false,
+			],
+			'Secure matching: on, scheme: https' => [
+				'secure'    => true,
+				'scheme'    => 'https',
+				'expected'  => true,
+			],
+		];
 	}
 
 	/**
