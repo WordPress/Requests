@@ -372,7 +372,7 @@ class Cookie {
 					$value = substr($value, 1);
 				}
 
-				return $value;
+				return strtolower(IdnaEncoder::encode($value));
 
 			default:
 				return $value;

@@ -217,6 +217,30 @@ final class NormalizeTest extends TestCase {
 					'domain' => 'example.com',
 				],
 			],
+			'Attribute normalization: domain: domain should be converted to lowercase - ascii' => [
+				'attributes' => [
+					'domain' => 'EXAMPLE.COM',
+				],
+				'expected'   => [
+					'domain' => 'example.com',
+				],
+			],
+			'Attribute normalization: domain: domain should be converted to lowercase - chinese' => [
+				'attributes' => [
+					'domain' => "\xe4\xbb\x96\xe4\xbb\xac\xe4\xb8\xba\xe4\xbb\x80\xe4\xb9\x88\xe4\xb8\x8d\xe8\xaf\xb4\xe4\xb8\xad\xe6\x96\x87.COM",
+				],
+				'expected'   => [
+					'domain' => 'xn--ihqwcrb4cv8a8dqg056pqjye.com',
+				],
+			],
+			'Attribute normalization: domain: domain should be converted to lowercase - accented latin' => [
+				'attributes' => [
+					'domain' => "\x50\x6f\x72\x71\x75\xc3\xa9\x6e\x6f\x70\x75\x65\x64\x65\x6e\x73\x69\x6d\x70\x6c\x65\x6d\x65\x6e\x74\x65\x68\x61\x62\x6c\x61\x72\x65\x6e\x45\x73\x70\x61\xc3\xb1\x6f\x6c.ES",
+				],
+				'expected'   => [
+					'domain' => 'xn--porqunopuedensimplementehablarenespaol-fmd56a.es',
+				],
+			],
 
 			// Default case logic.
 			'Attribute normalization: anything else is returned unchanged - string name, string value' => [
