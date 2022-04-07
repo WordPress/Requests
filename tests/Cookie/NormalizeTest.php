@@ -4,6 +4,7 @@ namespace WpOrg\Requests\Tests\Cookie;
 
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * @covers \WpOrg\Requests\Cookie::normalize
@@ -15,6 +16,9 @@ final class NormalizeTest extends TestCase {
 	 * Verify cookie attribute normalization works correctly.
 	 *
 	 * @dataProvider dataNormalizeAttributes
+	 * @dataProvider dataNormalizeAttributesExpiresUnsupportedType
+	 * @dataProvider dataNormalizeAttributesMaxAgeUnsupportedType
+	 * @dataProvider dataNormalizeAttributesDomainUnsupportedType
 	 *
 	 * @param array $attributes The attributes used for creating the cookie.
 	 * @param array $expected   The expected attributes after normalization.
@@ -240,6 +244,69 @@ final class NormalizeTest extends TestCase {
 				],
 			],
 		];
+	}
+
+	/**
+	 * Data provider for checking data type handling for the "expires" attribute.
+	 *
+	 * @return array
+	 */
+	public function dataNormalizeAttributesExpiresUnsupportedType() {
+		$types = TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, TypeProviderHelper::GROUP_STRING);
+
+		$data = [];
+		foreach ($types as $key => $value) {
+			$data['Attribute normalization: expires: unsupported type - ' . $key] = [
+				'attributes' => [
+					'expires' => $value['input'],
+				],
+				'expected'   => [],
+			];
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Data provider for checking data type handling for the "max-age" attribute.
+	 *
+	 * @return array
+	 */
+	public function dataNormalizeAttributesMaxAgeUnsupportedType() {
+		$types = TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, TypeProviderHelper::GROUP_STRING);
+
+		$data = [];
+		foreach ($types as $key => $value) {
+			$data['Attribute normalization: max-age: unsupported type - ' . $key] = [
+				'attributes' => [
+					'max-age' => $value['input'],
+				],
+				'expected'   => [],
+			];
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Data provider for checking data type handling for the "domain" attribute.
+	 *
+	 * @return array
+	 */
+	public function dataNormalizeAttributesDomainUnsupportedType() {
+		$types = TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
+
+		$data = [];
+		foreach ($types as $key => $value) {
+			$data['Attribute normalization: domain: unsupported type - ' . $key] = [
+				'attributes' => [
+					'domain' => $value['input'],
+				],
+				'expected'   => [],
+			];
+		}
+
+		return $data;
 	}
 
 	/**
