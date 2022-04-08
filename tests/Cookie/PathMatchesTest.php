@@ -17,12 +17,32 @@ final class PathMatchesTest extends TestCase {
 	 * Cookies parsed from headers internally in Requests will always have a
 	 * domain/path set, but those created manually will not. Manual cookies
 	 * should be regarded as "global" cookies (that is, set for `.`).
+	 *
+	 * @dataProvider dataManuallySetCookie
+	 *
+	 * @param string $path Path to verify for a match.
+	 *
+	 * @return void
 	 */
-	public function testManuallySetCookie() {
+	public function testManuallySetCookie($path) {
 		$cookie = new Cookie('requests-testcookie', 'testvalue');
-		$this->assertTrue($cookie->path_matches('/'));
-		$this->assertTrue($cookie->path_matches('/test'));
-		$this->assertTrue($cookie->path_matches('/test/'));
+
+		$this->assertTrue($cookie->path_matches($path));
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataManuallySetCookie() {
+		$paths = [
+			'/',
+			'/test',
+			'/test/',
+		];
+
+		return $this->textArrayToDataprovider($paths);
 	}
 
 	/**
