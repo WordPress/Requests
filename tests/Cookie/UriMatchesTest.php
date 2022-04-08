@@ -242,14 +242,35 @@ final class UriMatchesTest extends TestCase {
 	 * Cookies parsed from headers internally in Requests will always have a
 	 * domain/path set, but those created manually will not. Manual cookies
 	 * should be regarded as "global" cookies (that is, set for `.`).
+	 *
+	 * @dataProvider dataManuallySetCookie
+	 *
+	 * @param string $url The URL to verify for a match.
+	 *
+	 * @return void
 	 */
-	public function testManuallySetCookie() {
+	public function testManuallySetCookie($url) {
 		$cookie = new Cookie('requests-testcookie', 'testvalue');
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test/')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test/')));
+		$iri    = new Iri($url);
+
+		$this->assertTrue($cookie->uri_matches($iri));
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataManuallySetCookie() {
+		$urls = [
+			'http://example.com/',
+			'http://example.com/test',
+			'http://example.com/test/',
+			'http://example.net/',
+			'http://example.net/test',
+			'http://example.net/test/',
+		];
+
+		return $this->textArrayToDataprovider($urls);
 	}
 }
