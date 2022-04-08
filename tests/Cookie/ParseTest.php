@@ -364,29 +364,39 @@ final class ParseTest extends TestCase {
 
 	/**
 	 * Test helper function.
+	 *
+	 * @param \WpOrg\Requests\Cookie $cookie              Cookie object.
+	 * @param array                  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array                  $expected_attributes Array with attribute expectations.
+	 * @param array                  $expected_flags      Array with flag expectations.
+	 *
+	 * @return void
 	 */
 	private function check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags = []) {
+		$this->assertInstanceof(Cookie::class, $cookie, 'Parsing did not yield a Cookie object');
+
 		if (isset($expected['name'])) {
-			$this->assertSame($expected['name'], $cookie->name);
+			$this->assertSame($expected['name'], $cookie->name, 'Cookie name does not match expectation');
 		}
 
 		if (isset($expected['value'])) {
-			$this->assertSame($expected['value'], $cookie->value);
+			$this->assertSame($expected['value'], $cookie->value, 'Cookie value does not match expectation');
 		}
 
 		if (isset($expected['expired'])) {
-			$this->assertSame($expected['expired'], $cookie->is_expired());
+			$this->assertSame($expected['expired'], $cookie->is_expired(), 'Cookie expiration identification does not match expectation');
 		}
 
-		if (isset($expected_attributes)) {
+		if (isset($expected_attributes) && !empty($expected_attributes)) {
 			foreach ($expected_attributes as $attr_key => $attr_val) {
-				$this->assertSame($attr_val, $cookie->attributes[$attr_key], "$attr_key should match supplied");
+				$this->assertSame($attr_val, $cookie->attributes[$attr_key], "Attribute '$attr_key' should match supplied value");
 			}
 		}
 
-		if (isset($expected_flags)) {
+		if (isset($expected_flags) && !empty($expected_flags)) {
 			foreach ($expected_flags as $flag_key => $flag_val) {
-				$this->assertSame($flag_val, $cookie->flags[$flag_key], "$flag_key should match supplied");
+				$this->assertSame($flag_val, $cookie->flags[$flag_key], "Flag '$flag_key' should match supplied value");
 			}
 		}
 	}
