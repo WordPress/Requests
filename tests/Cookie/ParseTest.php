@@ -92,6 +92,69 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
+	 * Document how the parse() method handles basic input parsing in combination with
+	 * whether a predefined cookie name was passed or not.
+	 *
+	 * @dataProvider dataBasicNameValueParsing
+	 *
+	 * @covers ::parse
+	 *
+	 * @param string $header   Cookie header string.
+	 * @param string $name     Name to be passsed.
+	 * @param array  $expected Array with expectations to be verified via check_parsed_cookie().
+	 *                         Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 *
+	 * @return void
+	 */
+	public function testBasicNameValueParsing($header, $name, $expected) {
+		$cookie = Cookie::parse($header, $name);
+
+		$this->check_parsed_cookie($cookie, $expected);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public static function dataBasicNameValueParsing() {
+		return [
+			'Header value only, no name: expect empty name, value contains cookie info' => [
+				'header'   => 'bar',
+				'name'     => '',
+				'expected' => ['name' => '', 'value' => 'bar'],
+			],
+			'Header key=value, no name: expect cookie key set as name' => [
+				'header'   => 'foo=bar',
+				'name'     => '',
+				'expected' => ['name' => 'foo', 'value' => 'bar'],
+			],
+			'Header value only, explicit name: expect passed name set as name, value contains cookie info' => [
+				'header'   => 'bar',
+				'name'     => 'passed-name',
+				'expected' => ['name' => 'passed-name', 'value' => 'bar'],
+			],
+			'Header key=value, explicit name: expect passed name set as name, cookie key=value set as value' => [
+				'header'   => 'foo=bar',
+				'name'     => 'passed-name',
+				'expected' => ['name' => 'passed-name', 'value' => 'foo=bar'],
+			],
+
+			// Safeguard whitespace handling.
+			'Surrounding whitespace should be stripped off name and value [1]' => [
+				'header'   => '  bar  ',
+				'name'     => '  passed-name  ',
+				'expected' => ['name' => 'passed-name', 'value' => 'bar'],
+			],
+			'Surrounding whitespace should be stripped off name and value [2]' => [
+				'header'   => '   foo   =   bar   ',
+				'name'     => '',
+				'expected' => ['name' => 'foo', 'value' => 'bar'],
+			],
+		];
+	}
+
+	/**
 	 * @dataProvider dataParseResult
 	 */
 	public function testParsingHeader($header, $expected, $expected_attributes = [], $expected_flags = []) {
@@ -143,16 +206,6 @@ final class ParseTest extends TestCase {
 	 */
 	public static function dataParseResult() {
 		return [
-			// Basic parsing
-			[
-				'foo=bar',
-				['name' => 'foo', 'value' => 'bar'],
-			],
-			[
-				'bar',
-				['name' => '', 'value' => 'bar'],
-			],
-
 			// Expiration
 			// RFC 822, updated by RFC 1123
 			[
@@ -373,7 +426,7 @@ final class ParseTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	private function check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags = []) {
+	private function check_parsed_cookie($cookie, $expected, $expected_attributes = [], $expected_flags = []) {
 		$this->assertInstanceof(Cookie::class, $cookie, 'Parsing did not yield a Cookie object');
 
 		if (isset($expected['name'])) {
