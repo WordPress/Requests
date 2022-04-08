@@ -278,6 +278,33 @@ final class ParseTest extends TestCase {
 				'expected'            => ['expired' => false],
 				'expected_attributes' => ['max-age' => null],
 			],
+
+			/*
+			 * Arbitrary attributes.
+			 */
+			'Attribute parsing where the attribute does not contain an = sign' => [
+				'header'              => 'foo=bar; HttpOnly',
+				'expected'            => [],
+				'expected_attributes' => ['httponly' => true],
+			],
+			'Attribute parsing: surrounding whitespace should be stripped' => [
+				'header'              => 'foo=bar; ArbitraryName   =  some-value   ',
+				'expected'            => [],
+				'expected_attributes' => ['ArbitraryName' => 'some-value'],
+			],
+
+			/*
+			 * Altogether now: multiple attributes in one cookie header.
+			 */
+			'Parsing when there are multiple attributes' => [
+				'header'              => 'foo=bar; Expires=Fri, 5-Dec-2014 04:50:12 GMT; Max-Age=3660; ArbitraryName   =  some-value   ',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => [
+					'expires'       => gmmktime(4, 50, 12, 12, 5, 2014),
+					'max-age'       => gmmktime(1, 1, 0, 1, 1, 2014),
+					'ArbitraryName' => 'some-value',
+				],
+			],
 		];
 	}
 
