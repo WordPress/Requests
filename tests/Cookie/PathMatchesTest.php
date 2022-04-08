@@ -37,6 +37,7 @@ final class PathMatchesTest extends TestCase {
 	 */
 	public function dataManuallySetCookie() {
 		$paths = [
+			'',
 			'/',
 			'/test',
 			'/test/',
