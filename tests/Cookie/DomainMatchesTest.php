@@ -17,11 +17,31 @@ final class DomainMatchesTest extends TestCase {
 	 * Cookies parsed from headers internally in Requests will always have a
 	 * domain/path set, but those created manually will not. Manual cookies
 	 * should be regarded as "global" cookies (that is, set for `.`).
+	 *
+	 * @dataProvider dataManuallySetCookie
+	 *
+	 * @param string $domain Domain to verify for a match.
+	 *
+	 * @return void
 	 */
-	public function testManuallySetCookie() {
+	public function testManuallySetCookie($domain) {
 		$cookie = new Cookie('requests-testcookie', 'testvalue');
-		$this->assertTrue($cookie->domain_matches('example.com'));
-		$this->assertTrue($cookie->domain_matches('example.net'));
+
+		$this->assertTrue($cookie->domain_matches($domain));
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataManuallySetCookie() {
+		$domains = [
+			'example.com',
+			'example.net',
+		];
+
+		return $this->textArrayToDataprovider($domains);
 	}
 
 	/**
