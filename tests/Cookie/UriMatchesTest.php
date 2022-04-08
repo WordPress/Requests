@@ -263,6 +263,7 @@ final class UriMatchesTest extends TestCase {
 	 */
 	public function dataManuallySetCookie() {
 		$urls = [
+			'http://example.com',
 			'http://example.com/',
 			'http://example.com/test',
 			'http://example.com/test/',
