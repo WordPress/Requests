@@ -12,6 +12,20 @@ use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 final class PathMatchesTest extends TestCase {
 
 	/**
+	 * Manually set cookies without a domain/path set should always be valid.
+	 *
+	 * Cookies parsed from headers internally in Requests will always have a
+	 * domain/path set, but those created manually will not. Manual cookies
+	 * should be regarded as "global" cookies (that is, set for `.`).
+	 */
+	public function testManuallySetCookie() {
+		$cookie = new Cookie('requests-testcookie', 'testvalue');
+		$this->assertTrue($cookie->path_matches('/'));
+		$this->assertTrue($cookie->path_matches('/test'));
+		$this->assertTrue($cookie->path_matches('/test/'));
+	}
+
+	/**
 	 * @dataProvider dataPathMatch
 	 */
 	public function testPathMatch($original, $check, $matches) {

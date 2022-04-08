@@ -88,4 +88,21 @@ final class UriMatchesTest extends TestCase {
 		$this->assertTrue($cookie->uri_matches(new Iri('https://www.example.com/')));
 		$this->assertFalse($cookie->uri_matches(new Iri('http://www.example.com/')));
 	}
+
+	/**
+	 * Manually set cookies without a domain/path set should always be valid.
+	 *
+	 * Cookies parsed from headers internally in Requests will always have a
+	 * domain/path set, but those created manually will not. Manual cookies
+	 * should be regarded as "global" cookies (that is, set for `.`).
+	 */
+	public function testManuallySetCookie() {
+		$cookie = new Cookie('requests-testcookie', 'testvalue');
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test')));
+		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test/')));
+	}
 }

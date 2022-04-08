@@ -3,7 +3,6 @@
 namespace WpOrg\Requests\Tests\Cookie;
 
 use WpOrg\Requests\Cookie;
-use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -119,27 +118,5 @@ final class CookieTest extends TestCase {
 
 		$this->assertArrayHasKey('requests-testcookie2', $data);
 		$this->assertSame('testvalue2', $data['requests-testcookie2']);
-	}
-
-	/**
-	 * Manually set cookies without a domain/path set should always be valid
-	 *
-	 * Cookies parsed from headers internally in Requests will always have a
-	 * domain/path set, but those created manually will not. Manual cookies
-	 * should be regarded as "global" cookies (that is, set for `.`)
-	 */
-	public function testUrlMatchManuallySet() {
-		$cookie = new Cookie('requests-testcookie', 'testvalue');
-		$this->assertTrue($cookie->domain_matches('example.com'));
-		$this->assertTrue($cookie->domain_matches('example.net'));
-		$this->assertTrue($cookie->path_matches('/'));
-		$this->assertTrue($cookie->path_matches('/test'));
-		$this->assertTrue($cookie->path_matches('/test/'));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.com/test/')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test')));
-		$this->assertTrue($cookie->uri_matches(new Iri('http://example.net/test/')));
 	}
 }
