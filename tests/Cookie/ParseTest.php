@@ -10,7 +10,7 @@ use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
- * @covers WpOrg\Requests\Cookie
+ * @coversDefaultClass \WpOrg\Requests\Cookie
  */
 final class ParseTest extends TestCase {
 
@@ -19,7 +19,7 @@ final class ParseTest extends TestCase {
 	 *
 	 * @dataProvider dataInvalidStringInput
 	 *
-	 * @covers \WpOrg\Requests\Cookie::parse
+	 * @covers ::parse
 	 *
 	 * @param mixed $input Invalid parameter input.
 	 *
@@ -37,7 +37,7 @@ final class ParseTest extends TestCase {
 	 *
 	 * @dataProvider dataInvalidStringInput
 	 *
-	 * @covers \WpOrg\Requests\Cookie::parse
+	 * @covers ::parse
 	 *
 	 * @param mixed $input Invalid parameter input.
 	 *
@@ -62,7 +62,7 @@ final class ParseTest extends TestCase {
 	/**
 	 * Tests receiving an exception when the parse() method received an invalid input type as `$reference_time`.
 	 *
-	 * @covers \WpOrg\Requests\Cookie::parse
+	 * @covers ::parse
 	 *
 	 * @return void
 	 */
@@ -76,7 +76,7 @@ final class ParseTest extends TestCase {
 	/**
 	 * Tests receiving an exception when the parse_from_headers() method received an invalid input type as `$reference_time`.
 	 *
-	 * @covers \WpOrg\Requests\Cookie::parse_from_headers
+	 * @covers ::parse_from_headers
 	 *
 	 * @return void
 	 */
