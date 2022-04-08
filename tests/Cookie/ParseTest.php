@@ -206,73 +206,77 @@ final class ParseTest extends TestCase {
 	 */
 	public static function dataParseResult() {
 		return [
-			// Expiration
-			// RFC 822, updated by RFC 1123
-			[
-				'foo=bar; Expires=Thu, 5-Dec-2013 04:50:12 GMT',
-				['expired' => true],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
+			/*
+			 * Expiration date parsing.
+			 */
+			// RFC 822, updated by RFC 1123.
+			'Expiration date parsing: format: RFC 822, updated by RFC 1123; expired date' => [
+				'header'              => 'foo=bar; Expires=Thu, 5-Dec-2013 04:50:12 GMT',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
 			],
-			[
-				'foo=bar; Expires=Fri, 5-Dec-2014 04:50:12 GMT',
-				['expired' => false],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
+			'Expiration date parsing: format: RFC 822, updated by RFC 1123; non-expired date' => [
+				'header'              => 'foo=bar; Expires=Fri, 5-Dec-2014 04:50:12 GMT',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
 			],
-			// RFC 850, obsoleted by RFC 1036
-			[
-				'foo=bar; Expires=Thursday, 5-Dec-2013 04:50:12 GMT',
-				['expired' => true],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
+			// RFC 850, obsoleted by RFC 1036.
+			'Expiration date parsing: format: RFC 850, obsoleted by RFC 1036; expired date' => [
+				'header'              => 'foo=bar; Expires=Thursday, 5-Dec-2013 04:50:12 GMT',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
 			],
-			[
-				'foo=bar; Expires=Friday, 5-Dec-2014 04:50:12 GMT',
-				['expired' => false],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
+			'Expiration date parsing: format: RFC 850, obsoleted by RFC 1036; non-expired date' => [
+				'header'              => 'foo=bar; Expires=Friday, 5-Dec-2014 04:50:12 GMT',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
 			],
-			// Test with asctime()
-			[
-				'foo=bar; Expires=Thu Dec  5 04:50:12 2013',
-				['expired' => true],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
+			// Test with asctime().
+			'Expiration date parsing: format: asctime(); expired date' => [
+				'header'              => 'foo=bar; Expires=Thu Dec  5 04:50:12 2013',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
 			],
-			[
-				'foo=bar; Expires=Fri Dec  5 04:50:12 2014',
-				['expired' => false],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
+			'Expiration date parsing: format: asctime(); non-expired date' => [
+				'header'              => 'foo=bar; Expires=Fri Dec  5 04:50:12 2014',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
 			],
-			[
-				// Invalid
-				'foo=bar; Expires=never',
-				[],
-				['expires' => null],
+			// Invalid.
+			'Expiration date parsing: invalid expiration date' => [
+				'header'              => 'foo=bar; Expires=never',
+				'expected'            => [],
+				'expected_attributes' => ['expires' => null],
 			],
 
-			// Max-Age
-			[
-				'foo=bar; Max-Age=10',
-				['expired' => false],
-				['max-age' => gmmktime(0, 0, 10, 1, 1, 2014)],
+			/*
+			 * Max-Age parsing.
+			 */
+			'Max-Age parsing: value: 10' => [
+				'header'              => 'foo=bar; Max-Age=10',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['max-age' => gmmktime(0, 0, 10, 1, 1, 2014)],
 			],
-			[
-				'foo=bar; Max-Age=3660',
-				['expired' => false],
-				['max-age' => gmmktime(1, 1, 0, 1, 1, 2014)],
+			'Max-Age parsing: value: 3660' => [
+				'header'              => 'foo=bar; Max-Age=3660',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['max-age' => gmmktime(1, 1, 0, 1, 1, 2014)],
 			],
-			[
-				'foo=bar; Max-Age=0',
-				['expired' => true],
-				['max-age' => 0],
+			'Max-Age parsing: value: 0' => [
+				'header'              => 'foo=bar; Max-Age=0',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['max-age' => 0],
 			],
-			[
-				'foo=bar; Max-Age=-1000',
-				['expired' => true],
-				['max-age' => 0],
+			'Max-Age parsing: value: 1000' => [
+				'header'              => 'foo=bar; Max-Age=-1000',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['max-age' => 0],
 			],
-			[
-				// Invalid (non-digit character)
-				'foo=bar; Max-Age=1e6',
-				['expired' => false],
-				['max-age' => null],
+			// Invalid (non-digit character).
+			'Max-Age parsing: value: 1e6 (non-digit)' => [
+				'header'              => 'foo=bar; Max-Age=1e6',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['max-age' => null],
 			],
 		];
 	}
