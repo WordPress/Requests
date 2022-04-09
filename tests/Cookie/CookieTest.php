@@ -8,7 +8,14 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
 
+/**
+ * Integration tests for the Cookie class.
+ *
+ * @covers \WpOrg\Requests\Cookie
+ * @covers \WpOrg\Requests\Cookie\Jar
+ */
 final class CookieTest extends TestCase {
+
 	public function testReceivingCookies() {
 		$options = [
 			'follow_redirects' => false,
