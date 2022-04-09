@@ -155,10 +155,19 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
+	 * Verify the parsing of a cookie header string into a cookie.
+	 *
 	 * @dataProvider dataParseResult
+	 *
+	 * @param string $header              Cookie header string.
+	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array  $expected_attributes Attribute expectations to verify.
+	 *
+	 * @return void
 	 */
 	public function testParsingHeader($header, $expected, $expected_attributes = []) {
-		// Set the reference time to 2014-01-01 00:00:00
+		// Set the reference time to 2014-01-01 00:00:00.
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
 		$cookie = Cookie::parse($header, '', $reference_time);
@@ -166,30 +175,46 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
-	 * Double-normalizes the cookie data to ensure we catch any issues there
+	 * Double-normalizes the cookie data to ensure we catch any issues there.
 	 *
 	 * @dataProvider dataParseResult
+	 *
+	 * @param string $header              Cookie header string.
+	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array  $expected_attributes Attribute expectations to verify.
+	 *
+	 * @return void
 	 */
 	public function testParsingHeaderDouble($header, $expected, $expected_attributes = []) {
-		// Set the reference time to 2014-01-01 00:00:00
+		// Set the reference time to 2014-01-01 00:00:00.
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
 		$cookie = Cookie::parse($header, '', $reference_time);
 
-		// Normalize the value again
+		// Normalize the value again.
 		$cookie->normalize();
 
 		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
 	}
 
 	/**
+	 * Verify parsing of cookies in Header objects.
+	 *
 	 * @dataProvider dataParseResult
+	 *
+	 * @param string $header              Cookie header string.
+	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array  $expected_attributes Attribute expectations to verify.
+	 *
+	 * @return void
 	 */
 	public function testParsingHeaderObject($header, $expected, $expected_attributes = []) {
 		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
-		// Set the reference time to 2014-01-01 00:00:00
+		// Set the reference time to 2014-01-01 00:00:00.
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
 		$parsed = Cookie::parse_from_headers($headers, null, $reference_time);
