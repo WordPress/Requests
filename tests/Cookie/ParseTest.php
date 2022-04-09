@@ -363,110 +363,110 @@ final class ParseTest extends TestCase {
 	 */
 	public function dataParsingHeaderWithOrigin() {
 		return [
-			# Varying origin path
-			[
-				'name=value',
-				'http://example.com/',
-				[],
-				['path' => '/'],
-				['host-only' => true],
+			// Varying origin path.
+			'Origin: http://example.com/' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value',
-				'http://example.com/test',
-				[],
-				['path' => '/'],
-				['host-only' => true],
+			'Origin: http://example.com/test' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/test',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value',
-				'http://example.com/test/',
-				[],
-				['path' => '/test'],
-				['host-only' => true],
+			'Origin: http://example.com/test/ (with trailing slash)' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/test/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value',
-				'http://example.com/test/abc',
-				[],
-				['path' => '/test'],
-				['host-only' => true],
+			'Origin: http://example.com/test/abc' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/test/abc',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value',
-				'http://example.com/test/abc/',
-				[],
-				['path' => '/test/abc'],
-				['host-only' => true],
-			],
-
-			# With specified path
-			[
-				'name=value; path=/',
-				'http://example.com/',
-				[],
-				['path' => '/'],
-				['host-only' => true],
-			],
-			[
-				'name=value; path=/test',
-				'http://example.com/',
-				[],
-				['path' => '/test'],
-				['host-only' => true],
-			],
-			[
-				'name=value; path=/test/',
-				'http://example.com/',
-				[],
-				['path' => '/test/'],
-				['host-only' => true],
+			'Origin: http://example.com/test/abc/ (with trailing slash)' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/test/abc/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test/abc'],
+				'expected_flags'      => ['host-only' => true],
 			],
 
-			# Invalid path
-			[
-				'name=value; path=yolo',
-				'http://example.com/',
-				[],
-				['path' => '/'],
-				['host-only' => true],
+			// With specified path.
+			'Origin: http://example.com/; path in header: /' => [
+				'header'              => 'name=value; path=/',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value; path=yolo',
-				'http://example.com/test/',
-				[],
-				['path' => '/test'],
-				['host-only' => true],
+			'Origin: http://example.com/; path in header: /test' => [
+				'header'              => 'name=value; path=/test',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test'],
+				'expected_flags'      => ['host-only' => true],
 			],
-
-			# Cross-origin cookies, reject!
-			[
-				'name=value; domain=example.org',
-				'http://example.com/',
-				['invalid' => false],
-			],
-
-			# Empty Domain
-			[
-				'name=value; domain=',
-				'http://example.com/test/',
-				[],
+			'Origin: http://example.com/; path in header: /test/' => [
+				'header'              => 'name=value; path=/test/',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test/'],
+				'expected_flags'      => ['host-only' => true],
 			],
 
-			# Subdomain cookies
-			[
-				'name=value; domain=test.example.com',
-				'http://test.example.com/',
-				[],
-				['domain' => 'test.example.com'],
-				['host-only' => false],
+			// Invalid path.
+			'Origin: http://example.com/; INVALID path in header: yolo' => [
+				'header'              => 'name=value; path=yolo',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value; domain=example.com',
-				'http://test.example.com/',
-				[],
-				['domain' => 'example.com'],
-				['host-only' => false],
+			'Origin: http://example.com/test/; INVALID path in header: yolo' => [
+				'header'              => 'name=value; path=yolo',
+				'origin'              => 'http://example.com/test/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test'],
+				'expected_flags'      => ['host-only' => true],
+			],
+
+			// Cross-origin cookies, reject!
+			'Reject cross-origin cookies. Origin: http://example.com/; domain in header: example.org' => [
+				'header'              => 'name=value; domain=example.org',
+				'origin'              => 'http://example.com/',
+				'expected'            => ['invalid' => false],
+			],
+
+			// Empty Domain.
+			'Origin: http://example.com/test/; domain in header: example.org' => [
+				'header'              => 'name=value; domain=',
+				'origin'              => 'http://example.com/test/',
+				'expected'            => [],
+			],
+
+			// Subdomain cookies.
+			'Subdomain cookie - Origin: http://test.example.com/; domain in header: test.example.com' => [
+				'header'              => 'name=value; domain=test.example.com',
+				'origin'              => 'http://test.example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['domain' => 'test.example.com'],
+				'expected_flags'      => ['host-only' => false],
+			],
+			'Subdomain cookie - Origin: http://test.example.com/; domain in header: example.com' => [
+				'header'              => 'name=value; domain=example.com',
+				'origin'              => 'http://test.example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['domain' => 'example.com'],
+				'expected_flags'      => ['host-only' => false],
 			],
 		];
 	}
