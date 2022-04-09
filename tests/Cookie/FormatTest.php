@@ -78,6 +78,11 @@ final class FormatTest extends TestCase {
 				'value'    => 'testvalue',
 				'expected' => '=testvalue',
 			],
+			'Has key, empty value' => [
+				'name'     => 'requests-testcookie',
+				'value'    => '',
+				'expected' => 'requests-testcookie=',
+			],
 			'Has key and value' => [
 				'name'     => 'requests-testcookie',
 				'value'    => 'testvalue',
