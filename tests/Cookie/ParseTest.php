@@ -157,7 +157,7 @@ final class ParseTest extends TestCase {
 	/**
 	 * @dataProvider dataParseResult
 	 */
-	public function testParsingHeader($header, $expected, $expected_attributes = [], $expected_flags = []) {
+	public function testParsingHeader($header, $expected, $expected_attributes = []) {
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
@@ -170,7 +170,7 @@ final class ParseTest extends TestCase {
 	 *
 	 * @dataProvider dataParseResult
 	 */
-	public function testParsingHeaderDouble($header, $expected, $expected_attributes = [], $expected_flags = []) {
+	public function testParsingHeaderDouble($header, $expected, $expected_attributes = []) {
 		// Set the reference time to 2014-01-01 00:00:00
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
@@ -179,13 +179,13 @@ final class ParseTest extends TestCase {
 		// Normalize the value again
 		$cookie->normalize();
 
-		$this->check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags);
+		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
 	}
 
 	/**
 	 * @dataProvider dataParseResult
 	 */
-	public function testParsingHeaderObject($header, $expected, $expected_attributes = [], $expected_flags = []) {
+	public function testParsingHeaderObject($header, $expected, $expected_attributes = []) {
 		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
