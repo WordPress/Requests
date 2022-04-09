@@ -334,14 +334,25 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
+	 * Verify parsing of cookies in Header objects when origin is known.
+	 *
 	 * @dataProvider dataParsingHeaderWithOrigin
+	 *
+	 * @param string $header              Cookie header string.
+	 * @param string $origin              URI for comparing cookie origins.
+	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array  $expected_attributes Attribute expectations to verify.
+	 * @param array  $expected_flags      Flag expectations to verify.
+	 *
+	 * @return void
 	 */
 	public function testParsingHeaderWithOrigin($header, $origin, $expected, $expected_attributes = [], $expected_flags = []) {
 		$origin                = new Iri($origin);
 		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
-		// Set the reference time to 2014-01-01 00:00:00
+		// Set the reference time to 2014-01-01 00:00:00.
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
 		$parsed = Cookie::parse_from_headers($headers, $origin, $reference_time);
