@@ -62,6 +62,9 @@ final class ParseTest extends TestCase {
 	/**
 	 * Tests receiving an exception when the parse() method received an invalid input type as `$reference_time`.
 	 *
+	 * Note: this exception is thrown from the constructor on the call to new static() and is more extensively
+	 * tested in the `WpOrg\Requests\Tests\Cookie\ConstructorTest` class.
+	 *
 	 * @covers ::parse
 	 *
 	 * @return void
@@ -75,6 +78,9 @@ final class ParseTest extends TestCase {
 
 	/**
 	 * Tests receiving an exception when the parse_from_headers() method received an invalid input type as `$reference_time`.
+	 *
+	 * Note: this exception is thrown from the constructor on the call to new static() and is more extensively
+	 * tested in the `WpOrg\Requests\Tests\Cookie\ConstructorTest` class.
 	 *
 	 * @covers ::parse_from_headers
 	 *
@@ -159,6 +165,8 @@ final class ParseTest extends TestCase {
 	 *
 	 * @dataProvider dataParseResult
 	 *
+	 * @covers ::parse
+	 *
 	 * @param string $header              Cookie header string.
 	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
 	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
@@ -178,6 +186,8 @@ final class ParseTest extends TestCase {
 	 * Double-normalizes the cookie data to ensure we catch any issues there.
 	 *
 	 * @dataProvider dataParseResult
+	 *
+	 * @coversNothing
 	 *
 	 * @param string $header              Cookie header string.
 	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
@@ -202,6 +212,8 @@ final class ParseTest extends TestCase {
 	 * Verify parsing of cookies in Header objects.
 	 *
 	 * @dataProvider dataParseResult
+	 *
+	 * @covers ::parse_from_headers
 	 *
 	 * @param string $header              Cookie header string.
 	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
@@ -352,6 +364,8 @@ final class ParseTest extends TestCase {
 	 * Verify parsing of cookies in Header objects when origin is known.
 	 *
 	 * @dataProvider dataParsingHeaderWithOrigin
+	 *
+	 * @covers ::parse_from_headers
 	 *
 	 * @param string $header              Cookie header string.
 	 * @param string $origin              URI for comparing cookie origins.
