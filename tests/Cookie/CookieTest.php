@@ -12,21 +12,6 @@ final class CookieTest extends TestCase {
 
 		$this->assertSame('requests-testcookie', $cookie->name);
 		$this->assertSame('testvalue', $cookie->value);
-		$this->assertSame('testvalue', (string) $cookie);
-
-		$this->assertSame('requests-testcookie=testvalue', $cookie->format_for_header());
-		$this->assertSame('requests-testcookie=testvalue', $cookie->format_for_set_cookie());
-	}
-
-	public function testCookieWithAttributes() {
-		$attributes = [
-			'httponly',
-			'path' => '/',
-		];
-		$cookie     = new Cookie('requests-testcookie', 'testvalue', $attributes);
-
-		$this->assertSame('requests-testcookie=testvalue', $cookie->format_for_header());
-		$this->assertSame('requests-testcookie=testvalue; httponly; path=/', $cookie->format_for_set_cookie());
 	}
 
 	public function testEmptyCookieName() {
