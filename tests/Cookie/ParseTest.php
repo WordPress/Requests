@@ -334,6 +334,21 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
+	 * Verify handling of Headers object without a `Set-Cookie` header set.
+	 *
+	 * @covers ::parse_from_headers
+	 *
+	 * @return void
+	 */
+	public function testParsingEmptyHeader() {
+		$headers = new Headers();
+		$parsed  = Cookie::parse_from_headers($headers);
+
+		$this->assertIsArray($parsed, 'Return value is not an array');
+		$this->assertCount(0, $parsed, 'Returned array is not empty');
+	}
+
+	/**
 	 * Verify parsing of cookies in Header objects when origin is known.
 	 *
 	 * @dataProvider dataParsingHeaderWithOrigin
