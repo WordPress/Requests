@@ -364,6 +364,13 @@ final class ParseTest extends TestCase {
 	public function dataParsingHeaderWithOrigin() {
 		return [
 			// Varying origin path.
+			'Origin: http://example.com (no trailing slash for path)' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
+			],
 			'Origin: http://example.com/' => [
 				'header'              => 'name=value',
 				'origin'              => 'http://example.com/',
@@ -447,6 +454,11 @@ final class ParseTest extends TestCase {
 			],
 
 			// Empty Domain.
+			'Origin: no domain, empty string; no domain in header; cookie will be rejected' => [
+				'header'              => 'name=value',
+				'origin'              => '',
+				'expected'            => ['invalid' => true],
+			],
 			'Origin: http://example.com/test/; domain in header: example.org' => [
 				'header'              => 'name=value; domain=',
 				'origin'              => 'http://example.com/test/',
