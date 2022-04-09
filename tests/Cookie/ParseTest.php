@@ -510,6 +510,44 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
+	 * Verify handling of Headers object with multiple `Set-Cookie` headers.
+	 *
+	 * @covers ::parse_from_headers
+	 *
+	 * @return void
+	 */
+	public function testParsingHeaderWithMultipleCookies() {
+		$origin                = new Iri('http://example.com/');
+		$headers               = new Headers();
+		$headers['Set-Cookie'] = 'foo=bar; Expires=Sun, 5-Dec-2021 04:50:12 GMT';
+		$headers['Set-Cookie'] = 'bar=baz; Max-Age=3660';
+		$headers['Set-Cookie'] = 'baz=foo; path=/test';
+
+		// Set the reference time to 2022-01-01 00:00:00.
+		$reference_time = gmmktime(0, 0, 0, 1, 1, 2022);
+
+		$expected            = [
+			'foo' => ['name' => 'foo', 'value' => 'bar', 'expired' => true],
+			'bar' => ['name' => 'bar', 'value' => 'baz', 'expired' => false],
+			'baz' => ['name' => 'baz', 'value' => 'foo', 'expired' => false],
+		];
+		$expected_attributes = [
+			'foo' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2021), 'domain' => 'example.com', 'path' => '/'],
+			'bar' => ['max-age' => gmmktime(1, 1, 0, 1, 1, 2022), 'domain' => 'example.com', 'path' => '/'],
+			'baz' => ['path' => '/test', 'domain' => 'example.com'],
+		];
+
+		$parsed = Cookie::parse_from_headers($headers, $origin, $reference_time);
+
+		$this->assertIsArray($parsed, 'Return value is not an array');
+		$this->assertCount(3, $parsed, 'Returned array does not contain exactly 3 Cookies');
+
+		foreach ($parsed as $key => $cookie) {
+			$this->check_parsed_cookie($cookie, $expected[$key], $expected_attributes[$key]);
+		}
+	}
+
+	/**
 	 * Test helper function.
 	 *
 	 * @param \WpOrg\Requests\Cookie $cookie              Cookie object.
