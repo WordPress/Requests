@@ -32,18 +32,6 @@ final class CookieTest extends TestCase {
 		$this->assertSame('testvalue', $cookie->value);
 	}
 
-	private function setCookieRequest($cookies) {
-		$options  = [
-			'cookies' => $cookies,
-		];
-		$response = Requests::get(httpbin('/cookies/set'), [], $options);
-
-		$data = json_decode($response->body, true);
-		$this->assertIsArray($data);
-		$this->assertArrayHasKey('cookies', $data);
-		return $data['cookies'];
-	}
-
 	public function testSendingCookie() {
 		$cookies = [
 			'requests-testcookie1' => 'testvalue1',
@@ -84,5 +72,24 @@ final class CookieTest extends TestCase {
 
 		$this->assertArrayHasKey('requests-testcookie2', $data);
 		$this->assertSame('testvalue2', $data['requests-testcookie2']);
+	}
+
+	/**
+	 * Test helper.
+	 *
+	 * @param array $cookies The cookies to set.
+	 *
+	 * @return array
+	 */
+	private function setCookieRequest($cookies) {
+		$options  = [
+			'cookies' => $cookies,
+		];
+		$response = Requests::get(httpbin('/cookies/set'), [], $options);
+
+		$data = json_decode($response->body, true);
+		$this->assertIsArray($data);
+		$this->assertArrayHasKey('cookies', $data);
+		return $data['cookies'];
 	}
 }
