@@ -443,7 +443,7 @@ final class ParseTest extends TestCase {
 			'Reject cross-origin cookies. Origin: http://example.com/; domain in header: example.org' => [
 				'header'              => 'name=value; domain=example.org',
 				'origin'              => 'http://example.com/',
-				'expected'            => ['invalid' => false],
+				'expected'            => ['invalid' => true],
 			],
 
 			// Empty Domain.
