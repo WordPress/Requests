@@ -2,11 +2,11 @@
 
 namespace WpOrg\Requests\Tests\Response\Headers;
 
-use stdClass;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * @coversDefaultClass \WpOrg\Requests\Response\Headers
@@ -245,10 +245,7 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataGetValuesInvalidOffset() {
-		return [
-			'null'          => [null],
-			'boolean false' => [false],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING, TypeProviderHelper::GROUP_INT);
 	}
 
 	/**
@@ -342,10 +339,6 @@ final class HeadersTest extends TestCase {
 	 * @return array
 	 */
 	public function dataFlattenInvalidValue() {
-		return [
-			'null'          => [null],
-			'boolean false' => [false],
-			'plain object'  => [new stdClass()],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING, TypeProviderHelper::GROUP_ARRAY);
 	}
 }

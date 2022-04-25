@@ -2,11 +2,11 @@
 
 namespace WpOrg\Requests\Tests\Ssl;
 
-use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
  * @coversDefaultClass \WpOrg\Requests\Ssl
@@ -500,7 +500,7 @@ final class SslTest extends TestCase {
 	/**
 	 * Tests receiving an exception when an invalid input type is passed as $host.
 	 *
-	 * @dataProvider dataInvalidInputType
+	 * @dataProvider dataInvalidInputTypeStringable
 	 *
 	 * @covers ::verify_certificate
 	 *
@@ -518,7 +518,7 @@ final class SslTest extends TestCase {
 	/**
 	 * Tests receiving an exception when an invalid input type is passed as $cert.
 	 *
-	 * @dataProvider dataInvalidInputType
+	 * @dataProvider dataInvalidInputTypeArrayAccess
 	 *
 	 * @covers ::verify_certificate
 	 *
@@ -534,9 +534,18 @@ final class SslTest extends TestCase {
 	}
 
 	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidInputTypeArrayAccess() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
+	}
+
+	/**
 	 * Tests receiving an exception when an invalid input type is passed.
 	 *
-	 * @dataProvider dataInvalidInputType
+	 * @dataProvider dataInvalidInputTypeStringable
 	 *
 	 * @covers ::verify_reference_name
 	 *
@@ -554,7 +563,7 @@ final class SslTest extends TestCase {
 	/**
 	 * Tests receiving an exception when an invalid input type is passed.
 	 *
-	 * @dataProvider dataInvalidInputType
+	 * @dataProvider dataInvalidInputTypeStringable
 	 *
 	 * @covers ::match_domain
 	 *
@@ -562,7 +571,7 @@ final class SslTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testInvalidInputType($input) {
+	public function testMatchDomainInvalidInputType($input) {
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage('Argument #1 ($host) must be of type string|Stringable');
 
@@ -574,10 +583,7 @@ final class SslTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputType() {
-		return [
-			'null'         => [null],
-			'plain object' => [new stdClass()],
-		];
+	public function dataInvalidInputTypeStringable() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 }

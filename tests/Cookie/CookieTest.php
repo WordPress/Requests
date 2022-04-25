@@ -2,16 +2,13 @@
 
 namespace WpOrg\Requests\Tests\Cookie;
 
-use DateTime;
-use EmptyIterator;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
-use WpOrg\Requests\Tests\Fixtures\ArrayAccessibleObject;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 final class CookieTest extends TestCase {
@@ -639,11 +636,7 @@ final class CookieTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidStringInput() {
-		return [
-			'null'              => [null],
-			'float'             => [1.1],
-			'stringable object' => [new StringableObject('name')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
 	/**
@@ -670,12 +663,8 @@ final class CookieTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorInvalidAttributes() {
-		return [
-			'null'                                 => [null],
-			'text string'                          => ['array'],
-			'iterator object without array access' => [new EmptyIterator()],
-			'array accessible object not iterable' => [new ArrayAccessibleObject([1, 2, 3])],
-		];
+		$except = array_intersect(TypeProviderHelper::GROUP_ITERABLE, TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
+		return TypeProviderHelper::getAllExcept($except);
 	}
 
 	/**
@@ -702,11 +691,7 @@ final class CookieTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorInvalidFlags() {
-		return [
-			'null'                    => [null],
-			'integer'                 => [101],
-			'array accessible object' => [new ArrayAccessibleObject([])],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
 	/**
@@ -733,11 +718,7 @@ final class CookieTest extends TestCase {
 	 * @return array
 	 */
 	public function dataConstructorInvalidReferenceTime() {
-		return [
-			'float'           => [1.1],
-			'string'          => ['now'],
-			'DateTime object' => [new DateTime('now')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_INT);
 	}
 
 	/**

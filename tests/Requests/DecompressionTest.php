@@ -4,8 +4,8 @@ namespace WpOrg\Requests\Tests\Requests;
 
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Requests;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 final class DecompressionTest extends TestCase {
 
@@ -233,9 +233,6 @@ final class DecompressionTest extends TestCase {
 	 * @return array
 	 */
 	public function dataInvalidInputType() {
-		return [
-			'null'              => [null],
-			'stringable object' => [new StringableObject('value')],
-		];
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 }
