@@ -7,16 +7,14 @@ use WpOrg\Requests\Response;
 use WpOrg\Requests\Tests\TestCase;
 
 /**
- * @coversDefaultClass \WpOrg\Requests\Response
+ * @covers \WpOrg\Requests\Response::decode_body
+ *
+ * @requires extension json
  */
-final class ResponseTest extends TestCase {
+final class DecodeBodyTest extends TestCase {
 
 	/**
 	 * Verify that an exception is thrown when the body content is invalid as JSON.
-	 *
-	 * @requires extension json
-	 *
-	 * @covers ::decode_body
 	 *
 	 * @dataProvider dataInvalidJsonResponse
 	 *
@@ -55,10 +53,6 @@ final class ResponseTest extends TestCase {
 
 	/**
 	 * Verify correctly decoding a body in valid JSON.
-	 *
-	 * @requires extension json
-	 *
-	 * @covers ::decode_body
 	 *
 	 * @return void
 	 */
