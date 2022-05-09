@@ -2,17 +2,12 @@
 
 namespace WpOrg\Requests\Tests\Requests;
 
-use ArrayIterator;
-use ReflectionProperty;
-use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\Fixtures\RawTransportMock;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
-use WpOrg\Requests\Tests\Fixtures\TestTransportMock;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
@@ -303,151 +298,5 @@ final class RequestsTest extends TestCase {
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('timed out');
 		Requests::get(httpbin('/delay/3'), [], $options);
-	}
-
-	/**
-	 * @covers \WpOrg\Requests\Requests::has_capabilities
-	 */
-	public function testHasCapabilitiesSucceedsForDetectingSsl() {
-		if (!extension_loaded('curl') && !extension_loaded('openssl')) {
-			$this->markTestSkipped('Testing for SSL requires either the curl or the openssl extension');
-		}
-
-		$this->assertTrue(Requests::has_capabilities([Capability::SSL => true]));
-	}
-
-	/**
-	 * @covers \WpOrg\Requests\Requests::has_capabilities
-	 */
-	public function testHasCapabilitiesFailsForUnsupportedCapabilities() {
-		$transports = new ReflectionProperty(Requests::class, 'transports');
-		$transports->setAccessible(true);
-		$transports->setValue([TestTransportMock::class]);
-
-		$result = Requests::has_capabilities(['time-travel' => true]);
-
-		$transports->setValue([]);
-		$transports->setAccessible(false);
-
-		$this->assertFalse($result);
-	}
-
-	/**
-	 * Tests setting a custom certificate path with valid data types (though potentially not a valid path).
-	 *
-	 * @dataProvider dataSetCertificatePathValidData
-	 *
-	 * @covers \WpOrg\Requests\Requests::set_certificate_path
-	 *
-	 * @param mixed $input Valid input.
-	 *
-	 * @return void
-	 */
-	public function testSetCertificatePathValidData($input) {
-		Requests::set_certificate_path($input);
-
-		$this->assertSame($input, Requests::get_certificate_path());
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataSetCertificatePathValidData() {
-		return [
-			'boolean false'     => [false],
-			'boolean true'      => [true],
-			'string'            => ['path/to/file.pem'],
-			'stringable object' => [new StringableObject('path/to/file.pem')],
-		];
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed as `$path` to the set_certificate_path() method.
-	 *
-	 * @dataProvider dataSetCertificatePathInvalidData
-	 *
-	 * @covers \WpOrg\Requests\Requests::set_certificate_path
-	 *
-	 * @param mixed $input Invalid input.
-	 *
-	 * @return void
-	 */
-	public function testSetCertificatePathInvalidData($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($path) must be of type string|Stringable|bool');
-
-		Requests::set_certificate_path($input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataSetCertificatePathInvalidData() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_BOOL, TypeProviderHelper::GROUP_STRINGABLE);
-	}
-
-	/**
-	 * Tests flattening of data arrays.
-	 *
-	 * @dataProvider dataFlattenValidData
-	 *
-	 * @covers \WpOrg\Requests\Requests::flatten
-	 *
-	 * @param mixed $input Valid input.
-	 *
-	 * @return void
-	 */
-	public function testFlattenValidData($input) {
-		$expected = [
-			0 => 'key1: value1',
-			1 => 'key2: value2',
-		];
-
-		$this->assertSame($expected, Requests::flatten($input));
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataFlattenValidData() {
-		$to_flatten = ['key1' => 'value1', 'key2' => 'value2'];
-
-		return [
-			'array'           => [$to_flatten],
-			'iterable object' => [new ArrayIterator($to_flatten)],
-		];
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed as `$dictionary` to the flatten() method.
-	 *
-	 * @dataProvider dataFlattenInvalidData
-	 *
-	 * @covers \WpOrg\Requests\Requests::flatten
-	 *
-	 * @param mixed $input Invalid input.
-	 *
-	 * @return void
-	 */
-	public function testFlattenInvalidData($input) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($dictionary) must be of type iterable');
-
-		Requests::flatten($input);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataFlattenInvalidData() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ITERABLE);
 	}
 }
