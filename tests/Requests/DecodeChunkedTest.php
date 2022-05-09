@@ -10,7 +10,7 @@ use WpOrg\Requests\Tests\TestCase;
 /**
  * @covers \WpOrg\Requests\Requests::decode_chunked
  */
-final class ChunkedDecodingTest extends TestCase {
+final class DecodeChunkedTest extends TestCase {
 
 	/**
 	 * Test decoding chunked responses.
