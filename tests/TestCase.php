@@ -19,6 +19,19 @@ abstract class TestCase extends Polyfill_TestCase {
 	}
 
 	/**
+	 * Helper function to skip select tests when the transport under test is not available.
+	 *
+	 * @param string $transport Fully qualified class name for the transport to verify.
+	 *
+	 * @return void
+	 */
+	public function skipWhenTransportNotAvailable($transport) {
+		if (!$transport::test()) {
+			$this->markTestSkipped('Transport "' . $transport . '" is not available');
+		}
+	}
+
+	/**
 	 * Data provider for use in tests which need to be run against all default supported transports.
 	 *
 	 * @return array
