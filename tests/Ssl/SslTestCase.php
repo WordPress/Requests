@@ -26,7 +26,7 @@ abstract class SslTestCase extends TestCase {
 		];
 
 		if ($with_san !== false) {
-			// If SAN is set to true, default it to the dNSName
+			// If SAN is set to true, default it to the dNSName.
 			if ($with_san === true) {
 				$with_san = 'DNS: ' . $dnsname;
 			}
@@ -68,7 +68,7 @@ abstract class SslTestCase extends TestCase {
 	 */
 	public function dataNoMatch() {
 		return [
-			// Check that we need at least 3 components
+			// Check that we need at least 3 components.
 			'not a domain; wildcard reference' => [
 				'host'      => 'com',
 				'reference' => '*',
@@ -78,13 +78,13 @@ abstract class SslTestCase extends TestCase {
 				'reference' => '*.com',
 			],
 
-			// Check that double wildcards don't work
+			// Check that double wildcards don't work.
 			'domain name; double wildcard in reference' => [
 				'host'      => 'abc.def.example.com',
 				'reference' => '*.*.example.com',
 			],
 
-			// Check that we only match with the correct number of components
+			// Check that we only match with the correct number of components.
 			'four-level domain; three-level reference' => [
 				'host'      => 'abc.def.example.com',
 				'reference' => 'def.example.com',
@@ -94,18 +94,18 @@ abstract class SslTestCase extends TestCase {
 				'reference' => '*.example.com',
 			],
 
-			// Check that the wildcard only works as the full first component
+			// Check that the wildcard only works as the full first component.
 			'four-level domain; four-level reference, but wildcard not stand-alone' => [
 				'host'      => 'abc.def.example.com',
 				'reference' => 'a*.def.example.com',
 			],
 
-			// Check that wildcards are not allowed for IPs
-			'IP address; wildcard in refence (start)' => [
+			// Check that wildcards are not allowed for IPs.
+			'IP address; wildcard in reference (start)' => [
 				'host'      => '192.168.0.1',
 				'reference' => '*.168.0.1',
 			],
-			'IP address; wildcard in refence (end)' => [
+			'IP address; wildcard in reference (end)' => [
 				'host'      => '192.168.0.1',
 				'reference' => '192.168.0.*',
 			],
