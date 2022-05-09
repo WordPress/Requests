@@ -9,7 +9,7 @@ use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 /**
  * @coversDefaultClass \WpOrg\Requests\Utility\CaseInsensitiveDictionary
  */
-class CaseInsensitiveDictionaryTest extends TestCase {
+class ArrayAccessTest extends TestCase {
 
 	/**
 	 * Base data set for array access tests.
@@ -62,36 +62,36 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	];
 
 	/**
-	 * Test setting up a dictionary without entries.
+	 * Test trying to create an array entry without a key.
 	 *
-	 * @covers ::__construct
+	 * @covers ::offsetSet
 	 *
 	 * @return void
 	 */
-	public function testInitialDictionaryIsEmptyArray() {
-		$dictionary = new CaseInsensitiveDictionary();
+	public function testOffsetSetWithoutKey() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Object is a dictionary, not a list');
 
-		$this->assertIsIterable($dictionary, 'Empty dictionary is not iterable');
-		$this->assertCount(0, $dictionary, 'Empty dictionary has a count not equal to 0');
+		$dictionary   = new CaseInsensitiveDictionary();
+		$dictionary[] = 'value';
 	}
 
 	/**
 	 * Test array access for entries which exist.
 	 *
-	 * @covers ::__construct
 	 * @covers ::offsetExists
 	 * @covers ::offsetGet
 	 * @covers ::offsetSet
 	 * @covers ::offsetUnset
 	 *
-	 * @dataProvider dataArrayAccessForValidEntries
+	 * @dataProvider dataAccessValidEntries
 	 *
 	 * @param mixed  $key   Item key.
 	 * @param string $value Unused for this test. Item value.
 	 *
 	 * @return void
 	 */
-	public function testArrayAccessForValidEntries($key, $value) {
+	public function testAccessValidEntries($key, $value) {
 		// Initial set up.
 		$dictionary = new CaseInsensitiveDictionary(self::DATASET);
 
@@ -116,7 +116,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataArrayAccessForValidEntries() {
+	public function dataAccessValidEntries() {
 		$data = [];
 
 		foreach (self::DATASET_REVERSED as $key => $value) {
@@ -137,7 +137,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	/**
 	 * Test array access for an entry which (initially) doesn't exist.
 	 *
-	 * @dataProvider dataArrayAccessForInvalidEntry
+	 * @dataProvider dataAccessInvalidEntry
 	 *
 	 * @covers ::offsetExists
 	 * @covers ::offsetGet
@@ -148,7 +148,7 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testArrayAccessForInvalidEntry($key) {
+	public function testAccessInvalidEntry($key) {
 		// Initial set up.
 		$dictionary = new CaseInsensitiveDictionary(self::DATASET);
 
@@ -171,70 +171,10 @@ class CaseInsensitiveDictionaryTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataArrayAccessForInvalidEntry() {
+	public function dataAccessInvalidEntry() {
 		return [
 			'string key'  => ['Non-existant entry'],
 			'integer key' => [25],
 		];
-	}
-
-	/**
-	 * Test trying to create an array entry without a key.
-	 *
-	 * @covers ::offsetSet
-	 *
-	 * @return void
-	 */
-	public function testOffsetSetWithoutKey() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('Object is a dictionary, not a list');
-
-		$dictionary   = new CaseInsensitiveDictionary();
-		$dictionary[] = 'value';
-	}
-
-	/**
-	 * Test iterating over a dictionary.
-	 *
-	 * @covers ::getIterator
-	 *
-	 * @return void
-	 */
-	public function testGetIterator() {
-		// Initial set up.
-		$dictionary = new CaseInsensitiveDictionary(self::DATASET);
-
-		$this->assertCount(8, $dictionary, 'Dictionary is not countable');
-
-		// If foreach() works and actually enters the loop, we're good.
-		foreach ($dictionary as $key => $value) {
-			$this->assertTrue(true, 'Dictionary is not iterable');
-			break;
-		}
-	}
-
-	/**
-	 * Test retrieving all data as recorded in the dictionary.
-	 *
-	 * Take note of the key changes!
-	 *
-	 * @covers ::getAll
-	 *
-	 * @return void
-	 */
-	public function testGetAll() {
-		$expected = [
-			'upper case'  => 'Uppercase key',
-			'proper case' => 'First char in caps in key',
-			'lower case'  => 'Lowercase key',
-			''            => 'Null key will be converted to empty string',
-			0             => 'false key will become integer 0 key',
-			1             => 'true key will become integer 1 key',
-			5             => 'Float key will be converted to integer key (cut off)',
-			100           => 'Explicit integer numeric key',
-		];
-
-		$dictionary = new CaseInsensitiveDictionary(self::DATASET);
-		$this->assertSame($expected, $dictionary->getAll());
 	}
 }
