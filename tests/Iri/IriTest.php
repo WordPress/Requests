@@ -42,11 +42,8 @@
 
 namespace WpOrg\Requests\Tests\Iri;
 
-use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
-use WpOrg\Requests\Tests\Fixtures\StringableObject;
 use WpOrg\Requests\Tests\TestCase;
-use WpOrg\Requests\Tests\TypeProviderHelper;
 
 final class IriTest extends TestCase
 {
@@ -415,43 +412,5 @@ final class IriTest extends TestCase
 		$iri->port = 'example';
 
 		$this->assertNull($iri->port);
-	}
-
-	/**
-	 * Safeguard that the constructor can accept Stringable objects as $iri.
-	 *
-	 * @covers \WpOrg\Requests\Iri::__construct
-	 *
-	 * @return void
-	 */
-	public function testConstructorAcceptsStringableIri() {
-		$this->assertInstanceOf(Iri::class, new Iri(new StringableObject('https://example.com/')));
-	}
-
-	/**
-	 * Tests receiving an exception when an invalid input type is passed to the constructor.
-	 *
-	 * @dataProvider dataConstructorInvalidInput
-	 *
-	 * @covers \WpOrg\Requests\Iri::__construct
-	 *
-	 * @param mixed $iri Invalid input.
-	 *
-	 * @return void
-	 */
-	public function testConstructorInvalidInput($iri) {
-		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($iri) must be of type string|Stringable|null');
-
-		new Iri($iri);
-	}
-
-	/**
-	 * Data Provider.
-	 *
-	 * @return array
-	 */
-	public function dataConstructorInvalidInput() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 }
