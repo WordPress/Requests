@@ -6,8 +6,6 @@
  *
  * @package Requests
  * @since   2.0.0
- *
- * @codeCoverageIgnore
  */
 
 namespace WpOrg\Requests;

@@ -2,18 +2,23 @@
 
 namespace WpOrg\Requests\Tests\Autoload;
 
+use Requests;
 use Requests_Exception_Transport_cURL;
 use Requests_Utility_FilteredIterator;
 use WpOrg\Requests\Autoload;
+use WpOrg\Requests\Exception\Http\Status417;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Utility\FilteredIterator;
 
+/**
+ * @covers \WpOrg\Requests\Autoload
+ */
 final class AutoloadTest extends TestCase {
 
 	const MSG = 'The PSR-0 `Requests_...` class names in the Request library are deprecated.';
 
 	/**
-	 * Verify that a deprecation notice is thrown when the "old" Requests class is loaded.
+	 * Verify that a deprecation notice is thrown when the "old" Requests class is loaded via a require/include.
 	 */
 	public function testDeprecationNoticeThrownForOldRequestsClass() {
 		$this->expectDeprecation();
@@ -29,7 +34,7 @@ final class AutoloadTest extends TestCase {
 		$this->expectDeprecation();
 		$this->expectDeprecationMessage(self::MSG);
 
-		echo Requests_Exception_Transport_cURL::EASY;
+		$this->assertNotEmpty(Requests_Exception_Transport_cURL::EASY);
 	}
 
 	/**
@@ -47,7 +52,76 @@ final class AutoloadTest extends TestCase {
 	}
 
 	/**
-	 * Verify that the constant declaration in the previous test doesn't affect other tests.
+	 * Perfunctory test of the register() method.
+	 *
+	 * Note: "perfunctory" as the test bootstrap already registers the autoloader.
+	 *
+	 * @preserveGlobalState disabled
+	 * @runInSeparateProcess
+	 */
+	public function testRegister() {
+		Autoload::register();
+
+		$this->assertContains([Autoload::class, 'load'], spl_autoload_functions(), 'Autoload method is not registered.');
+		$this->assertTrue(defined('REQUESTS_AUTOLOAD_REGISTERED'), 'Constant is not declared');
+		$this->assertTrue(REQUESTS_AUTOLOAD_REGISTERED, 'Constant is not set to true');
+	}
+
+	/**
+	 * Test the load() method returns the correct boolean response to allow for autoload-chaining.
+	 *
+	 * @dataProvider dataLoad
+	 *
+	 * @preserveGlobalState disabled
+	 * @runInSeparateProcess
+	 *
+	 * @param string $class_name The class to load.
+	 * @param bool   $expected   Expected function return value.
+	 *
+	 * @return void
+	 */
+	public function testLoad($class_name, $expected) {
+		define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
+
+		$this->assertSame($expected, Autoload::load($class_name));
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataLoad() {
+		return [
+			'Request for class not in this package should be rejected' => [
+				'class_name' => 'Unrelated\Package\ClassName',
+				'expected'   => false,
+			],
+			'Request for PSR-0 class not in this package but using the `Requests_` prefix should be rejected' => [
+				'class_name' => 'Requests_This_Class_Doesnt_Exist',
+				'expected'   => false,
+			],
+			'Request for PSR-0 Requests class from this package should be accepted' => [
+				'class_name' => Requests::class,
+				'expected'   => true,
+			],
+			'Request for other PSR-0 Requests class from this package should be accepted' => [
+				'class_name' => 'Requests_Exception_HTTP_429',
+				'expected'   => true,
+			],
+			'Request for PSR-4 class not in this package but using the Requests namespace should be rejected' => [
+				'class_name' => 'WpOrg\\Requests\\ThisClassDoesntExist',
+				'expected'   => false,
+			],
+			'Request for PSR-4 class from this package should be accepted' => [
+				'class_name' => Status417::class,
+				'expected'   => true,
+			],
+		];
+	}
+
+	/**
+	 * Verify that the constant declaration in the previous test(s) doesn't affect other tests.
 	 *
 	 * @coversNothing
 	 */
