@@ -276,6 +276,10 @@ final class IriTest extends TestCase
 			array('http://example.com?%26', 'http://example.com/?%26'),
 			array('http://example.com?%61', 'http://example.com/?a'),
 			array('///', '///'),
+			array('http://one.example.com#two.example.com', 'http://one.example.com/#two.example.com'),
+			array('http://one.example.com#two.example.com/not-path', 'http://one.example.com/#two.example.com%2Fnot-path'),
+			array('http://one.example.com?two.example.com', 'http://one.example.com/?two.example.com'),
+			array('http://one.example.com?two.example.com/not-path', 'http://one.example.com/?two.example.com%2Fnot-path'),
 		);
 	}
 
