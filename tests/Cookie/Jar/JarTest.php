@@ -10,7 +10,6 @@ use WpOrg\Requests\Tests\TestCase;
 /**
  * Integration tests for the Jar class.
  *
- * @covers \WpOrg\Requests\Cookie\Jar::normalize_cookie
  * @covers \WpOrg\Requests\Cookie\Jar::register
  * @covers \WpOrg\Requests\Cookie\Jar::before_request
  * @covers \WpOrg\Requests\Cookie\Jar::before_redirect_check
