@@ -18,7 +18,7 @@ final class GetIteratorTest extends TestCase {
 		$jar     = new Jar($cookies);
 
 		foreach ($jar as $key => $value) {
-			$this->assertSame($cookies[$key], $value);
+			$this->assertSame($cookies[$key], $value, "Value for $key does not match expectation during iteration");
 		}
 	}
 }
