@@ -2,8 +2,8 @@ name: Test
 
 on:
   push:
-    branches:
-      - stable
+#    branches:
+#      - stable
   pull_request:
   # Allow manually triggering the workflow.
   workflow_dispatch:
