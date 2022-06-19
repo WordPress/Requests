@@ -22,9 +22,8 @@ jobs:
     strategy:
       # Keys:
       # - coverage: Whether to run the tests with code coverage.
-      # - experimental: Whether the build is "allowed to fail".
       matrix:
-        php: ['7.0', '7.1', '7.2', '7.3', '7.4', '8.1']
+        php: ['7.0', '7.1', '7.2', '7.3', '7.4', '8.1', '8.2']
         coverage: [false]
 
         include:
