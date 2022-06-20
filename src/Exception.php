@@ -47,7 +47,6 @@ class Exception extends PHPException {
 	/**
 	 * Like {@see \Exception::getCode()}, but a string code.
 	 *
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function getType() {
@@ -57,7 +56,6 @@ class Exception extends PHPException {
 	/**
 	 * Gives any relevant data
 	 *
-	 * @codeCoverageIgnore
 	 * @return mixed
 	 */
 	public function getData() {
