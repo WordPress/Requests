@@ -19,6 +19,8 @@ abstract class BaseTestCase extends TestCase {
 
 	protected $skip_https = false;
 
+	protected $completed = [];
+
 	public function set_up() {
 		// Intermediary variable $test_method. This can be simplified (removed) once the minimum supported PHP version is 7.0 or higher.
 		$test_method = [$this->transport, 'test'];
@@ -34,6 +36,11 @@ abstract class BaseTestCase extends TestCase {
 		if (!$ssl_supported) {
 			$this->skip_https = true;
 		}
+	}
+
+	public function tear_down() {
+		// Reset property value after each test.
+		$this->completed = [];
 	}
 
 	protected function getOptions($other = []) {
@@ -996,7 +1003,6 @@ abstract class BaseTestCase extends TestCase {
 		$responses       = Requests::request_multiple($requests, $this->getOptions($options));
 
 		$this->assertSame($this->completed, $responses);
-		$this->completed = [];
 	}
 
 	public function testMultipleUsingCallbackAndFailure() {
@@ -1018,7 +1024,6 @@ abstract class BaseTestCase extends TestCase {
 		$responses       = Requests::request_multiple($requests, $this->getOptions($options));
 
 		$this->assertSame($this->completed, $responses);
-		$this->completed = [];
 	}
 
 	public function completeCallback($response, $key) {
