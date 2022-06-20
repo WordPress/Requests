@@ -37,7 +37,7 @@
     "docs": "https://requests.ryanmccue.info/"
   },
   "require": {
-    "php": ">=5.6",
+    "php": ">=5.6.20",
     "ext-json": "*"
   },
   "config": {
