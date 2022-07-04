@@ -10,7 +10,7 @@ use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
 /**
- * @covers WpOrg\Requests\Cookie
+ * @coversDefaultClass \WpOrg\Requests\Cookie
  */
 final class ParseTest extends TestCase {
 
@@ -19,7 +19,7 @@ final class ParseTest extends TestCase {
 	 *
 	 * @dataProvider dataInvalidStringInput
 	 *
-	 * @covers \WpOrg\Requests\Cookie::parse
+	 * @covers ::parse
 	 *
 	 * @param mixed $input Invalid parameter input.
 	 *
@@ -37,7 +37,7 @@ final class ParseTest extends TestCase {
 	 *
 	 * @dataProvider dataInvalidStringInput
 	 *
-	 * @covers \WpOrg\Requests\Cookie::parse
+	 * @covers ::parse
 	 *
 	 * @param mixed $input Invalid parameter input.
 	 *
@@ -62,7 +62,10 @@ final class ParseTest extends TestCase {
 	/**
 	 * Tests receiving an exception when the parse() method received an invalid input type as `$reference_time`.
 	 *
-	 * @covers \WpOrg\Requests\Cookie::parse
+	 * Note: this exception is thrown from the constructor on the call to new static() and is more extensively
+	 * tested in the `WpOrg\Requests\Tests\Cookie\ConstructorTest` class.
+	 *
+	 * @covers ::parse
 	 *
 	 * @return void
 	 */
@@ -76,7 +79,10 @@ final class ParseTest extends TestCase {
 	/**
 	 * Tests receiving an exception when the parse_from_headers() method received an invalid input type as `$reference_time`.
 	 *
-	 * @covers \WpOrg\Requests\Cookie::parse_from_headers
+	 * Note: this exception is thrown from the constructor on the call to new static() and is more extensively
+	 * tested in the `WpOrg\Requests\Tests\Cookie\ConstructorTest` class.
+	 *
+	 * @covers ::parse_from_headers
 	 *
 	 * @return void
 	 */
@@ -92,10 +98,84 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider dataParseResult
+	 * Document how the parse() method handles basic input parsing in combination with
+	 * whether a predefined cookie name was passed or not.
+	 *
+	 * @dataProvider dataBasicNameValueParsing
+	 *
+	 * @covers ::parse
+	 *
+	 * @param string $header   Cookie header string.
+	 * @param string $name     Name to be passsed.
+	 * @param array  $expected Array with expectations to be verified via check_parsed_cookie().
+	 *                         Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 *
+	 * @return void
 	 */
-	public function testParsingHeader($header, $expected, $expected_attributes = [], $expected_flags = []) {
-		// Set the reference time to 2014-01-01 00:00:00
+	public function testBasicNameValueParsing($header, $name, $expected) {
+		$cookie = Cookie::parse($header, $name);
+
+		$this->check_parsed_cookie($cookie, $expected);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public static function dataBasicNameValueParsing() {
+		return [
+			'Header value only, no name: expect empty name, value contains cookie info' => [
+				'header'   => 'bar',
+				'name'     => '',
+				'expected' => ['name' => '', 'value' => 'bar'],
+			],
+			'Header key=value, no name: expect cookie key set as name' => [
+				'header'   => 'foo=bar',
+				'name'     => '',
+				'expected' => ['name' => 'foo', 'value' => 'bar'],
+			],
+			'Header value only, explicit name: expect passed name set as name, value contains cookie info' => [
+				'header'   => 'bar',
+				'name'     => 'passed-name',
+				'expected' => ['name' => 'passed-name', 'value' => 'bar'],
+			],
+			'Header key=value, explicit name: expect passed name set as name, cookie key=value set as value' => [
+				'header'   => 'foo=bar',
+				'name'     => 'passed-name',
+				'expected' => ['name' => 'passed-name', 'value' => 'foo=bar'],
+			],
+
+			// Safeguard whitespace handling.
+			'Surrounding whitespace should be stripped off name and value [1]' => [
+				'header'   => '  bar  ',
+				'name'     => '  passed-name  ',
+				'expected' => ['name' => 'passed-name', 'value' => 'bar'],
+			],
+			'Surrounding whitespace should be stripped off name and value [2]' => [
+				'header'   => '   foo   =   bar   ',
+				'name'     => '',
+				'expected' => ['name' => 'foo', 'value' => 'bar'],
+			],
+		];
+	}
+
+	/**
+	 * Verify the parsing of a cookie header string into a cookie.
+	 *
+	 * @dataProvider dataParseResult
+	 *
+	 * @covers ::parse
+	 *
+	 * @param string $header              Cookie header string.
+	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array  $expected_attributes Attribute expectations to verify.
+	 *
+	 * @return void
+	 */
+	public function testParsingHeader($header, $expected, $expected_attributes = []) {
+		// Set the reference time to 2014-01-01 00:00:00.
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
 		$cookie = Cookie::parse($header, '', $reference_time);
@@ -103,30 +183,50 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
-	 * Double-normalizes the cookie data to ensure we catch any issues there
+	 * Double-normalizes the cookie data to ensure we catch any issues there.
 	 *
 	 * @dataProvider dataParseResult
+	 *
+	 * @coversNothing
+	 *
+	 * @param string $header              Cookie header string.
+	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array  $expected_attributes Attribute expectations to verify.
+	 *
+	 * @return void
 	 */
-	public function testParsingHeaderDouble($header, $expected, $expected_attributes = [], $expected_flags = []) {
-		// Set the reference time to 2014-01-01 00:00:00
+	public function testParsingHeaderDouble($header, $expected, $expected_attributes = []) {
+		// Set the reference time to 2014-01-01 00:00:00.
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
 		$cookie = Cookie::parse($header, '', $reference_time);
 
-		// Normalize the value again
+		// Normalize the value again.
 		$cookie->normalize();
 
-		$this->check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags);
+		$this->check_parsed_cookie($cookie, $expected, $expected_attributes);
 	}
 
 	/**
+	 * Verify parsing of cookies in Header objects.
+	 *
 	 * @dataProvider dataParseResult
+	 *
+	 * @covers ::parse_from_headers
+	 *
+	 * @param string $header              Cookie header string.
+	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array  $expected_attributes Attribute expectations to verify.
+	 *
+	 * @return void
 	 */
-	public function testParsingHeaderObject($header, $expected, $expected_attributes = [], $expected_flags = []) {
+	public function testParsingHeaderObject($header, $expected, $expected_attributes = []) {
 		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
-		// Set the reference time to 2014-01-01 00:00:00
+		// Set the reference time to 2014-01-01 00:00:00.
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
 		$parsed = Cookie::parse_from_headers($headers, null, $reference_time);
@@ -143,96 +243,145 @@ final class ParseTest extends TestCase {
 	 */
 	public static function dataParseResult() {
 		return [
-			// Basic parsing
-			[
-				'foo=bar',
-				['name' => 'foo', 'value' => 'bar'],
+			/*
+			 * Expiration date parsing.
+			 */
+			// RFC 822, updated by RFC 1123.
+			'Expiration date parsing: format: RFC 822, updated by RFC 1123; expired date' => [
+				'header'              => 'foo=bar; Expires=Thu, 5-Dec-2013 04:50:12 GMT',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
 			],
-			[
-				'bar',
-				['name' => '', 'value' => 'bar'],
+			'Expiration date parsing: format: RFC 822, updated by RFC 1123; non-expired date' => [
+				'header'              => 'foo=bar; Expires=Fri, 5-Dec-2014 04:50:12 GMT',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
 			],
-
-			// Expiration
-			// RFC 822, updated by RFC 1123
-			[
-				'foo=bar; Expires=Thu, 5-Dec-2013 04:50:12 GMT',
-				['expired' => true],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
+			// RFC 850, obsoleted by RFC 1036.
+			'Expiration date parsing: format: RFC 850, obsoleted by RFC 1036; expired date' => [
+				'header'              => 'foo=bar; Expires=Thursday, 5-Dec-2013 04:50:12 GMT',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
 			],
-			[
-				'foo=bar; Expires=Fri, 5-Dec-2014 04:50:12 GMT',
-				['expired' => false],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
+			'Expiration date parsing: format: RFC 850, obsoleted by RFC 1036; non-expired date' => [
+				'header'              => 'foo=bar; Expires=Friday, 5-Dec-2014 04:50:12 GMT',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
 			],
-			// RFC 850, obsoleted by RFC 1036
-			[
-				'foo=bar; Expires=Thursday, 5-Dec-2013 04:50:12 GMT',
-				['expired' => true],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
+			// Test with asctime().
+			'Expiration date parsing: format: asctime(); expired date' => [
+				'header'              => 'foo=bar; Expires=Thu Dec  5 04:50:12 2013',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
 			],
-			[
-				'foo=bar; Expires=Friday, 5-Dec-2014 04:50:12 GMT',
-				['expired' => false],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
+			'Expiration date parsing: format: asctime(); non-expired date' => [
+				'header'              => 'foo=bar; Expires=Fri Dec  5 04:50:12 2014',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
 			],
-			// Test with asctime()
-			[
-				'foo=bar; Expires=Thu Dec  5 04:50:12 2013',
-				['expired' => true],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2013)],
-			],
-			[
-				'foo=bar; Expires=Fri Dec  5 04:50:12 2014',
-				['expired' => false],
-				['expires' => gmmktime(4, 50, 12, 12, 5, 2014)],
-			],
-			[
-				// Invalid
-				'foo=bar; Expires=never',
-				[],
-				['expires' => null],
+			// Invalid.
+			'Expiration date parsing: invalid expiration date' => [
+				'header'              => 'foo=bar; Expires=never',
+				'expected'            => [],
+				'expected_attributes' => ['expires' => null],
 			],
 
-			// Max-Age
-			[
-				'foo=bar; Max-Age=10',
-				['expired' => false],
-				['max-age' => gmmktime(0, 0, 10, 1, 1, 2014)],
+			/*
+			 * Max-Age parsing.
+			 */
+			'Max-Age parsing: value: 10' => [
+				'header'              => 'foo=bar; Max-Age=10',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['max-age' => gmmktime(0, 0, 10, 1, 1, 2014)],
 			],
-			[
-				'foo=bar; Max-Age=3660',
-				['expired' => false],
-				['max-age' => gmmktime(1, 1, 0, 1, 1, 2014)],
+			'Max-Age parsing: value: 3660' => [
+				'header'              => 'foo=bar; Max-Age=3660',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['max-age' => gmmktime(1, 1, 0, 1, 1, 2014)],
 			],
-			[
-				'foo=bar; Max-Age=0',
-				['expired' => true],
-				['max-age' => 0],
+			'Max-Age parsing: value: 0' => [
+				'header'              => 'foo=bar; Max-Age=0',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['max-age' => 0],
 			],
-			[
-				'foo=bar; Max-Age=-1000',
-				['expired' => true],
-				['max-age' => 0],
+			'Max-Age parsing: value: 1000' => [
+				'header'              => 'foo=bar; Max-Age=-1000',
+				'expected'            => ['expired' => true],
+				'expected_attributes' => ['max-age' => 0],
 			],
-			[
-				// Invalid (non-digit character)
-				'foo=bar; Max-Age=1e6',
-				['expired' => false],
-				['max-age' => null],
+			// Invalid (non-digit character).
+			'Max-Age parsing: value: 1e6 (non-digit)' => [
+				'header'              => 'foo=bar; Max-Age=1e6',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => ['max-age' => null],
+			],
+
+			/*
+			 * Arbitrary attributes.
+			 */
+			'Attribute parsing where the attribute does not contain an = sign' => [
+				'header'              => 'foo=bar; HttpOnly',
+				'expected'            => [],
+				'expected_attributes' => ['httponly' => true],
+			],
+			'Attribute parsing: surrounding whitespace should be stripped' => [
+				'header'              => 'foo=bar; ArbitraryName   =  some-value   ',
+				'expected'            => [],
+				'expected_attributes' => ['ArbitraryName' => 'some-value'],
+			],
+
+			/*
+			 * Altogether now: multiple attributes in one cookie header.
+			 */
+			'Parsing when there are multiple attributes' => [
+				'header'              => 'foo=bar; Expires=Fri, 5-Dec-2014 04:50:12 GMT; Max-Age=3660; ArbitraryName   =  some-value   ',
+				'expected'            => ['expired' => false],
+				'expected_attributes' => [
+					'expires'       => gmmktime(4, 50, 12, 12, 5, 2014),
+					'max-age'       => gmmktime(1, 1, 0, 1, 1, 2014),
+					'ArbitraryName' => 'some-value',
+				],
 			],
 		];
 	}
 
 	/**
+	 * Verify handling of Headers object without a `Set-Cookie` header set.
+	 *
+	 * @covers ::parse_from_headers
+	 *
+	 * @return void
+	 */
+	public function testParsingEmptyHeader() {
+		$headers = new Headers();
+		$parsed  = Cookie::parse_from_headers($headers);
+
+		$this->assertIsArray($parsed, 'Return value is not an array');
+		$this->assertCount(0, $parsed, 'Returned array is not empty');
+	}
+
+	/**
+	 * Verify parsing of cookies in Header objects when origin is known.
+	 *
 	 * @dataProvider dataParsingHeaderWithOrigin
+	 *
+	 * @covers ::parse_from_headers
+	 *
+	 * @param string $header              Cookie header string.
+	 * @param string $origin              URI for comparing cookie origins.
+	 * @param array  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array  $expected_attributes Attribute expectations to verify.
+	 * @param array  $expected_flags      Flag expectations to verify.
+	 *
+	 * @return void
 	 */
 	public function testParsingHeaderWithOrigin($header, $origin, $expected, $expected_attributes = [], $expected_flags = []) {
 		$origin                = new Iri($origin);
 		$headers               = new Headers();
 		$headers['Set-Cookie'] = $header;
 
-		// Set the reference time to 2014-01-01 00:00:00
+		// Set the reference time to 2014-01-01 00:00:00.
 		$reference_time = gmmktime(0, 0, 0, 1, 1, 2014);
 
 		$parsed = Cookie::parse_from_headers($headers, $origin, $reference_time);
@@ -254,139 +403,199 @@ final class ParseTest extends TestCase {
 	 */
 	public function dataParsingHeaderWithOrigin() {
 		return [
-			# Varying origin path
-			[
-				'name=value',
-				'http://example.com/',
-				[],
-				['path' => '/'],
-				['host-only' => true],
+			// Varying origin path.
+			'Origin: http://example.com (no trailing slash for path)' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value',
-				'http://example.com/test',
-				[],
-				['path' => '/'],
-				['host-only' => true],
+			'Origin: http://example.com/' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value',
-				'http://example.com/test/',
-				[],
-				['path' => '/test'],
-				['host-only' => true],
+			'Origin: http://example.com/test' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/test',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value',
-				'http://example.com/test/abc',
-				[],
-				['path' => '/test'],
-				['host-only' => true],
+			'Origin: http://example.com/test/ (with trailing slash)' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/test/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value',
-				'http://example.com/test/abc/',
-				[],
-				['path' => '/test/abc'],
-				['host-only' => true],
+			'Origin: http://example.com/test/abc' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/test/abc',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test'],
+				'expected_flags'      => ['host-only' => true],
 			],
-
-			# With specified path
-			[
-				'name=value; path=/',
-				'http://example.com/',
-				[],
-				['path' => '/'],
-				['host-only' => true],
-			],
-			[
-				'name=value; path=/test',
-				'http://example.com/',
-				[],
-				['path' => '/test'],
-				['host-only' => true],
-			],
-			[
-				'name=value; path=/test/',
-				'http://example.com/',
-				[],
-				['path' => '/test/'],
-				['host-only' => true],
+			'Origin: http://example.com/test/abc/ (with trailing slash)' => [
+				'header'              => 'name=value',
+				'origin'              => 'http://example.com/test/abc/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test/abc'],
+				'expected_flags'      => ['host-only' => true],
 			],
 
-			# Invalid path
-			[
-				'name=value; path=yolo',
-				'http://example.com/',
-				[],
-				['path' => '/'],
-				['host-only' => true],
+			// With specified path.
+			'Origin: http://example.com/; path in header: /' => [
+				'header'              => 'name=value; path=/',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value; path=yolo',
-				'http://example.com/test/',
-				[],
-				['path' => '/test'],
-				['host-only' => true],
+			'Origin: http://example.com/; path in header: /test' => [
+				'header'              => 'name=value; path=/test',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test'],
+				'expected_flags'      => ['host-only' => true],
 			],
-
-			# Cross-origin cookies, reject!
-			[
-				'name=value; domain=example.org',
-				'http://example.com/',
-				['invalid' => false],
-			],
-
-			# Empty Domain
-			[
-				'name=value; domain=',
-				'http://example.com/test/',
-				[],
+			'Origin: http://example.com/; path in header: /test/' => [
+				'header'              => 'name=value; path=/test/',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test/'],
+				'expected_flags'      => ['host-only' => true],
 			],
 
-			# Subdomain cookies
-			[
-				'name=value; domain=test.example.com',
-				'http://test.example.com/',
-				[],
-				['domain' => 'test.example.com'],
-				['host-only' => false],
+			// Invalid path.
+			'Origin: http://example.com/; INVALID path in header: yolo' => [
+				'header'              => 'name=value; path=yolo',
+				'origin'              => 'http://example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/'],
+				'expected_flags'      => ['host-only' => true],
 			],
-			[
-				'name=value; domain=example.com',
-				'http://test.example.com/',
-				[],
-				['domain' => 'example.com'],
-				['host-only' => false],
+			'Origin: http://example.com/test/; INVALID path in header: yolo' => [
+				'header'              => 'name=value; path=yolo',
+				'origin'              => 'http://example.com/test/',
+				'expected'            => [],
+				'expected_attributes' => ['path' => '/test'],
+				'expected_flags'      => ['host-only' => true],
+			],
+
+			// Cross-origin cookies, reject!
+			'Reject cross-origin cookies. Origin: http://example.com/; domain in header: example.org' => [
+				'header'              => 'name=value; domain=example.org',
+				'origin'              => 'http://example.com/',
+				'expected'            => ['invalid' => true],
+			],
+
+			// Empty Domain.
+			'Origin: no domain, empty string; no domain in header; cookie will be rejected' => [
+				'header'              => 'name=value',
+				'origin'              => '',
+				'expected'            => ['invalid' => true],
+			],
+			'Origin: http://example.com/test/; domain in header: example.org' => [
+				'header'              => 'name=value; domain=',
+				'origin'              => 'http://example.com/test/',
+				'expected'            => [],
+			],
+
+			// Subdomain cookies.
+			'Subdomain cookie - Origin: http://test.example.com/; domain in header: test.example.com' => [
+				'header'              => 'name=value; domain=test.example.com',
+				'origin'              => 'http://test.example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['domain' => 'test.example.com'],
+				'expected_flags'      => ['host-only' => false],
+			],
+			'Subdomain cookie - Origin: http://test.example.com/; domain in header: example.com' => [
+				'header'              => 'name=value; domain=example.com',
+				'origin'              => 'http://test.example.com/',
+				'expected'            => [],
+				'expected_attributes' => ['domain' => 'example.com'],
+				'expected_flags'      => ['host-only' => false],
 			],
 		];
 	}
 
 	/**
-	 * Test helper function.
+	 * Verify handling of Headers object with multiple `Set-Cookie` headers.
+	 *
+	 * @covers ::parse_from_headers
+	 *
+	 * @return void
 	 */
-	private function check_parsed_cookie($cookie, $expected, $expected_attributes, $expected_flags = []) {
+	public function testParsingHeaderWithMultipleCookies() {
+		$origin                = new Iri('http://example.com/');
+		$headers               = new Headers();
+		$headers['Set-Cookie'] = 'foo=bar; Expires=Sun, 5-Dec-2021 04:50:12 GMT';
+		$headers['Set-Cookie'] = 'bar=baz; Max-Age=3660';
+		$headers['Set-Cookie'] = 'baz=foo; path=/test';
+
+		// Set the reference time to 2022-01-01 00:00:00.
+		$reference_time = gmmktime(0, 0, 0, 1, 1, 2022);
+
+		$expected            = [
+			'foo' => ['name' => 'foo', 'value' => 'bar', 'expired' => true],
+			'bar' => ['name' => 'bar', 'value' => 'baz', 'expired' => false],
+			'baz' => ['name' => 'baz', 'value' => 'foo', 'expired' => false],
+		];
+		$expected_attributes = [
+			'foo' => ['expires' => gmmktime(4, 50, 12, 12, 5, 2021), 'domain' => 'example.com', 'path' => '/'],
+			'bar' => ['max-age' => gmmktime(1, 1, 0, 1, 1, 2022), 'domain' => 'example.com', 'path' => '/'],
+			'baz' => ['path' => '/test', 'domain' => 'example.com'],
+		];
+
+		$parsed = Cookie::parse_from_headers($headers, $origin, $reference_time);
+
+		$this->assertIsArray($parsed, 'Return value is not an array');
+		$this->assertCount(3, $parsed, 'Returned array does not contain exactly 3 Cookies');
+
+		foreach ($parsed as $key => $cookie) {
+			$this->check_parsed_cookie($cookie, $expected[$key], $expected_attributes[$key]);
+		}
+	}
+
+	/**
+	 * Test helper function.
+	 *
+	 * @param \WpOrg\Requests\Cookie $cookie              Cookie object.
+	 * @param array                  $expected            Array with expectations to be verified via check_parsed_cookie().
+	 *                                                    Keys which can be set to be verified: 'name', 'value', 'expired'.
+	 * @param array                  $expected_attributes Array with attribute expectations.
+	 * @param array                  $expected_flags      Array with flag expectations.
+	 *
+	 * @return void
+	 */
+	private function check_parsed_cookie($cookie, $expected, $expected_attributes = [], $expected_flags = []) {
+		$this->assertInstanceof(Cookie::class, $cookie, 'Parsing did not yield a Cookie object');
+
 		if (isset($expected['name'])) {
-			$this->assertSame($expected['name'], $cookie->name);
+			$this->assertSame($expected['name'], $cookie->name, 'Cookie name does not match expectation');
 		}
 
 		if (isset($expected['value'])) {
-			$this->assertSame($expected['value'], $cookie->value);
+			$this->assertSame($expected['value'], $cookie->value, 'Cookie value does not match expectation');
 		}
 
 		if (isset($expected['expired'])) {
-			$this->assertSame($expected['expired'], $cookie->is_expired());
+			$this->assertSame($expected['expired'], $cookie->is_expired(), 'Cookie expiration identification does not match expectation');
 		}
 
-		if (isset($expected_attributes)) {
+		if (isset($expected_attributes) && !empty($expected_attributes)) {
 			foreach ($expected_attributes as $attr_key => $attr_val) {
-				$this->assertSame($attr_val, $cookie->attributes[$attr_key], "$attr_key should match supplied");
+				$this->assertSame($attr_val, $cookie->attributes[$attr_key], "Attribute '$attr_key' should match supplied value");
 			}
 		}
 
-		if (isset($expected_flags)) {
+		if (isset($expected_flags) && !empty($expected_flags)) {
 			foreach ($expected_flags as $flag_key => $flag_val) {
-				$this->assertSame($flag_val, $cookie->flags[$flag_key], "$flag_key should match supplied");
+				$this->assertSame($flag_val, $cookie->flags[$flag_key], "Flag '$flag_key' should match supplied value");
 			}
 		}
 	}

@@ -2,22 +2,10 @@
 
 namespace WpOrg\Requests\Tests\Cookie;
 
-use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
 
 final class CookieTest extends TestCase {
-	public function testEmptyCookieName() {
-		$cookie = Cookie::parse('test');
-		$this->assertSame('', $cookie->name);
-		$this->assertSame('test', $cookie->value);
-	}
-
-	public function testEmptyAttributes() {
-		$cookie = Cookie::parse('foo=bar; HttpOnly');
-		$this->assertTrue($cookie->attributes['httponly']);
-	}
-
 	public function testReceivingCookies() {
 		$options = [
 			'follow_redirects' => false,
