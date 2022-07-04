@@ -7,13 +7,6 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TestCase;
 
 final class CookieTest extends TestCase {
-	public function testBasicCookie() {
-		$cookie = new Cookie('requests-testcookie', 'testvalue');
-
-		$this->assertSame('requests-testcookie', $cookie->name);
-		$this->assertSame('testvalue', $cookie->value);
-	}
-
 	public function testEmptyCookieName() {
 		$cookie = Cookie::parse('test');
 		$this->assertSame('', $cookie->name);
