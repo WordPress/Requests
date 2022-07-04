@@ -201,18 +201,19 @@ class Cookie {
 			return false;
 		}
 
-		if (strlen($domain) <= strlen($cookie_domain)) {
+		$cookie_domain_length = strlen($cookie_domain);
+		if (strlen($domain) <= $cookie_domain_length) {
 			// For obvious reasons, the cookie domain cannot be a suffix if the passed domain
 			// is shorter than the cookie domain
 			return false;
 		}
 
-		if (substr($domain, -(strlen($cookie_domain))) !== $cookie_domain) {
+		if (substr($domain, -$cookie_domain_length) !== $cookie_domain) {
 			// The cookie domain should be a suffix of the passed domain.
 			return false;
 		}
 
-		$prefix = substr($domain, 0, -strlen($cookie_domain));
+		$prefix = substr($domain, 0, -$cookie_domain_length);
 		if (substr($prefix, -1) !== '.') {
 			// The last character of the passed domain that is not included in the
 			// domain string should be a %x2E (".") character.
