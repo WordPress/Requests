@@ -4,6 +4,7 @@ namespace WpOrg\Requests\Tests\Cookie;
 
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 
 /**
@@ -17,22 +18,17 @@ final class PathMatchesTest extends TestCase {
 	 * Cookies parsed from headers internally in Requests will always have a
 	 * domain/path set, but those created manually will not. Manual cookies
 	 * should be regarded as "global" cookies (that is, set for `.`).
+	 *
+	 * @dataProvider dataManuallySetCookie
+	 *
+	 * @param string $path Path to verify for a match.
+	 *
+	 * @return void
 	 */
-	public function testManuallySetCookie() {
+	public function testManuallySetCookie($path) {
 		$cookie = new Cookie('requests-testcookie', 'testvalue');
-		$this->assertTrue($cookie->path_matches('/'));
-		$this->assertTrue($cookie->path_matches('/test'));
-		$this->assertTrue($cookie->path_matches('/test/'));
-	}
 
-	/**
-	 * @dataProvider dataPathMatch
-	 */
-	public function testPathMatch($original, $check, $matches) {
-		$attributes         = new CaseInsensitiveDictionary();
-		$attributes['path'] = $original;
-		$cookie             = new Cookie('requests-testcookie', 'testvalue', $attributes);
-		$this->assertSame($matches, $cookie->path_matches($check));
+		$this->assertTrue($cookie->path_matches($path));
 	}
 
 	/**
@@ -40,27 +36,145 @@ final class PathMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
+	public function dataManuallySetCookie() {
+		$paths = [
+			'',
+			'/',
+			'/test',
+			'/test/',
+		];
+
+		return $this->textArrayToDataprovider($paths);
+	}
+
+	/**
+	 * Verify path_matches() correctly identifies whether a given path matches.
+	 *
+	 * @dataProvider dataPathMatchUndesiredInputTypes
+	 * @dataProvider dataPathMatch
+	 *
+	 * @param string $original Original, known path.
+	 * @param mixed  $check    Path to verify for a match.
+	 * @param bool   $matches  The expected function return value for an exact match.
+	 *
+	 * @return void
+	 */
+	public function testPathMatch($original, $check, $matches) {
+		$attributes         = new CaseInsensitiveDictionary();
+		$attributes['path'] = $original;
+		$cookie             = new Cookie('requests-testcookie', 'testvalue', $attributes);
+
+		$this->assertSame($matches, $cookie->path_matches($check));
+	}
+
+	/**
+	 * Data provider for checking data type handling.
+	 *
+	 * @return array
+	 */
+	public function dataPathMatchUndesiredInputTypes() {
+		$data      = [];
+		$all_types = TypeProviderHelper::getAll();
+		foreach ($all_types as $key => $value) {
+			if (in_array($key, TypeProviderHelper::GROUP_EMPTY, true)) {
+				$data['Match:     "/" vs ' . $key] = [
+					'original' => '/',
+					'check'    => $value['input'],
+					'matches'  => true,
+				];
+
+				$data['Non-match: "/test" vs ' . $key] = [
+					'original' => '/test',
+					'check'    => $value['input'],
+					'matches'  => false,
+				];
+
+				continue;
+			}
+
+			/*
+			 * The other type inputs should all lead to a `false` result.
+			 * Non-scalar types for being non-scalar and the string types for not actually being a path.
+			 */
+			$data['Non-match: "/" vs ' . $key] = [
+				'original' => '/',
+				'check'    => $value['input'],
+				'matches'  => false,
+			];
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Data provider for checking the actual functionality.
+	 *
+	 * @return array
+	 */
 	public function dataPathMatch() {
 		return [
-			'Invalid check path (type): null'    => ['/', null, true],
-			'Invalid check path (type): true'    => ['/', true, false],
-			'Invalid check path (type): integer' => ['/', 123, false],
-			'Invalid check path (type): array'   => ['/', [1, 2], false],
-			['/', '', true],
-			['/', '/', true],
+			'Exact match: "/"' => [
+				'original' => '/',
+				'check'    => '/',
+				'matches'  => true,
+			],
+			'Exact match: "/test"' => [
+				'original' => '/test',
+				'check'    => '/test',
+				'matches'  => true,
+			],
+			'Exact match: "/test/" (with trailing slash' => [
+				'original' => '/test/',
+				'check'    => '/test/',
+				'matches'  => true,
+			],
 
-			['/', '/test', true],
-			['/', '/test/', true],
+			'Partial match: "/" vs "/test"' => [
+				'original' => '/',
+				'check'    => '/test',
+				'matches'  => true,
+			],
+			'Partial match: "/" vs "/test/" (with trailing slash)' => [
+				'original' => '/',
+				'check'    => '/test/',
+				'matches'  => true,
+			],
+			'Partial match: "/test/" (with trailing slash) vs "/test/ing"' => [
+				'original' => '/test/',
+				'check'    => '/test/ing',
+				'matches'  => true,
+			],
+			'Partial match: "/test" vs "/test/" (without vs with trailing slash)' => [
+				'original' => '/test',
+				'check'    => '/test/',
+				'matches'  => true,
+			],
+			'Partial match: "/test" vs "/test/ing"' => [
+				'original' => '/test',
+				'check'    => '/test/ing',
+				'matches'  => true,
+			],
+			'Partial match: "/test" vs "/test/ing/" (with trailing slash)' => [
+				'original' => '/test',
+				'check'    => '/test/ing/',
+				'matches'  => true,
+			],
 
-			['/test', '/', false],
-			['/test', '/test', true],
-			['/test', '/testing', false],
-			['/test', '/test/', true],
-			['/test', '/test/ing', true],
-			['/test', '/test/ing/', true],
-
-			['/test/', '/test/', true],
-			['/test/', '/', false],
+			'Partial non-match: "/test" vs "/"' => [
+				'original' => '/test',
+				'check'    => '/',
+				'matches'  => false,
+			],
+			'Partial non-match: "/test" vs "/testing"' => [
+				'original' => '/test',
+				'check'    => '/testing',
+				'matches'  => false,
+			],
+			'Partial non-match: "/test/" (with trailing slash) vs "/"' => [
+				'original' => '/test/',
+				'check'    => '/',
+				'matches'  => false,
+			],
 		];
 	}
 }
