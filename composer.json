@@ -40,11 +40,6 @@
     "php": ">=5.6.20",
     "ext-json": "*"
   },
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
-    }
-  },
   "require-dev": {
     "requests/test-server": "dev-main",
     "squizlabs/php_codesniffer": "^3.7.1",
@@ -56,6 +51,9 @@
     "yoast/phpunit-polyfills": "^1.0.0",
     "roave/security-advisories": "dev-latest"
   },
+  "suggest": {
+    "ext-curl": "For improved performance"
+  },
   "autoload": {
     "psr-4": {
       "WpOrg\\Requests\\": "src/"
@@ -66,6 +64,11 @@
   "autoload-dev": {
     "psr-4": {
       "WpOrg\\Requests\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   },
   "scripts": {

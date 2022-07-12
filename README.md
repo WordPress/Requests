@@ -131,38 +131,19 @@ issue](https://github.com/WordPress/Requests/issues/new)!
 [prose-based documentation]: https://github.com/WordPress/Requests/blob/stable/docs/README.md
 [request_method]: https://requests.ryanmccue.info/api-2.x/classes/WpOrg-Requests-Requests.html#method_request
 
-Testing
--------
+
+Test Coverage
+-------------
 
 Requests strives to have 100% code-coverage of the library with an extensive
 set of tests. We're not quite there yet, but [we're getting close][codecov].
 
 [codecov]: https://codecov.io/github/WordPress/Requests/
 
-To run the test suite, first check that you have the [PHP
-JSON extension ](https://www.php.net/book.json) enabled. Then
-simply:
-```bash
-$ phpunit
-```
-
-If you'd like to run a single set of tests, specify just the name:
-```bash
-$ phpunit Transport/cURL
-```
 
 Contribute
 ----------
 
-1. Check for open issues or open a new issue for a feature request or a bug.
-2. Fork [the repository][] on Github to start making your changes to the
-    `develop` branch (or branch off of it).
-3. Write one or more tests which show that the bug was fixed or that the feature works as expected.
-4. Send in a pull request.
+Contributions to this library are very welcome. Please read the [Contributing guidelines][] to get started.
 
-If you have questions while working on your contribution and you use Slack, there is
-a [#core-http-api] channel available in the [WordPress Slack] in which contributions can be discussed.
-
-[the repository]: https://github.com/WordPress/Requests
-[#core-http-api]: https://wordpress.slack.com/archives/C02BBE29V42
-[WordPress Slack]: https://make.wordpress.org/chat/
+[Contributing guidelines]: https://github.com/WordPress/Requests/blob/develop/.github/CONTRIBUTING.md
