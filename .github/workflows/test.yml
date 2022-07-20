@@ -15,10 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  #### TEST STAGE ####
+  #### TEST JOB ####
   test:
-    runs-on: ubuntu-latest
-
     strategy:
       # Keys:
       # - coverage: Whether to run the tests with code coverage.
@@ -35,49 +33,34 @@ jobs:
 
     name: "Test: PHP ${{ matrix.php }}"
     continue-on-error: ${{ matrix.php == '8.2' }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set coverage variable
-        id: set_cov
-        run: |
-          if [ ${{ matrix.coverage }} == "true" ]; then
-            echo '::set-output name=COV::xdebug'
-          else
-            echo '::set-output name=COV::none'
-          fi
-
-      - name: Install PHP
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           ini-values: error_reporting=-1, display_errors=On, log_errors_max_len=0
-          coverage: ${{ steps.set_cov.outputs.COV }}
+          coverage: ${{ matrix.coverage && 'xdebug' || 'none' }}
           tools: cs2pr
 
       # At least one test needs a non-en_US locale to be available, so make sure it is.
       - name: Install locales
         run: |
           sudo apt-get update
-          sudo apt-get install locales-all
+          sudo apt-get -y install locales-all
 
       - name: Show available locales
         run: locale -a
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
-      - name: Install Composer dependencies - normal
-        if: ${{ matrix.php != '8.2' }}
-        uses: "ramsey/composer-install@v2"
-
-      # For PHP "nightly", we need to install with ignore platform reqs.
       - name: Install Composer dependencies - with ignore platform
-        if: ${{ matrix.php == '8.2' }}
         uses: "ramsey/composer-install@v2"
         with:
-          composer-options: --ignore-platform-req=php
+          composer-options: ${{ matrix.php == '8.2' && '--ignore-platform-req=php' || '' }}
 
       - name: Setup problem matcher to provide annotations for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
@@ -104,31 +87,21 @@ jobs:
           echo "REQUESTS_HTTP_PROXY_AUTH_USER=test" >> $GITHUB_ENV
           echo "REQUESTS_HTTP_PROXY_AUTH_PASS=pass" >> $GITHUB_ENV
 
-      - name: Ensure the HTTPS test instance on Heroku is spun up
-        run: curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
-
-      - name: Check mitmproxy version
-        run: mitmdump --version
-
-      - name: Ping localhost domain
-        run: ping -c1 localhost
-
-      - name: Access localhost on port 8080
-        run: curl -i http://localhost:8080
-
-      - name: Access localhost on port 9002
-        run: curl -i http://localhost:9002
-
-      - name: Show PHPUnit version
-        run: vendor/bin/phpunit --version
+      - name: Checkproxy server
+        run: |
+          mitmdump --version
+          curl -s -I http://requests-php-tests.herokuapp.com/ > /dev/null
+          ping -c1 localhost
+          curl -i http://localhost:8080
+          curl -i http://localhost:9002
 
       - name: Run the unit tests, no code coverage
-        if: ${{ matrix.coverage == false }}
+        if: ${{ ! matrix.coverage }}
         run: composer test
 
       - name: Run the unit tests with code coverage
-        if: ${{ matrix.coverage == true }}
-        run: vendor/bin/phpunit --coverage-clover clover.xml
+        if: ${{ matrix.coverage }}
+        run: composer exec -- phpunit --coverage-clover clover.xml
 
       - name: Stop proxy server
         continue-on-error: true
@@ -141,7 +114,7 @@ jobs:
         run: vendor/bin/stop.sh
 
       - name: Send coverage report to Codecov
-        if: ${{ success() && matrix.coverage == true }}
+        if: ${{ success() && matrix.coverage }}
         uses: codecov/codecov-action@v3
         with:
           files: ./clover.xml
