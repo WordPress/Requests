@@ -10,7 +10,6 @@ namespace WpOrg\Requests\Psr;
 use Exception;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -18,7 +17,7 @@ use Psr\Http\Message\UriInterface;
  *
  * @package Requests\Psr
  */
-final class HttpClient/* implements \Psr\Http\Message\ServerRequestFactoryInterface, \Psr\Http\Client\ClientInterface */ {
+final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \Psr\Http\Client\ClientInterface */ {
 	/**
 	 * Constructor
 	 */
@@ -26,20 +25,12 @@ final class HttpClient/* implements \Psr\Http\Message\ServerRequestFactoryInterf
 	}
 
 	/**
-	 * Create a new server request.
-	 *
-	 * Note that server parameters are taken precisely as given - no parsing/processing
-	 * of the given values is performed. In particular, no attempt is made to
-	 * determine the HTTP method or URI, which must be provided explicitly.
+	 * Create a new request.
 	 *
 	 * @param string $method The HTTP method associated with the request.
 	 * @param UriInterface|string $uri The URI associated with the request.
-	 * @param array $serverParams An array of Server API (SAPI) parameters with
-	 *     which to seed the generated request instance.
-	 *
-	 * @return ServerRequestInterface
 	 */
-	public function createServerRequest($method, $uri, $serverParams = []) {
+	public function createRequest(string $method, $uri) {
 		throw new Exception('not implemented');
 	}
 
