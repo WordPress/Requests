@@ -30,8 +30,8 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 	 * @param string $method The HTTP method associated with the request.
 	 * @param UriInterface|string $uri The URI associated with the request.
 	 */
-	public function createRequest(string $method, $uri) {
-		throw new Exception('not implemented');
+	public function createRequest($method, $uri) {
+		return new Request();
 	}
 
 	/**

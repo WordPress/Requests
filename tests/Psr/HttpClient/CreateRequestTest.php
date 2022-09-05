@@ -2,7 +2,7 @@
 
 namespace WpOrg\Requests\Tests\Psr\HttpClient;
 
-use Exception;
+use Psr\Http\Message\RequestInterface;
 use WpOrg\Requests\Psr\HttpClient;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -15,11 +15,12 @@ final class CreateRequestTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testCreateRequest() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('not implemented');
-
+	public function testCreateRequestReturnsRequest() {
 		$httpClient = new HttpClient();
-		$httpClient->createRequest('', '');
+
+		$this->assertInstanceOf(
+			RequestInterface::class,
+			$httpClient->createRequest('', '')
+		);
 	}
 }
