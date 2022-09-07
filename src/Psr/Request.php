@@ -45,9 +45,9 @@ final class Request implements RequestInterface {
 	 *
 	 * @return Request
 	 */
-	public static function withMethodAndUri($method, $uri) {
+	public static function withMethodAndUri($method, UriInterface $uri) {
 		if (!is_string($method)) {
-			throw new Exception(sprintf('%s() expects parameter 1 $method to be string', __METHOD__));
+			throw new Exception(sprintf('Argument 1 passed to %s() must be string', __METHOD__));
 		}
 
 		return new self($method, $uri);

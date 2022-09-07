@@ -38,6 +38,7 @@ final class WithMethodAndUriTest extends TestCase {
 		$uri = $this->createMock(UriInterface::class);
 
 		$this->expectException(Exception::class);
+		$this->expectExceptionMessage(sprintf('Argument 1 passed to %s::withMethodAndUri() must be string', Request::class));
 
 		Request::withMethodAndUri($method, $uri);
 	}
