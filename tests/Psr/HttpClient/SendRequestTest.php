@@ -2,8 +2,8 @@
 
 namespace WpOrg\Requests\Tests\Psr\HttpClient;
 
-use Exception;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use WpOrg\Requests\Psr\HttpClient;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -17,12 +17,13 @@ final class SendRequestTest extends TestCase {
 	 * @return void
 	 */
 	public function testSendRequest() {
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('not implemented');
-
 		$request = $this->createMock(RequestInterface::class);
 
 		$httpClient = new HttpClient();
-		$httpClient->sendRequest($request);
+
+		$this->assertInstanceOf(
+			ResponseInterface::class,
+			$httpClient->sendRequest($request)
+		);
 	}
 }

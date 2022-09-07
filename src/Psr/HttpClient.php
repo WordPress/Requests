@@ -7,7 +7,6 @@
 
 namespace WpOrg\Requests\Psr;
 
-use Exception;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
@@ -44,6 +43,6 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 	 * @throws \Psr\Http\Client\ClientExceptionInterface If an error happens while processing the request.
 	 */
 	public function sendRequest($request) {
-		throw new Exception('not implemented');
+		return new Response();
 	}
 }
