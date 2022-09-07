@@ -36,10 +36,32 @@ use Psr\Http\Message\UriInterface;
  * message and return an instance that contains the changed state.
  */
 final class Request implements RequestInterface {
+
+	/**
+	 * create Request with method and uri
+	 *
+	 * @param string $method
+	 * @param UriInterface $uri
+	 *
+	 * @return Request
+	 */
+	public static function withMethodAndUri($method, $uri) {
+		if (!is_string($method)) {
+			throw new Exception(sprintf('%s() expects parameter 1 $method to be string', __METHOD__));
+		}
+
+		return new self($method, $uri);
+	}
+
 	/**
 	 * Constructor
+	 *
+	 * @param string $method
+	 * @param UriInterface $uri
+	 *
+	 * @return Request
 	 */
-	public function __construct() {
+	private function __construct($method, $uri) {
 	}
 
 	/**

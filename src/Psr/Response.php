@@ -31,6 +31,7 @@ use Psr\Http\Message\StreamInterface;
  * message and return an instance that contains the changed state.
  */
 final class Response implements ResponseInterface {
+
 	/**
 	 * Constructor
 	 */

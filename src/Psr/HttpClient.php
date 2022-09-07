@@ -17,6 +17,7 @@ use Psr\Http\Message\UriInterface;
  * @package Requests\Psr
  */
 final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \Psr\Http\Client\ClientInterface */ {
+
 	/**
 	 * Constructor
 	 */
@@ -30,7 +31,7 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 	 * @param UriInterface|string $uri The URI associated with the request.
 	 */
 	public function createRequest($method, $uri) {
-		return new Request();
+		return Request::withMethodAndUri($method, $uri);
 	}
 
 	/**
