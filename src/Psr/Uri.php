@@ -201,7 +201,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI path.
 	 */
 	public function getPath() {
-		throw new Exception('not implemented');
+		return (string) $this->iri->ipath;
 	}
 
 	/**
