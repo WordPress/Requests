@@ -291,7 +291,25 @@ final class Uri implements UriInterface {
 	 * @return static A new instance with the specified user information.
 	 */
 	public function withUserInfo($user, $password = null) {
-		throw new Exception('not implemented');
+		if (!is_string($user)) {
+			throw InvalidArgument::create(1, '$user', 'string', gettype($user));
+		}
+
+		if (!is_string($password) && $password !== null) {
+			throw InvalidArgument::create(2, '$password', 'null|string', gettype($password));
+		}
+
+		$iri = clone($this->iri);
+
+		if ($user === '') {
+			$iri->userinfo = $user;
+		} elseif ($password === null or $password === '') {
+			$iri->userinfo = $user;
+		} else {
+			$iri->userinfo = $user . ':' . $password;
+		}
+
+		return new self($iri);
 	}
 
 	/**
