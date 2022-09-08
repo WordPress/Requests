@@ -10,6 +10,9 @@ namespace WpOrg\Requests\Psr;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Iri;
+use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * HTTP implementation for PSR-17 and PSR-18
@@ -31,6 +34,14 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 	 * @param UriInterface|string $uri The URI associated with the request.
 	 */
 	public function createRequest($method, $uri) {
+		if (! $uri instanceof UriInterface) {
+			if (InputValidator::is_string_or_stringable($uri) === false) {
+				throw InvalidArgument::create(2, '$uri', UriInterface::class.'|string', gettype($uri));
+			}
+
+			$uri = Uri::fromIri(new Iri($uri));
+		}
+
 		return Request::withMethodAndUri($method, $uri);
 	}
 
