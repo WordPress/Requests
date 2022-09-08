@@ -10,6 +10,7 @@ namespace WpOrg\Requests\Psr;
 use Exception;
 use Psr\Http\Message\UriInterface;
 use WpOrg\Requests\Exception as RequestsException;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Port;
 
@@ -45,7 +46,7 @@ final class Uri implements UriInterface {
 	 * @return Uri
 	 */
 	public static function fromIri(Iri $iri) {
-		return new self($iri);
+		return new self(clone($iri));
 	}
 
 	/**
@@ -264,7 +265,15 @@ final class Uri implements UriInterface {
 	 * @throws \InvalidArgumentException for invalid or unsupported schemes.
 	 */
 	public function withScheme($scheme) {
-		throw new Exception('not implemented');
+		if (!is_string($scheme)) {
+			throw InvalidArgument::create(1, '$scheme', 'string', gettype($scheme));
+		}
+
+		$iri = clone($this->iri);
+
+		$iri->scheme = $scheme;
+
+		return new self($iri);
 	}
 
 	/**

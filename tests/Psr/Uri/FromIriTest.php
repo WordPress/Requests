@@ -22,4 +22,20 @@ final class FromIriTest extends TestCase {
 			Uri::fromIri(new Iri('https://example.org'))
 		);
 	}
+
+	/**
+	 * Tests Iri instance is immutable when using fromIri().
+	 *
+	 * @covers \WpOrg\Requests\Psr\Uri::withScheme
+	 *
+	 * @return void
+	 */
+	public function testFromIriHasImmutableIriInstance() {
+		$iri = new Iri('https://example.org');
+		$uri = Uri::fromIri($iri);
+
+		$iri->scheme = 'http';
+
+		$this->assertSame('https', $uri->getScheme());
+	}
 }
