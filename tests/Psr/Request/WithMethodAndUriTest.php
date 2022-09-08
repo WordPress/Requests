@@ -2,9 +2,9 @@
 
 namespace WpOrg\Requests\Tests\Psr\Request;
 
-use Exception;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Psr\Request;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -37,8 +37,8 @@ final class WithMethodAndUriTest extends TestCase {
 		$method = null;
 		$uri = $this->createMock(UriInterface::class);
 
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessage(sprintf('Argument 1 passed to %s::withMethodAndUri() must be string', Request::class));
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(sprintf('%s::withMethodAndUri(): Argument #1 ($method) must be of type string, NULL given', Request::class));
 
 		Request::withMethodAndUri($method, $uri);
 	}
