@@ -7,6 +7,7 @@ use Psr\Http\Message\UriInterface;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Psr\Request;
 use WpOrg\Requests\Tests\TestCase;
+use WpOrg\Requests\Tests\TypeProviderHelper;
 
 final class WithMethodAndUriTest extends TestCase {
 
@@ -27,19 +28,31 @@ final class WithMethodAndUriTest extends TestCase {
 	}
 
 	/**
-	 * Tests receiving an exception when using withMethodAndUri().
+	 * Tests receiving an exception when the withMethodAndUri() method received an invalid input type as `$method`.
+	 *
+	 * @dataProvider dataInvalidTypeNotStringable
 	 *
 	 * @covers \WpOrg\Requests\Psr\Request::withMethodAndUri
 	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
 	 * @return void
 	 */
-	public function testWithMethodAndUriWithoutMethodStringThrowsException() {
-		$method = null;
+	public function testWithMethodAndUriWithoutMethodStringThrowsException($input) {
 		$uri = $this->createMock(UriInterface::class);
 
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(sprintf('%s::withMethodAndUri(): Argument #1 ($method) must be of type string, NULL given', Request::class));
+		$this->expectExceptionMessage(sprintf('%s::withMethodAndUri(): Argument #1 ($method) must be of type string', Request::class));
 
-		Request::withMethodAndUri($method, $uri);
+		Request::withMethodAndUri($input, $uri);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidTypeNotStringable() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 }

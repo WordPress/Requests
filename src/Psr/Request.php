@@ -42,7 +42,7 @@ final class Request implements RequestInterface {
 	/**
 	 * create Request with method and uri
 	 *
-	 * @param string $method
+	 * @param string|Stringable $method
 	 * @param UriInterface $uri
 	 *
 	 * @return Request
