@@ -118,7 +118,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI user information, in "username[:password]" format.
 	 */
 	public function getUserInfo() {
-		throw new Exception('not implemented');
+		return (string) $this->iri->iuserinfo;
 	}
 
 	/**
