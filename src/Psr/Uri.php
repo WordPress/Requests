@@ -133,7 +133,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI host.
 	 */
 	public function getHost() {
-		throw new Exception('not implemented');
+		return (string) $this->iri->ihost;
 	}
 
 	/**
