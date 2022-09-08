@@ -80,4 +80,19 @@ final class WithSchemeTest extends TestCase {
 	public function dataInvalidTypeNotString() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
+
+	/**
+	 * Tests changing the scheme when using withScheme().
+	 *
+	 * @covers \WpOrg\Requests\Psr\Uri::withScheme
+	 *
+	 * @return void
+	 */
+	public function testWithSchemeChangesTheScheme() {
+		$uri = Uri::fromIri(new Iri('https://example.org'));
+
+		$uri = $uri->withScheme('http');
+
+		$this->assertSame('http', $uri->getScheme());
+	}
 }

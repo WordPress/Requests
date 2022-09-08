@@ -325,7 +325,15 @@ final class Uri implements UriInterface {
 	 * @throws \InvalidArgumentException for invalid hostnames.
 	 */
 	public function withHost($host) {
-		throw new Exception('not implemented');
+		if (!is_string($host)) {
+			throw InvalidArgument::create(1, '$host', 'string', gettype($host));
+		}
+
+		$iri = clone($this->iri);
+
+		$iri->host = $host;
+
+		return new self($iri);
 	}
 
 	/**
