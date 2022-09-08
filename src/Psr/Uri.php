@@ -9,7 +9,9 @@ namespace WpOrg\Requests\Psr;
 
 use Exception;
 use Psr\Http\Message\UriInterface;
+use WpOrg\Requests\Exception as RequestsException;
 use WpOrg\Requests\Iri;
+use WpOrg\Requests\Port;
 
 /**
  * Value object representing a URI.
@@ -152,7 +154,25 @@ final class Uri implements UriInterface {
 	 * @return null|int The URI port.
 	 */
 	public function getPort() {
-		throw new Exception('not implemented');
+		$port = $this->iri->port;
+		$scheme = $this->getScheme();
+
+		if ($port === null) {
+			try {
+				return Port::get($scheme);
+			} catch (RequestsException $th) {
+				return null;
+			}
+		}
+
+		try {
+			if ($port === Port::get($scheme)) {
+				return null;
+			}
+		} catch (RequestsException $th) {
+		}
+
+		return $port;
 	}
 
 	/**
