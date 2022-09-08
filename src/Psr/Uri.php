@@ -245,7 +245,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI fragment.
 	 */
 	public function getFragment() {
-		throw new Exception('not implemented');
+		return (string) $this->iri->ifragment;
 	}
 
 	/**
