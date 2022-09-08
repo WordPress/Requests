@@ -225,7 +225,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI query string.
 	 */
 	public function getQuery() {
-		throw new Exception('not implemented');
+		return (string) $this->iri->iquery;
 	}
 
 	/**
