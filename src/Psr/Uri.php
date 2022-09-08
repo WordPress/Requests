@@ -99,7 +99,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI authority, in "[user-info@]host[:port]" format.
 	 */
 	public function getAuthority() {
-		throw new Exception('not implemented');
+		return (string) $this->iri->iauthority;
 	}
 
 	/**
