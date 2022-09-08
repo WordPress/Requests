@@ -101,7 +101,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI authority, in "[user-info@]host[:port]" format.
 	 */
 	public function getAuthority() {
-		return (string) $this->iri->iauthority;
+		return (string) $this->iri->authority;
 	}
 
 	/**
@@ -120,7 +120,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI user information, in "username[:password]" format.
 	 */
 	public function getUserInfo() {
-		return (string) $this->iri->iuserinfo;
+		return (string) $this->iri->userinfo;
 	}
 
 	/**
@@ -135,7 +135,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI host.
 	 */
 	public function getHost() {
-		return (string) $this->iri->ihost;
+		return (string) $this->iri->host;
 	}
 
 	/**
@@ -201,7 +201,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI path.
 	 */
 	public function getPath() {
-		return (string) $this->iri->ipath;
+		return (string) $this->iri->path;
 	}
 
 	/**
@@ -225,7 +225,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI query string.
 	 */
 	public function getQuery() {
-		return (string) $this->iri->iquery;
+		return (string) $this->iri->query;
 	}
 
 	/**
@@ -245,7 +245,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI fragment.
 	 */
 	public function getFragment() {
-		return (string) $this->iri->ifragment;
+		return (string) $this->iri->fragment;
 	}
 
 	/**
