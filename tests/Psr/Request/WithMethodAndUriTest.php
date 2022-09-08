@@ -30,7 +30,7 @@ final class WithMethodAndUriTest extends TestCase {
 	/**
 	 * Tests receiving an exception when the withMethodAndUri() method received an invalid input type as `$method`.
 	 *
-	 * @dataProvider dataInvalidTypeNotStringable
+	 * @dataProvider dataInvalidTypeNotString
 	 *
 	 * @covers \WpOrg\Requests\Psr\Request::withMethodAndUri
 	 *
@@ -52,7 +52,7 @@ final class WithMethodAndUriTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidTypeNotStringable() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
+	public function dataInvalidTypeNotString() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 }

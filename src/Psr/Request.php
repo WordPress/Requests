@@ -12,7 +12,6 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use WpOrg\Requests\Exception\InvalidArgument;
-use WpOrg\Requests\Utility\InputValidator;
 
 /**
  * PSR-7 RequestInterface implementation
@@ -48,7 +47,7 @@ final class Request implements RequestInterface {
 	 * @return Request
 	 */
 	public static function withMethodAndUri($method, UriInterface $uri) {
-		if (InputValidator::is_string_or_stringable($method) === false) {
+		if (!is_string($method)) {
 			throw InvalidArgument::create(1, '$method', 'string', gettype($method));
 		}
 

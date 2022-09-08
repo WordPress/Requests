@@ -50,7 +50,7 @@ final class CreateRequestTest extends TestCase {
 	/**
 	 * Tests receiving an exception when the createRequest() method received an invalid input type as `$uri`.
 	 *
-	 * @dataProvider dataInvalidTypeNotStringable
+	 * @dataProvider dataInvalidTypeNotString
 	 *
 	 * @covers \WpOrg\Requests\Psr\HttpClient::createRequest
 	 *
@@ -76,7 +76,7 @@ final class CreateRequestTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidTypeNotStringable() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
+	public function dataInvalidTypeNotString() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 }
