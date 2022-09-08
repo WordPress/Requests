@@ -47,11 +47,20 @@ final class Uri implements UriInterface {
 	}
 
 	/**
+	 * Iri instance
+	 *
+	 * @var Iri
+	 */
+	private $iri;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Iri $iri
 	 */
 	private function __construct(Iri $iri) {
+		$this->iri = $iri;
+	}
 
 	/**
 	 * Retrieve the scheme component of the URI.
@@ -68,7 +77,7 @@ final class Uri implements UriInterface {
 	 * @return string The URI scheme.
 	 */
 	public function getScheme() {
-		throw new Exception('not implemented');
+		return (string) $this->iri->scheme;
 	}
 
 	/**
