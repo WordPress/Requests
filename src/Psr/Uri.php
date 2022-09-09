@@ -354,7 +354,15 @@ final class Uri implements UriInterface {
 	 * @throws \InvalidArgumentException for invalid ports.
 	 */
 	public function withPort($port) {
-		throw new Exception('not implemented');
+		if (!is_int($port) && $port !== null) {
+			throw InvalidArgument::create(1, '$port', 'null|int', gettype($port));
+		}
+
+		$iri = clone($this->iri);
+
+		$iri->port = $port;
+
+		return new self($iri);
 	}
 
 	/**
