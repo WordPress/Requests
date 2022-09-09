@@ -421,7 +421,15 @@ final class Uri implements UriInterface {
 	 * @throws \InvalidArgumentException for invalid query strings.
 	 */
 	public function withQuery($query) {
-		throw new Exception('not implemented');
+		if (!is_string($query)) {
+			throw InvalidArgument::create(1, '$query', 'string', gettype($query));
+		}
+
+		$iri = clone($this->iri);
+
+		$iri->query = $query;
+
+		return new self($iri);
 	}
 
 	/**
