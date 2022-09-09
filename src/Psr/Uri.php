@@ -482,6 +482,47 @@ final class Uri implements UriInterface {
 	 * @return string
 	 */
 	public function __toString() {
-		throw new Exception('not implemented');
+		$string = '';
+
+		$scheme = $this->getScheme();
+
+		if ($scheme !== '') {
+			$string .= $scheme . ':';
+		}
+
+		$authority = $this->getAuthority();
+
+		if ($authority !== '') {
+			$string .= '//' . $authority;
+		}
+
+		$path = $this->getPath();
+
+		// If the path is rootless and an authority is present, the path MUST
+		// be prefixed by "/".
+		if (strncmp($path, '/', 1) !== 0 && $authority !== '') {
+			$string .= '/' . $path;
+		// If the path is starting with more than one "/" and no authority is
+		// present, the starting slashes MUST be reduced to one.
+		} elseif (strncmp($path, '//', 2) === 0 && $authority === '') {
+			$string .= '/' . ltrim($path, '/');
+		// The path can be concatenated without delimiters
+		} else {
+			$string .= $path;
+		}
+
+		$query = $this->getQuery();
+
+		if ($query !== '') {
+			$string .= '?' . $query;
+		}
+
+		$fragment = $this->getFragment();
+
+		if ($fragment !== '') {
+			$string .= '#' . $fragment;
+		}
+
+		return $string;
 	}
 }
