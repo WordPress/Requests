@@ -2,8 +2,8 @@
 
 namespace WpOrg\Requests\Tests\Psr\Uri;
 
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
-use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Psr\Uri;
 use WpOrg\Requests\Tests\TestCase;
@@ -48,10 +48,10 @@ final class WithPathTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testWithPathWithoutStringThrowsException($input) {
+	public function testWithPathWithoutStringThrowsInvalidArgumentException($input) {
 		$uri = Uri::fromIri(new Iri('https://example.org'));
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withPath(): Argument #1 ($path) must be of type string', Uri::class));
 
 		$uri = $uri->withPath($input);

@@ -4,7 +4,6 @@ namespace WpOrg\Requests\Tests\Psr\Uri;
 
 use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
-use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Psr\Uri;
 use WpOrg\Requests\Tests\TestCase;
@@ -64,10 +63,10 @@ final class WithPortTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testWithPortWithoutIntOrNullThrowsException($input) {
+	public function testWithPortWithoutIntOrNullThrowsInvalidArgumentException($input) {
 		$uri = Uri::fromIri(new Iri('https://example.org'));
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withPort(): Argument #1 ($port) must be of type null|int', Uri::class));
 
 		$uri = $uri->withPort($input);
@@ -109,7 +108,7 @@ final class WithPortTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testWithPortWithoutValidPortThrowsException($input) {
+	public function testWithPortWithoutValidPortThrowsInvalidArgumentException($input) {
 		$uri = Uri::fromIri(new Iri('https://example.org'));
 
 		$this->expectException(InvalidArgumentException::class);

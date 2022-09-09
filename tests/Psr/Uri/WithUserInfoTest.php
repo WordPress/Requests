@@ -2,8 +2,8 @@
 
 namespace WpOrg\Requests\Tests\Psr\Uri;
 
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
-use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Psr\Uri;
 use WpOrg\Requests\Tests\TestCase;
@@ -48,10 +48,10 @@ final class WithUserInfoTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testWithUserInfoWithoutStringInUserThrowsException($input) {
+	public function testWithUserInfoWithoutStringInUserThrowsInvalidArgumentException($input) {
 		$uri = Uri::fromIri(new Iri(''));
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withUserInfo(): Argument #1 ($user) must be of type string', Uri::class));
 
 		$uri = $uri->withUserInfo($input);
@@ -77,10 +77,10 @@ final class WithUserInfoTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testWithUserInfoWithoutStringInPasswordThrowsException($input) {
+	public function testWithUserInfoWithoutStringInPasswordThrowsInvalidArgumentException($input) {
 		$uri = Uri::fromIri(new Iri(''));
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withUserInfo(): Argument #2 ($password) must be of type null|string', Uri::class));
 
 		$uri = $uri->withUserInfo('user', $input);
