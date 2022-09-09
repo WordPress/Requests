@@ -361,7 +361,7 @@ final class Uri implements UriInterface {
 		// Port must be in range 0 - 65535 according to RFC  6335 section 6
 		// @see https://datatracker.ietf.org/doc/html/rfc6335#section-6
 		if ($port !== null && ($port < 0 || $port > 65535)) {
-			throw InvalidArgument::create(1, '$port', 'null|int in the range of 0 - 65535', is_int($port) ? $port : gettype($port));
+			throw InvalidArgument::create(1, '$port', 'null|int in the range of 0 - 65535', $port);
 		}
 
 		$iri = clone($this->iri);
@@ -394,7 +394,15 @@ final class Uri implements UriInterface {
 	 * @throws \InvalidArgumentException for invalid paths.
 	 */
 	public function withPath($path) {
-		throw new Exception('not implemented');
+		if (!is_string($path)) {
+			throw InvalidArgument::create(1, '$path', 'string', gettype($path));
+		}
+
+		$iri = clone($this->iri);
+
+		$iri->path = $path;
+
+		return new self($iri);
 	}
 
 	/**
