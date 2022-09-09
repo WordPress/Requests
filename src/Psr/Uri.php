@@ -447,7 +447,15 @@ final class Uri implements UriInterface {
 	 * @return static A new instance with the specified fragment.
 	 */
 	public function withFragment($fragment) {
-		throw new Exception('not implemented');
+		if (!is_string($fragment)) {
+			throw InvalidArgument::create(1, '$fragment', 'string', gettype($fragment));
+		}
+
+		$iri = clone($this->iri);
+
+		$iri->fragment = $fragment;
+
+		return new self($iri);
 	}
 
 	/**
