@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests\Psr\Uri;
 
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
@@ -63,7 +64,7 @@ final class WithPortTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testWithPortWithoutStringThrowsException($input) {
+	public function testWithPortWithoutIntOrNullThrowsException($input) {
 		$uri = Uri::fromIri(new Iri('https://example.org'));
 
 		$this->expectException(InvalidArgument::class);
@@ -94,5 +95,38 @@ final class WithPortTest extends TestCase {
 		$uri = $uri->withPort(5000);
 
 		$this->assertSame(5000, $uri->getPort());
+	}
+
+	/**
+	 * Tests receiving an exception when the withPort() method received a port outside the
+	 * established TCP and UDP port ranges as `$port`.
+	 *
+	 * @dataProvider dataInvalidPorts
+	 *
+	 * @covers \WpOrg\Requests\Psr\Uri::withPort
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testWithPortWithoutValidPortThrowsException($input) {
+		$uri = Uri::fromIri(new Iri('https://example.org'));
+
+		$this->expectException(InvalidArgumentException::class);
+		$this->expectExceptionMessage(sprintf('%s::withPort(): Argument #1 ($port) must be of type null|int in the range of 0 - 65535', Uri::class));
+
+		$uri = $uri->withPort($input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataInvalidPorts() {
+		return [
+			'negative integer' => [-1],
+			'bigger than 65535' => [65536],
+		];
 	}
 }
