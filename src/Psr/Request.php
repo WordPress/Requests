@@ -54,6 +54,8 @@ final class Request implements RequestInterface {
 		return new self((string) $method, $uri);
 	}
 
+	private $method;
+
 	/**
 	 * Constructor
 	 *
@@ -63,6 +65,7 @@ final class Request implements RequestInterface {
 	 * @return Request
 	 */
 	private function __construct($method, $uri) {
+		$this->method = $method;
 	}
 
 	/**
@@ -112,7 +115,7 @@ final class Request implements RequestInterface {
 	 * @return string Returns the request method.
 	 */
 	public function getMethod() {
-		throw new Exception('not implemented');
+		return $this->method;
 	}
 
 	/**
