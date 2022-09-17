@@ -55,6 +55,7 @@ final class Request implements RequestInterface {
 	}
 
 	private $method;
+	private $uri;
 
 	/**
 	 * Constructor
@@ -64,8 +65,9 @@ final class Request implements RequestInterface {
 	 *
 	 * @return Request
 	 */
-	private function __construct($method, $uri) {
+	private function __construct($method, UriInterface $uri) {
 		$this->method = $method;
+		$this->uri = $uri;
 	}
 
 	/**
@@ -85,7 +87,19 @@ final class Request implements RequestInterface {
 	 * @return string
 	 */
 	public function getRequestTarget() {
-		throw new Exception('not implemented');
+		$target = $this->uri->getPath();
+
+		if ($target === '') {
+			$target = '/';
+		}
+
+		$query = $this->uri->getQuery();
+
+		if ($query !== '') {
+			$target .= '?' . $query;
+		}
+
+		return $target;
 	}
 
 	/**
