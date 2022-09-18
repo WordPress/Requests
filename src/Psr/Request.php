@@ -377,7 +377,28 @@ final class Request implements RequestInterface {
 	 * @throws \InvalidArgumentException for invalid header names or values.
 	 */
 	public function withHeader($name, $value) {
-		throw new Exception('not implemented');
+		if (!is_string($name)) {
+			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		}
+
+		if (!is_string($value) && !is_array($value)) {
+			throw InvalidArgument::create(2, '$value', 'string|array containing strings', gettype($value));
+		}
+
+		if (!is_array($value)) {
+			$value = [$value];
+		}
+
+		foreach ($value as $line) {
+			if (!is_string($line)) {
+				throw InvalidArgument::create(2, '$value', 'string|array containing strings', gettype($value));
+			}
+		}
+
+		$request = clone($this);
+		$request->headers[$name] = $value;
+
+		return $request;
 	}
 
 	/**
