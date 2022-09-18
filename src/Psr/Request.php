@@ -264,7 +264,14 @@ final class Request implements RequestInterface {
 	 * @return static
 	 */
 	public function withProtocolVersion($version) {
-		throw new Exception('not implemented');
+		if (!is_string($version)) {
+			throw InvalidArgument::create(1, '$version', 'string', gettype($version));
+		}
+
+		$request = clone($this);
+		$request->protocolVersion = $version;
+
+		return $request;
 	}
 
 	/**
