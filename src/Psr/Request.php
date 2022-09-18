@@ -322,7 +322,11 @@ final class Request implements RequestInterface {
 	 *     no matching header name is found in the message.
 	 */
 	public function hasHeader($name) {
-		throw new Exception('not implemented');
+		if (!is_string($name)) {
+			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		}
+
+		return array_key_exists(strtolower(($name)), $this->headers);
 	}
 
 	/**
