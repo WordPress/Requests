@@ -11,7 +11,7 @@ use WpOrg\Requests\Tests\TypeProviderHelper;
 final class HasHeaderTest extends TestCase {
 
 	/**
-	 * Tests receiving the headers when using hasHeader().
+	 * Tests receiving boolean when using hasHeader().
 	 *
 	 * @covers \WpOrg\Requests\Psr\Request::hasHeader
 	 *
@@ -46,9 +46,9 @@ final class HasHeaderTest extends TestCase {
 	 */
 	public function testHasHeaderWithCaseInsensitiveNameReturnsTrue() {
 		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
-		$request = $request->withHeader('name', 'value');
+		$request = $request->withHeader('NAME', 'value');
 
-		$this->assertTrue($request->hasHeader('NAME'));
+		$this->assertTrue($request->hasHeader('name'));
 	}
 
 	/**

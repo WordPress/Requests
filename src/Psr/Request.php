@@ -326,7 +326,7 @@ final class Request implements RequestInterface {
 			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
 		}
 
-		return array_key_exists(strtolower(($name)), $this->headers);
+		return array_key_exists(strtolower($name), $this->headerNames);
 	}
 
 	/**
@@ -344,7 +344,15 @@ final class Request implements RequestInterface {
 	 *    return an empty array.
 	 */
 	public function getHeader($name) {
-		throw new Exception('not implemented');
+		if (!is_string($name)) {
+			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		}
+
+		if (!array_key_exists(strtolower($name), $this->headers)) {
+			return [];
+		}
+
+		return $this->headers[$this->headerNames[strtolower($name)]];
 	}
 
 	/**
