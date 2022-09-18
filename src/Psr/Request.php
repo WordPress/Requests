@@ -375,7 +375,15 @@ final class Request implements RequestInterface {
 	 *    the message, this method MUST return an empty string.
 	 */
 	public function getHeaderLine($name) {
-		throw new Exception('not implemented');
+		if (!is_string($name)) {
+			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		}
+
+		if (!array_key_exists(strtolower($name), $this->headers)) {
+			return '';
+		}
+
+		return implode(',', $this->headers[$this->headerNames[strtolower($name)]]);
 	}
 
 	/**
