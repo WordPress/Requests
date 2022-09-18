@@ -177,7 +177,14 @@ final class Request implements RequestInterface {
 	 * @throws \InvalidArgumentException for invalid HTTP methods.
 	 */
 	public function withMethod($method) {
-		throw new Exception('not implemented');
+		if (!is_string($method)) {
+			throw InvalidArgument::create(1, '$method', 'string', gettype($method));
+		}
+
+		$request = clone($this);
+		$request->method = $method;
+
+		return $request;
 	}
 
 	/**

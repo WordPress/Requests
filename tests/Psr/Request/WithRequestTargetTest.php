@@ -5,7 +5,6 @@ namespace WpOrg\Requests\Tests\Psr\Request;
 use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
-use WpOrg\Requests\Iri;
 use WpOrg\Requests\Psr\Request;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
