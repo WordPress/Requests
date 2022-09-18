@@ -197,7 +197,7 @@ final class Request implements RequestInterface {
 	 *     representing the URI of the request.
 	 */
 	public function getUri() {
-		throw new Exception('not implemented');
+		return $this->uri;
 	}
 
 	/**
