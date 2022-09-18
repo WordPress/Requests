@@ -70,6 +70,11 @@ final class Request implements RequestInterface {
 	private $requestTarget = '';
 
 	/**
+	 * @var string
+	 */
+	private $protocolVersion = '1.1';
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $method
@@ -242,7 +247,7 @@ final class Request implements RequestInterface {
 	 * @return string HTTP protocol version.
 	 */
 	public function getProtocolVersion() {
-		throw new Exception('not implemented');
+		return $this->protocolVersion;
 	}
 
 	/**
