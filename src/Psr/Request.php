@@ -75,6 +75,11 @@ final class Request implements RequestInterface {
 	private $protocolVersion = '1.1';
 
 	/**
+	 * @var array
+	 */
+	private $headers = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $method
@@ -300,7 +305,7 @@ final class Request implements RequestInterface {
 	 *     strings for that header.
 	 */
 	public function getHeaders() {
-		throw new Exception('not implemented');
+		return $this->headers;
 	}
 
 	/**
