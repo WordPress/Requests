@@ -125,8 +125,24 @@ final class WithHeaderTest extends TestCase {
 	public function testWithHeaderChangesTheHeaders() {
 		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
 
-		$request = $request->withHeader('name', 'value');
+		$request = $request->withHeader('Name', 'value');
 
-		$this->assertSame(['name' => ['value']], $request->getHeaders());
+		$this->assertSame(['Name' => ['value']], $request->getHeaders());
+	}
+
+	/**
+	 * Tests changing the header when using withHeader().
+	 *
+	 * @covers \WpOrg\Requests\Psr\Request::withHeader
+	 *
+	 * @return void
+	 */
+	public function testWithHeaderCaseInsensitiveChangesTheHeaders() {
+		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
+
+		$request = $request->withHeader('name', 'value');
+		$request = $request->withHeader('NAME', 'value');
+
+		$this->assertSame(['NAME' => ['value']], $request->getHeaders());
 	}
 }

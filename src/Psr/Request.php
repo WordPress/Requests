@@ -80,6 +80,11 @@ final class Request implements RequestInterface {
 	private $headers = [];
 
 	/**
+	 * @var array
+	 */
+	private $headerNames = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $method
@@ -396,7 +401,15 @@ final class Request implements RequestInterface {
 		}
 
 		$request = clone($this);
+		$headerName = strtolower($name);
+
+		if (array_key_exists($headerName, $request->headerNames)) {
+			unset($request->headers[$request->headerNames[$headerName]]);
+			unset($request->headerNames[$headerName]);
+		}
+
 		$request->headers[$name] = $value;
+		$request->headerNames[$headerName] = $name;
 
 		return $request;
 	}
