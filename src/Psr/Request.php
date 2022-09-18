@@ -54,8 +54,20 @@ final class Request implements RequestInterface {
 		return new self((string) $method, $uri);
 	}
 
+	/**
+	 * @var string
+	 */
 	private $method;
+
+	/**
+	 * @var UriInterface
+	 */
 	private $uri;
+
+	/**
+	 * @var string
+	 */
+	private $requestTarget = '';
 
 	/**
 	 * Constructor
@@ -87,6 +99,10 @@ final class Request implements RequestInterface {
 	 * @return string
 	 */
 	public function getRequestTarget() {
+		if ($this->requestTarget !== '') {
+			return $this->requestTarget;
+		}
+
 		$target = $this->uri->getPath();
 
 		if ($target === '') {
@@ -120,7 +136,20 @@ final class Request implements RequestInterface {
 	 * @return static
 	 */
 	public function withRequestTarget($requestTarget) {
-		throw new Exception('not implemented');
+		// $requestTarget accepts only string
+		// @see https://github.com/php-fig/http-message/pull/78
+		if (!is_string($requestTarget)) {
+			throw InvalidArgument::create(1, '$requestTarget', 'string', gettype($requestTarget));
+		}
+
+		if ($requestTarget === '') {
+			$requestTarget = '/';
+		}
+
+		$request = clone($this);
+		$request->requestTarget = $requestTarget;
+
+		return $request;
 	}
 
 	/**
