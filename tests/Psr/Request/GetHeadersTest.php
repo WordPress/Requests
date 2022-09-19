@@ -16,8 +16,25 @@ final class GetHeadersTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetHeadersReturnsArray() {
-		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
+		$uri = $this->createMock(UriInterface::class);
+		$uri->method('getHost')->willReturn('');
+		$request = Request::withMethodAndUri('GET', $uri);
 
 		$this->assertSame([], $request->getHeaders());
+	}
+
+	/**
+	 * Tests receiving the headers when using getHeaders().
+	 *
+	 * @covers \WpOrg\Requests\Psr\Request::getHeaders
+	 *
+	 * @return void
+	 */
+	public function testGetHeadersReturnsArrayWithHostHeader() {
+		$uri = $this->createMock(UriInterface::class);
+		$uri->method('getHost')->willReturn('example.org');
+		$request = Request::withMethodAndUri('GET', $uri);
+
+		$this->assertSame(['Host' => ['example.org']], $request->getHeaders());
 	}
 }

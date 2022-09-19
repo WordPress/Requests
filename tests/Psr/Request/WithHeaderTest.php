@@ -123,7 +123,9 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderChangesTheHeaders() {
-		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
+		$uri = $this->createMock(UriInterface::class);
+		$uri->method('getHost')->willReturn('');
+		$request = Request::withMethodAndUri('GET', $uri);
 
 		$request = $request->withHeader('Name', 'value');
 
@@ -138,7 +140,9 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderCaseInsensitiveChangesTheHeaders() {
-		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
+		$uri = $this->createMock(UriInterface::class);
+		$uri->method('getHost')->willReturn('');
+		$request = Request::withMethodAndUri('GET', $uri);
 
 		$request = $request->withHeader('name', 'value');
 		$request = $request->withHeader('NAME', 'value');

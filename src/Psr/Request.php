@@ -534,7 +534,7 @@ final class Request implements RequestInterface {
 
 		$host = $uri->getHost();
 
-		if ($host !== '' && $host !== null) {
+		if ($host !== '') {
 			$this->updateHeader('Host', [$host]);
 		}
 	}
