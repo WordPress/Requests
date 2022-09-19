@@ -9,7 +9,7 @@ use WpOrg\Requests\Tests\TestCase;
 final class GetRequestTargetTest extends TestCase {
 
 	/**
-	 * Tests receiving the method when using getRequestTarget().
+	 * Tests receiving the request target when using getRequestTarget().
 	 *
 	 * @dataProvider dataGetRequestTarget
 	 *

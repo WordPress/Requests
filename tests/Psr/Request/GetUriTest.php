@@ -9,7 +9,7 @@ use WpOrg\Requests\Tests\TestCase;
 final class GetUriTest extends TestCase {
 
 	/**
-	 * Tests receiving the method when using getUri().
+	 * Tests receiving the uri when using getUri().
 	 *
 	 * @covers \WpOrg\Requests\Psr\Request::getUri
 	 *

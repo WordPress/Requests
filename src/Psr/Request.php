@@ -7,7 +7,6 @@
 
 namespace WpOrg\Requests\Psr;
 
-use Exception;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
@@ -51,7 +50,10 @@ final class Request implements RequestInterface {
 			throw InvalidArgument::create(1, '$method', 'string', gettype($method));
 		}
 
-		return new self((string) $method, $uri);
+		$request = new self((string) $method, $uri);
+		$request->body = Stream::create();
+
+		return $request;
 	}
 
 	/**
@@ -506,7 +508,7 @@ final class Request implements RequestInterface {
 	 * @return StreamInterface Returns the body as a stream.
 	 */
 	public function getBody() {
-		throw new Exception('not implemented');
+		return $this->body;
 	}
 
 	/**
