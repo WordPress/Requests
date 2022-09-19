@@ -79,4 +79,26 @@ final class WithUriTest extends TestCase {
 
 		$this->assertSame(['Host' => ['example.com']], $request->getHeaders());
 	}
+
+	/**
+	 * Tests changing the uri when using withUri().
+	 *
+	 * @covers \WpOrg\Requests\Psr\Request::withUri
+	 *
+	 * @return void
+	 */
+	public function testWithUriChangesTheHostHeaderToFirstPlace() {
+		$uri = $this->createMock(UriInterface::class);
+		$uri->method('getHost')->willReturn('');
+		$request = Request::withMethodAndUri('GET', $uri);
+		$request = $request->withHeader('name', 'value');
+
+		$this->assertSame(['name' => ['value']], $request->getHeaders());
+
+		$uri2 = $this->createMock(UriInterface::class);
+		$uri2->method('getHost')->willReturn('example.com');
+		$request = $request->withUri($uri2);
+
+		$this->assertSame(['Host' => ['example.com'], 'name' => ['value']], $request->getHeaders());
+	}
 }

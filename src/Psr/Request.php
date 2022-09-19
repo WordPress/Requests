@@ -554,9 +554,19 @@ final class Request implements RequestInterface {
 			unset($this->headerNames[$headerName]);
 		}
 
-		if ($values !== []) {
-			$this->headers[$name] = $values;
-			$this->headerNames[$headerName] = $name;
+		if ($values === []) {
+			return;
 		}
+
+		// Since the Host field-value is critical information for handling a
+		// request, a user agent SHOULD generate Host as the first header field
+		// following the request-line.
+		// @see https://www.rfc-editor.org/rfc/rfc7230#section-5.4
+		if ($headerName === 'host') {
+			$this->headers = [$name => []] + $this->headers;
+		}
+
+		$this->headers[$name] = $values;
+		$this->headerNames[$headerName] = $name;
 	}
 }
