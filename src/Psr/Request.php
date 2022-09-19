@@ -94,7 +94,7 @@ final class Request implements RequestInterface {
 	 */
 	private function __construct($method, UriInterface $uri) {
 		$this->method = $method;
-		$this->uri = $uri;
+		$this->setUri($uri);
 	}
 
 	/**
@@ -247,13 +247,7 @@ final class Request implements RequestInterface {
 	 */
 	public function withUri(UriInterface $uri, $preserveHost = false) {
 		$request = clone($this);
-		$request->uri = $uri;
-
-		$host = $uri->getHost();
-
-		if ($host !== '') {
-			$request = $request->withHeader('Host', $host);
-		}
+		$request->setUri($uri);
 
 		return $request;
 	}
@@ -545,5 +539,32 @@ final class Request implements RequestInterface {
 	 */
 	public function withBody(StreamInterface $body) {
 		throw new Exception('not implemented');
+	}
+
+	/**
+	 * Set the URI and update the Host header.
+	 *
+	 * @see http://tools.ietf.org/html/rfc3986#section-4.3
+	 * @param UriInterface $uri New request URI to use.
+	 * @param bool $preserveHost Preserve the original state of the Host header.
+	 * @return void
+	 */
+	private function setUri(UriInterface $uri, $preserveHost = false) {
+		$this->uri = $uri;
+
+		$host = $uri->getHost();
+
+		if ($host !== '' && $host !== null) {
+			$name = 'Host';
+			$headerName = strtolower($name);
+
+			if (array_key_exists($headerName, $this->headerNames)) {
+				unset($this->headers[$this->headerNames[$headerName]]);
+				unset($this->headerNames[$headerName]);
+			}
+
+			$this->headers[$name] = [$host];
+			$this->headerNames[$headerName] = $name;
+		}
 	}
 }

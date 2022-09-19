@@ -55,4 +55,19 @@ final class WithMethodAndUriTest extends TestCase {
 	public function dataInvalidTypeNotString() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
+
+	/**
+	 * Tests receiving a Request instance when using withMethodAndUri().
+	 *
+	 * @covers \WpOrg\Requests\Psr\Request::withUri
+	 *
+	 * @return void
+	 */
+	public function testWithMethodAndUriChangesTheHostHeader() {
+		$uri = $this->createMock(UriInterface::class);
+		$uri->method('getHost')->willReturn('example.org');
+		$request = Request::withMethodAndUri('GET', $uri);
+
+		$this->assertSame(['Host' => ['example.org']], $request->getHeaders());
+	}
 }

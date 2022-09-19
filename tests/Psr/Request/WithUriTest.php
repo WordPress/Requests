@@ -71,6 +71,8 @@ final class WithUriTest extends TestCase {
 		$uri->method('getHost')->willReturn('example.org');
 		$request = Request::withMethodAndUri('GET', $uri);
 
+		$this->assertSame(['Host' => ['example.org']], $request->getHeaders());
+
 		$uri2 = $this->createMock(UriInterface::class);
 		$uri2->method('getHost')->willReturn('example.com');
 		$request = $request->withUri($uri2);
