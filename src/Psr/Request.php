@@ -51,7 +51,7 @@ final class Request implements RequestInterface {
 		}
 
 		$request = new self((string) $method, $uri);
-		$request->body = Stream::create();
+		$request->body = Stream::createFromString('');
 
 		return $request;
 	}

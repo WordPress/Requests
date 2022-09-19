@@ -9,6 +9,7 @@ namespace WpOrg\Requests\Psr;
 
 use Exception;
 use Psr\Http\Message\StreamInterface;
+use WpOrg\Requests\Exception\InvalidArgument;
 
 /**
  * PSR-7 StreamInterface implementation
@@ -24,9 +25,16 @@ use Psr\Http\Message\StreamInterface;
 final class Stream implements StreamInterface {
 
 	/**
-	 * Factory method
+	 * Create Stream from string
+	 *
+	 * @param string $content
+	 * @return static
 	 */
-	public function create() {
+	public static function createFromString($content) {
+		if (!is_string($content)) {
+			throw InvalidArgument::create(1, '$content', 'string', gettype($content));
+		}
+
 		return new self();
 	}
 
