@@ -497,7 +497,19 @@ final class Request implements RequestInterface {
 	 * @return static
 	 */
 	public function withoutHeader($name) {
-		throw new Exception('not implemented');
+		if (!is_string($name)) {
+			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		}
+
+		$request = clone($this);
+		$headerName = strtolower($name);
+
+		if (array_key_exists($headerName, $request->headerNames)) {
+			unset($request->headers[$request->headerNames[$headerName]]);
+			unset($request->headerNames[$headerName]);
+		}
+
+		return $request;
 	}
 
 	/**
