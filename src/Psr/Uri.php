@@ -7,7 +7,6 @@
 
 namespace WpOrg\Requests\Psr;
 
-use Exception;
 use Psr\Http\Message\UriInterface;
 use WpOrg\Requests\Exception as RequestsException;
 use WpOrg\Requests\Exception\InvalidArgument;

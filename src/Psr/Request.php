@@ -246,7 +246,16 @@ final class Request implements RequestInterface {
 	 * @return static
 	 */
 	public function withUri(UriInterface $uri, $preserveHost = false) {
-		throw new Exception('not implemented');
+		$request = clone($this);
+		$request->uri = $uri;
+
+		$host = $uri->getHost();
+
+		if ($host !== '') {
+			$request = $request->withHeader('Host', $host);
+		}
+
+		return $request;
 	}
 
 	/**
