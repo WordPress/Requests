@@ -143,6 +143,6 @@ final class WithAddedHeaderTest extends TestCase {
 		$request = $request->withAddedHeader('name', 'value1');
 		$request = $request->withAddedHeader('NAME', 'value2');
 
-		$this->assertSame(['name' => ['value1', 'value2']], $request->getHeaders());
+		$this->assertSame(['NAME' => ['value1', 'value2']], $request->getHeaders());
 	}
 }

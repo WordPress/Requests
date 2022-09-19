@@ -424,15 +424,7 @@ final class Request implements RequestInterface {
 		}
 
 		$request = clone($this);
-		$headerName = strtolower($name);
-
-		if (array_key_exists($headerName, $request->headerNames)) {
-			unset($request->headers[$request->headerNames[$headerName]]);
-			unset($request->headerNames[$headerName]);
-		}
-
-		$request->headers[$name] = $value;
-		$request->headerNames[$headerName] = $name;
+		$request->updateHeader($name, $value);
 
 		return $request;
 	}
@@ -474,15 +466,8 @@ final class Request implements RequestInterface {
 		}
 
 		$request = clone($this);
-		$headerName = strtolower($name);
 
-		if (array_key_exists($headerName, $request->headerNames)) {
-			$headerLines = $request->headers[$request->headerNames[$headerName]];
-			$request->headers[$request->headerNames[$headerName]] = array_merge($headerLines, $value);
-		} else {
-			$request->headers[$name] = $value;
-			$request->headerNames[$headerName] = $name;
-		}
+		$request->updateHeader($name, array_merge($request->getHeader($name), $value));
 
 		return $request;
 	}
@@ -505,12 +490,7 @@ final class Request implements RequestInterface {
 		}
 
 		$request = clone($this);
-		$headerName = strtolower($name);
-
-		if (array_key_exists($headerName, $request->headerNames)) {
-			unset($request->headers[$request->headerNames[$headerName]]);
-			unset($request->headerNames[$headerName]);
-		}
+		$request->updateHeader($name, []);
 
 		return $request;
 	}
@@ -555,15 +535,27 @@ final class Request implements RequestInterface {
 		$host = $uri->getHost();
 
 		if ($host !== '' && $host !== null) {
-			$name = 'Host';
-			$headerName = strtolower($name);
+			$this->updateHeader('Host', [$host]);
+		}
+	}
 
-			if (array_key_exists($headerName, $this->headerNames)) {
-				unset($this->headers[$this->headerNames[$headerName]]);
-				unset($this->headerNames[$headerName]);
-			}
+	/**
+	 * Set, update or remove a header.
+	 *
+	 * @param string $name Case-insensitive header field name.
+	 * @param string[] $values Header value(s) or empty array to remove the header.
+	 * @return void
+	 */
+	private function updateHeader($name, $values) {
+		$headerName = strtolower($name);
 
-			$this->headers[$name] = [$host];
+		if (array_key_exists($headerName, $this->headerNames)) {
+			unset($this->headers[$this->headerNames[$headerName]]);
+			unset($this->headerNames[$headerName]);
+		}
+
+		if ($values !== []) {
+			$this->headers[$name] = $values;
 			$this->headerNames[$headerName] = $name;
 		}
 	}
