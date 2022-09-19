@@ -85,6 +85,11 @@ final class Request implements RequestInterface {
 	private $headerNames = [];
 
 	/**
+	 * @var StreamInterface
+	 */
+	private $body;
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $method
@@ -518,7 +523,10 @@ final class Request implements RequestInterface {
 	 * @throws \InvalidArgumentException When the body is not valid.
 	 */
 	public function withBody(StreamInterface $body) {
-		throw new Exception('not implemented');
+		$request = clone($this);
+		$request->body = $body;
+
+		return $request;
 	}
 
 	/**
