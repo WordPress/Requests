@@ -35,28 +35,25 @@ final class Stream implements StreamInterface {
 			throw InvalidArgument::create(1, '$content', 'string', gettype($content));
 		}
 
-		$resource = fopen('php://temp', 'r+');
-		fwrite($resource, $content);
-
-		return new self($resource);
+		return new self($content);
 	}
 
 	/**
-	 * @var resource
+	 * @var string
 	 */
-	private $resource;
+	private $content;
 
 	/**
 	 * Constructor
 	 *
-	 * @param resource $resource
+	 * @param content $content
 	 */
-	private function __construct($resource) {
-		if (!is_resource($resource)) {
-			throw InvalidArgument::create(1, '$resource', 'resource', gettype($resource));
+	private function __construct($content) {
+		if (!is_string($content)) {
+			throw InvalidArgument::create(1, '$content', 'content', gettype($content));
 		}
 
-		$this->resource = $resource;
+		$this->content = $content;
 	}
 
 	/**
@@ -74,7 +71,7 @@ final class Stream implements StreamInterface {
 	 * @return string
 	 */
 	public function __toString() {
-		throw new Exception('not implemented');
+		return $this->content;
 	}
 
 	/**
@@ -103,9 +100,7 @@ final class Stream implements StreamInterface {
 	 * @return int|null Returns the size in bytes if known, or null if unknown.
 	 */
 	public function getSize() {
-		$stats = fstat($this->resource);
-
-		return $stats['size'];
+		return strlen($this->content);
 	}
 
 	/**
