@@ -101,7 +101,7 @@ final class Request implements RequestInterface {
 	 */
 	private function __construct($method, UriInterface $uri) {
 		$this->method = $method;
-		$this->setUri($uri);
+		$this->setUri($uri, false);
 	}
 
 	/**
@@ -254,7 +254,7 @@ final class Request implements RequestInterface {
 	 */
 	public function withUri(UriInterface $uri, $preserveHost = false) {
 		$request = clone($this);
-		$request->setUri($uri);
+		$request->setUri($uri, $preserveHost);
 
 		return $request;
 	}
@@ -389,7 +389,7 @@ final class Request implements RequestInterface {
 			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
 		}
 
-		if (!array_key_exists(strtolower($name), $this->headers)) {
+		if (!array_key_exists(strtolower($name), $this->headerNames)) {
 			return '';
 		}
 
@@ -539,12 +539,14 @@ final class Request implements RequestInterface {
 	 * @param bool $preserveHost Preserve the original state of the Host header.
 	 * @return void
 	 */
-	private function setUri(UriInterface $uri, $preserveHost = false) {
+	private function setUri(UriInterface $uri, $preserveHost) {
 		$this->uri = $uri;
 
 		$host = $uri->getHost();
 
-		if ($host !== '') {
+		if ($host !== '' && $this->getHeaderLine('Host') === '') {
+			$this->updateHeader('Host', [$host]);
+		} elseif ($host !== '' && $preserveHost === false) {
 			$this->updateHeader('Host', [$host]);
 		}
 	}

@@ -99,4 +99,59 @@ final class WithUriTest extends TestCase {
 
 		$this->assertSame(['Host' => ['example.com'], 'name' => ['value']], $request->getHeaders());
 	}
+
+	/**
+	 * Tests changing the uri when using withUri().
+	 *
+	 * @covers \WpOrg\Requests\Psr\Request::withUri
+	 *
+	 * @return void
+	 */
+	public function testWithUriWithoutHostDoNotChangeTheHostHeader() {
+		$uri = $this->createMock(UriInterface::class);
+		$uri->method('getHost')->willReturn('example.org');
+		$request = Request::withMethodAndUri('GET', $uri);
+
+		$this->assertSame(['Host' => ['example.org']], $request->getHeaders());
+
+		$uri2 = $this->createMock(UriInterface::class);
+		$uri2->method('getHost')->willReturn('');
+		$request = $request->withUri($uri2);
+
+		$this->assertSame(['Host' => ['example.org']], $request->getHeaders());
+	}
+
+	/**
+	 * Tests changing the uri when using withUri().
+	 *
+	 * @dataProvider dataPreserveHost
+	 *
+	 * @covers \WpOrg\Requests\Psr\Request::withUri
+	 *
+	 * @return void
+	 */
+	public function testWithUriAndPreserveHost($initHost, $newHost, $expectedHeaders) {
+		$uri = $this->createMock(UriInterface::class);
+		$uri->method('getHost')->willReturn($initHost);
+		$request = Request::withMethodAndUri('GET', $uri);
+
+		$uri2 = $this->createMock(UriInterface::class);
+		$uri2->method('getHost')->willReturn($newHost);
+		$request = $request->withUri($uri2, true);
+
+		$this->assertSame($expectedHeaders, $request->getHeaders());
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataPreserveHost() {
+		return [
+			// 'Host header is missing or empty, and the new URI contains a host component, this method MUST update the Host header' => ['', 'example.org', ['Host' => ['example.org']]],
+			// 'Host header is missing or empty, and the new URI does not contain a host component, this method MUST NOT update the Host header' => ['', '', []],
+			'If a Host header is present and non-empty, this method MUST NOT update the Host header' => ['example.org', 'example.com', ['Host' => ['example.org']]],
+		];
+	}
 }
