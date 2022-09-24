@@ -7,7 +7,6 @@
 
 namespace WpOrg\Requests\Psr;
 
-use Exception;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 use WpOrg\Requests\Exception\InvalidArgument;
@@ -229,6 +228,14 @@ final class Stream implements StreamInterface {
 	 *     value is found, or null if the key is not found.
 	 */
 	public function getMetadata($key = null) {
-		throw new Exception('not implemented');
+		if (func_num_args() > 0 && !is_string($key)) {
+			throw InvalidArgument::create(1, '$key', 'string', gettype($key));
+		}
+
+		if (is_string($key)) {
+			return null;
+		}
+
+		return [];
 	}
 }
