@@ -213,7 +213,7 @@ final class Stream implements StreamInterface {
 	 *     reading.
 	 */
 	public function getContents() {
-		throw new Exception('not implemented');
+		throw new RuntimeException(__METHOD__ . '() is not implemented.');
 	}
 
 	/**
