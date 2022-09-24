@@ -9,6 +9,7 @@ namespace WpOrg\Requests\Psr;
 
 use Exception;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 use WpOrg\Requests\Exception\InvalidArgument;
 
 /**
@@ -80,7 +81,7 @@ final class Stream implements StreamInterface {
 	 * @return void
 	 */
 	public function close() {
-		throw new Exception('not implemented');
+		return;
 	}
 
 	/**
@@ -91,7 +92,7 @@ final class Stream implements StreamInterface {
 	 * @return resource|null Underlying PHP stream, if any
 	 */
 	public function detach() {
-		throw new Exception('not implemented');
+		return null;
 	}
 
 	/**
@@ -110,7 +111,7 @@ final class Stream implements StreamInterface {
 	 * @throws \RuntimeException on error.
 	 */
 	public function tell() {
-		throw new Exception('not implemented');
+		throw new RuntimeException(__METHOD__ . '() is not implemented.');
 	}
 
 	/**

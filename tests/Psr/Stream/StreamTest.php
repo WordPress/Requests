@@ -15,7 +15,7 @@ final class StreamTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testCreateFromStringReturnsStreamWillAllProperties() {
+	public function testCreateFromStringReturnsStreamWithAllProperties() {
 		$stream = Stream::createFromString('foobar');
 
 		$this->assertSame(6, $stream->getSize());
