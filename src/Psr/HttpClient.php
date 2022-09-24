@@ -9,6 +9,7 @@ namespace WpOrg\Requests\Psr;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
@@ -18,7 +19,7 @@ use WpOrg\Requests\Iri;
  *
  * @package Requests\Psr
  */
-final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \Psr\Http\Client\ClientInterface */ {
+final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \Psr\Http\Message\StreamFactoryInterface, \Psr\Http\Client\ClientInterface */ {
 
 	/**
 	 * Constructor
@@ -42,6 +43,22 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 		}
 
 		return Request::withMethodAndUri($method, $uri);
+	}
+
+	/**
+	 * Create a new stream from a string.
+	 *
+	 * The stream SHOULD be created with a temporary resource.
+	 *
+	 * @param string $content String content with which to populate the stream.
+	 * @return StreamInterface
+	 */
+	public function createStream($content = '') {
+		if (!is_string($content)) {
+			throw InvalidArgument::create(1, '$content', 'string', gettype($content));
+		}
+
+		return Stream::createFromString($content);
 	}
 
 	/**
