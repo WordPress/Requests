@@ -168,7 +168,7 @@ final class Stream implements StreamInterface {
 	 * @return bool
 	 */
 	public function isWritable() {
-		throw new Exception('not implemented');
+		return false;
 	}
 
 	/**
@@ -179,7 +179,7 @@ final class Stream implements StreamInterface {
 	 * @throws \RuntimeException on failure.
 	 */
 	public function write($string) {
-		throw new Exception('not implemented');
+		throw new RuntimeException(__METHOD__ . '() is not implemented.');
 	}
 
 	/**
@@ -188,7 +188,7 @@ final class Stream implements StreamInterface {
 	 * @return bool
 	 */
 	public function isReadable() {
-		throw new Exception('not implemented');
+		return false;
 	}
 
 	/**
@@ -202,7 +202,7 @@ final class Stream implements StreamInterface {
 	 * @throws \RuntimeException if an error occurs.
 	 */
 	public function read($length) {
-		throw new Exception('not implemented');
+		throw new RuntimeException(__METHOD__ . '() is not implemented.');
 	}
 
 	/**
