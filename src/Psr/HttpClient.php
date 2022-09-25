@@ -13,6 +13,7 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
+use WpOrg\Requests\Response as RequestsResponse;
 
 /**
  * HTTP implementation for PSR-17 and PSR-18
@@ -71,6 +72,6 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 	 * @throws \Psr\Http\Client\ClientExceptionInterface If an error happens while processing the request.
 	 */
 	public function sendRequest($request) {
-		return new Response();
+		return Response::fromResponse(new RequestsResponse());
 	}
 }

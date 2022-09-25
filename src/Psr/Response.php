@@ -10,6 +10,7 @@ namespace WpOrg\Requests\Psr;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use WpOrg\Requests\Response as RequestsResponse;
 
 /**
  * PSR-7 ResponseInterface implementation
@@ -33,9 +34,20 @@ use Psr\Http\Message\StreamInterface;
 final class Response implements ResponseInterface {
 
 	/**
+	 * create Response
+	 *
+	 * @param RequestsResponse $response
+	 *
+	 * @return Response
+	 */
+	public static function fromResponse(RequestsResponse $response) {
+		return new self();
+	}
+
+	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	private function __construct() {
 	}
 
 	/**
