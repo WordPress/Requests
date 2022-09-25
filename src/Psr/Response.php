@@ -409,6 +409,9 @@ final class Response implements ResponseInterface {
 	 * @throws \InvalidArgumentException When the body is not valid.
 	 */
 	public function withBody(StreamInterface $body) {
-		throw new Exception('not implemented');
+		$response = clone($this);
+		$response->body = $body;
+
+		return $response;
 	}
 }
