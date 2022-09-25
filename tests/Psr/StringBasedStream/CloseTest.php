@@ -1,8 +1,8 @@
 <?php
 
-namespace WpOrg\Requests\Tests\Psr\Stream;
+namespace WpOrg\Requests\Tests\Psr\StringBasedStream;
 
-use WpOrg\Requests\Psr\Stream;
+use WpOrg\Requests\Psr\StringBasedStream;
 use WpOrg\Requests\Tests\TestCase;
 
 final class CloseTest extends TestCase {
@@ -10,12 +10,12 @@ final class CloseTest extends TestCase {
 	/**
 	 * Tests receiving void when using close() method.
 	 *
-	 * @covers \WpOrg\Requests\Psr\Stream::close
+	 * @covers \WpOrg\Requests\Psr\StringBasedStream::close
 	 *
 	 * @return void
 	 */
 	public function testCloseReturnsVoid() {
-		$stream = Stream::createFromString('');
+		$stream = StringBasedStream::createFromString('');
 
 		$this->assertNull($stream->close());
 	}

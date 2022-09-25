@@ -1,10 +1,10 @@
 <?php
 
-namespace WpOrg\Requests\Tests\Psr\Stream;
+namespace WpOrg\Requests\Tests\Psr\StringBasedStream;
 
 use Psr\Http\Message\StreamInterface;
 use WpOrg\Requests\Exception\InvalidArgument;
-use WpOrg\Requests\Psr\Stream;
+use WpOrg\Requests\Psr\StringBasedStream;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
@@ -13,14 +13,14 @@ final class CreateFromStringTest extends TestCase {
 	/**
 	 * Tests receiving the stream when using createFromString().
 	 *
-	 * @covers \WpOrg\Requests\Psr\Stream::createFromString
+	 * @covers \WpOrg\Requests\Psr\StringBasedStream::createFromString
 	 *
 	 * @return void
 	 */
 	public function testCreateFromStringReturnsStream() {
 		$this->assertInstanceOf(
 			StreamInterface::class,
-			Stream::createFromString('')
+			StringBasedStream::createFromString('')
 		);
 	}
 
@@ -29,7 +29,7 @@ final class CreateFromStringTest extends TestCase {
 	 *
 	 * @dataProvider dataInvalidTypeNotString
 	 *
-	 * @covers \WpOrg\Requests\Psr\Stream::createFromString
+	 * @covers \WpOrg\Requests\Psr\StringBasedStream::createFromString
 	 *
 	 * @param mixed $input Invalid parameter input.
 	 *
@@ -37,9 +37,9 @@ final class CreateFromStringTest extends TestCase {
 	 */
 	public function testCreateFromStringWithoutStringThrowsException($input) {
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(sprintf('%s::createFromString(): Argument #1 ($content) must be of type string, ', Stream::class));
+		$this->expectExceptionMessage(sprintf('%s::createFromString(): Argument #1 ($content) must be of type string, ', StringBasedStream::class));
 
-		Stream::createFromString($input);
+		StringBasedStream::createFromString($input);
 	}
 
 	/**

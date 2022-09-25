@@ -1,9 +1,8 @@
 <?php
 
-namespace WpOrg\Requests\Tests\Psr\Stream;
+namespace WpOrg\Requests\Tests\Psr\StringBasedStream;
 
-use Psr\Http\Message\StreamInterface;
-use WpOrg\Requests\Psr\Stream;
+use WpOrg\Requests\Psr\StringBasedStream;
 use WpOrg\Requests\Tests\TestCase;
 
 final class StreamTest extends TestCase {
@@ -11,12 +10,12 @@ final class StreamTest extends TestCase {
 	/**
 	 * Tests all properties are set when using createFromString().
 	 *
-	 * @covers \WpOrg\Requests\Psr\Stream::createFromString
+	 * @covers \WpOrg\Requests\Psr\StringBasedStream::createFromString
 	 *
 	 * @return void
 	 */
 	public function testCreateFromStringReturnsStreamWithAllProperties() {
-		$stream = Stream::createFromString('foobar');
+		$stream = StringBasedStream::createFromString('foobar');
 
 		$this->assertSame(6, $stream->getSize());
 		$this->assertSame('foobar', $stream->__toString());

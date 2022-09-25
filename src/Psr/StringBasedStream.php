@@ -22,10 +22,10 @@ use WpOrg\Requests\Exception\InvalidArgument;
  * a wrapper around the most common operations, including serialization of
  * the entire stream to a string.
  */
-final class Stream implements StreamInterface {
+final class StringBasedStream implements StreamInterface {
 
 	/**
-	 * Create Stream from string
+	 * Create StringBasedStream from string
 	 *
 	 * @param string $content
 	 * @return static

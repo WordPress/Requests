@@ -59,7 +59,7 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 			throw InvalidArgument::create(1, '$content', 'string', gettype($content));
 		}
 
-		return Stream::createFromString($content);
+		return StringBasedStream::createFromString($content);
 	}
 
 	/**

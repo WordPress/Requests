@@ -1,8 +1,8 @@
 <?php
 
-namespace WpOrg\Requests\Tests\Psr\Stream;
+namespace WpOrg\Requests\Tests\Psr\StringBasedStream;
 
-use WpOrg\Requests\Psr\Stream;
+use WpOrg\Requests\Psr\StringBasedStream;
 use WpOrg\Requests\Tests\TestCase;
 
 final class IsReadableTest extends TestCase {
@@ -10,12 +10,12 @@ final class IsReadableTest extends TestCase {
 	/**
 	 * Tests receiving false when using isReadable() method.
 	 *
-	 * @covers \WpOrg\Requests\Psr\Stream::isReadable
+	 * @covers \WpOrg\Requests\Psr\StringBasedStream::isReadable
 	 *
 	 * @return void
 	 */
 	public function testIsReadableReturnsFalse() {
-		$stream = Stream::createFromString('');
+		$stream = StringBasedStream::createFromString('');
 
 		$this->assertFalse($stream->isReadable());
 	}

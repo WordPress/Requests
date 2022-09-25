@@ -1,8 +1,8 @@
 <?php
 
-namespace WpOrg\Requests\Tests\Psr\Stream;
+namespace WpOrg\Requests\Tests\Psr\StringBasedStream;
 
-use WpOrg\Requests\Psr\Stream;
+use WpOrg\Requests\Psr\StringBasedStream;
 use WpOrg\Requests\Tests\TestCase;
 
 final class DetachTest extends TestCase {
@@ -10,12 +10,12 @@ final class DetachTest extends TestCase {
 	/**
 	 * Tests receiving null when using detach() method.
 	 *
-	 * @covers \WpOrg\Requests\Psr\Stream::detach
+	 * @covers \WpOrg\Requests\Psr\StringBasedStream::detach
 	 *
 	 * @return void
 	 */
 	public function testDetachReturnsNull() {
-		$stream = Stream::createFromString('');
+		$stream = StringBasedStream::createFromString('');
 
 		$this->assertNull($stream->detach());
 	}
