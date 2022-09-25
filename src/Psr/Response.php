@@ -42,13 +42,27 @@ final class Response implements ResponseInterface {
 	 * @return Response
 	 */
 	public static function fromResponse(RequestsResponse $response) {
-		return new self($response->status_code);
+		if ($response->protocol_version === false) {
+			$protocol_version = '1.1';
+		} else {
+			$protocol_version = number_format($response->protocol_version, 1, '.', '');
+		}
+
+		return new self(
+			$response->status_code,
+			$protocol_version
+		);
 	}
 
 	/**
 	 * @var int
 	 */
 	private $status_code;
+
+	/**
+	 * @var string
+	 */
+	private $protocol_version;
 
 	/**
 	 * All reason phrases.
@@ -125,9 +139,13 @@ final class Response implements ResponseInterface {
 
 	/**
 	 * Constructor
+	 *
+	 * @param int    $status_code
+	 * @param string $protocol_version
 	 */
-	private function __construct($status_code) {
+	private function __construct($status_code, $protocol_version) {
 		$this->status_code = $status_code;
+		$this->protocol_version = $protocol_version;
 	}
 
 	/**
@@ -195,7 +213,7 @@ final class Response implements ResponseInterface {
 	 * @return string HTTP protocol version.
 	 */
 	public function getProtocolVersion() {
-		throw new Exception('not implemented');
+		return $this->protocol_version;
 	}
 
 	/**
