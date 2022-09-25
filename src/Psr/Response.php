@@ -10,6 +10,7 @@ namespace WpOrg\Requests\Psr;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Response as RequestsResponse;
 
 /**
@@ -237,7 +238,14 @@ final class Response implements ResponseInterface {
 	 * @return static
 	 */
 	public function withProtocolVersion($version) {
-		throw new Exception('not implemented');
+		if (!is_string($version)) {
+			throw InvalidArgument::create(1, '$version', 'string', gettype($version));
+		}
+
+		$response = clone($this);
+		$response->protocol_version = $version;
+
+		return $response;
 	}
 
 	/**
