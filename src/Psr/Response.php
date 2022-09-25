@@ -10,7 +10,6 @@ namespace WpOrg\Requests\Psr;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use WpOrg\Requests\Exception\Http;
 use WpOrg\Requests\Response as RequestsResponse;
 
 /**
@@ -49,10 +48,16 @@ final class Response implements ResponseInterface {
 		}
 
 		return new self(
+			StringBasedStream::createFromString($response->body),
 			$response->status_code,
 			$protocol_version
 		);
 	}
+
+	/**
+	 * @var StreamInterface
+	 */
+	private $body;
 
 	/**
 	 * @var int
@@ -140,10 +145,12 @@ final class Response implements ResponseInterface {
 	/**
 	 * Constructor
 	 *
-	 * @param int    $status_code
-	 * @param string $protocol_version
+	 * @param StreamInterface $body
+	 * @param int             $status_code
+	 * @param string          $protocol_version
 	 */
-	private function __construct($status_code, $protocol_version) {
+	private function __construct(StreamInterface $body, $status_code, $protocol_version) {
+		$this->body = $body;
 		$this->status_code = $status_code;
 		$this->protocol_version = $protocol_version;
 	}
@@ -377,7 +384,7 @@ final class Response implements ResponseInterface {
 	 * @return StreamInterface Returns the body as a stream.
 	 */
 	public function getBody() {
-		throw new Exception('not implemented');
+		return $this->body;
 	}
 
 	/**

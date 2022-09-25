@@ -9,7 +9,7 @@ use WpOrg\Requests\Tests\TestCase;
 final class GetProtocolVersionTest extends TestCase {
 
 	/**
-	 * Tests receiving the status code when using getProtocolVersion().
+	 * Tests receiving the protocol version when using getProtocolVersion().
 	 *
 	 * @covers \WpOrg\Requests\Psr\Request::getProtocolVersion
 	 *
@@ -25,7 +25,7 @@ final class GetProtocolVersionTest extends TestCase {
 	}
 
 	/**
-	 * Tests receiving the status code when using getProtocolVersion().
+	 * Tests receiving the protocol version when using getProtocolVersion().
 	 *
 	 * @covers \WpOrg\Requests\Psr\Request::getProtocolVersion
 	 *
