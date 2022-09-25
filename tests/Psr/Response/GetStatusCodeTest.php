@@ -2,7 +2,6 @@
 
 namespace WpOrg\Requests\Tests\Psr\Response;
 
-use Psr\Http\Message\ResponseInterface;
 use WpOrg\Requests\Psr\Response;
 use WpOrg\Requests\Response as RequestsResponse;
 use WpOrg\Requests\Tests\TestCase;
