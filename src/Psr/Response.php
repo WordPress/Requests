@@ -51,6 +51,7 @@ final class Response implements ResponseInterface {
 
 		return new self(
 			StringBasedStream::createFromString($response->body),
+			$response->headers->getAll(),
 			$response->status_code,
 			$protocol_version
 		);
@@ -153,11 +154,16 @@ final class Response implements ResponseInterface {
 	 * Constructor
 	 *
 	 * @param StreamInterface $body
+	 * @param array           $headers
 	 * @param int             $status_code
 	 * @param string          $protocol_version
 	 */
-	private function __construct(StreamInterface $body, $status_code, $protocol_version) {
+	private function __construct(StreamInterface $body, $headers, $status_code, $protocol_version) {
 		$this->body = $body;
+
+		foreach ($headers as $name => $value) {
+			$this->updateHeader($name, $value);
+		}
 		$this->status_code = $status_code;
 		$this->protocol_version = $protocol_version;
 	}
