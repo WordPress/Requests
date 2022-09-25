@@ -7,7 +7,6 @@
 
 namespace WpOrg\Requests\Psr;
 
-use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use WpOrg\Requests\Exception\InvalidArgument;
@@ -66,6 +65,11 @@ final class Response implements ResponseInterface {
 	 * @var int
 	 */
 	private $status_code;
+
+	/**
+	 * @var string
+	 */
+	private $reasonPhrase = null;
 
 	/**
 	 * @var string
@@ -191,7 +195,24 @@ final class Response implements ResponseInterface {
 	 * @throws \InvalidArgumentException For invalid status code arguments.
 	 */
 	public function withStatus($code, $reasonPhrase = '') {
-		throw new Exception('not implemented');
+		if (!is_int($code)) {
+			throw InvalidArgument::create(1, '$code', 'int', gettype($code));
+		}
+
+		if (!is_string($reasonPhrase)) {
+			throw InvalidArgument::create(2, '$reasonPhrase', 'string', gettype($reasonPhrase));
+		}
+
+		$response = clone($this);
+		$response->status_code = $code;
+
+		if ($reasonPhrase === '') {
+			$response->reasonPhrase = null;
+		} else {
+			$response->reasonPhrase = $reasonPhrase;
+		}
+
+		return $response;
 	}
 
 	/**
@@ -208,6 +229,10 @@ final class Response implements ResponseInterface {
 	 * @return string Reason phrase; must return an empty string if none present.
 	 */
 	public function getReasonPhrase() {
+		if ($this->reasonPhrase !== null) {
+			return $this->reasonPhrase;
+		}
+
 		if (array_key_exists($this->status_code, $this->reasonPhrases)) {
 			return $this->reasonPhrases[$this->status_code];
 		}
