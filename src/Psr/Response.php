@@ -41,13 +41,19 @@ final class Response implements ResponseInterface {
 	 * @return Response
 	 */
 	public static function fromResponse(RequestsResponse $response) {
-		return new self();
+		return new self($response->status_code);
 	}
+
+	/**
+	 * @var int
+	 */
+	private $status_code;
 
 	/**
 	 * Constructor
 	 */
-	private function __construct() {
+	private function __construct($status_code) {
+		$this->status_code = $status_code;
 	}
 
 	/**
@@ -59,7 +65,7 @@ final class Response implements ResponseInterface {
 	 * @return int Status code.
 	 */
 	public function getStatusCode() {
-		throw new Exception('not implemented');
+		return $this->status_code;
 	}
 
 	/**
