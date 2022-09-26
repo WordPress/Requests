@@ -11,7 +11,11 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Exception\Psr\NetworkException;
+use WpOrg\Requests\Exception\Psr\RequestException;
+use WpOrg\Requests\Exception\Transport;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 
@@ -80,13 +84,19 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 	 * @throws \Psr\Http\Client\ClientExceptionInterface If an error happens while processing the request.
 	 */
 	public function sendRequest($request) {
-		$response = Requests::request(
-			$request->getUri()->__toString(),
-			$request->getHeaders(),
-			$request->getBody()->__toString(),
-			$request->getMethod(),
-			$this->options
-		);
+		try {
+			$response = Requests::request(
+				$request->getUri()->__toString(),
+				$request->getHeaders(),
+				$request->getBody()->__toString(),
+				$request->getMethod(),
+				$this->options
+			);
+		} catch (Transport $th) {
+			throw new NetworkException($request, $th);
+		} catch (Exception $th) {
+			throw new RequestException($request, $th);
+		}
 
 		return Response::fromResponse($response);
 	}
