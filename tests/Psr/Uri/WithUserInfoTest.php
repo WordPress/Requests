@@ -121,10 +121,10 @@ final class WithUserInfoTest extends TestCase {
 	 */
 	public function dataWithUserInfo() {
 		return [
-			'empty' => ['', null, ''],
+			'empty'                               => ['', null, ''],
 			'with the specified user information' => ['mail@example.org', 'password?[]', 'mail%40example.org:password%3F%5B%5D'],
-			'Password is optional' => ['user', '', 'user'],
-			'Password can bi null' => ['user', null, 'user'],
+			'Password is optional'                => ['user', '', 'user'],
+			'Password can be null'                => ['user', null, 'user'],
 			'an empty string for the user is equivalent to removing user information' => ['', 'password', ''],
 		];
 	}

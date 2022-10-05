@@ -93,7 +93,7 @@ final class WithPathTest extends TestCase {
 	 */
 	public function dataWithPath() {
 		return [
-			'The path can be empty' => ['', '/'],
+			'The path can be empty'                        => ['', '/'],
 			'The path can be absolute (starting with a slash)' => ['/path', '/path'],
 			'The path can be rootless (not starting with a slash)' => ['rootless', 'rootless'],
 			'The path can contain encoded path characters' => ['path%5B%5D', 'path%5B%5D'],

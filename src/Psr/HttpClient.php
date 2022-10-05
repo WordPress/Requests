@@ -47,9 +47,9 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 	 * @param UriInterface|string $uri The URI associated with the request.
 	 */
 	public function createRequest($method, $uri) {
-		if (! $uri instanceof UriInterface) {
+		if (!$uri instanceof UriInterface) {
 			if (!is_string($uri)) {
-				throw InvalidArgument::create(2, '$uri', UriInterface::class.'|string', gettype($uri));
+				throw InvalidArgument::create(2, '$uri', UriInterface::class . '|string', gettype($uri));
 			}
 
 			$uri = Uri::fromIri(new Iri($uri));

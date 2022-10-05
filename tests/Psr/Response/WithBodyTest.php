@@ -19,7 +19,7 @@ final class WithBodyTest extends TestCase {
 	 */
 	public function testWithBodyReturnsResponse() {
 		$requestsResponse = new RequestsResponse();
-		$response = Response::fromResponse($requestsResponse);
+		$response         = Response::fromResponse($requestsResponse);
 
 		$this->assertInstanceOf(
 			ResponseInterface::class,
@@ -36,7 +36,7 @@ final class WithBodyTest extends TestCase {
 	 */
 	public function testWithBodyReturnsNewInstance() {
 		$requestsResponse = new RequestsResponse();
-		$response = Response::fromResponse($requestsResponse);
+		$response         = Response::fromResponse($requestsResponse);
 
 		$this->assertNotSame(
 			$response,

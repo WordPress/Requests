@@ -132,10 +132,10 @@ final class ToStringTest extends TestCase {
 	 */
 	public function dataToString() {
 		return [
-			'empty' => ['', ''],
-			'only root path' => ['/', '/'],
+			'empty'             => ['', ''],
+			'only root path'    => ['/', '/'],
 			'with suffixed "/"' => ['http://host', 'http://host/'],
-			'with authority' => ['http://user@host', 'http://user@host/'],
+			'with authority'    => ['http://user@host', 'http://user@host/'],
 		];
 	}
 }

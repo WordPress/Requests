@@ -154,7 +154,7 @@ final class Uri implements UriInterface {
 	 * @return null|int The URI port.
 	 */
 	public function getPort() {
-		$port = $this->iri->port;
+		$port   = $this->iri->port;
 		$scheme = $this->getScheme();
 
 		if ($port === null) {
@@ -501,11 +501,11 @@ final class Uri implements UriInterface {
 		// be prefixed by "/".
 		if (strncmp($path, '/', 1) !== 0 && $authority !== '') {
 			$string .= '/' . $path;
-		// If the path is starting with more than one "/" and no authority is
-		// present, the starting slashes MUST be reduced to one.
+			// If the path is starting with more than one "/" and no authority is
+			// present, the starting slashes MUST be reduced to one.
 		} elseif (strncmp($path, '//', 2) === 0 && $authority === '') {
 			$string .= '/' . ltrim($path, '/');
-		// The path can be concatenated without delimiters
+			// The path can be concatenated without delimiters
 		} else {
 			$string .= $path;
 		}

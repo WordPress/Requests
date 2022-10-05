@@ -30,8 +30,8 @@ final class GetQueryTest extends TestCase {
 	 */
 	public function dataGetQuery() {
 		return [
-			'empty' => ['', ''],
-			'Retrieve the query string of the URI' => ['https://example.com?foo=bar', 'foo=bar'],
+			'empty'                                      => ['', ''],
+			'Retrieve the query string of the URI'       => ['https://example.com?foo=bar', 'foo=bar'],
 			'If no query string is present, return empty string' => ['https://example.com', ''],
 			'The leading "?" character is not part of the query' => ['https://example.com?', ''],
 			'The value returned MUST be percent-encoded' => ['https://example.com?foo=%26', 'foo=%26'],

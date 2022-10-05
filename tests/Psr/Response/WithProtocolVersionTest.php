@@ -20,7 +20,7 @@ final class WithProtocolVersionTest extends TestCase {
 	 */
 	public function testWithProtocolVersionReturnsResponse() {
 		$requestsResponse = new RequestsResponse();
-		$response = Response::fromResponse($requestsResponse);
+		$response         = Response::fromResponse($requestsResponse);
 
 		$this->assertInstanceOf(ResponseInterface::class, $response->withProtocolVersion('1.0'));
 	}
@@ -34,7 +34,7 @@ final class WithProtocolVersionTest extends TestCase {
 	 */
 	public function testWithProtocolVersionReturnsNewInstance() {
 		$requestsResponse = new RequestsResponse();
-		$response = Response::fromResponse($requestsResponse);
+		$response         = Response::fromResponse($requestsResponse);
 
 		$this->assertNotSame($response, $response->withProtocolVersion('1.0'));
 	}
@@ -52,7 +52,7 @@ final class WithProtocolVersionTest extends TestCase {
 	 */
 	public function testWithProtocolVersionWithoutStringThrowsInvalidArgumentException($input) {
 		$requestsResponse = new RequestsResponse();
-		$response = Response::fromResponse($requestsResponse);
+		$response         = Response::fromResponse($requestsResponse);
 
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withProtocolVersion(): Argument #1 ($version) must be of type string, ', Response::class));
@@ -78,7 +78,7 @@ final class WithProtocolVersionTest extends TestCase {
 	 */
 	public function testWithProtocolVersionChangesTheProtocolVersion() {
 		$requestsResponse = new RequestsResponse();
-		$response = Response::fromResponse($requestsResponse);
+		$response         = Response::fromResponse($requestsResponse);
 
 		$response = $response->withProtocolVersion('1.0');
 

@@ -18,7 +18,7 @@ final class WithUriTest extends TestCase {
 	 */
 	public function testWithUriReturnsRequest() {
 		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
-		$uri = $this->createMock(UriInterface::class);
+		$uri     = $this->createMock(UriInterface::class);
 		$uri->method('getHost')->willReturn('');
 
 		$this->assertInstanceOf(RequestInterface::class, $request->withUri($uri));
@@ -33,7 +33,7 @@ final class WithUriTest extends TestCase {
 	 */
 	public function testWithUriReturnsNewInstance() {
 		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
-		$uri = $this->createMock(UriInterface::class);
+		$uri     = $this->createMock(UriInterface::class);
 		$uri->method('getHost')->willReturn('');
 
 		$this->assertNotSame($request, $request->withUri($uri));
@@ -47,7 +47,7 @@ final class WithUriTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithUriChangesTheUri() {
-		$uri1 = $this->createMock(UriInterface::class);
+		$uri1    = $this->createMock(UriInterface::class);
 		$request = Request::withMethodAndUri('GET', $uri1);
 
 		$uri2 = $this->createMock(UriInterface::class);

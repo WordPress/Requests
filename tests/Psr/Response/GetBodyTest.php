@@ -17,9 +17,9 @@ final class GetBodyTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetBodyReturnsStreamInterface() {
-		$requestsResponse = new RequestsResponse();
+		$requestsResponse              = new RequestsResponse();
 		$requestsResponse->status_code = 200;
-		$response = Response::fromResponse($requestsResponse);
+		$response                      = Response::fromResponse($requestsResponse);
 
 		$this->assertInstanceOf(StreamInterface::class, $response->getBody());
 	}
@@ -32,10 +32,10 @@ final class GetBodyTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetBodyReturnsStreamWithContent() {
-		$requestsResponse = new RequestsResponse();
-		$requestsResponse->body = 'response body';
+		$requestsResponse              = new RequestsResponse();
+		$requestsResponse->body        = 'response body';
 		$requestsResponse->status_code = 200;
-		$response = Response::fromResponse($requestsResponse);
+		$response                      = Response::fromResponse($requestsResponse);
 
 		$this->assertSame('response body', $response->getBody()->__toString());
 	}

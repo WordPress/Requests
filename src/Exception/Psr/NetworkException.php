@@ -23,7 +23,7 @@ use WpOrg\Requests\Exception\Transport;
  */
 class NetworkException extends ClientException/* implements \Psr\Http\Client\NetworkExceptionInterface */ {
 
-    /**
+	/**
 	 * @var RequestInterface
 	 */
 	private $request;

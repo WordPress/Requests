@@ -30,7 +30,7 @@ final class GetFragmentTest extends TestCase {
 	 */
 	public function dataGetFragment() {
 		return [
-			'empty' => ['', ''],
+			'empty'                                      => ['', ''],
 			'Retrieve the fragment component of the URI' => ['https://example.org#fragment', 'fragment'],
 			'If no fragment is present, return an empty string' => ['https://example.org', ''],
 			'The leading "#" character is not part of the fragment' => ['https://example.org#', ''],

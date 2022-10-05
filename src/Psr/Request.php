@@ -52,7 +52,7 @@ final class Request implements RequestInterface {
 			throw InvalidArgument::create(1, '$method', 'string', gettype($method));
 		}
 
-		$request = new self((string) $method, $uri);
+		$request       = new self((string) $method, $uri);
 		$request->body = StringBasedStream::createFromString('');
 
 		return $request;
@@ -160,7 +160,7 @@ final class Request implements RequestInterface {
 			$requestTarget = '/';
 		}
 
-		$request = clone($this);
+		$request                = clone($this);
 		$request->requestTarget = $requestTarget;
 
 		return $request;
@@ -195,7 +195,7 @@ final class Request implements RequestInterface {
 			throw InvalidArgument::create(1, '$method', 'string', gettype($method));
 		}
 
-		$request = clone($this);
+		$request         = clone($this);
 		$request->method = $method;
 
 		return $request;
@@ -280,7 +280,7 @@ final class Request implements RequestInterface {
 			throw InvalidArgument::create(1, '$version', 'string', gettype($version));
 		}
 
-		$request = clone($this);
+		$request                  = clone($this);
 		$request->protocolVersion = $version;
 
 		return $request;
@@ -309,7 +309,7 @@ final class Request implements RequestInterface {
 	 * @throws \InvalidArgumentException When the body is not valid.
 	 */
 	public function withBody(StreamInterface $body) {
-		$request = clone($this);
+		$request       = clone($this);
 		$request->body = $body;
 
 		return $request;

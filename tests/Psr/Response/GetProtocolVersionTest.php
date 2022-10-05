@@ -16,10 +16,10 @@ final class GetProtocolVersionTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetProtocolVersionWithFloatReturnsString() {
-		$requestsResponse = new RequestsResponse();
-		$requestsResponse->status_code = 200;
+		$requestsResponse                   = new RequestsResponse();
+		$requestsResponse->status_code      = 200;
 		$requestsResponse->protocol_version = 1.0;
-		$response = Response::fromResponse($requestsResponse);
+		$response                           = Response::fromResponse($requestsResponse);
 
 		$this->assertSame('1.0', $response->getProtocolVersion());
 	}
@@ -32,10 +32,10 @@ final class GetProtocolVersionTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetProtocolVersionWithFalseReturnsString() {
-		$requestsResponse = new RequestsResponse();
-		$requestsResponse->status_code = 200;
+		$requestsResponse                   = new RequestsResponse();
+		$requestsResponse->status_code      = 200;
 		$requestsResponse->protocol_version = false;
-		$response = Response::fromResponse($requestsResponse);
+		$response                           = Response::fromResponse($requestsResponse);
 
 		$this->assertSame('1.1', $response->getProtocolVersion());
 	}

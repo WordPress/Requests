@@ -124,7 +124,7 @@ final class WithPortTest extends TestCase {
 	 */
 	public function dataInvalidPorts() {
 		return [
-			'negative integer' => [-1],
+			'negative integer'  => [-1],
 			'bigger than 65535' => [65536],
 		];
 	}

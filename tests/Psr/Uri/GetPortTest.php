@@ -35,7 +35,7 @@ final class GetPortTest extends TestCase {
 			'port is the standard port used with the current scheme, return null' => ['https://example.org:443', null],
 			'no port is present, and no scheme is present, return null' => ['example.org', null],
 			'no port is present, but a scheme is present, SHOULD return null' => ['https://example.org', null],
-			'empty' => ['', null],
+			'empty'                                  => ['', null],
 		];
 	}
 }

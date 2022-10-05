@@ -22,22 +22,25 @@ final class HttpClientTest extends TestCase {
 	 */
 	public function testSendRequestSendsCorrectDataAndReturnsCorrectResponseData() {
 		$transport = $this->createMock(Transport::class);
-		$transport->expects($this->once())->method('request')->willReturnCallback(function ($url, $headers, $data, $options) use ($transport) {
-			$this->assertSame('https://example.org/', $url);
-			$this->assertSame(['Host' => ['example.org']], $headers);
-			$this->assertSame('', $data);
-			$this->assertSame('GET', $options['type']);
+		$transport->expects($this->once())->method('request')->willReturnCallback(
+			function ($url, $headers, $data, $options) use ($transport) {
+				$this->assertSame('https://example.org/', $url);
+				$this->assertSame(['Host' => ['example.org']], $headers);
+				$this->assertSame('', $data);
+				$this->assertSame('GET', $options['type']);
 
-			return
-				'HTTP/1.1 200 OK' . "\r\n".
-				'Content-Type:text/plain'. "\r\n".
-				"\r\n".
+				return 'HTTP/1.1 200 OK' . "\r\n" .
+				'Content-Type:text/plain' . "\r\n" .
+				"\r\n" .
 				'foobar';
-		});
+			}
+		);
 
-		$httpClient = new HttpClient([
-			'transport' => $transport,
-		]);
+		$httpClient = new HttpClient(
+			[
+				'transport' => $transport,
+			]
+		);
 
 		$request = $httpClient->createRequest('GET', 'https://example.org');
 
@@ -60,22 +63,25 @@ final class HttpClientTest extends TestCase {
 	 */
 	public function testSendRequestReturnsResponseOn404Error() {
 		$transport = $this->createMock(Transport::class);
-		$transport->expects($this->once())->method('request')->willReturnCallback(function ($url, $headers, $data, $options) use ($transport) {
-			$this->assertSame('https://example.org/not-found', $url);
-			$this->assertSame(['Host' => ['example.org']], $headers);
-			$this->assertSame('', $data);
-			$this->assertSame('GET', $options['type']);
+		$transport->expects($this->once())->method('request')->willReturnCallback(
+			function ($url, $headers, $data, $options) use ($transport) {
+				$this->assertSame('https://example.org/not-found', $url);
+				$this->assertSame(['Host' => ['example.org']], $headers);
+				$this->assertSame('', $data);
+				$this->assertSame('GET', $options['type']);
 
-			return
-				'HTTP/1.1 404 Not Found' . "\r\n".
-				'Content-Type:text/plain'. "\r\n".
-				"\r\n".
+				return 'HTTP/1.1 404 Not Found' . "\r\n" .
+				'Content-Type:text/plain' . "\r\n" .
+				"\r\n" .
 				'404 Not Found';
-		});
+			}
+		);
 
-		$httpClient = new HttpClient([
-			'transport' => $transport,
-		]);
+		$httpClient = new HttpClient(
+			[
+				'transport' => $transport,
+			]
+		);
 
 		$request = $httpClient->createRequest('GET', 'https://example.org/not-found');
 
@@ -97,22 +103,25 @@ final class HttpClientTest extends TestCase {
 	 */
 	public function testSendRequestReturnsResponseOn503Error() {
 		$transport = $this->createMock(Transport::class);
-		$transport->expects($this->once())->method('request')->willReturnCallback(function ($url, $headers, $data, $options) use ($transport) {
-			$this->assertSame('https://example.org/not-available', $url);
-			$this->assertSame(['Host' => ['example.org']], $headers);
-			$this->assertSame('', $data);
-			$this->assertSame('GET', $options['type']);
+		$transport->expects($this->once())->method('request')->willReturnCallback(
+			function ($url, $headers, $data, $options) use ($transport) {
+				$this->assertSame('https://example.org/not-available', $url);
+				$this->assertSame(['Host' => ['example.org']], $headers);
+				$this->assertSame('', $data);
+				$this->assertSame('GET', $options['type']);
 
-			return
-				'HTTP/1.1 503 Service Unavailable' . "\r\n".
-				'Content-Type:text/plain'. "\r\n".
-				"\r\n".
+				return 'HTTP/1.1 503 Service Unavailable' . "\r\n" .
+				'Content-Type:text/plain' . "\r\n" .
+				"\r\n" .
 				'503 Service Unavailable';
-		});
+			}
+		);
 
-		$httpClient = new HttpClient([
-			'transport' => $transport,
-		]);
+		$httpClient = new HttpClient(
+			[
+				'transport' => $transport,
+			]
+		);
 
 		$request = $httpClient->createRequest('GET', 'https://example.org/not-available');
 
@@ -135,9 +144,11 @@ final class HttpClientTest extends TestCase {
 	public function testSendRequestThrowsRequestException() {
 		$transport = $this->createMock(Transport::class);
 
-		$httpClient = new HttpClient([
-			'transport' => $transport,
-		]);
+		$httpClient = new HttpClient(
+			[
+				'transport' => $transport,
+			]
+		);
 
 		$request = $httpClient->createRequest('GET', '');
 
@@ -161,9 +172,11 @@ final class HttpClientTest extends TestCase {
 		$transport = $this->createMock(Transport::class);
 		$transport->method('request')->willThrowException($e);
 
-		$httpClient = new HttpClient([
-			'transport' => $transport,
-		]);
+		$httpClient = new HttpClient(
+			[
+				'transport' => $transport,
+			]
+		);
 
 		$request = $httpClient->createRequest('GET', 'https://example.org');
 

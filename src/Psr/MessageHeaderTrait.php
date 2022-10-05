@@ -262,7 +262,7 @@ trait MessageHeaderTrait {
 			$this->headers = [$name => []] + $this->headers;
 		}
 
-		$this->headers[$name] = $values;
+		$this->headers[$name]           = $values;
 		$this->headerNames[$headerName] = $name;
 	}
 }

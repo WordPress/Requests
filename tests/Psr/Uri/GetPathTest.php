@@ -30,10 +30,10 @@ final class GetPathTest extends TestCase {
 	 */
 	public function dataGetPath() {
 		return [
-			'Retrieve the path component of the URI' => ['https://example.org/path', '/path'],
-			'The path can be empty' => ['', ''],
-			'The path can be slash' => ['/', '/'],
-			'The path can be two slashes' => ['//', '/'],
+			'Retrieve the path component of the URI'     => ['https://example.org/path', '/path'],
+			'The path can be empty'                      => ['', ''],
+			'The path can be slash'                      => ['/', '/'],
+			'The path can be two slashes'                => ['//', '/'],
 			'The path can be absolute (starting with a slash)' => ['/path', '/path'],
 			'The path can be rootless (not starting with a slash)' => ['path', 'path'],
 			'The value returned MUST be percent-encoded' => ['%2F', '%2F'],

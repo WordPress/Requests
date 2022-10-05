@@ -30,11 +30,11 @@ final class GetUserInfoTest extends TestCase {
 	 */
 	public function dataGetUserInfo() {
 		return [
-			'empty' => ['', ''],
-			'without user-info' => ['https://@example.org', ''],
+			'empty'                       => ['', ''],
+			'without user-info'           => ['https://@example.org', ''],
 			'with user-info and password' => ['https://user:pass@example.org', 'user:pass'],
-			'with user-info' => ['https://user@example.org', 'user'],
-			'with password' => ['https://:pass@example.org', ':pass'],
+			'with user-info'              => ['https://user@example.org', 'user'],
+			'with password'               => ['https://:pass@example.org', ':pass'],
 		];
 	}
 }

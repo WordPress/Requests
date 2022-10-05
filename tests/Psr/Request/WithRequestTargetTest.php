@@ -94,10 +94,10 @@ final class WithRequestTargetTest extends TestCase {
 	public function dataValidRequestTarget() {
 		return [
 			'Return an instance with the specific request-target' => ['path', 'path'],
-			'Return an instance with origin-form' => ['absolute-path?query', 'absolute-path?query'],
-			'Return an instance with absolute-form' => ['http://www.example.org/pub/WWW/TheProject.html', 'http://www.example.org/pub/WWW/TheProject.html'],
+			'Return an instance with origin-form'    => ['absolute-path?query', 'absolute-path?query'],
+			'Return an instance with absolute-form'  => ['http://www.example.org/pub/WWW/TheProject.html', 'http://www.example.org/pub/WWW/TheProject.html'],
 			'Return an instance with authority-form' => ['www.example.com:80', 'www.example.com:80'],
-			'Return an instance with asterisk-form' => ['*', '*'],
+			'Return an instance with asterisk-form'  => ['*', '*'],
 			'If no request-target has been specifically provided, this method MUST return the string "/".' => ['', '/'],
 		];
 	}

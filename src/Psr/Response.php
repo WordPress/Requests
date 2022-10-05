@@ -164,7 +164,8 @@ final class Response implements ResponseInterface {
 		foreach ($headers as $name => $value) {
 			$this->updateHeader($name, $value);
 		}
-		$this->status_code = $status_code;
+
+		$this->status_code      = $status_code;
 		$this->protocol_version = $protocol_version;
 	}
 
@@ -209,7 +210,7 @@ final class Response implements ResponseInterface {
 			throw InvalidArgument::create(2, '$reasonPhrase', 'string', gettype($reasonPhrase));
 		}
 
-		$response = clone($this);
+		$response              = clone($this);
 		$response->status_code = $code;
 
 		if ($reasonPhrase === '') {
@@ -275,7 +276,7 @@ final class Response implements ResponseInterface {
 			throw InvalidArgument::create(1, '$version', 'string', gettype($version));
 		}
 
-		$response = clone($this);
+		$response                   = clone($this);
 		$response->protocol_version = $version;
 
 		return $response;
@@ -304,7 +305,7 @@ final class Response implements ResponseInterface {
 	 * @throws \InvalidArgumentException When the body is not valid.
 	 */
 	public function withBody(StreamInterface $body) {
-		$response = clone($this);
+		$response       = clone($this);
 		$response->body = $body;
 
 		return $response;

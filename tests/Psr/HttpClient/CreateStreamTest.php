@@ -41,10 +41,12 @@ final class CreateStreamTest extends TestCase {
 		$httpClient = new HttpClient([]);
 
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(sprintf(
-			'%s::createStream(): Argument #1 ($content) must be of type string,',
-			HttpClient::class
-		));
+		$this->expectExceptionMessage(
+			sprintf(
+				'%s::createStream(): Argument #1 ($content) must be of type string,',
+				HttpClient::class
+			)
+		);
 
 		$httpClient->createStream($input);
 	}

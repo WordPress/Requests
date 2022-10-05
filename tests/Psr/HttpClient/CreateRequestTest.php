@@ -62,11 +62,13 @@ final class CreateRequestTest extends TestCase {
 		$httpClient = new HttpClient([]);
 
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage(sprintf(
-			'%s::createRequest(): Argument #2 ($uri) must be of type %s|string',
-			HttpClient::class,
-			UriInterface::class
-		));
+		$this->expectExceptionMessage(
+			sprintf(
+				'%s::createRequest(): Argument #2 ($uri) must be of type %s|string',
+				HttpClient::class,
+				UriInterface::class
+			)
+		);
 
 		$httpClient->createRequest('', $input);
 	}
