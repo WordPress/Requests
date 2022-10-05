@@ -36,15 +36,15 @@ final class HttpClientTest extends TestCase {
 			}
 		);
 
-		$httpClient = new HttpClient(
+		$http_client = new HttpClient(
 			[
 				'transport' => $transport,
 			]
 		);
 
-		$request = $httpClient->createRequest('GET', 'https://example.org');
+		$request = $http_client->createRequest('GET', 'https://example.org');
 
-		$response = $httpClient->sendRequest($request);
+		$response = $http_client->sendRequest($request);
 
 		$this->assertInstanceOf(ResponseInterface::class, $response);
 		$this->assertSame(200, $response->getStatusCode());
@@ -77,15 +77,15 @@ final class HttpClientTest extends TestCase {
 			}
 		);
 
-		$httpClient = new HttpClient(
+		$http_client = new HttpClient(
 			[
 				'transport' => $transport,
 			]
 		);
 
-		$request = $httpClient->createRequest('GET', 'https://example.org/not-found');
+		$request = $http_client->createRequest('GET', 'https://example.org/not-found');
 
-		$response = $httpClient->sendRequest($request);
+		$response = $http_client->sendRequest($request);
 
 		$this->assertSame(404, $response->getStatusCode());
 		$this->assertSame('Not Found', $response->getReasonPhrase());
@@ -117,15 +117,15 @@ final class HttpClientTest extends TestCase {
 			}
 		);
 
-		$httpClient = new HttpClient(
+		$http_client = new HttpClient(
 			[
 				'transport' => $transport,
 			]
 		);
 
-		$request = $httpClient->createRequest('GET', 'https://example.org/not-available');
+		$request = $http_client->createRequest('GET', 'https://example.org/not-available');
 
-		$response = $httpClient->sendRequest($request);
+		$response = $http_client->sendRequest($request);
 
 		$this->assertSame(503, $response->getStatusCode());
 		$this->assertSame('Service Unavailable', $response->getReasonPhrase());
@@ -144,19 +144,19 @@ final class HttpClientTest extends TestCase {
 	public function testSendRequestThrowsRequestException() {
 		$transport = $this->createMock(Transport::class);
 
-		$httpClient = new HttpClient(
+		$http_client = new HttpClient(
 			[
 				'transport' => $transport,
 			]
 		);
 
-		$request = $httpClient->createRequest('GET', '');
+		$request = $http_client->createRequest('GET', '');
 
 		$this->expectException(ClientException::class);
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage('Only HTTP(S) requests are handled.');
 
-		$httpClient->sendRequest($request);
+		$http_client->sendRequest($request);
 	}
 
 	/**
@@ -172,18 +172,18 @@ final class HttpClientTest extends TestCase {
 		$transport = $this->createMock(Transport::class);
 		$transport->method('request')->willThrowException($e);
 
-		$httpClient = new HttpClient(
+		$http_client = new HttpClient(
 			[
 				'transport' => $transport,
 			]
 		);
 
-		$request = $httpClient->createRequest('GET', 'https://example.org');
+		$request = $http_client->createRequest('GET', 'https://example.org');
 
 		$this->expectException(ClientException::class);
 		$this->expectException(NetworkException::class);
 		$this->expectExceptionMessage('error message');
 
-		$httpClient->sendRequest($request);
+		$http_client->sendRequest($request);
 	}
 }

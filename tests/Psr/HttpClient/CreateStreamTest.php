@@ -18,11 +18,11 @@ final class CreateStreamTest extends TestCase {
 	 * @return void
 	 */
 	public function testCreateStreamReturnsStream() {
-		$httpClient = new HttpClient([]);
+		$http_client = new HttpClient([]);
 
 		$this->assertInstanceOf(
 			StreamInterface::class,
-			$httpClient->createStream('')
+			$http_client->createStream('')
 		);
 	}
 
@@ -38,7 +38,7 @@ final class CreateStreamTest extends TestCase {
 	 * @return void
 	 */
 	public function testCreateStreamWithoutStringThrowsException($input) {
-		$httpClient = new HttpClient([]);
+		$http_client = new HttpClient([]);
 
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage(
@@ -48,7 +48,7 @@ final class CreateStreamTest extends TestCase {
 			)
 		);
 
-		$httpClient->createStream($input);
+		$http_client->createStream($input);
 	}
 
 	/**

@@ -25,7 +25,7 @@ trait MessageHeaderTrait {
 	/**
 	 * @var array
 	 */
-	private $headerNames = [];
+	private $header_names = [];
 
 	/**
 	 * Retrieves all message header values.
@@ -69,7 +69,7 @@ trait MessageHeaderTrait {
 			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
 		}
 
-		return array_key_exists(strtolower($name), $this->headerNames);
+		return array_key_exists(strtolower($name), $this->header_names);
 	}
 
 	/**
@@ -95,7 +95,7 @@ trait MessageHeaderTrait {
 			return [];
 		}
 
-		return $this->headers[$this->headerNames[strtolower($name)]];
+		return $this->headers[$this->header_names[strtolower($name)]];
 	}
 
 	/**
@@ -122,11 +122,11 @@ trait MessageHeaderTrait {
 			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
 		}
 
-		if (!array_key_exists(strtolower($name), $this->headerNames)) {
+		if (!array_key_exists(strtolower($name), $this->header_names)) {
 			return '';
 		}
 
-		return implode(',', $this->headers[$this->headerNames[strtolower($name)]]);
+		return implode(',', $this->headers[$this->header_names[strtolower($name)]]);
 	}
 
 	/**
@@ -245,9 +245,9 @@ trait MessageHeaderTrait {
 	private function updateHeader($name, $values) {
 		$headerName = strtolower($name);
 
-		if (array_key_exists($headerName, $this->headerNames)) {
-			unset($this->headers[$this->headerNames[$headerName]]);
-			unset($this->headerNames[$headerName]);
+		if (array_key_exists($headerName, $this->header_names)) {
+			unset($this->headers[$this->header_names[$headerName]]);
+			unset($this->header_names[$headerName]);
 		}
 
 		if ($values === []) {
@@ -262,7 +262,7 @@ trait MessageHeaderTrait {
 			$this->headers = [$name => []] + $this->headers;
 		}
 
-		$this->headers[$name]           = $values;
-		$this->headerNames[$headerName] = $name;
+		$this->headers[$name]            = $values;
+		$this->header_names[$headerName] = $name;
 	}
 }

@@ -29,10 +29,10 @@ final class GetHeadersTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetHeadersReturnsArray() {
-		$requestsResponse                  = new RequestsResponse();
-		$requestsResponse->headers['name'] = 'value';
+		$requests_response                  = new RequestsResponse();
+		$requests_response->headers['name'] = 'value';
 
-		$response = Response::fromResponse($requestsResponse);
+		$response = Response::fromResponse($requests_response);
 
 		$this->assertSame(['name' => ['value']], $response->getHeaders());
 	}

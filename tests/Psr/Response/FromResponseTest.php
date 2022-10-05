@@ -17,11 +17,11 @@ final class FromResponseTest extends TestCase {
 	 * @return void
 	 */
 	public function testFromResponseReturnsResponseInterface() {
-		$requestsResponse = new RequestsResponse();
+		$requests_response = new RequestsResponse();
 
 		$this->assertInstanceOf(
 			ResponseInterface::class,
-			Response::fromResponse($requestsResponse)
+			Response::fromResponse($requests_response)
 		);
 	}
 }

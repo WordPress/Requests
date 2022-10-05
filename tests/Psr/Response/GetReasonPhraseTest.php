@@ -18,9 +18,9 @@ final class GetReasonPhraseTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetReasonPhraseReturnsString($code, $phrase) {
-		$requestsResponse              = new RequestsResponse();
-		$requestsResponse->status_code = $code;
-		$response                      = Response::fromResponse($requestsResponse);
+		$requests_response              = new RequestsResponse();
+		$requests_response->status_code = $code;
+		$response                       = Response::fromResponse($requests_response);
 
 		$this->assertSame($phrase, $response->getReasonPhrase());
 	}
@@ -33,9 +33,9 @@ final class GetReasonPhraseTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetReasonPhraseReturnsEmptyString() {
-		$requestsResponse              = new RequestsResponse();
-		$requestsResponse->status_code = 0;
-		$response                      = Response::fromResponse($requestsResponse);
+		$requests_response              = new RequestsResponse();
+		$requests_response->status_code = 0;
+		$response                       = Response::fromResponse($requests_response);
 
 		$this->assertSame('', $response->getReasonPhrase());
 	}

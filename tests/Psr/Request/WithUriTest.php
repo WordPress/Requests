@@ -130,16 +130,16 @@ final class WithUriTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testWithUriAndPreserveHost($initHost, $newHost, $expectedHeaders) {
+	public function testWithUriAndPreserveHost($initHost, $new_host, $expected_headers) {
 		$uri = $this->createMock(UriInterface::class);
 		$uri->method('getHost')->willReturn($initHost);
 		$request = Request::withMethodAndUri('GET', $uri);
 
 		$uri2 = $this->createMock(UriInterface::class);
-		$uri2->method('getHost')->willReturn($newHost);
+		$uri2->method('getHost')->willReturn($new_host);
 		$request = $request->withUri($uri2, true);
 
-		$this->assertSame($expectedHeaders, $request->getHeaders());
+		$this->assertSame($expected_headers, $request->getHeaders());
 	}
 
 	/**

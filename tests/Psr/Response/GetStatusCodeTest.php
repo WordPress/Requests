@@ -16,9 +16,9 @@ final class GetStatusCodeTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetStatusCodeReturnsInteger() {
-		$requestsResponse              = new RequestsResponse();
-		$requestsResponse->status_code = 200;
-		$response                      = Response::fromResponse($requestsResponse);
+		$requests_response              = new RequestsResponse();
+		$requests_response->status_code = 200;
+		$response                       = Response::fromResponse($requests_response);
 
 		$this->assertSame(200, $response->getStatusCode());
 	}
