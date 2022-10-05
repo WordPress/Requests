@@ -38,7 +38,7 @@ final class WithRequestTargetTest extends TestCase {
 	}
 
 	/**
-	 * Tests receiving an exception when the withRequestTarget() method received an invalid input type as `$requestTarget`.
+	 * Tests receiving an exception when the withRequestTarget() method received an invalid input type as `$request_target`.
 	 *
 	 * @dataProvider dataInvalidTypeNotString
 	 *
@@ -52,7 +52,7 @@ final class WithRequestTargetTest extends TestCase {
 		$request = Request::withMethodAndUri('GET', $this->createMock(UriInterface::class));
 
 		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage(sprintf('%s::withRequestTarget(): Argument #1 ($requestTarget) must be of type string', Request::class));
+		$this->expectExceptionMessage(sprintf('%s::withRequestTarget(): Argument #1 ($request_target) must be of type string', Request::class));
 
 		$request->withRequestTarget($input);
 	}

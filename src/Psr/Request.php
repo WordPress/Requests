@@ -71,12 +71,12 @@ final class Request implements RequestInterface {
 	/**
 	 * @var string
 	 */
-	private $requestTarget = '';
+	private $request_target = '';
 
 	/**
 	 * @var string
 	 */
-	private $protocolVersion = '1.1';
+	private $protocol_version = '1.1';
 
 	/**
 	 * @var StreamInterface
@@ -113,8 +113,8 @@ final class Request implements RequestInterface {
 	 * @return string
 	 */
 	public function getRequestTarget() {
-		if ($this->requestTarget !== '') {
-			return $this->requestTarget;
+		if ($this->request_target !== '') {
+			return $this->request_target;
 		}
 
 		$target = $this->uri->getPath();
@@ -146,22 +146,22 @@ final class Request implements RequestInterface {
 	 *
 	 * @see http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
 	 *     request-target forms allowed in request messages)
-	 * @param mixed $requestTarget
+	 * @param mixed $request_target
 	 * @return static
 	 */
-	public function withRequestTarget($requestTarget) {
-		// $requestTarget accepts only string
+	public function withRequestTarget($request_target) {
+		// $request_target accepts only string
 		// @see https://github.com/php-fig/http-message/pull/78
-		if (!is_string($requestTarget)) {
-			throw InvalidArgument::create(1, '$requestTarget', 'string', gettype($requestTarget));
+		if (!is_string($request_target)) {
+			throw InvalidArgument::create(1, '$request_target', 'string', gettype($request_target));
 		}
 
-		if ($requestTarget === '') {
-			$requestTarget = '/';
+		if ($request_target === '') {
+			$request_target = '/';
 		}
 
-		$request                = clone($this);
-		$request->requestTarget = $requestTarget;
+		$request                 = clone($this);
+		$request->request_target = $request_target;
 
 		return $request;
 	}
@@ -223,7 +223,7 @@ final class Request implements RequestInterface {
 	 * over to the returned request.
 	 *
 	 * You can opt-in to preserving the original state of the Host header by
-	 * setting `$preserveHost` to `true`. When `$preserveHost` is set to
+	 * setting `$preserve_host` to `true`. When `$preserve_host` is set to
 	 * `true`, this method interacts with the Host header in the following ways:
 	 *
 	 * - If the Host header is missing or empty, and the new URI contains
@@ -241,12 +241,12 @@ final class Request implements RequestInterface {
 	 *
 	 * @see http://tools.ietf.org/html/rfc3986#section-4.3
 	 * @param UriInterface $uri New request URI to use.
-	 * @param bool $preserveHost Preserve the original state of the Host header.
+	 * @param bool $preserve_host Preserve the original state of the Host header.
 	 * @return static
 	 */
-	public function withUri(UriInterface $uri, $preserveHost = false) {
+	public function withUri(UriInterface $uri, $preserve_host = false) {
 		$request = clone($this);
-		$request->setUri($uri, $preserveHost);
+		$request->setUri($uri, $preserve_host);
 
 		return $request;
 	}
@@ -259,7 +259,7 @@ final class Request implements RequestInterface {
 	 * @return string HTTP protocol version.
 	 */
 	public function getProtocolVersion() {
-		return $this->protocolVersion;
+		return $this->protocol_version;
 	}
 
 	/**
@@ -280,8 +280,8 @@ final class Request implements RequestInterface {
 			throw InvalidArgument::create(1, '$version', 'string', gettype($version));
 		}
 
-		$request                  = clone($this);
-		$request->protocolVersion = $version;
+		$request                   = clone($this);
+		$request->protocol_version = $version;
 
 		return $request;
 	}
@@ -320,17 +320,17 @@ final class Request implements RequestInterface {
 	 *
 	 * @see http://tools.ietf.org/html/rfc3986#section-4.3
 	 * @param UriInterface $uri New request URI to use.
-	 * @param bool $preserveHost Preserve the original state of the Host header.
+	 * @param bool $preserve_host Preserve the original state of the Host header.
 	 * @return void
 	 */
-	private function setUri(UriInterface $uri, $preserveHost) {
+	private function setUri(UriInterface $uri, $preserve_host) {
 		$this->uri = $uri;
 
 		$host = $uri->getHost();
 
 		if ($host !== '' && $this->getHeaderLine('Host') === '') {
 			$this->updateHeader('Host', [$host]);
-		} elseif ($host !== '' && $preserveHost === false) {
+		} elseif ($host !== '' && $preserve_host === false) {
 			$this->updateHeader('Host', [$host]);
 		}
 	}

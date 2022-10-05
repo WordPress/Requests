@@ -243,11 +243,11 @@ trait MessageHeaderTrait {
 	 * @return void
 	 */
 	private function updateHeader($name, $values) {
-		$headerName = strtolower($name);
+		$header_name = strtolower($name);
 
-		if (array_key_exists($headerName, $this->header_names)) {
-			unset($this->headers[$this->header_names[$headerName]]);
-			unset($this->header_names[$headerName]);
+		if (array_key_exists($header_name, $this->header_names)) {
+			unset($this->headers[$this->header_names[$header_name]]);
+			unset($this->header_names[$header_name]);
 		}
 
 		if ($values === []) {
@@ -258,11 +258,11 @@ trait MessageHeaderTrait {
 		// request, a user agent SHOULD generate Host as the first header field
 		// following the request-line.
 		// @see https://www.rfc-editor.org/rfc/rfc7230#section-5.4
-		if ($this instanceof RequestInterface && $headerName === 'host') {
+		if ($this instanceof RequestInterface && $header_name === 'host') {
 			$this->headers = [$name => []] + $this->headers;
 		}
 
-		$this->headers[$name]            = $values;
-		$this->header_names[$headerName] = $name;
+		$this->headers[$name]             = $values;
+		$this->header_names[$header_name] = $name;
 	}
 }

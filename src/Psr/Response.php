@@ -70,7 +70,7 @@ final class Response implements ResponseInterface {
 	/**
 	 * @var string
 	 */
-	private $reasonPhrase = null;
+	private $reason_phrase = null;
 
 	/**
 	 * @var string
@@ -85,7 +85,7 @@ final class Response implements ResponseInterface {
 	 *
 	 * @var array
 	 */
-	private $reasonPhrases = [
+	private $reason_phrases = [
 		100 => 'Continue',                        // RFC9110, Section 15.2.1
 		101 => 'Switching Protocols',             // RFC9110, Section 15.2.2
 		102 => 'Processing',                      // RFC2518
@@ -195,28 +195,28 @@ final class Response implements ResponseInterface {
 	 * @link http://tools.ietf.org/html/rfc7231#section-6
 	 * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
 	 * @param int $code The 3-digit integer result code to set.
-	 * @param string $reasonPhrase The reason phrase to use with the
+	 * @param string $reason_phrase The reason phrase to use with the
 	 *     provided status code; if none is provided, implementations MAY
 	 *     use the defaults as suggested in the HTTP specification.
 	 * @return static
 	 * @throws \InvalidArgumentException For invalid status code arguments.
 	 */
-	public function withStatus($code, $reasonPhrase = '') {
+	public function withStatus($code, $reason_phrase = '') {
 		if (!is_int($code)) {
 			throw InvalidArgument::create(1, '$code', 'int', gettype($code));
 		}
 
-		if (!is_string($reasonPhrase)) {
-			throw InvalidArgument::create(2, '$reasonPhrase', 'string', gettype($reasonPhrase));
+		if (!is_string($reason_phrase)) {
+			throw InvalidArgument::create(2, '$reason_phrase', 'string', gettype($reason_phrase));
 		}
 
 		$response              = clone($this);
 		$response->status_code = $code;
 
-		if ($reasonPhrase === '') {
-			$response->reasonPhrase = null;
+		if ($reason_phrase === '') {
+			$response->reason_phrase = null;
 		} else {
-			$response->reasonPhrase = $reasonPhrase;
+			$response->reason_phrase = $reason_phrase;
 		}
 
 		return $response;
@@ -236,12 +236,12 @@ final class Response implements ResponseInterface {
 	 * @return string Reason phrase; must return an empty string if none present.
 	 */
 	public function getReasonPhrase() {
-		if ($this->reasonPhrase !== null) {
-			return $this->reasonPhrase;
+		if ($this->reason_phrase !== null) {
+			return $this->reason_phrase;
 		}
 
-		if (array_key_exists($this->status_code, $this->reasonPhrases)) {
-			return $this->reasonPhrases[$this->status_code];
+		if (array_key_exists($this->status_code, $this->reason_phrases)) {
+			return $this->reason_phrases[$this->status_code];
 		}
 
 		return '';
