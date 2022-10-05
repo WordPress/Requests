@@ -16,7 +16,7 @@ final class GetHeadersTest extends TestCase {
 	 * @return void
 	 */
 	public function _testGetHeadersReturnsEmptyArray() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->assertSame([], $response->getHeaders());
 	}
@@ -31,7 +31,7 @@ final class GetHeadersTest extends TestCase {
 	public function testGetHeadersReturnsArray() {
 		$requestsResponse = new RequestsResponse();
 		$requestsResponse->headers['name'] = 'value';
-		var_dump($requestsResponse->headers);
+
 		$response = Response::fromResponse($requestsResponse);
 
 		$this->assertSame(['name' => ['value']], $response->getHeaders());

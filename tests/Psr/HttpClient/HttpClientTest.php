@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests\Psr\HttpClient;
 
+use Psr\Http\Message\ResponseInterface;
 use WpOrg\Requests\Exception\Psr\ClientException;
 use WpOrg\Requests\Exception\Psr\NetworkException;
 use WpOrg\Requests\Exception\Psr\RequestException;
@@ -42,6 +43,7 @@ final class HttpClientTest extends TestCase {
 
 		$response = $httpClient->sendRequest($request);
 
+		$this->assertInstanceOf(ResponseInterface::class, $response);
 		$this->assertSame(200, $response->getStatusCode());
 		$this->assertSame('OK', $response->getReasonPhrase());
 		$this->assertSame('1.1', $response->getProtocolVersion());

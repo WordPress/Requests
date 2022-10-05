@@ -19,7 +19,7 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderReturnsResponseInterface() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->assertInstanceOf(ResponseInterface::class, $response->withHeader('name', 'value'));
 	}
@@ -32,7 +32,7 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderReturnsNewInstance() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->assertNotSame($response, $response->withHeader('name', 'value'));
 	}
@@ -49,7 +49,7 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderWithoutNameAsStringThrowsInvalidArgumentException($input) {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withHeader(): Argument #1 ($name) must be of type string', Response::class));
@@ -78,7 +78,7 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderWithoutValueAsStringOrArrayThrowsInvalidArgumentException($input) {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withHeader(): Argument #2 ($value) must be of type string|array', Response::class));
@@ -107,7 +107,7 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderWithoutValueAsStringInArrayThrowsInvalidArgumentException($input) {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withHeader(): Argument #2 ($value) must be of type string|array containing strings', Response::class));
@@ -123,7 +123,7 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderChangesTheHeaders() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$response = $response->withHeader('Name', 'value');
 
@@ -138,7 +138,7 @@ final class WithHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithHeaderCaseInsensitiveChangesTheHeaders() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$response = $response->withHeader('name', 'value');
 		$response = $response->withHeader('NAME', 'value');

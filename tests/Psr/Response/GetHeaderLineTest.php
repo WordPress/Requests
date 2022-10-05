@@ -18,7 +18,7 @@ final class GetHeaderLineTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetHeaderLineWithoutHeaderReturnsEmptyString() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->assertSame('', $response->getHeaderLine('name'));
 	}
@@ -31,7 +31,7 @@ final class GetHeaderLineTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetHeaderLineReturnsString() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 		$response = $response->withHeader('name', ['value1', 'value2']);
 
 		$this->assertSame('value1,value2', $response->getHeaderLine('name'));
@@ -45,7 +45,7 @@ final class GetHeaderLineTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetHeaderLineWithCaseInsensitiveNameReturnsString() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 		$response = $response->withHeader('name', 'value');
 
 		$this->assertSame('value', $response->getHeaderLine('NAME'));
@@ -63,7 +63,7 @@ final class GetHeaderLineTest extends TestCase {
 	 * @return void
 	 */
 	public function testGetHeaderLineWithoutStringThrowsInvalidArgumentException($input) {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::getHeaderLine(): Argument #1 ($name) must be of type string,', Response::class));

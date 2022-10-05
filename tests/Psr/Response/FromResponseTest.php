@@ -17,7 +17,7 @@ final class FromResponseTest extends TestCase {
 	 * @return void
 	 */
 	public function testFromResponseReturnsResponseInterface() {
-		$requestsResponse = $this->createMock(RequestsResponse::class);
+		$requestsResponse = new RequestsResponse();
 
 		$this->assertInstanceOf(
 			ResponseInterface::class,

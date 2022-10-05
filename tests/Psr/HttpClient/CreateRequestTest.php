@@ -19,7 +19,7 @@ final class CreateRequestTest extends TestCase {
 	 * @return void
 	 */
 	public function testCreateRequestWithUriInstanceReturnsRequest() {
-		$httpClient = new HttpClient();
+		$httpClient = new HttpClient([]);
 
 		$uri = $this->createMock(UriInterface::class);
 
@@ -37,7 +37,7 @@ final class CreateRequestTest extends TestCase {
 	 * @return void
 	 */
 	public function testCreateRequestWithUriStringReturnsRequest() {
-		$httpClient = new HttpClient();
+		$httpClient = new HttpClient([]);
 
 		$uri = 'https://example.org';
 
@@ -59,7 +59,7 @@ final class CreateRequestTest extends TestCase {
 	 * @return void
 	 */
 	public function testCreateRequestWithoutUriStringThrowsException($input) {
-		$httpClient = new HttpClient();
+		$httpClient = new HttpClient([]);
 
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage(sprintf(

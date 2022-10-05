@@ -19,7 +19,7 @@ final class WithoutHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithoutHeaderReturnsResponseInterface() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->assertInstanceOf(ResponseInterface::class, $response->withoutHeader('name'));
 	}
@@ -32,7 +32,7 @@ final class WithoutHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithoutHeaderReturnsNewInstance() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->assertNotSame($response, $response->withoutHeader('name'));
 	}
@@ -49,7 +49,7 @@ final class WithoutHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithoutHeaderWithoutNameAsStringThrowsInvalidArgumentException($input) {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::withoutHeader(): Argument #1 ($name) must be of type string', Response::class));
@@ -74,7 +74,7 @@ final class WithoutHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithoutHeaderChangesTheHeaders() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$response = $response->withHeader('Name', 'value');
 		$response = $response->withoutHeader('Name');
@@ -90,7 +90,7 @@ final class WithoutHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithoutHeaderCaseInsensitiveChangesTheHeaders() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$response = $response->withHeader('NAME1', 'value1');
 		$response = $response->withHeader('NAME2', 'value2');

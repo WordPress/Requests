@@ -18,7 +18,7 @@ final class HasHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testHasHeaderReturnsFalse() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->assertFalse($response->hasHeader('name'));
 	}
@@ -31,7 +31,7 @@ final class HasHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testHasHeaderReturnsTrue() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 		$response = $response->withHeader('name', 'value');
 
 		$this->assertTrue($response->hasHeader('name'));
@@ -45,7 +45,7 @@ final class HasHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testHasHeaderWithCaseInsensitiveNameReturnsTrue() {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 		$response = $response->withHeader('NAME', 'value');
 
 		$this->assertTrue($response->hasHeader('name'));
@@ -63,7 +63,7 @@ final class HasHeaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testHasHeaderWithoutStringThrowsInvalidArgumentException($input) {
-		$response = Response::fromResponse($this->createMock(RequestsResponse::class));
+		$response = Response::fromResponse(new RequestsResponse());
 
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage(sprintf('%s::hasHeader(): Argument #1 ($name) must be of type string,', Response::class));
