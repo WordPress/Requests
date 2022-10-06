@@ -170,6 +170,7 @@ final class Uri implements UriInterface {
 				return null;
 			}
 		} catch (RequestsException $th) {
+			return $port;
 		}
 
 		return $port;
@@ -302,7 +303,7 @@ final class Uri implements UriInterface {
 
 		if ($user === '') {
 			$iri->userinfo = $user;
-		} elseif ($password === null or $password === '') {
+		} elseif ($password === null || $password === '') {
 			$iri->userinfo = $user;
 		} else {
 			$iri->userinfo = $user . ':' . $password;
