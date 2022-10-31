@@ -84,10 +84,16 @@ final class HttpClient/* implements \Psr\Http\Message\RequestFactoryInterface, \
 	 * @throws \Psr\Http\Client\ClientExceptionInterface If an error happens while processing the request.
 	 */
 	public function sendRequest($request) {
+		$headers = [];
+
+		foreach ($request->getHeaders() as $key => $header) {
+			$headers[$key] = $request->getHeaderLine($key);
+		}
+
 		try {
 			$response = Requests::request(
 				$request->getUri()->__toString(),
-				$request->getHeaders(),
+				$headers,
 				$request->getBody()->__toString(),
 				$request->getMethod(),
 				$this->options
