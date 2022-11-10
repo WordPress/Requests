@@ -44,9 +44,9 @@ jobs:
         id: set_cov
         run: |
           if [ ${{ matrix.coverage }} == "true" ]; then
-            echo '::set-output name=COV::xdebug'
+            echo "COV=xdebug" >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=COV::none'
+            echo "COV=none" >> $GITHUB_OUTPUT
           fi
 
       - name: Install PHP

@@ -40,18 +40,18 @@ jobs:
           PR_NUM: ${{ github.event.pull_request.number }}
         run: |
           if [[ "${{ github.event_name }}" == 'schedule' ]]; then
-            echo "::set-output name=BASE::develop"
-            echo "::set-output name=PR_BRANCH::feature/auto-update-cacert"
+            echo "BASE=develop" >> $GITHUB_OUTPUT
+            echo "PR_BRANCH=feature/auto-update-cacert" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == 'push' ]]; then
             # Pull requests should always go to develop, even when triggered via a push to stable.
-            echo "::set-output name=BASE::develop"
-            echo "::set-output name=PR_BRANCH::feature/auto-update-cacert"
+            echo "BASE=develop" >> $GITHUB_OUTPUT
+            echo "PR_BRANCH=feature/auto-update-cacert" >> $GITHUB_OUTPUT
           elif [[ $PR_NUM != '' ]]; then # = PR or manual (re-)run for a workflow triggered by a PR.
-            echo "::set-output name=BASE::$HEAD_REF"
-            echo "::set-output name=PR_BRANCH::feature/auto-update-cacert-$PR_NUM"
+            echo "BASE=$HEAD_REF" >> $GITHUB_OUTPUT
+            echo "PR_BRANCH=feature/auto-update-cacert-$PR_NUM" >> $GITHUB_OUTPUT
           else # = manual run.
-            echo "::set-output name=BASE::$HEAD_REF"
-            echo "::set-output name=PR_BRANCH::feature/auto-update-cacert-misc"
+            echo "BASE=$HEAD_REF" >> $GITHUB_OUTPUT
+            echo "PR_BRANCH=feature/auto-update-cacert-misc" >> $GITHUB_OUTPUT
           fi
 
       - name: Checkout code
@@ -83,7 +83,7 @@ jobs:
       # http://man7.org/linux/man-pages/man1/date.1.html
       - name: "Get date"
         id: get-date
-        run: echo "::set-output name=DATE::$(/bin/date -u "+%F")"
+        run: echo "DATE=$(/bin/date -u "+%F")" >> $GITHUB_OUTPUT
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v4
