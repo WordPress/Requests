@@ -40,21 +40,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set coverage variable
-        id: set_cov
-        run: |
-          if [ ${{ matrix.coverage }} == "true" ]; then
-            echo '::set-output name=COV::xdebug'
-          else
-            echo '::set-output name=COV::none'
-          fi
-
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           ini-values: error_reporting=-1, display_errors=On, log_errors_max_len=0
-          coverage: ${{ steps.set_cov.outputs.COV }}
+          coverage: ${{ matrix.coverage && 'xdebug' || 'none' }}
           tools: cs2pr
 
       # At least one test needs a non-en_US locale to be available, so make sure it is.

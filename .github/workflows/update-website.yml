@@ -39,9 +39,9 @@ jobs:
           REF: ${{ github.ref }}
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "::set-output name=BRANCH::$REF"
+            echo "BRANCH=$REF" >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=BRANCH::stable'
+            echo 'BRANCH=stable' >> $GITHUB_OUTPUT
           fi
 
       - name: Checkout code
@@ -95,15 +95,15 @@ jobs:
           TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "::set-output name=REF::$REF_NAME"
-            echo '::set-output name=PR_TITLE_PREFIX::[TEST | DO NOT MERGE] '
-            echo '::set-output name=PR_BODY::Test run for the website update after changes to the automated scripts.'
-            echo '::set-output name=DRAFT::true'
+            echo "REF=$REF_NAME" >> $GITHUB_OUTPUT
+            echo 'PR_TITLE_PREFIX=[TEST | DO NOT MERGE] ' >> $GITHUB_OUTPUT
+            echo 'PR_BODY=Test run for the website update after changes to the automated scripts.' >> $GITHUB_OUTPUT
+            echo 'DRAFT=true' >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=REF::$TAG_NAME"
-            echo '::set-output name=PR_TITLE_PREFIX::'
-            echo "::set-output name=PR_BODY::Website update after the release of Requests $TAG_NAME."
-            echo '::set-output name=DRAFT::false'
+            echo "REF=$TAG_NAME" >> $GITHUB_OUTPUT
+            echo 'PR_TITLE_PREFIX=' >> $GITHUB_OUTPUT
+            echo "PR_BODY=Website update after the release of Requests $TAG_NAME." >> $GITHUB_OUTPUT
+            echo 'DRAFT=false' >> $GITHUB_OUTPUT
           fi
 
       - name: Checkout code
