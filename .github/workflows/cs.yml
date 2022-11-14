@@ -36,8 +36,9 @@ jobs:
 
       # Check the code-style consistency of the PHP files.
       - name: Check PHP code style
-        continue-on-error: true
+        id: phpcs
         run: composer checkcs -- --report-full --report-checkstyle=./phpcs-report.xml
 
       - name: Show PHPCS results in PR
+        if: ${{ always() && steps.phpcs.outcome == 'failure' }}
         run: cs2pr ./phpcs-report.xml
