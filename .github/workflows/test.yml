@@ -44,7 +44,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          ini-values: error_reporting=-1, display_errors=On, log_errors_max_len=0
+          ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, log_errors_max_len=0
           coverage: ${{ matrix.coverage && 'xdebug' || 'none' }}
           tools: cs2pr
 
