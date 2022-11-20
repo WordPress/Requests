@@ -329,10 +329,10 @@ class IdnaEncoder {
 						}
 
 						// output the code point for digit t + ((q - t) mod (base - t))
-						$digit   = $t + (($q - $t) % (self::BOOTSTRAP_BASE - $t));
+						$digit   = (int) ($t + (($q - $t) % (self::BOOTSTRAP_BASE - $t)));
 						$output .= self::digit_to_char($digit);
 						// let q = (q - t) div (base - t)
-						$q = floor(($q - $t) / (self::BOOTSTRAP_BASE - $t));
+						$q = (int) floor(($q - $t) / (self::BOOTSTRAP_BASE - $t));
 					} // end
 					// output the code point for digit q
 					$output .= self::digit_to_char($q);
