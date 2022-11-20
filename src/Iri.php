@@ -824,7 +824,8 @@ class Iri {
 		else {
 			$iuserinfo = null;
 		}
-		if (($port_start = strpos($remaining, ':', strpos($remaining, ']'))) !== false) {
+
+		if (($port_start = strpos($remaining, ':', (strpos($remaining, ']') ?: 0))) !== false) {
 			$port = substr($remaining, $port_start + 1);
 			if ($port === false || $port === '') {
 				$port = null;
