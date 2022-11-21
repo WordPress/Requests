@@ -255,6 +255,7 @@ class Cookie {
 			return true;
 		}
 
+		$request_path       = (string) $request_path;
 		$cookie_path_length = strlen($cookie_path);
 		if (strlen($request_path) <= $cookie_path_length) {
 			return false;
