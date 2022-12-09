@@ -19,11 +19,11 @@ jobs:
 
     strategy:
       matrix:
-        # Lint against the high/low versions of each PHP major.
-        php: ['5.6', '7.0', '7.4', '8.0', '8.1', '8.2']
+        # Lint against the high/low versions of each PHP major + nightly.
+        php: ['5.6', '7.0', '7.4', '8.0', '8.2', '8.3']
 
     name: "Lint: PHP ${{ matrix.php }}"
-    continue-on-error: ${{ matrix.php == '8.2' }}
+    continue-on-error: ${{ matrix.php == '8.3' }}
 
     steps:
       - name: Checkout code
@@ -40,7 +40,7 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
-        if: ${{ matrix.php != '8.2' }}
+        if: ${{ matrix.php != '8.3' }}
         uses: "ramsey/composer-install@v2"
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
@@ -48,7 +48,7 @@ jobs:
 
       # For PHP "nightly", we need to install with ignore platform reqs.
       - name: Install Composer dependencies - with ignore platform
-        if: ${{ matrix.php == '8.2' }}
+        if: ${{ matrix.php == '8.3' }}
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-req=php
