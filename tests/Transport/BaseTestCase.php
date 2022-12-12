@@ -56,7 +56,7 @@ abstract class BaseTestCase extends TestCase {
 		$options  = [
 			'max_bytes' => $limit,
 		];
-		$response = Requests::get(httpbin('/bytes/325'), [], $this->getOptions($options));
+		$response = Requests::get($this->httpbin('/bytes/325'), [], $this->getOptions($options));
 		$this->assertSame($limit, strlen($response->body));
 	}
 
@@ -66,27 +66,27 @@ abstract class BaseTestCase extends TestCase {
 			'max_bytes' => $limit,
 			'filename'  => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 		];
-		$response = Requests::get(httpbin('/bytes/482'), [], $this->getOptions($options));
+		$response = Requests::get($this->httpbin('/bytes/482'), [], $this->getOptions($options));
 		$this->assertEmpty($response->body);
 		$this->assertSame($limit, filesize($options['filename']));
 		unlink($options['filename']);
 	}
 
 	public function testSimpleGET() {
-		$request = Requests::get(new Iri(httpbin('/get')), [], $this->getOptions());
+		$request = Requests::get(new Iri($this->httpbin('/get')), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testGETWithArgs() {
-		$request = Requests::get(httpbin('/get?test=true&test2=test'), [], $this->getOptions());
+		$request = Requests::get($this->httpbin('/get?test=true&test2=test'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
 	}
 
@@ -95,11 +95,11 @@ abstract class BaseTestCase extends TestCase {
 			'test'  => 'true',
 			'test2' => 'test',
 		];
-		$request = Requests::request(httpbin('/get'), [], $data, Requests::GET, $this->getOptions());
+		$request = Requests::request($this->httpbin('/get'), [], $data, Requests::GET, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
 	}
 
@@ -111,11 +111,11 @@ abstract class BaseTestCase extends TestCase {
 				'test4' => 'test-too',
 			],
 		];
-		$request = Requests::request(httpbin('/get'), [], $data, Requests::GET, $this->getOptions());
+		$request = Requests::request($this->httpbin('/get'), [], $data, Requests::GET, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url']);
+		$this->assertSame($this->httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url']);
 		$this->assertSame(['test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'], $result['args']);
 	}
 
@@ -123,11 +123,11 @@ abstract class BaseTestCase extends TestCase {
 		$data    = [
 			'test2' => 'test',
 		];
-		$request = Requests::request(httpbin('/get?test=true'), [], $data, Requests::GET, $this->getOptions());
+		$request = Requests::request($this->httpbin('/get?test=true'), [], $data, Requests::GET, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/get?test=true&test2=test'), $result['url']);
+		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url']);
 		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
 	}
 
@@ -135,7 +135,7 @@ abstract class BaseTestCase extends TestCase {
 		$headers = [
 			'Requested-At' => (string) time(),
 		];
-		$request = Requests::get(httpbin('/get'), $headers, $this->getOptions());
+		$request = Requests::get($this->httpbin('/get'), $headers, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -143,28 +143,28 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testChunked() {
-		$request = Requests::get(httpbin('/stream/1'), [], $this->getOptions());
+		$request = Requests::get($this->httpbin('/stream/1'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/stream/1'), $result['url']);
+		$this->assertSame($this->httpbin('/stream/1'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testHEAD() {
-		$request = Requests::head(httpbin('/get'), [], $this->getOptions());
+		$request = Requests::head($this->httpbin('/get'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 		$this->assertSame('', $request->body);
 	}
 
 	public function testTRACE() {
-		$request = Requests::trace(httpbin('/trace'), [], $this->getOptions());
+		$request = Requests::trace($this->httpbin('/trace'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 	}
 
 	public function testRawPOST() {
 		$data    = 'test';
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -175,7 +175,7 @@ abstract class BaseTestCase extends TestCase {
 	 * Issue #248.
 	 */
 	public function testEmptyPOST() {
-		$request = Requests::post(httpbin('/post'), [], null, $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], null, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -258,7 +258,7 @@ abstract class BaseTestCase extends TestCase {
 	 * @return void
 	 */
 	public function testIncorrectDataTypeAcceptedPOST($data, $expected) {
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
 		$this->assertIsObject($request, 'POST request did not return an object');
 		$this->assertObjectHasAttribute('status_code', $request, 'POST request object does not have a "status_code" property');
 		$this->assertSame(200, $request->status_code, 'POST request status code is not 200');
@@ -299,7 +299,7 @@ abstract class BaseTestCase extends TestCase {
 		$this->expectExceptionMessage('Argument #3 ($data) must be of type array|string');
 
 		$transport = new $this->transport();
-		$transport->request(httpbin('/post'), [], $input, $this->getOptions());
+		$transport->request($this->httpbin('/post'), [], $input, $this->getOptions());
 	}
 
 	/**
@@ -422,7 +422,7 @@ abstract class BaseTestCase extends TestCase {
 
 	public function testFormPost() {
 		$data    = 'test=true&test2=test';
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -434,7 +434,7 @@ abstract class BaseTestCase extends TestCase {
 			'test'  => 'true',
 			'test2' => 'test',
 		];
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -449,7 +449,7 @@ abstract class BaseTestCase extends TestCase {
 				'test4' => 'test-too',
 			],
 		];
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -458,7 +458,7 @@ abstract class BaseTestCase extends TestCase {
 
 	public function testRawPUT() {
 		$data    = 'test';
-		$request = Requests::put(httpbin('/put'), [], $data, $this->getOptions());
+		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -467,7 +467,7 @@ abstract class BaseTestCase extends TestCase {
 
 	public function testFormPUT() {
 		$data    = 'test=true&test2=test';
-		$request = Requests::put(httpbin('/put'), [], $data, $this->getOptions());
+		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -479,7 +479,7 @@ abstract class BaseTestCase extends TestCase {
 			'test'  => 'true',
 			'test2' => 'test',
 		];
-		$request = Requests::put(httpbin('/put'), [], $data, $this->getOptions());
+		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -488,7 +488,7 @@ abstract class BaseTestCase extends TestCase {
 
 	public function testRawPATCH() {
 		$data    = 'test';
-		$request = Requests::patch(httpbin('/patch'), [], $data, $this->getOptions());
+		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -497,7 +497,7 @@ abstract class BaseTestCase extends TestCase {
 
 	public function testFormPATCH() {
 		$data    = 'test=true&test2=test';
-		$request = Requests::patch(httpbin('/patch'), [], $data, $this->getOptions());
+		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code, $request->body);
 
 		$result = json_decode($request->body, true);
@@ -509,7 +509,7 @@ abstract class BaseTestCase extends TestCase {
 			'test'  => 'true',
 			'test2' => 'test',
 		];
-		$request = Requests::patch(httpbin('/patch'), [], $data, $this->getOptions());
+		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -517,16 +517,16 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testOPTIONS() {
-		$request = Requests::options(httpbin('/options'), [], [], $this->getOptions());
+		$request = Requests::options($this->httpbin('/options'), [], [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 	}
 
 	public function testDELETE() {
-		$request = Requests::delete(httpbin('/delete'), [], $this->getOptions());
+		$request = Requests::delete($this->httpbin('/delete'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/delete'), $result['url']);
+		$this->assertSame($this->httpbin('/delete'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
@@ -535,16 +535,16 @@ abstract class BaseTestCase extends TestCase {
 			'test'  => 'true',
 			'test2' => 'test',
 		];
-		$request = Requests::request(httpbin('/delete'), [], $data, Requests::DELETE, $this->getOptions());
+		$request = Requests::request($this->httpbin('/delete'), [], $data, Requests::DELETE, $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/delete?test=true&test2=test'), $result['url']);
+		$this->assertSame($this->httpbin('/delete?test=true&test2=test'), $result['url']);
 		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
 	}
 
 	public function testLOCK() {
-		$request = Requests::request(httpbin('/lock'), [], [], 'LOCK', $this->getOptions());
+		$request = Requests::request($this->httpbin('/lock'), [], [], 'LOCK', $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 	}
 
@@ -553,7 +553,7 @@ abstract class BaseTestCase extends TestCase {
 			'test'  => 'true',
 			'test2' => 'test',
 		];
-		$request = Requests::request(httpbin('/lock'), [], $data, 'LOCK', $this->getOptions());
+		$request = Requests::request($this->httpbin('/lock'), [], $data, 'LOCK', $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -561,14 +561,14 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testRedirects() {
-		$request = Requests::get(httpbin('/redirect/6'), [], $this->getOptions());
+		$request = Requests::get($this->httpbin('/redirect/6'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$this->assertSame(6, $request->redirects);
 	}
 
 	public function testRelativeRedirects() {
-		$request = Requests::get(httpbin('/relative-redirect/6'), [], $this->getOptions());
+		$request = Requests::get($this->httpbin('/relative-redirect/6'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$this->assertSame(6, $request->redirects);
@@ -580,7 +580,7 @@ abstract class BaseTestCase extends TestCase {
 		];
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Too many redirects');
-		Requests::get(httpbin('/redirect/11'), [], $this->getOptions($options));
+		Requests::get($this->httpbin('/redirect/11'), [], $this->getOptions($options));
 	}
 
 	public static function statusCodeSuccessProvider() {
@@ -639,7 +639,7 @@ abstract class BaseTestCase extends TestCase {
 		$transport       = new TransportMock();
 		$transport->code = $code;
 
-		$url = sprintf(httpbin('/status/%d'), $code);
+		$url = sprintf($this->httpbin('/status/%d'), $code);
 
 		$options = [
 			'follow_redirects' => false,
@@ -657,7 +657,7 @@ abstract class BaseTestCase extends TestCase {
 		$transport       = new TransportMock();
 		$transport->code = $code;
 
-		$url     = sprintf(httpbin('/status/%d'), $code);
+		$url     = sprintf($this->httpbin('/status/%d'), $code);
 		$options = [
 			'follow_redirects' => false,
 			'transport'        => $transport,
@@ -686,7 +686,7 @@ abstract class BaseTestCase extends TestCase {
 		$transport       = new TransportMock();
 		$transport->code = $code;
 
-		$url     = sprintf(httpbin('/status/%d'), $code);
+		$url     = sprintf($this->httpbin('/status/%d'), $code);
 		$options = [
 			'follow_redirects' => false,
 			'transport'        => $transport,
@@ -714,7 +714,7 @@ abstract class BaseTestCase extends TestCase {
 			'transport' => $transport,
 		];
 
-		$request = Requests::get(httpbin('/status/599'), [], $options);
+		$request = Requests::get($this->httpbin('/status/599'), [], $options);
 		$this->assertSame(599, $request->status_code);
 		$this->assertFalse($request->success);
 	}
@@ -727,14 +727,14 @@ abstract class BaseTestCase extends TestCase {
 			'transport' => $transport,
 		];
 
-		$request = Requests::get(httpbin('/status/599'), [], $options);
+		$request = Requests::get($this->httpbin('/status/599'), [], $options);
 		$this->expectException(StatusUnknown::class);
 		$this->expectExceptionMessage('599 Unknown');
 		$request->throw_for_status(true);
 	}
 
 	public function testGzipped() {
-		$request = Requests::get(httpbin('/gzip'), [], $this->getOptions());
+		$request = Requests::get($this->httpbin('/gzip'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body);
@@ -745,13 +745,13 @@ abstract class BaseTestCase extends TestCase {
 		$options = [
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 		];
-		$request = Requests::get(httpbin('/get'), [], $this->getOptions($options));
+		$request = Requests::get($this->httpbin('/get'), [], $this->getOptions($options));
 		$this->assertSame(200, $request->status_code);
 		$this->assertEmpty($request->body);
 
 		$contents = file_get_contents($options['filename']);
 		$result   = json_decode($contents, true);
-		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		unlink($options['filename']);
@@ -772,7 +772,7 @@ abstract class BaseTestCase extends TestCase {
 		];
 
 		try {
-			Requests::get(httpbin('/get'), [], $this->getOptions($options));
+			Requests::get($this->httpbin('/get'), [], $this->getOptions($options));
 
 			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch (Exception $e) {
@@ -798,14 +798,14 @@ abstract class BaseTestCase extends TestCase {
 		// First character (F) can be upper or lowercase depending on PHP version.
 		$this->expectExceptionMessage('ailed to open stream');
 
-		Requests::get(httpbin('/get'), [], $this->getOptions($options));
+		Requests::get($this->httpbin('/get'), [], $this->getOptions($options));
 	}
 
 	public function testNonblocking() {
 		$options = [
 			'blocking' => false,
 		];
-		$request = Requests::get(httpbin('/get'), [], $this->getOptions($options));
+		$request = Requests::get($this->httpbin('/get'), [], $this->getOptions($options));
 		$empty   = new Response();
 		$this->assertEquals($empty, $request);
 	}
@@ -821,7 +821,7 @@ abstract class BaseTestCase extends TestCase {
 			return;
 		}
 
-		$request = Requests::get(httpbin('/get', true), [], $this->getOptions());
+		$request = Requests::get($this->httpbin('/get', true), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
@@ -910,16 +910,16 @@ abstract class BaseTestCase extends TestCase {
 		];
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('timed out');
-		Requests::get(httpbin('/delay/10'), [], $this->getOptions($options));
+		Requests::get($this->httpbin('/delay/10'), [], $this->getOptions($options));
 	}
 
 	public function testMultiple() {
 		$requests  = [
 			'test1' => [
-				'url' => httpbin('/get'),
+				'url' => $this->httpbin('/get'),
 			],
 			'test2' => [
-				'url' => httpbin('/get'),
+				'url' => $this->httpbin('/get'),
 			],
 		];
 		$responses = Requests::request_multiple($requests, $this->getOptions());
@@ -930,7 +930,7 @@ abstract class BaseTestCase extends TestCase {
 		$this->assertSame(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
-		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		// test2
@@ -939,17 +939,17 @@ abstract class BaseTestCase extends TestCase {
 		$this->assertSame(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
-		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 
 	public function testMultipleWithDifferingMethods() {
 		$requests  = [
 			'get' => [
-				'url' => httpbin('/get'),
+				'url' => $this->httpbin('/get'),
 			],
 			'post' => [
-				'url'  => httpbin('/post'),
+				'url'  => $this->httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 			],
@@ -971,10 +971,10 @@ abstract class BaseTestCase extends TestCase {
 	public function testMultipleWithFailure() {
 		$requests  = [
 			'success' => [
-				'url' => httpbin('/get'),
+				'url' => $this->httpbin('/get'),
 			],
 			'timeout' => [
-				'url'     => httpbin('/delay/10'),
+				'url'     => $this->httpbin('/delay/10'),
 				'options' => [
 					'timeout' => 1,
 				],
@@ -988,10 +988,10 @@ abstract class BaseTestCase extends TestCase {
 	public function testMultipleUsingCallback() {
 		$requests        = [
 			'get' => [
-				'url' => httpbin('/get'),
+				'url' => $this->httpbin('/get'),
 			],
 			'post' => [
-				'url'  => httpbin('/post'),
+				'url'  => $this->httpbin('/post'),
 				'type' => Requests::POST,
 				'data' => 'test',
 			],
@@ -1008,10 +1008,10 @@ abstract class BaseTestCase extends TestCase {
 	public function testMultipleUsingCallbackAndFailure() {
 		$requests        = [
 			'success' => [
-				'url' => httpbin('/get'),
+				'url' => $this->httpbin('/get'),
 			],
 			'timeout' => [
-				'url'     => httpbin('/delay/10'),
+				'url'     => $this->httpbin('/delay/10'),
 				'options' => [
 					'timeout' => 1,
 				],
@@ -1033,13 +1033,13 @@ abstract class BaseTestCase extends TestCase {
 	public function testMultipleToFile() {
 		$requests = [
 			'get' => [
-				'url'     => httpbin('/get'),
+				'url'     => $this->httpbin('/get'),
 				'options' => [
 					'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 				],
 			],
 			'post' => [
-				'url'     => httpbin('/post'),
+				'url'     => $this->httpbin('/post'),
 				'type'    => Requests::POST,
 				'data'    => 'test',
 				'options' => [
@@ -1052,14 +1052,14 @@ abstract class BaseTestCase extends TestCase {
 		// GET request
 		$contents = file_get_contents($requests['get']['options']['filename']);
 		$result   = json_decode($contents, true);
-		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 		unlink($requests['get']['options']['filename']);
 
 		// POST request
 		$contents = file_get_contents($requests['post']['options']['filename']);
 		$result   = json_decode($contents, true);
-		$this->assertSame(httpbin('/post'), $result['url']);
+		$this->assertSame($this->httpbin('/post'), $result['url']);
 		$this->assertSame('test', $result['data']);
 		unlink($requests['post']['options']['filename']);
 	}
@@ -1095,7 +1095,7 @@ abstract class BaseTestCase extends TestCase {
 		];
 		$options = $this->getOptions($options);
 
-		Requests::get(httpbin('/get'), [], $options);
+		Requests::get($this->httpbin('/get'), [], $options);
 	}
 
 	public function testAfterRequestCallback() {
@@ -1117,14 +1117,14 @@ abstract class BaseTestCase extends TestCase {
 		];
 		$options = $this->getOptions($options);
 
-		Requests::get(httpbin('/get'), [], $options);
+		Requests::get($this->httpbin('/get'), [], $options);
 	}
 
 	public function testReusableTransport() {
 		$options = $this->getOptions(['transport' => new $this->transport()]);
 
-		$request1 = Requests::get(httpbin('/get'), [], $options);
-		$request2 = Requests::get(httpbin('/get'), [], $options);
+		$request1 = Requests::get($this->httpbin('/get'), [], $options);
+		$request2 = Requests::get($this->httpbin('/get'), [], $options);
 
 		$this->assertSame(200, $request1->status_code);
 		$this->assertSame(200, $request2->status_code);
@@ -1132,8 +1132,8 @@ abstract class BaseTestCase extends TestCase {
 		$result1 = json_decode($request1->body, true);
 		$result2 = json_decode($request2->body, true);
 
-		$this->assertSame(httpbin('/get'), $result1['url']);
-		$this->assertSame(httpbin('/get'), $result2['url']);
+		$this->assertSame($this->httpbin('/get'), $result1['url']);
+		$this->assertSame($this->httpbin('/get'), $result2['url']);
 
 		$this->assertEmpty($result1['args']);
 		$this->assertEmpty($result2['args']);
@@ -1141,27 +1141,27 @@ abstract class BaseTestCase extends TestCase {
 
 	public function testQueryDataFormat() {
 		$data    = ['test' => 'true', 'test2' => 'test'];
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions(['data_format' => 'query']));
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions(['data_format' => 'query']));
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/post') . '?test=true&test2=test', $result['url']);
+		$this->assertSame($this->httpbin('/post') . '?test=true&test2=test', $result['url']);
 		$this->assertSame('', $result['data']);
 	}
 
 	public function testBodyDataFormat() {
 		$data    = ['test' => 'true', 'test2' => 'test'];
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions(['data_format' => 'body']));
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions(['data_format' => 'body']));
 		$this->assertSame(200, $request->status_code);
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(httpbin('/post'), $result['url']);
+		$this->assertSame($this->httpbin('/post'), $result['url']);
 		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
 	}
 
 	public function test303GETmethod() {
 		$data    = ['test' => 'true', 'test2' => 'test'];
-		$request = Requests::post(httpbin('/status/303', true), [], $data, $this->getOptions(['follow_redirects' => true]));
+		$request = Requests::post($this->httpbin('/status/303', true), [], $data, $this->getOptions(['follow_redirects' => true]));
 
 		$this->assertSame(200, $request->status_code);
 		$this->assertSame('/get', substr($request->url, -4));

@@ -67,13 +67,13 @@ final class RequestMultipleTest extends TestCase {
 	}
 
 	public function testMultiple() {
-		$session   = new Session(httpbin('/'), ['X-Requests-Session' => 'Multiple']);
+		$session   = new Session($this->httpbin('/'), ['X-Requests-Session' => 'Multiple']);
 		$requests  = [
 			'test1' => [
-				'url' => httpbin('/get'),
+				'url' => $this->httpbin('/get'),
 			],
 			'test2' => [
-				'url' => httpbin('/get'),
+				'url' => $this->httpbin('/get'),
 			],
 		];
 		$responses = $session->request_multiple($requests);
@@ -84,7 +84,7 @@ final class RequestMultipleTest extends TestCase {
 		$this->assertSame(200, $responses['test1']->status_code);
 
 		$result = json_decode($responses['test1']->body, true);
-		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 
 		// test2
@@ -93,7 +93,7 @@ final class RequestMultipleTest extends TestCase {
 		$this->assertSame(200, $responses['test2']->status_code);
 
 		$result = json_decode($responses['test2']->body, true);
-		$this->assertSame(httpbin('/get'), $result['url']);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
 		$this->assertEmpty($result['args']);
 	}
 }
