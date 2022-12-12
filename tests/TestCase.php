@@ -17,6 +17,14 @@ abstract class TestCase extends Polyfill_TestCase {
 	 * @return string
 	 */
 	public function httpbin($suffix = '', $ssl = false) {
+		if ($ssl === false && REQUESTS_TEST_SERVER_HTTP_AVAILABLE === false) {
+			$this->markTestSkipped(sprintf('Host %s not available. This needs investigation', REQUESTS_TEST_HOST_HTTP));
+		}
+
+		if ($ssl === true && REQUESTS_TEST_SERVER_HTTPS_AVAILABLE === false) {
+			$this->markTestSkipped(sprintf('Host %s not available. This needs investigation', REQUESTS_TEST_HOST_HTTPS));
+		}
+
 		$host = $ssl ? 'https://' . \REQUESTS_TEST_HOST_HTTPS : 'http://' . \REQUESTS_TEST_HOST_HTTP;
 		return rtrim($host, '/') . '/' . ltrim($suffix, '/');
 	}
