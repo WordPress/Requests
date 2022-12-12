@@ -124,9 +124,6 @@ final class Fsockopen implements Transport {
 			// phpcs:ignore PHPCompatibility.Constants.NewConstants.openssl_tlsext_server_nameFound
 			if (defined('OPENSSL_TLSEXT_SERVER_NAME') && OPENSSL_TLSEXT_SERVER_NAME) {
 				$context_options['SNI_enabled'] = true;
-				if (isset($options['verifyname']) && $options['verifyname'] === false) {
-					$context_options['SNI_enabled'] = false;
-				}
 			}
 
 			if (isset($options['verify'])) {

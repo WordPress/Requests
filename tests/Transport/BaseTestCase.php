@@ -893,15 +893,44 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * humanmade.com (owned by Human Made and used with permission) points to
 	 * CloudFront, and will fail if SNI isn't sent.
+	 *
+	 * @dataProvider dataSNISupport
+	 *
+	 * @param array $options Additional options to pass.
+	 *
+	 * @return void
 	 */
-	public function testSNISupport() {
+	public function testSNISupport($options) {
 		if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
-		$request = Requests::head('https://humanmade.com/', [], $this->getOptions());
+		$request = Requests::head('https://humanmade.com/', [], $this->getOptions($options));
 		$this->assertSame(200, $request->status_code);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public function dataSNISupport($options) {
+		return [
+			'Without options' => [
+				'options' => [],
+			],
+			'With option "verifyname" set to true' => [
+				'options' => [
+					'verifyname' => true,
+				],
+			],
+			'With option "verifyname" set to false' => [
+				'options' => [
+					'verifyname' => false,
+				],
+			],
+		];
 	}
 
 	public function testTimeout() {
