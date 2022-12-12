@@ -35,6 +35,7 @@ foreach ($test_servers as $type => $server) {
 	}
 
 	unset($output);
+	echo 'REQUESTS_TEST_SERVER_', $type, '_AVAILABLE was set to: ', var_export(constant('REQUESTS_TEST_SERVER_' . $type . '_AVAILABLE'), true), PHP_EOL;
 }
 
 if (is_dir(dirname(__DIR__) . '/vendor')
