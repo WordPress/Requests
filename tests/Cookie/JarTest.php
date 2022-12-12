@@ -100,7 +100,7 @@ final class JarTest extends TestCase {
 		$options  = [
 			'cookies' => $cookies,
 		];
-		$response = Requests::get(httpbin('/cookies/set'), [], $options);
+		$response = Requests::get($this->httpbin('/cookies/set'), [], $options);
 
 		$data = json_decode($response->body, true);
 		$this->assertIsArray($data);

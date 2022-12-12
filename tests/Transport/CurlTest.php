@@ -44,7 +44,7 @@ final class CurlTest extends BaseTestCase {
 		$headers = [
 			'Expect' => 'foo',
 		];
-		$request = Requests::post(httpbin('/post'), $headers, [], $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), $headers, [], $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -58,7 +58,7 @@ final class CurlTest extends BaseTestCase {
 		$options = [
 			'protocol_version' => 1.0,
 		];
-		$request = Requests::post(httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions($options));
+		$request = Requests::post($this->httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions($options));
 
 		$result = json_decode($request->body, true);
 
@@ -69,7 +69,7 @@ final class CurlTest extends BaseTestCase {
 	 * @small
 	 */
 	public function testSetsEmptyExpectHeaderWithDefaultSettings() {
-		$request = Requests::post(httpbin('/post'), [], [], $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], [], $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -86,7 +86,7 @@ final class CurlTest extends BaseTestCase {
 				str_repeat('x', 548576),
 			],
 		];
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -94,7 +94,7 @@ final class CurlTest extends BaseTestCase {
 	}
 
 	public function testSetsExpectHeaderIfBodyIsExactlyA1MbString() {
-		$request = Requests::post(httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -111,7 +111,7 @@ final class CurlTest extends BaseTestCase {
 				],
 			],
 		];
-		$request = Requests::post(httpbin('/post'), [], $data, $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -119,7 +119,7 @@ final class CurlTest extends BaseTestCase {
 	}
 
 	public function testSetsExpectHeaderIfBodyExactly1Mb() {
-		$request = Requests::post(httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions());
 
 		$result = json_decode($request->body, true);
 
@@ -130,7 +130,7 @@ final class CurlTest extends BaseTestCase {
 	 * @small
 	 */
 	public function testSetsEmptyExpectHeaderIfBodySmallerThan1Mb() {
-		$request = Requests::post(httpbin('/post'), [], str_repeat('x', 1048575), $this->getOptions());
+		$request = Requests::post($this->httpbin('/post'), [], str_repeat('x', 1048575), $this->getOptions());
 
 		$result = json_decode($request->body, true);
 

@@ -37,7 +37,7 @@ final class HttpTest extends TestCase {
 			'proxy'     => REQUESTS_HTTP_PROXY,
 			'transport' => $transport,
 		];
-		$response = Requests::get(httpbin('/get'), [], $options);
+		$response = Requests::get($this->httpbin('/get'), [], $options);
 		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -54,7 +54,7 @@ final class HttpTest extends TestCase {
 			'proxy'     => [REQUESTS_HTTP_PROXY],
 			'transport' => $transport,
 		];
-		$response = Requests::get(httpbin('/get'), [], $options);
+		$response = Requests::get($this->httpbin('/get'), [], $options);
 		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -73,7 +73,7 @@ final class HttpTest extends TestCase {
 		];
 		$this->expectException(ArgumentCount::class);
 		$this->expectExceptionMessage('WpOrg\Requests\Proxy\Http::__construct() expects an array with exactly one element or exactly three elements');
-		Requests::get(httpbin('/get'), [], $options);
+		Requests::get($this->httpbin('/get'), [], $options);
 	}
 
 	/**
@@ -86,7 +86,7 @@ final class HttpTest extends TestCase {
 			'proxy'     => new Http(REQUESTS_HTTP_PROXY),
 			'transport' => $transport,
 		];
-		$response = Requests::get(httpbin('/get'), [], $options);
+		$response = Requests::get($this->httpbin('/get'), [], $options);
 		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
 		$data = json_decode($response->body, true);
@@ -107,7 +107,7 @@ final class HttpTest extends TestCase {
 			],
 			'transport' => $transport,
 		];
-		$response = Requests::get(httpbin('/get'), [], $options);
+		$response = Requests::get($this->httpbin('/get'), [], $options);
 		$this->assertSame(200, $response->status_code);
 		$this->assertSame('http', $response->headers['x-requests-proxied']);
 
@@ -138,7 +138,7 @@ final class HttpTest extends TestCase {
 			$this->expectExceptionMessage('fsocket timed out');
 		}
 
-		$response = Requests::get(httpbin('/get'), [], $options);
+		$response = Requests::get($this->httpbin('/get'), [], $options);
 		$this->assertSame(407, $response->status_code);
 	}
 

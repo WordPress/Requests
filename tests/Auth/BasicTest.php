@@ -28,7 +28,7 @@ final class BasicTest extends TestCase {
 			'auth'      => ['user', 'passwd'],
 			'transport' => $transport,
 		];
-		$request = Requests::get(httpbin('/basic-auth/user/passwd'), [], $options);
+		$request = Requests::get($this->httpbin('/basic-auth/user/passwd'), [], $options);
 
 		// Verify the request succeeded.
 		$this->assertInstanceOf(
@@ -75,7 +75,7 @@ final class BasicTest extends TestCase {
 			'auth'      => new Basic(['user', 'passwd']),
 			'transport' => $transport,
 		];
-		$request = Requests::get(httpbin('/basic-auth/user/passwd'), [], $options);
+		$request = Requests::get($this->httpbin('/basic-auth/user/passwd'), [], $options);
 
 		// Verify the request succeeded.
 		$this->assertInstanceOf(
@@ -125,7 +125,7 @@ final class BasicTest extends TestCase {
 
 		$options['auth']->user = 'user';
 		$options['auth']->pass = 'passwd';
-		$request               = Requests::get(httpbin('/basic-auth/user/passwd'), [], $options);
+		$request               = Requests::get($this->httpbin('/basic-auth/user/passwd'), [], $options);
 
 		// Verify the request succeeded.
 		$this->assertInstanceOf(
@@ -173,7 +173,7 @@ final class BasicTest extends TestCase {
 			'transport' => $transport,
 		];
 		$data    = 'test';
-		$request = Requests::post(httpbin('/post'), [], $data, $options);
+		$request = Requests::post($this->httpbin('/post'), [], $data, $options);
 
 		// Verify the request succeeded.
 		$this->assertInstanceOf(

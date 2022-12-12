@@ -70,8 +70,3 @@ if (defined('__PHPUNIT_PHAR__')) {
 	// Testing via a Composer setup.
 	require_once $vendor_dir . '/autoload.php';
 }
-
-function httpbin($suffix = '', $ssl = false) {
-	$host = $ssl ? 'https://' . REQUESTS_TEST_HOST_HTTPS : 'http://' . REQUESTS_TEST_HOST_HTTP;
-	return rtrim($host, '/') . '/' . ltrim($suffix, '/');
-}

@@ -52,7 +52,7 @@ final class CookieTest extends TestCase {
 		$options = [
 			'follow_redirects' => false,
 		];
-		$url     = httpbin('/cookies/set?requests-testcookie=testvalue');
+		$url     = $this->httpbin('/cookies/set?requests-testcookie=testvalue');
 
 		$response = Requests::get($url, [], $options);
 
@@ -65,7 +65,7 @@ final class CookieTest extends TestCase {
 		$options = [
 			'follow_redirects' => true,
 		];
-		$url     = httpbin('/cookies/set?requests-testcookie=testvalue');
+		$url     = $this->httpbin('/cookies/set?requests-testcookie=testvalue');
 
 		$response = Requests::get($url, [], $options);
 
@@ -78,7 +78,7 @@ final class CookieTest extends TestCase {
 		$options  = [
 			'cookies' => $cookies,
 		];
-		$response = Requests::get(httpbin('/cookies/set'), [], $options);
+		$response = Requests::get($this->httpbin('/cookies/set'), [], $options);
 
 		$data = json_decode($response->body, true);
 		$this->assertIsArray($data);
@@ -104,7 +104,7 @@ final class CookieTest extends TestCase {
 		$options = [
 			'follow_redirects' => true,
 		];
-		$url     = httpbin('/cookies/set/testcookie/testvalue');
+		$url     = $this->httpbin('/cookies/set/testcookie/testvalue');
 		$url    .= '?expiry=1';
 
 		$response = Requests::get($url, [], $options);
