@@ -20,6 +20,22 @@ define_from_env('REQUESTS_HTTP_PROXY_AUTH');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_USER');
 define_from_env('REQUESTS_HTTP_PROXY_AUTH_PASS');
 
+// Make sure the test server(s) is/are available.
+$test_servers = [
+	'HTTP'  => REQUESTS_TEST_HOST_HTTP,
+	'HTTPS' => REQUESTS_TEST_HOST_HTTPS,
+];
+foreach ($test_servers as $type => $server) {
+	$command = 'curl -LI ' . $server . ' -o /dev/null -w "%{http_code}\n" -s';
+	exec($command, $output);
+	if (is_array($output) && isset($output[0]) && (strpos($output[0], '2') === 0 || strpos($output[0], '3') === 0)) {
+		define('REQUESTS_TEST_SERVER_' . $type . '_AVAILABLE', true);
+	} else {
+		define('REQUESTS_TEST_SERVER_' . $type . '_AVAILABLE', false);
+	}
+
+	unset($output);
+}
 
 if (is_dir(dirname(__DIR__) . '/vendor')
 	&& file_exists(dirname(__DIR__) . '/vendor/autoload.php')
