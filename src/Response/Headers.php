@@ -79,7 +79,10 @@ class Headers extends CaseInsensitiveDictionary {
 			throw InvalidArgument::create(1, '$offset', 'string|int', gettype($offset));
 		}
 
-		$offset = strtolower($offset);
+		if (is_string($offset)) {
+			$offset = strtolower($offset);
+		}
+
 		if (!isset($this->data[$offset])) {
 			return null;
 		}

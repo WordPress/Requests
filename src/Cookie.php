@@ -255,6 +255,7 @@ class Cookie {
 			return true;
 		}
 
+		$request_path       = (string) $request_path;
 		$cookie_path_length = strlen($cookie_path);
 		if (strlen($request_path) <= $cookie_path_length) {
 			return false;
@@ -286,7 +287,11 @@ class Cookie {
 	public function normalize() {
 		foreach ($this->attributes as $key => $value) {
 			$orig_value = $value;
-			$value      = $this->normalize_attribute($key, $value);
+
+			if (is_string($key)) {
+				$value = $this->normalize_attribute($key, $value);
+			}
+
 			if ($value === null) {
 				unset($this->attributes[$key]);
 				continue;
