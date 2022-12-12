@@ -116,8 +116,8 @@ final class ConstructorTest extends TestCase {
 	public function dataValidUrl() {
 		return [
 			'null'              => [null],
-			'string'            => [httpbin('/')],
-			'stringable object' => [new Iri(httpbin('/'))],
+			'string'            => [$this->httpbin('/')],
+			'stringable object' => [new Iri($this->httpbin('/'))],
 		];
 	}
 }

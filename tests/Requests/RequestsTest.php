@@ -148,7 +148,7 @@ final class RequestsTest extends TestCase {
 	}
 
 	public function testDefaultTransport() {
-		$request = Requests::get(new Iri(httpbin('/get')));
+		$request = Requests::get(new Iri($this->httpbin('/get')));
 		$this->assertSame(200, $request->status_code);
 	}
 
@@ -297,6 +297,6 @@ final class RequestsTest extends TestCase {
 		$options = ['timeout' => 0.5];
 		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('timed out');
-		Requests::get(httpbin('/delay/3'), [], $options);
+		Requests::get($this->httpbin('/delay/3'), [], $options);
 	}
 }
