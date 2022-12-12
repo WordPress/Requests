@@ -23,18 +23,18 @@ jobs:
       # Keys:
       # - coverage: Whether to run the tests with code coverage.
       matrix:
-        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.2']
+        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.3']
         coverage: [false]
 
         include:
           # Run code coverage on low/high PHP.
           - php: '5.6.20'
             coverage: true
-          - php: '8.1'
+          - php: '8.2'
             coverage: true
 
     name: "Test: PHP ${{ matrix.php }}"
-    continue-on-error: ${{ matrix.php == '8.2' }}
+    continue-on-error: ${{ matrix.php == '8.3' }}
 
     steps:
       - name: Checkout code
@@ -60,19 +60,19 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
-        if: ${{ matrix.php != '8.2' }}
+        if: ${{ matrix.php != '8.3' }}
         uses: "ramsey/composer-install@v2"
         with:
-          # Bust the cache at least once a month - output format: YYYY-MM-DD.
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       # For PHP "nightly", we need to install with ignore platform reqs.
       - name: Install Composer dependencies - with ignore platform
-        if: ${{ matrix.php == '8.2' }}
+        if: ${{ matrix.php == '8.3' }}
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-req=php
-          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Setup problem matcher to provide annotations for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
