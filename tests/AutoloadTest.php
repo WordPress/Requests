@@ -9,7 +9,7 @@ use WpOrg\Requests\Utility\FilteredIterator;
 
 final class AutoloadTest extends TestCase {
 
-	const MSG = 'The PSR-0 `Requests_...` class names in the Request library are deprecated.';
+	const MSG = 'The PSR-0 `Requests_...` class names in the Requests library are deprecated.';
 
 	/**
 	 * Verify that a deprecation notice is thrown when the "old" Requests class is loaded.
