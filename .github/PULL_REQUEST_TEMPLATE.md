@@ -12,6 +12,7 @@ And please provide enough information in the description below, so that others c
 This is a:
 - [ ] Bug fix
 - [ ] New feature
+- [ ] Documentation improvement
 - [ ] Code quality improvement
 
 ## Context
