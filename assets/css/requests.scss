@@ -16,6 +16,18 @@ body {
 	border: 1px solid #eee;
 }
 
+.contributing {
+	width: 90%;
+	font-style: italic;
+	margin: 5px;
+	text-align: center;
+	clear: both;
+}
+	.contributing hr {
+		border: 1px solid #ddd;
+		margin-top: 2em;
+	}
+
 @import "masthead";
 
 .aux-links {
@@ -45,7 +57,7 @@ li {
 
 figure,
 div .highlight {
-    margin: 1rem 0.5rem;
+	margin: 1rem 0.5rem;
 }
 
 pre code {
