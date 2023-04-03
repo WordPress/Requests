@@ -1,6 +1,21 @@
 Changelog
 =========
 
+2.0.6
+-----
+
+### Overview of changes
+- Update bundled certificates as of 2023-01-10. [#791]
+- Fix typo in deprecation notice. [#785] Props [@costdev][gh-costdev]
+- Minor internal improvements for passing the correct type to function calls. [#779]
+- Confirmed compatibility with PHP 8.2.
+    No changes were needed, so Request 2.0.1 and higher can be considered compatible with PHP 8.2.
+- Various documentation improvements and other general housekeeping.
+
+[#779]: https://github.com/WordPress/Requests/pull/779
+[#785]: https://github.com/WordPress/Requests/pull/785
+[#791]: https://github.com/WordPress/Requests/pull/791
+
 2.0.5
 -----
 
