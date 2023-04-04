@@ -23,12 +23,12 @@ jobs:
       # Keys:
       # - coverage: Whether to run the tests with code coverage.
       matrix:
-        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.3']
+        php: ['7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.3']
         coverage: [false]
 
         include:
           # Run code coverage on low/high PHP.
-          - php: '5.6.20'
+          - php: '5.6'
             coverage: true
           - php: '8.2'
             coverage: true
