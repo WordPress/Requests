@@ -21,6 +21,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  pull-requests: write
+  contents: write
+
 jobs:
   prepare:
     name: "Prepare website update"
@@ -178,6 +182,11 @@ jobs:
           draft: ${{ steps.get_pr_info.outputs.DRAFT }}
 
       # Test that the site builds correctly.
+      - name: Checkout the newly created branch
+        uses: actions/checkout@v3
+        with:
+          ref: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
