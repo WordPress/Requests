@@ -305,24 +305,25 @@ final class Fsockopen implements Transport {
 			if ($doingbody) {
 				$options['hooks']->dispatch('request.progress', [$block, $size, $this->max_bytes]);
 				$data_length = strlen($block);
-				if ($this->max_bytes) {
-					// Have we already hit a limit?
-					if ($size === $this->max_bytes) {
-						continue;
-					}
 
+				if ($this->max_bytes) {
 					if (($size + $data_length) > $this->max_bytes) {
 						// Limit the length
-						$limited_length = ($this->max_bytes - $size);
-						$block          = substr($block, 0, $limited_length);
+						$data_length = ($this->max_bytes - $size);
+						$block       = substr($block, 0, $data_length);
 					}
 				}
 
-				$size += strlen($block);
+				$size += $data_length;
 				if ($download) {
 					fwrite($download, $block);
 				} else {
 					$body .= $block;
+				}
+
+				// Have we hit a limit?
+				if ($this->max_bytes && $size >= $this->max_bytes) {
+					break;
 				}
 			}
 		}
