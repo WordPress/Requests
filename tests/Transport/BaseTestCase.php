@@ -1209,14 +1209,11 @@ abstract class BaseTestCase extends TestCase {
 		$hooks->register(
 			'request.progress',
 			function ($block, $size, $max_bytes) {
-				static $surpassed_max_bytes = false;
-				$this->assertFalse(
-					$surpassed_max_bytes,
+				$this->assertLessThanOrEqual(
+					$max_bytes,
+					$size,
 					'Failed asserting that body download was stopped as soon as max_bytes was reached.'
 				);
-				if ((strlen($block) + $size) >= $max_bytes) {
-					$surpassed_max_bytes = true;
-				}
 			}
 		);
 
