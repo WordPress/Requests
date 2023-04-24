@@ -322,7 +322,7 @@ final class Fsockopen implements Transport {
 				}
 
 				// Have we hit a limit?
-				if ($this->max_bytes && $size === $this->max_bytes) {
+				if ($this->max_bytes && $size >= $this->max_bytes) {
 					break;
 				}
 			}

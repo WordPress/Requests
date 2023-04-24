@@ -210,7 +210,7 @@ final class Curl implements Transport {
 
 		if ($curl_errno === CURLE_WRITE_ERROR
 			&& $this->response_byte_limit
-			&& $this->response_bytes === $this->response_byte_limit
+			&& $this->response_bytes >= $this->response_byte_limit
 		) {
 			// Not actually an error in this case. We've drained all the data from the request that we want.
 			$curl_errno = false;
@@ -497,7 +497,7 @@ final class Curl implements Transport {
 		$curl_errno = curl_errno($this->handle);
 		if ($curl_errno === CURLE_WRITE_ERROR
 			&& $this->response_byte_limit
-			&& $this->response_bytes === $this->response_byte_limit
+			&& $this->response_bytes >= $this->response_byte_limit
 		) {
 			// Not actually an error in this case. We've drained all the data from the request that we want.
 			$curl_errno = false;
@@ -566,7 +566,9 @@ final class Curl implements Transport {
 		}
 
 		if ($this->stream_handle) {
-			fwrite($this->stream_handle, $data);
+			if ($data !== '') {
+				fwrite($this->stream_handle, $data);
+			}
 		} else {
 			$this->response_data .= $data;
 		}

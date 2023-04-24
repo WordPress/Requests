@@ -1214,7 +1214,7 @@ abstract class BaseTestCase extends TestCase {
 					$surpassed_max_bytes,
 					'Failed asserting that body download was stopped as soon as max_bytes was reached.'
 				);
-				if ($size >= $max_bytes) {
+				if ((strlen($block) + $size) >= $max_bytes) {
 					$surpassed_max_bytes = true;
 				}
 			}
