@@ -59,7 +59,7 @@ abstract class TestCase extends Polyfill_TestCase {
 	 *
 	 * @return array
 	 */
-	public function transportProvider() {
+	public static function transportProvider() {
 		$data = [];
 
 		foreach (Requests::DEFAULT_TRANSPORTS as $transport) {
