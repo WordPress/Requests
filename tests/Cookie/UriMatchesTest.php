@@ -272,6 +272,6 @@ final class UriMatchesTest extends TestCase {
 			'http://example.net/test/',
 		];
 
-		return $this->textArrayToDataprovider($urls);
+		return self::textArrayToDataprovider($urls);
 	}
 }

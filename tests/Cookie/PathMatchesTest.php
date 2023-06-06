@@ -44,7 +44,7 @@ final class PathMatchesTest extends TestCase {
 			'/test/',
 		];
 
-		return $this->textArrayToDataprovider($paths);
+		return self::textArrayToDataprovider($paths);
 	}
 
 	/**

@@ -77,7 +77,7 @@ abstract class TestCase extends Polyfill_TestCase {
 	 *
 	 * @return array[] Array which is usable as a test data provider with named data sets.
 	 */
-	public function textArrayToDataprovider($input) {
+	public static function textArrayToDataprovider($input) {
 		$data = [];
 		foreach ($input as $value) {
 			if (!is_string($value)) {

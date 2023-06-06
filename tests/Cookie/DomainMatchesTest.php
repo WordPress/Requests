@@ -68,7 +68,7 @@ final class DomainMatchesTest extends TestCase {
 			'example.net',
 		];
 
-		return $this->textArrayToDataprovider($domains);
+		return self::textArrayToDataprovider($domains);
 	}
 
 	/**
