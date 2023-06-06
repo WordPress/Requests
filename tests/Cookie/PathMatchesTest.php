@@ -36,7 +36,7 @@ final class PathMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataManuallySetCookie() {
+	public static function dataManuallySetCookie() {
 		$paths = [
 			'',
 			'/',
@@ -72,7 +72,7 @@ final class PathMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataPathMatchUndesiredInputTypes() {
+	public static function dataPathMatchUndesiredInputTypes() {
 		$data      = [];
 		$all_types = TypeProviderHelper::getAll();
 		foreach ($all_types as $key => $value) {
@@ -111,7 +111,7 @@ final class PathMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataPathMatch() {
+	public static function dataPathMatch() {
 		return [
 			'Exact match: "/"' => [
 				'original' => '/',

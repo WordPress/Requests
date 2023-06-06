@@ -39,7 +39,7 @@ final class HttpTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataException() {
+	public static function dataException() {
 		return [
 			'null (or not passed)' => [
 				'expected_msg'    => 'Unknown',
@@ -72,7 +72,7 @@ final class HttpTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataGetClass() {
+	public static function dataGetClass() {
 		$default = StatusUnknown::class;
 
 		return [

@@ -34,7 +34,7 @@ final class FlattenTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidData() {
+	public static function dataInvalidData() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ITERABLE);
 	}
 
@@ -61,7 +61,7 @@ final class FlattenTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataFlatten() {
+	public static function dataFlatten() {
 		$to_flatten = ['key1' => 'value1', 'key2' => 'value2'];
 
 		return [

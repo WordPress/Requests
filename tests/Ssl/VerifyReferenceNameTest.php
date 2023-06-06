@@ -34,7 +34,7 @@ final class VerifyReferenceNameTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputType() {
+	public static function dataInvalidInputType() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -57,7 +57,7 @@ final class VerifyReferenceNameTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataVerifyReferenceName() {
+	public static function dataVerifyReferenceName() {
 		return [
 			'empty string' => [
 				'reference' => '',

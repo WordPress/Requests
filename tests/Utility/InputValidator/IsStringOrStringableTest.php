@@ -29,7 +29,7 @@ final class IsStringOrStringableTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValid() {
+	public static function dataValid() {
 		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -51,7 +51,7 @@ final class IsStringOrStringableTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalid() {
+	public static function dataInvalid() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 }

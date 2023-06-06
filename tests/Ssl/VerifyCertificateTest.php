@@ -33,7 +33,7 @@ final class VerifyCertificateTest extends SslTestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputHost() {
+	public static function dataInvalidInputHost() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -58,7 +58,7 @@ final class VerifyCertificateTest extends SslTestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputCert() {
+	public static function dataInvalidInputCert() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
 	}
 
@@ -87,7 +87,7 @@ final class VerifyCertificateTest extends SslTestCase {
 	 *
 	 * @return array
 	 */
-	public function dataMatchViaCertificate() {
+	public static function dataMatchViaCertificate() {
 		return [
 			'top-level domain; missing SAN, fallback to CN' => [
 				'host'      => 'example.com',
@@ -142,7 +142,7 @@ final class VerifyCertificateTest extends SslTestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNoMatchViaCertificate() {
+	public static function dataNoMatchViaCertificate() {
 		return [
 			'top-level domain; missing SAN, fallback to invalid CN' => [
 				'host'      => 'example.net',
@@ -207,7 +207,7 @@ final class VerifyCertificateTest extends SslTestCase {
 	 *
 	 * @return array
 	 */
-	public function dataWithInvalidCertificates() {
+	public static function dataWithInvalidCertificates() {
 		return [
 			'empty array' => [
 				'host'        => 'example.com',

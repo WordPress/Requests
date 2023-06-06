@@ -55,7 +55,7 @@ final class ParseTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidStringInput() {
+	public static function dataInvalidStringInput() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
@@ -401,7 +401,7 @@ final class ParseTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataParsingHeaderWithOrigin() {
+	public static function dataParsingHeaderWithOrigin() {
 		return [
 			// Varying origin path.
 			'Origin: http://example.com (no trailing slash for path)' => [

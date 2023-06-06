@@ -37,7 +37,7 @@ final class DecodeBodyTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidJsonResponse() {
+	public static function dataInvalidJsonResponse() {
 		$data = [
 			'text string, not JSON (syntax error)'       => ['Invalid JSON'],
 			'invalid JSON: single quotes (syntax error)' => ["{ 'bar': 'baz' }"],

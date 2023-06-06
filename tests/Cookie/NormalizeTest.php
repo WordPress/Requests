@@ -36,7 +36,7 @@ final class NormalizeTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNormalizeAttributes() {
+	public static function dataNormalizeAttributes() {
 		return [
 			/*
 			 * Test cases specific to the normalize() method.
@@ -275,7 +275,7 @@ final class NormalizeTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNormalizeAttributesExpiresUnsupportedType() {
+	public static function dataNormalizeAttributesExpiresUnsupportedType() {
 		$types = TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, TypeProviderHelper::GROUP_STRING);
 
 		$data = [];
@@ -296,7 +296,7 @@ final class NormalizeTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNormalizeAttributesMaxAgeUnsupportedType() {
+	public static function dataNormalizeAttributesMaxAgeUnsupportedType() {
 		$types = TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, TypeProviderHelper::GROUP_STRING);
 
 		$data = [];
@@ -317,7 +317,7 @@ final class NormalizeTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNormalizeAttributesDomainUnsupportedType() {
+	public static function dataNormalizeAttributesDomainUnsupportedType() {
 		$types = TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 
 		$data = [];

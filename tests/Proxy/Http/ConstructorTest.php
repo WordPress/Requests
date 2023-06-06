@@ -33,7 +33,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidParameterType() {
+	public static function dataInvalidParameterType() {
 		return TypeProviderHelper::getAllExcept(
 			TypeProviderHelper::GROUP_NULL,
 			TypeProviderHelper::GROUP_STRING,

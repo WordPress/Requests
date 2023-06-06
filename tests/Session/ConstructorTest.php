@@ -34,7 +34,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidUrl() {
+	public static function dataInvalidUrl() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -91,7 +91,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidTypeNotArray() {
+	public static function dataInvalidTypeNotArray() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 

@@ -91,7 +91,7 @@ final class AutoloadTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataLoad() {
+	public static function dataLoad() {
 		return [
 			'Request for class not in this package should be rejected' => [
 				'class_name' => 'Unrelated\Package\ClassName',

@@ -220,7 +220,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataRequestInvalidUrl() {
+	public static function dataRequestInvalidUrl() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -278,7 +278,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataIncorrectDataTypeAccepted() {
+	public static function dataIncorrectDataTypeAccepted() {
 		return [
 			'null' => [null, ''],
 		];
@@ -309,7 +309,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataIncorrectDataTypeException() {
+	public static function dataIncorrectDataTypeException() {
 		return TypeProviderHelper::getAllExcept(
 			TypeProviderHelper::GROUP_NULL,
 			TypeProviderHelper::GROUP_STRING,
@@ -359,7 +359,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty() {
+	public static function dataRequestMultipleReturnsEmptyArrayWhenRequestsIsEmpty() {
 		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_EMPTY);
 	}
 
@@ -388,7 +388,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataRequestMultipleInvalidRequests() {
+	public static function dataRequestMultipleInvalidRequests() {
 		$except = array_intersect(TypeProviderHelper::GROUP_ITERABLE, TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
 		return TypeProviderHelper::getAllExcept($except, TypeProviderHelper::GROUP_EMPTY);
 	}
@@ -418,7 +418,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidTypeNotArray() {
+	public static function dataInvalidTypeNotArray() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
@@ -917,7 +917,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataSNISupport() {
+	public static function dataSNISupport() {
 		return [
 			'Without options' => [
 				'options' => [],

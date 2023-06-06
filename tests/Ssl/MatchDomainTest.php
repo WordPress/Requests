@@ -33,7 +33,7 @@ final class MatchDomainTest extends SslTestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputType() {
+	public static function dataInvalidInputType() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 

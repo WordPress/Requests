@@ -50,7 +50,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidStringInput() {
+	public static function dataInvalidStringInput() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
@@ -75,7 +75,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidAttributes() {
+	public static function dataInvalidAttributes() {
 		$except = array_intersect(TypeProviderHelper::GROUP_ITERABLE, TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
 		return TypeProviderHelper::getAllExcept($except);
 	}
@@ -101,7 +101,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidFlags() {
+	public static function dataInvalidFlags() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
@@ -126,7 +126,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidReferenceTime() {
+	public static function dataInvalidReferenceTime() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_INT);
 	}
 
@@ -152,7 +152,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataMinimalArguments() {
+	public static function dataMinimalArguments() {
 		return [
 			'empty name and value' => [
 				'name'  => '',
@@ -199,7 +199,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataFlagMerging() {
+	public static function dataFlagMerging() {
 		return [
 			'empty array' => [
 				'flags'    => [],
@@ -269,7 +269,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataSetReferenceTime() {
+	public static function dataSetReferenceTime() {
 		return [
 			'null' => [
 				'time' => null,
@@ -302,7 +302,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataAttributesAreNormalized() {
+	public static function dataAttributesAreNormalized() {
 		return [
 			'empty array' => [
 				'attributes' => [],

@@ -50,7 +50,7 @@ final class ArrayAccessTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataCaseInsensitiveArrayAccess() {
+	public static function dataCaseInsensitiveArrayAccess() {
 		return [
 			'access using case as set' => ['Content-Type'],
 			'access using lowercase'   => ['content-type'],
@@ -104,7 +104,7 @@ final class ArrayAccessTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataOffsetSetDoesNotTryToLowercaseNonStringKeys() {
+	public static function dataOffsetSetDoesNotTryToLowercaseNonStringKeys() {
 		return [
 			'integer key'       => [10],
 			'boolean false key' => [false, 0],
@@ -150,7 +150,7 @@ final class ArrayAccessTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataOffsetGetReturnsNullForNonRegisteredHeader() {
+	public static function dataOffsetGetReturnsNullForNonRegisteredHeader() {
 		return [
 			// This test case also tests that no "passing null to non-nullable" deprecation is thrown in PHP 8.1.
 			'null'                       => [null],

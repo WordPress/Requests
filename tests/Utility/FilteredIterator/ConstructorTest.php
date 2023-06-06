@@ -32,7 +32,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValidData() {
+	public static function dataValidData() {
 		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_ITERABLE);
 	}
 
@@ -57,7 +57,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidData() {
+	public static function dataInvalidData() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ITERABLE);
 	}
 
@@ -87,10 +87,10 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValidCallback() {
+	public static function dataValidCallback() {
 		return [
 			'existing PHP native function' => ['strtolower'],
-			'dummy callback method'        => [[$this, 'dummyCallback']],
+			'dummy callback method'        => [[__CLASS__, 'dummyCallback']],
 		];
 	}
 
@@ -120,7 +120,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidCallback() {
+	public static function dataInvalidCallback() {
 		return [
 			'null'                  => [null],
 			'non-existent function' => ['functionname'],
@@ -133,5 +133,5 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function dummyCallback() {}
+	public static function dummyCallback() {}
 }

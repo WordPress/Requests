@@ -34,7 +34,7 @@ final class DomainMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInput() {
+	public static function dataInvalidInput() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
@@ -62,7 +62,7 @@ final class DomainMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataManuallySetCookie() {
+	public static function dataManuallySetCookie() {
 		$domains = [
 			'example.com',
 			'example.net',
@@ -117,7 +117,7 @@ final class DomainMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataDomainMatch() {
+	public static function dataDomainMatch() {
 		return [
 			'Empty string' => [
 				'original'       => 'example.com',

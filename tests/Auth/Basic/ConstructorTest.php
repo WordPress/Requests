@@ -34,7 +34,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputType() {
+	public static function dataInvalidInputType() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_ARRAY);
 	}
 
@@ -59,7 +59,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidArgumentCount() {
+	public static function dataInvalidArgumentCount() {
 		return [
 			'empty array'                 => [[]],
 			'array with only one element' => [['user']],

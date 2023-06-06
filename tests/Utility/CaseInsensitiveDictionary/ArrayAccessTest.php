@@ -116,7 +116,7 @@ class ArrayAccessTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataAccessValidEntries() {
+	public static function dataAccessValidEntries() {
 		$data = [];
 
 		foreach (self::DATASET_REVERSED as $key => $value) {
@@ -171,7 +171,7 @@ class ArrayAccessTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataAccessInvalidEntry() {
+	public static function dataAccessInvalidEntry() {
 		return [
 			'string key'  => ['Non-existant entry'],
 			'integer key' => [25],

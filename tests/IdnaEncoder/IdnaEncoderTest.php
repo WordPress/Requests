@@ -38,7 +38,7 @@ final class IdnaEncoderTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputType() {
+	public static function dataInvalidInputType() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -62,7 +62,7 @@ final class IdnaEncoderTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataEncoding() {
+	public static function dataEncoding() {
 		return [
 			'empty string' => [
 				'data'     => '',
@@ -242,7 +242,7 @@ final class IdnaEncoderTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidUnicode() {
+	public static function dataInvalidUnicode() {
 		return [
 			'Five-byte character'                    => ["\xfb\xb6\xb6\xb6\xb6"],
 			'Six-byte character'                     => ["\xfd\xb6\xb6\xb6\xb6\xb6"],

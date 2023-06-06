@@ -50,7 +50,7 @@ class DispatchTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidHookname() {
+	public static function dataInvalidHookname() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
@@ -75,7 +75,7 @@ class DispatchTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidParameters() {
+	public static function dataInvalidParameters() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 

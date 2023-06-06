@@ -55,7 +55,7 @@ final class NormalizeCookieTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNormalization() {
+	public static function dataNormalization() {
 		return [
 			'unbaked cookie (string)' => [
 				'cookie'        => self::COOKIE_VALUE,

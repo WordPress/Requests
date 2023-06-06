@@ -34,7 +34,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInput() {
+	public static function dataInvalidInput() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 

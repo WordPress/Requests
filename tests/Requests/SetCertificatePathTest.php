@@ -35,7 +35,7 @@ final class SetCertificatePathTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidData() {
+	public static function dataInvalidData() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_BOOL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -59,7 +59,7 @@ final class SetCertificatePathTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValidData() {
+	public static function dataValidData() {
 		return [
 			'boolean false'     => [false],
 			'boolean true'      => [true],

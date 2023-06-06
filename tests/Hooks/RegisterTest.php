@@ -51,7 +51,7 @@ class RegisterTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidHookname() {
+	public static function dataInvalidHookname() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
@@ -76,11 +76,11 @@ class RegisterTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidCallback() {
+	public static function dataInvalidCallback() {
 		return [
 			'null'                  => [null],
 			'non-existent function' => ['functionname'],
-			'non-existent method'   => [[$this, 'dummyCallbackDoesNotExist']],
+			'non-existent method'   => [[__CLASS__, 'dummyCallbackDoesNotExist']],
 			'empty array'           => [[]],
 			'plain object'          => [new stdClass(), 'method'],
 		];
@@ -107,7 +107,7 @@ class RegisterTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidPriority() {
+	public static function dataInvalidPriority() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, ['numeric string']);
 	}
 

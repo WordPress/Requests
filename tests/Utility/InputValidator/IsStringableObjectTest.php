@@ -29,7 +29,7 @@ final class IsStringableObjectTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValid() {
+	public static function dataValid() {
 		return TypeProviderHelper::getSelection(['Stringable object']);
 	}
 
@@ -51,7 +51,7 @@ final class IsStringableObjectTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalid() {
+	public static function dataInvalid() {
 		return TypeProviderHelper::getAllExcept(['Stringable object']);
 	}
 }
