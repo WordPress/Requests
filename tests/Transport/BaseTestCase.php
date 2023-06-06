@@ -917,7 +917,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataSNISupport($options) {
+	public function dataSNISupport() {
 		return [
 			'Without options' => [
 				'options' => [],
