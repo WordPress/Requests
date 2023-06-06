@@ -33,7 +33,7 @@ abstract class TestCase extends Polyfill_TestCase {
 	}
 
 	/**
-	 * Retrieve a URL to use for testing.
+	 * Retrieve a URL to use for testing and mark the test as skipped if the server for that URL is unavailable.
 	 *
 	 * @param string $suffix The query path to add to the base URL.
 	 * @param bool   $ssl    Whether to get the URL using the `http` or the `https` protocol.
@@ -42,6 +42,19 @@ abstract class TestCase extends Polyfill_TestCase {
 	 * @return string
 	 */
 	public function httpbin($suffix = '', $ssl = false) {
+		$this->skipOnUnavailableHttpbinHost($ssl);
+
+		return self::getHttpbinUrl($suffix, $ssl);
+	}
+
+	/**
+	 * Check if a test which depends on a certain server type to be available should run or not.
+	 *
+	 * @param bool $ssl Whether the URL under tests will be using the `http` or the `https` protocol.
+	 *
+	 * @return void
+	 */
+	public function skipOnUnavailableHttpbinHost($ssl = false) {
 		if ($ssl === false && REQUESTS_TEST_SERVER_HTTP_AVAILABLE === false) {
 			$this->markTestSkipped(sprintf('Host %s not available. This needs investigation', REQUESTS_TEST_HOST_HTTP));
 		}
@@ -49,7 +62,18 @@ abstract class TestCase extends Polyfill_TestCase {
 		if ($ssl === true && REQUESTS_TEST_SERVER_HTTPS_AVAILABLE === false) {
 			$this->markTestSkipped(sprintf('Host %s not available. This needs investigation', REQUESTS_TEST_HOST_HTTPS));
 		}
+	}
 
+	/**
+	 * Retrieve a URL to use for testing.
+	 *
+	 * @param string $suffix The query path to add to the base URL.
+	 * @param bool   $ssl    Whether to get the URL using the `http` or the `https` protocol.
+	 *                       Defaults to `false`, which will result in a URL using `http`.
+	 *
+	 * @return string
+	 */
+	public static function getHttpbinUrl($suffix = '', $ssl = false) {
 		$host = $ssl ? 'https://' . \REQUESTS_TEST_HOST_HTTPS : 'http://' . \REQUESTS_TEST_HOST_HTTP;
 		return rtrim($host, '/') . '/' . ltrim($suffix, '/');
 	}
