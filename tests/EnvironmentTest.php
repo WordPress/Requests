@@ -2,15 +2,7 @@
 
 namespace WpOrg\Requests\Tests;
 
-use WpOrg\Requests\Exception;
-use WpOrg\Requests\Exception\InvalidArgument;
-use WpOrg\Requests\Iri;
-use WpOrg\Requests\Requests;
-use WpOrg\Requests\Response\Headers;
-use WpOrg\Requests\Tests\Fixtures\RawTransportMock;
-use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
-use WpOrg\Requests\Tests\TypeProviderHelper;
 
 final class EnvironmentTest extends TestCase {
 
