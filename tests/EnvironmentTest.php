@@ -9,6 +9,10 @@ final class EnvironmentTest extends TestCase {
 	/**
 	 * Tests whether the HTTP test server is available.
 	 *
+	 * This makes sure that the build actually fails when the HTTP test
+	 * server is not available, as all tests relying on it further down
+	 * the line will just be marked as skipped.
+	 *
 	 * @return void
 	 */
 	public function testHttpTestServerAvailable() {
@@ -17,6 +21,10 @@ final class EnvironmentTest extends TestCase {
 
 	/**
 	 * Tests whether the HTTPS test server is available.
+	 *
+	 * This makes sure that the build actually fails when the HTTPS test
+	 * server is not available, as all tests relying on it further down
+	 * the line will just be marked as skipped.
 	 *
 	 * @return void
 	 */
