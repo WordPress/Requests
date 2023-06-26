@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/10.1/phpunit.xsd"
+	backupGlobals="true"
+	bootstrap="tests/bootstrap.php"
+	beStrictAboutTestsThatDoNotTestAnything="true"
+	colors="true"
+	displayDetailsOnTestsThatTriggerErrors="true"
+	displayDetailsOnTestsThatTriggerWarnings="true"
+	displayDetailsOnTestsThatTriggerNotices="true"
+	displayDetailsOnTestsThatTriggerDeprecations="true"
+	displayDetailsOnIncompleteTests="true"
+	displayDetailsOnSkippedTests="true"
+	failOnWarning="true"
+	failOnNotice="true"
+	failOnDeprecation="true"
+	>
+	<testsuites>
+		<testsuite name="RequestsTests">
+			<directory suffix="Test.php">tests</directory>
+		</testsuite>
+	</testsuites>
+
+	<source>
+		<include>
+			<directory suffix=".php">./src/</directory>
+		</include>
+	</source>
+
+	<coverage includeUncoveredFiles="true" ignoreDeprecatedCodeUnits="true">
+		<report>
+			<html outputDirectory="tests/coverage" lowUpperBound="35" highLowerBound="90"/>
+		</report>
+	</coverage>
+</phpunit>
