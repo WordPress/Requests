@@ -247,4 +247,9 @@
 		<exclude-pattern>/tests/*\.php$</exclude-pattern>
 	</rule>
 
+	<!-- Using set_error_handler() in test code is fine. -->
+	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler">
+		<exclude-pattern>/tests/*\.php$</exclude-pattern>
+	</rule>
+
 </ruleset>

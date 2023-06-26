@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests\Autoload;
 
+use Exception;
 use Requests;
 use Requests_Exception_Transport_cURL;
 use Requests_Utility_FilteredIterator;
@@ -21,8 +22,17 @@ final class AutoloadTest extends TestCase {
 	 * Verify that a deprecation notice is thrown when the "old" Requests class is loaded via a require/include.
 	 */
 	public function testDeprecationNoticeThrownForOldRequestsClass() {
-		$this->expectDeprecation();
-		$this->expectDeprecationMessage(self::MSG);
+		// PHPUnit 10 compatible way to test the deprecation notice.
+		set_error_handler(
+			static function ($errno, $errstr) {
+				restore_error_handler();
+				throw new Exception($errstr, $errno);
+			},
+			E_USER_DEPRECATED
+		);
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage(self::MSG);
 
 		require_once dirname(dirname(__DIR__)) . '/library/Requests.php';
 	}
@@ -31,8 +41,17 @@ final class AutoloadTest extends TestCase {
 	 * Verify that a deprecation notice is thrown when one of the other "old" Requests classes is autoloaded.
 	 */
 	public function testDeprecationNoticeThrownForOtherOldRequestsClass() {
-		$this->expectDeprecation();
-		$this->expectDeprecationMessage(self::MSG);
+		// PHPUnit 10 compatible way to test the deprecation notice.
+		set_error_handler(
+			static function ($errno, $errstr) {
+				restore_error_handler();
+				throw new Exception($errstr, $errno);
+			},
+			E_USER_DEPRECATED
+		);
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage(self::MSG);
 
 		$this->assertNotEmpty(Requests_Exception_Transport_cURL::EASY);
 	}
