@@ -2,7 +2,6 @@
 
 namespace WpOrg\Requests\Tests\Transport;
 
-use stdClass;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\Http\StatusUnknown;
@@ -1117,7 +1116,7 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testProgressCallback() {
-		$mock = $this->getMockBuilder(stdClass::class)->setMethods(['progress'])->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['progress']);
 		$mock->expects($this->atLeastOnce())->method('progress');
 		$hooks = new Hooks();
 		$hooks->register('request.progress', [$mock, 'progress']);
@@ -1130,9 +1129,7 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testAfterRequestCallback() {
-		$mock = $this->getMockBuilder(stdClass::class)
-			->setMethods(['after_request'])
-			->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['after_request']);
 
 		$mock->expects($this->atLeastOnce())
 			->method('after_request')

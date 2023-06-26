@@ -2,7 +2,6 @@
 
 namespace WpOrg\Requests\Tests\Hooks;
 
-use stdClass;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Tests\TestCase;
@@ -181,9 +180,7 @@ class DispatchTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchWithSingleRegisteredHook() {
-		$mock = $this->getMockBuilder(stdClass::class)
-			->setMethods(['callback'])
-			->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['callback']);
 
 		$mock->expects($this->once())
 			->method('callback');
@@ -199,9 +196,7 @@ class DispatchTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchWithMultipleRegisteredHooks() {
-		$mock = $this->getMockBuilder(stdClass::class)
-			->setMethods(['callback_a', 'callback_b', 'callback_c'])
-			->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['callback_a', 'callback_b', 'callback_c']);
 
 		$mock->expects($this->never())
 			->method('callback_a');

@@ -3,6 +3,7 @@
 namespace WpOrg\Requests\Tests;
 
 use Exception;
+use stdClass;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase as Polyfill_TestCase;
@@ -123,5 +124,33 @@ abstract class TestCase extends Polyfill_TestCase {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Helper method to retrieve a mock object based on stdClass with select methods mocked.
+	 *
+	 * The `setMethods()` method was silently deprecated in PHPUnit 8.3 and removed in PHPUnit 10.
+	 *
+	 * Note: the `getMockBuilder()` and `addMethods()` methods are also soft deprecated as of
+	 * PHPUnit 10.x, and are expected to be hard deprecated in PHPUnit 11 and removed in PHPUnit 12.
+	 * Dealing with that is something for a later iteration of the test suite.
+	 * {@link https://github.com/WordPress/Requests/issues/814}
+	 *
+	 * @param array $methods The names of the methods to mock.
+	 *
+	 * @return \PHPUnit\Framework\MockObject\MockObject
+	 */
+	protected function getMockedStdClassWithMethods($methods) {
+		$mock = $this->getMockBuilder(stdClass::class);
+
+		if (\method_exists($mock, 'addMethods')) {
+			// PHPUnit 8.3.0+.
+			return $mock->addMethods($methods)
+				->getMock();
+		}
+
+		// PHPUnit < 8.3.0.
+		return $mock->setMethods($methods)
+			->getMock();
 	}
 }
