@@ -282,6 +282,11 @@ final class Fsockopen implements Transport {
 			$download = @fopen($options['filename'], 'wb');
 			if ($download === false) {
 				$error = error_get_last();
+				if (!is_array($error)) {
+					// Shouldn't be possible, but can happen in test situations.
+					$error = ['message' => 'Failed to open stream'];
+				}
+
 				throw new Exception($error['message'], 'fopen');
 			}
 		}
