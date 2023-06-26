@@ -262,10 +262,10 @@ abstract class BaseTestCase extends TestCase {
 	public function testIncorrectDataTypeAcceptedPOST($data, $expected) {
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
 		$this->assertIsObject($request, 'POST request did not return an object');
-		$this->assertObjectHasAttribute('status_code', $request, 'POST request object does not have a "status_code" property');
+		$this->assertObjectHasProperty('status_code', $request, 'POST request object does not have a "status_code" property');
 		$this->assertSame(200, $request->status_code, 'POST request status code is not 200');
 
-		$this->assertObjectHasAttribute('body', $request, 'POST request object does not have a "body" property');
+		$this->assertObjectHasProperty('body', $request, 'POST request object does not have a "body" property');
 		$result = json_decode($request->body, true);
 
 		$this->assertIsArray($result, 'Json decoded POST request body is not an array');

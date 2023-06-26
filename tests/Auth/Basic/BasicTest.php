@@ -44,14 +44,14 @@ final class BasicTest extends TestCase {
 		$result = json_decode($request->body);
 		$this->assertIsObject($result, 'Decoded response body is not an object');
 
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'authenticated',
 			$result,
 			'Property "authenticated" not available in decoded response'
 		);
 		$this->assertTrue($result->authenticated, 'Authentication failed');
 
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'user',
 			$result,
 			'Property "user" not available in decoded response'
@@ -91,14 +91,14 @@ final class BasicTest extends TestCase {
 		$result = json_decode($request->body);
 		$this->assertIsObject($result, 'Decoded response body is not an object');
 
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'authenticated',
 			$result,
 			'Property "authenticated" not available in decoded response'
 		);
 		$this->assertTrue($result->authenticated, 'Authentication failed');
 
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'user',
 			$result,
 			'Property "user" not available in decoded response'
@@ -141,14 +141,14 @@ final class BasicTest extends TestCase {
 		$result = json_decode($request->body);
 		$this->assertIsObject($result, 'Decoded response body is not an object');
 
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'authenticated',
 			$result,
 			'Property "authenticated" not available in decoded response'
 		);
 		$this->assertTrue($result->authenticated, 'Authentication failed');
 
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'user',
 			$result,
 			'Property "user" not available in decoded response'
@@ -189,12 +189,12 @@ final class BasicTest extends TestCase {
 		$result = json_decode($request->body);
 
 		$this->assertIsObject($result, 'Decoded response body is not an object');
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'headers',
 			$result,
 			'Property "headers" not available in decoded response'
 		);
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'Authorization',
 			$result->headers,
 			'Property "headers->Authorization" not available in decoded response'
@@ -205,7 +205,7 @@ final class BasicTest extends TestCase {
 		$this->assertArrayHasKey(1, $auth, 'Authorization header failed to be split into two parts');
 		$this->assertSame(base64_encode('user:passwd'), $auth[1], 'Unexpected authorization string in headers');
 
-		$this->assertObjectHasAttribute(
+		$this->assertObjectHasProperty(
 			'data',
 			$result,
 			'Property "data" not available in decoded response'
