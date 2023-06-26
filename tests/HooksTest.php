@@ -107,7 +107,7 @@ class HooksTest extends TestCase {
 	public function testRegisterClosureCallback() {
 		$this->hooks->register(
 			'hookname',
-			function($param) {
+			function() {
 				return true;
 			}
 		);
