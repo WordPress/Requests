@@ -86,7 +86,7 @@ jobs:
           echo "REQUESTS_HTTP_PROXY_AUTH_USER=test" >> $GITHUB_ENV
           echo "REQUESTS_HTTP_PROXY_AUTH_PASS=pass" >> $GITHUB_ENV
 
-      - name: Ensure the HTTPS test instance on Heroku is spun up
+      - name: Ensure the HTTPS test instance on Render is spun up
         run: curl -s -I https://requests-test-server.onrender.com/ > /dev/null
 
       - name: Check mitmproxy version
