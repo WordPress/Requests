@@ -11,7 +11,7 @@ function define_from_env($name, $fallback = false) {
 	}
 }
 
-define_from_env('REQUESTS_TEST_HOST', 'requests-php-tests.herokuapp.com');
+define_from_env('REQUESTS_TEST_HOST', 'requests-test-server.onrender.com');
 define_from_env('REQUESTS_TEST_HOST_HTTP', REQUESTS_TEST_HOST);
 define_from_env('REQUESTS_TEST_HOST_HTTPS', REQUESTS_TEST_HOST);
 
