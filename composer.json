@@ -52,7 +52,9 @@
     "yoast/phpunit-polyfills": "^2.0.0"
   },
   "suggest": {
-    "ext-curl": "For improved performance"
+    "ext-curl": "For improved performance",
+    "ext-openssl": "For secure transport support",
+    "ext-zlib": "For improved performance when decompressing encoded streams"
   },
   "autoload": {
     "psr-4": {
