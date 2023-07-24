@@ -3,6 +3,7 @@
 namespace WpOrg\Requests\Tests;
 
 use Exception;
+use stdClass;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase as Polyfill_TestCase;
@@ -33,7 +34,7 @@ abstract class TestCase extends Polyfill_TestCase {
 	}
 
 	/**
-	 * Retrieve a URL to use for testing.
+	 * Retrieve a URL to use for testing and mark the test as skipped if the server for that URL is unavailable.
 	 *
 	 * @param string $suffix The query path to add to the base URL.
 	 * @param bool   $ssl    Whether to get the URL using the `http` or the `https` protocol.
@@ -42,6 +43,19 @@ abstract class TestCase extends Polyfill_TestCase {
 	 * @return string
 	 */
 	public function httpbin($suffix = '', $ssl = false) {
+		$this->skipOnUnavailableHttpbinHost($ssl);
+
+		return self::getHttpbinUrl($suffix, $ssl);
+	}
+
+	/**
+	 * Check if a test which depends on a certain server type to be available should run or not.
+	 *
+	 * @param bool $ssl Whether the URL under tests will be using the `http` or the `https` protocol.
+	 *
+	 * @return void
+	 */
+	public function skipOnUnavailableHttpbinHost($ssl = false) {
 		if ($ssl === false && REQUESTS_TEST_SERVER_HTTP_AVAILABLE === false) {
 			$this->markTestSkipped(sprintf('Host %s not available. This needs investigation', REQUESTS_TEST_HOST_HTTP));
 		}
@@ -49,7 +63,18 @@ abstract class TestCase extends Polyfill_TestCase {
 		if ($ssl === true && REQUESTS_TEST_SERVER_HTTPS_AVAILABLE === false) {
 			$this->markTestSkipped(sprintf('Host %s not available. This needs investigation', REQUESTS_TEST_HOST_HTTPS));
 		}
+	}
 
+	/**
+	 * Retrieve a URL to use for testing.
+	 *
+	 * @param string $suffix The query path to add to the base URL.
+	 * @param bool   $ssl    Whether to get the URL using the `http` or the `https` protocol.
+	 *                       Defaults to `false`, which will result in a URL using `http`.
+	 *
+	 * @return string
+	 */
+	public static function getHttpbinUrl($suffix = '', $ssl = false) {
 		$host = $ssl ? 'https://' . \REQUESTS_TEST_HOST_HTTPS : 'http://' . \REQUESTS_TEST_HOST_HTTP;
 		return rtrim($host, '/') . '/' . ltrim($suffix, '/');
 	}
@@ -59,7 +84,7 @@ abstract class TestCase extends Polyfill_TestCase {
 	 *
 	 * @return array
 	 */
-	public function transportProvider() {
+	public static function transportProvider() {
 		$data = [];
 
 		foreach (Requests::DEFAULT_TRANSPORTS as $transport) {
@@ -77,7 +102,7 @@ abstract class TestCase extends Polyfill_TestCase {
 	 *
 	 * @return array[] Array which is usable as a test data provider with named data sets.
 	 */
-	public function textArrayToDataprovider($input) {
+	public static function textArrayToDataprovider($input) {
 		$data = [];
 		foreach ($input as $value) {
 			if (!is_string($value)) {
@@ -99,5 +124,33 @@ abstract class TestCase extends Polyfill_TestCase {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Helper method to retrieve a mock object based on stdClass with select methods mocked.
+	 *
+	 * The `setMethods()` method was silently deprecated in PHPUnit 8.3 and removed in PHPUnit 10.
+	 *
+	 * Note: the `getMockBuilder()` and `addMethods()` methods are also soft deprecated as of
+	 * PHPUnit 10.x, and are expected to be hard deprecated in PHPUnit 11 and removed in PHPUnit 12.
+	 * Dealing with that is something for a later iteration of the test suite.
+	 * {@link https://github.com/WordPress/Requests/issues/814}
+	 *
+	 * @param array $methods The names of the methods to mock.
+	 *
+	 * @return \PHPUnit\Framework\MockObject\MockObject
+	 */
+	protected function getMockedStdClassWithMethods($methods) {
+		$mock = $this->getMockBuilder(stdClass::class);
+
+		if (\method_exists($mock, 'addMethods')) {
+			// PHPUnit 8.3.0+.
+			return $mock->addMethods($methods)
+				->getMock();
+		}
+
+		// PHPUnit < 8.3.0.
+		return $mock->setMethods($methods)
+			->getMock();
 	}
 }

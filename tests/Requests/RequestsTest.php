@@ -37,7 +37,7 @@ final class RequestsTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataRequestInvalidUrl() {
+	public static function dataRequestInvalidUrl() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -64,7 +64,7 @@ final class RequestsTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidTypeNotString() {
+	public static function dataInvalidTypeNotString() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
@@ -109,7 +109,7 @@ final class RequestsTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataRequestMultipleInvalidRequests() {
+	public static function dataRequestMultipleInvalidRequests() {
 		$except = array_intersect(TypeProviderHelper::GROUP_ITERABLE, TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
 		return TypeProviderHelper::getAllExcept($except);
 	}
@@ -137,7 +137,7 @@ final class RequestsTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidTypeNotArray() {
+	public static function dataInvalidTypeNotArray() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 

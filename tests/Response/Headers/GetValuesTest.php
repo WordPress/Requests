@@ -34,7 +34,7 @@ final class GetValuesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidOffset() {
+	public static function dataInvalidOffset() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING, TypeProviderHelper::GROUP_INT);
 	}
 
@@ -63,7 +63,7 @@ final class GetValuesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataGetValues() {
+	public static function dataGetValues() {
 		return [
 			'using case as set, single entry header' => [
 				'key'      => 'Content-Type',

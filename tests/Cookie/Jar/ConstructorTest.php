@@ -34,7 +34,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputType() {
+	public static function dataInvalidInputType() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
@@ -64,7 +64,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValidInputType() {
+	public static function dataValidInputType() {
 		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_ARRAY);
 	}
 }

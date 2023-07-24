@@ -50,7 +50,7 @@ final class CurlTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataException() {
+	public static function dataException() {
 		return [
 			'Everything set to null (or not passed)' => [
 				'expected_msg'    => '-1 Unknown',

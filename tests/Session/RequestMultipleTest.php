@@ -35,7 +35,7 @@ final class RequestMultipleTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidRequests() {
+	public static function dataInvalidRequests() {
 		$except = array_intersect(TypeProviderHelper::GROUP_ITERABLE, TypeProviderHelper::GROUP_ARRAY_ACCESSIBLE);
 		return TypeProviderHelper::getAllExcept($except);
 	}
@@ -62,7 +62,7 @@ final class RequestMultipleTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidOptions() {
+	public static function dataInvalidOptions() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 

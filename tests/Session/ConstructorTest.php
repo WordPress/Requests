@@ -34,7 +34,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidUrl() {
+	public static function dataInvalidUrl() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_NULL, TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -91,7 +91,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidTypeNotArray() {
+	public static function dataInvalidTypeNotArray() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
@@ -105,6 +105,8 @@ final class ConstructorTest extends TestCase {
 	 * @return void
 	 */
 	public function testValidUrl($input) {
+		$this->skipOnUnavailableHttpbinHost();
+
 		$this->assertInstanceOf(Session::class, new Session($input));
 	}
 
@@ -113,11 +115,11 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValidUrl() {
+	public static function dataValidUrl() {
 		return [
 			'null'              => [null],
-			'string'            => [$this->httpbin('/')],
-			'stringable object' => [new Iri($this->httpbin('/'))],
+			'string'            => [self::getHttpbinUrl('/')],
+			'stringable object' => [new Iri(self::getHttpbinUrl('/'))],
 		];
 	}
 }

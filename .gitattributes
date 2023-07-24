@@ -9,3 +9,4 @@ tests/ export-ignore
 .phpcs.xml.dist export-ignore
 phpdoc.dist.xml export-ignore
 phpunit.xml.dist export-ignore
+phpunit10.xml.dist export-ignore

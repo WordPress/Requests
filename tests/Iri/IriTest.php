@@ -42,6 +42,7 @@
 
 namespace WpOrg\Requests\Tests\Iri;
 
+use Exception;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Tests\TestCase;
 
@@ -391,7 +392,18 @@ final class IriTest extends TestCase
 
 	public function testNonexistantProperty()
 	{
-		$this->expectNotice('Undefined property: WpOrg\Requests\Iri::nonexistant_prop');
+		// PHPUnit 10 compatible way to test the notice.
+		set_error_handler(
+			static function ($errno, $errstr) {
+				restore_error_handler();
+				throw new Exception($errstr, $errno);
+			},
+			E_USER_NOTICE
+		);
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Undefined property: WpOrg\Requests\Iri::nonexistant_prop');
+
 		$iri = new Iri();
 		$this->assertFalse(isset($iri->nonexistant_prop));
 		$should_fail = $iri->nonexistant_prop;

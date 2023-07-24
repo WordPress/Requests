@@ -32,7 +32,7 @@ final class IsRedirectTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataIsRedirect() {
+	public static function dataIsRedirect() {
 		$data = [];
 
 		$codes = [300, 301, 302, 303];
@@ -69,7 +69,7 @@ final class IsRedirectTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNotRedirect() {
+	public static function dataNotRedirect() {
 		$data = [];
 
 		$data['Non-blocking request: status code: false (default value)'] = [false];

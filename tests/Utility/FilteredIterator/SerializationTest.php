@@ -47,7 +47,7 @@ final class SerializationTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataSerializeDeserializeObjects() {
+	public static function dataSerializeDeserializeObjects() {
 		return [
 			'FilteredIterator object with one value, callback: md5' => [
 				'value' => new FilteredIterator([1], 'md5'),

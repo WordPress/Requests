@@ -54,7 +54,7 @@ final class DecompressionTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataDecompressNotCompressed() {
+	public static function dataDecompressNotCompressed() {
 		return [
 			'not compressed: empty string' => [
 				'expected'   => '',
@@ -76,8 +76,8 @@ final class DecompressionTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataCompatibleInflateNotCompressed() {
-		$data = $this->dataDecompressNotCompressed();
+	public static function dataCompatibleInflateNotCompressed() {
+		$data = self::dataDecompressNotCompressed();
 		foreach ($data as $key => $value) {
 			$data[$key]['expected'] = false;
 		}
@@ -90,7 +90,7 @@ final class DecompressionTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataGzip() {
+	public static function dataGzip() {
 		return [
 			/*
 			 * Test data generated using CLI command:
@@ -119,7 +119,7 @@ final class DecompressionTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataDeflate() {
+	public static function dataDeflate() {
 		return [
 			// TODO: What is this byte stream representing? Looks like GZIP header with ZLIB compressed data...
 			'deflate: foobar' => [
@@ -142,7 +142,7 @@ final class DecompressionTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataDeflateWithoutHeaders() {
+	public static function dataDeflateWithoutHeaders() {
 		return [
 			/*
 			 * Test data generated using CLI command:
@@ -232,7 +232,7 @@ final class DecompressionTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputType() {
+	public static function dataInvalidInputType() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 }

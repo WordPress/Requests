@@ -37,7 +37,7 @@ final class CurrentTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataCallbackIsAppliedIfValid() {
+	public static function dataCallbackIsAppliedIfValid() {
 		$original = [
 			'key1' => 'lowercase',
 			'key2' => 'UPPER CASE',

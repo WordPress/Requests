@@ -47,7 +47,7 @@ final class IsCurlHandleTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValid() {
+	public static function dataValid() {
 		if (isset(self::$curl_handle) === false) {
 			self::$curl_handle = curl_init('http://httpbin.org/anything');
 		}
@@ -75,7 +75,7 @@ final class IsCurlHandleTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalid() {
+	public static function dataInvalid() {
 		return TypeProviderHelper::getAll();
 	}
 }

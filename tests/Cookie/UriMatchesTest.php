@@ -68,7 +68,7 @@ final class UriMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataUrlMatch() {
+	public static function dataUrlMatch() {
 		return [
 			// Domain handling.
 			'Domain handling: same domain name, same TLD' => [
@@ -211,7 +211,7 @@ final class UriMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataUrlMatchSecure() {
+	public static function dataUrlMatchSecure() {
 		return [
 			'Secure matching: off, scheme: http' => [
 				'secure'    => false,
@@ -261,7 +261,7 @@ final class UriMatchesTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataManuallySetCookie() {
+	public static function dataManuallySetCookie() {
 		$urls = [
 			'http://example.com',
 			'http://example.com/',
@@ -272,6 +272,6 @@ final class UriMatchesTest extends TestCase {
 			'http://example.net/test/',
 		];
 
-		return $this->textArrayToDataprovider($urls);
+		return self::textArrayToDataprovider($urls);
 	}
 }

@@ -33,7 +33,7 @@ final class StatusUnknownTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataException() {
+	public static function dataException() {
 		$response_with_status              = new Response();
 		$response_with_status->status_code = 12345;
 

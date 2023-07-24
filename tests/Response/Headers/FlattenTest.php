@@ -32,7 +32,7 @@ final class FlattenTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataFlatten() {
+	public static function dataFlatten() {
 		return [
 			'string'            => ['text', 'text'],
 			'empty array'       => [[], ''],
@@ -62,7 +62,7 @@ final class FlattenTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidValue() {
+	public static function dataInvalidValue() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING, TypeProviderHelper::GROUP_ARRAY);
 	}
 }

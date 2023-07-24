@@ -39,7 +39,7 @@ final class CheckIpv6Test extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataInvalidInputType() {
+	public static function dataInvalidInputType() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRINGABLE);
 	}
 
@@ -61,7 +61,7 @@ final class CheckIpv6Test extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataValidInputType() {
+	public static function dataValidInputType() {
 		return [
 			'string'     => ['::1'],
 			'stringable' => [new StringableObject('0:1234:dc0:41:216:3eff:fe67:3e01')],

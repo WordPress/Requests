@@ -41,7 +41,7 @@ final class DecodeChunkedTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataChunked() {
+	public static function dataChunked() {
 		return [
 			[
 				'body'     => "25\r\nThis is the data in the first chunk\r\n\r\n1A\r\nand this is the second one\r\n0\r\n",
@@ -98,7 +98,7 @@ final class DecodeChunkedTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNotActuallyChunked() {
+	public static function dataNotActuallyChunked() {
 		return [
 			'empty string'                         => [''],
 			'invalid chunk size'                   => ['Hello! This is a non-chunked response!'],

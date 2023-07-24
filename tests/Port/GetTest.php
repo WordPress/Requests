@@ -34,7 +34,7 @@ final class GetTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataGetPortThrowsExceptionOnInvalidInputType() {
+	public static function dataGetPortThrowsExceptionOnInvalidInputType() {
 		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_STRING);
 	}
 
@@ -59,7 +59,7 @@ final class GetTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataGetPortThrowsExceptionOnUnsupportedPortType() {
+	public static function dataGetPortThrowsExceptionOnUnsupportedPortType() {
 		return [
 			'type not supported' => ['FTP'],
 			'empty string'       => [''],
@@ -85,7 +85,7 @@ final class GetTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataGetPort() {
+	public static function dataGetPort() {
 		return [
 			'lowercase type' => [
 				'input'    => 'https',

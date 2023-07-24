@@ -44,7 +44,7 @@ abstract class SslTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataMatch() {
+	public static function dataMatch() {
 		return [
 			'top-level domain (stringable object)' => [
 				'host'      => new StringableObject('example.com'),
@@ -66,7 +66,7 @@ abstract class SslTestCase extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function dataNoMatch() {
+	public static function dataNoMatch() {
 		return [
 			// Check that we need at least 3 components.
 			'not a domain; wildcard reference' => [
