@@ -93,5 +93,14 @@
     "coverage10": [
       "@php ./vendor/phpunit/phpunit/phpunit -c phpunit10.xml.dist"
     ]
+  },
+  "scripts-descriptions": {
+    "lint": "Lint PHP files to find parse errors.",
+    "checkcs": "Check the entire codebase for code-style issues.",
+    "fixcs": "Fix all auto-fixable code-style issues in the entire codebase.",
+    "test": "Run the unit tests on PHPUnit 5.x - 9.x without code coverage.",
+    "test10": "Run the unit tests on PHPUnit 10.x without code coverage.",
+    "coverage": "Run the unit tests on PHPUnit 5.x - 9.x with code coverage.",
+    "coverage10": "Run the unit tests on PHPUnit 10.x with code coverage."
   }
 }
