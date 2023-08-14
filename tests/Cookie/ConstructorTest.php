@@ -356,7 +356,7 @@ final class ConstructorTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	private function arrayUnshiftAssoc($base_array, $key, $value ) {
+	private function arrayUnshiftAssoc($base_array, $key, $value) {
 		$base_array       = array_reverse($base_array, true);
 		$base_array[$key] = $value;
 		return array_reverse($base_array, true);
