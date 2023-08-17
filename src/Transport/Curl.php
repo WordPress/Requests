@@ -365,8 +365,7 @@ final class Curl implements Transport {
 
 		// Force closing the connection for old versions of cURL (<7.22).
 		if ($this->version < self::CURL_7_22_0 && !isset($headers['Connection'])) {
-				$headers['Connection'] = 'close';
-			}
+			$headers['Connection'] = 'close';
 		}
 
 		/**
