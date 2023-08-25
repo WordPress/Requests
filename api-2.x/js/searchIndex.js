@@ -71,6 +71,11 @@ Search.appendIndex(
             "summary": "Autoloader.",
             "url": "classes/WpOrg-Requests-Autoload.html#method_load"
         },                {
+            "fqsen": "\\WpOrg\\Requests\\Autoload\u003A\u003Aget_deprecated_classes\u0028\u0029",
+            "name": "get_deprecated_classes",
+            "summary": "Get\u0020the\u0020array\u0020of\u0020deprecated\u0020Requests\u00201.x\u0020classes\u0020mapped\u0020to\u0020their\u0020equivalent\u0020Requests\u00202.x\u0020implementation.",
+            "url": "classes/WpOrg-Requests-Autoload.html#method_get_deprecated_classes"
+        },                {
             "fqsen": "\\WpOrg\\Requests\\Capability",
             "name": "Capability",
             "summary": "Capability\u0020interface\u0020declaring\u0020the\u0020known\u0020capabilities.",
@@ -1761,6 +1766,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/WpOrg-Requests-Transport-Curl.html#constant_CURL_7_16_2"
         },                {
+            "fqsen": "\\WpOrg\\Requests\\Transport\\Curl\u003A\u003ACURL_7_22_0",
+            "name": "CURL_7_22_0",
+            "summary": "",
+            "url": "classes/WpOrg-Requests-Transport-Curl.html#constant_CURL_7_22_0"
+        },                {
             "fqsen": "\\WpOrg\\Requests\\Transport\\Curl\u003A\u003A\u0024headers",
             "name": "headers",
             "summary": "Raw\u0020HTTP\u0020data",
@@ -1906,20 +1916,15 @@ Search.appendIndex(
             "summary": "Prevent\u0020unserialization\u0020of\u0020the\u0020object\u0020for\u0020security\u0020reasons.",
             "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method___unserialize"
         },                {
-            "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003A__wakeup\u0028\u0029",
-            "name": "__wakeup",
-            "summary": "Perform\u0020reinitialization\u0020tasks.",
-            "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method___wakeup"
+            "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003Aunserialize\u0028\u0029",
+            "name": "unserialize",
+            "summary": "Prevent\u0020creating\u0020a\u0020PHP\u0020value\u0020from\u0020a\u0020stored\u0020representation\u0020of\u0020the\u0020object\u0020for\u0020security\u0020reasons.",
+            "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method_unserialize"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003Acurrent\u0028\u0029",
             "name": "current",
             "summary": "Get\u0020the\u0020current\u0020item\u0027s\u0020value\u0020after\u0020filtering",
             "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method_current"
-        },                {
-            "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003Aunserialize\u0028\u0029",
-            "name": "unserialize",
-            "summary": "Prevent\u0020creating\u0020a\u0020PHP\u0020value\u0020from\u0020a\u0020stored\u0020representation\u0020of\u0020the\u0020object\u0020for\u0020security\u0020reasons.",
-            "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method_unserialize"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\InputValidator",
             "name": "InputValidator",
