@@ -157,7 +157,7 @@ final class RequestsTest extends TestCase {
 	}
 
 	public function testTransportFailedTriggersRequestsFailedCallback() {
-		$mock = $this->getMockBuilder(stdClass::class)->setMethods(['failed'])->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
 		$mock->expects($this->once())->method('failed');
 		$hooks = new Hooks();
 		$hooks->register('requests.failed', [$mock, 'failed']);
@@ -175,7 +175,7 @@ final class RequestsTest extends TestCase {
 	}
 
 	public function testTransportInvalidArgumentTriggersRequestsFailedCallback() {
-		$mock = $this->getMockBuilder(stdClass::class)->setMethods(['failed'])->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
 		$mock->expects($this->once())->method('failed');
 		$hooks = new Hooks();
 		$hooks->register('requests.failed', [$mock, 'failed']);
@@ -299,7 +299,7 @@ final class RequestsTest extends TestCase {
 	 * new issue, and update your server/proxy to support a proper protocol.
 	 */
 	public function testInvalidProtocolVersionTriggersRequestsFailedCallback() {
-		$mock = $this->getMockBuilder(stdClass::class)->setMethods(['failed'])->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
 		$mock->expects($this->once())->method('failed');
 		$hooks = new Hooks();
 		$hooks->register('requests.failed', [$mock, 'failed']);
@@ -337,7 +337,7 @@ final class RequestsTest extends TestCase {
 	 * HTTP/0.9 also appears to use a single CRLF instead of two.
 	 */
 	public function testSingleCRLFSeparatorTriggersRequestsFailedCallback() {
-		$mock = $this->getMockBuilder(stdClass::class)->setMethods(['failed'])->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
 		$mock->expects($this->once())->method('failed');
 		$hooks = new Hooks();
 		$hooks->register('requests.failed', [$mock, 'failed']);
@@ -369,7 +369,7 @@ final class RequestsTest extends TestCase {
 	}
 
 	public function testInvalidStatusTriggersRequestsFailedCallback() {
-		$mock = $this->getMockBuilder(stdClass::class)->setMethods(['failed'])->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
 		$mock->expects($this->once())->method('failed');
 		$hooks = new Hooks();
 		$hooks->register('requests.failed', [$mock, 'failed']);
@@ -400,7 +400,7 @@ final class RequestsTest extends TestCase {
 	}
 
 	public function testRedirectToExceptionTriggersRequestsFailedCallbackOnce() {
-		$mock = $this->getMockBuilder(stdClass::class)->setMethods(['failed'])->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
 		$mock->expects($this->once())->method('failed');
 		$hooks = new Hooks();
 		$hooks->register('requests.failed', [$mock, 'failed']);
@@ -423,7 +423,7 @@ final class RequestsTest extends TestCase {
 	}
 
 	public function testRedirectToInvalidArgumentTriggersRequestsFailedCallbackOnce() {
-		$mock = $this->getMockBuilder(stdClass::class)->setMethods(['failed'])->getMock();
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
 		$mock->expects($this->once())->method('failed');
 		$hooks = new Hooks();
 		$hooks->register('requests.failed', [$mock, 'failed']);
