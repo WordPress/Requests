@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Requests 2.0.7 API</title>
+            <title>Requests 2.0.8 API</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
@@ -19,12 +19,13 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
 <body id="top">
     <header class="phpdocumentor-header phpdocumentor-section">
-    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.7 API</a></h1>
+    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.8 API</a></h1>
     <input class="phpdocumentor-header__menu-button" type="checkbox" id="menu-button" name="menu-button" />
     <label class="phpdocumentor-header__menu-icon" for="menu-button">
         <i class="fas fa-bars"></i>
@@ -52,7 +53,7 @@
 <label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
     Menu
 </label>
-<aside class="phpdocumentor-column -four phpdocumentor-sidebar">
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -125,8 +126,9 @@
     </section>
 </aside>
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                <section>
+                                        <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/wporg.html">WpOrg</a></li>
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/wporg-requests.html">Requests</a></li>
     </ul>
@@ -147,6 +149,11 @@
     
     </h2>
 
+<div class="phpdocumentor-label-line">
+
+
+</div>
+
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
     :
@@ -161,16 +168,27 @@
 
 
 
-
-
-
 <h3 id="toc">
     Table of Contents
-    <a href="#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/WpOrg-Requests-Cookie.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+
 </h3>
 
+
+
+
+
+
+
+
+
+<h4 id="toc-properties">
+    Properties
+    <a href="classes/WpOrg-Requests-Cookie.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
 <dl class="phpdocumentor-table-of-contents">
-                    <dt class="phpdocumentor-table-of-contents__entry -property -public">
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/WpOrg-Requests-Cookie.html#property_attributes">$attributes</a>
     <span>
                         &nbsp;: <a href="classes/WpOrg-Requests-Utility-CaseInsensitiveDictionary.html"><abbr title="\WpOrg\Requests\Utility\CaseInsensitiveDictionary">CaseInsensitiveDictionary</abbr></a>|array&lt;string|int, mixed&gt;            </span>
@@ -205,7 +223,15 @@
 </dt>
 <dd>Cookie value.</dd>
 
-                <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    </dl>
+
+<h4 id="toc-methods">
+    Methods
+    <a href="classes/WpOrg-Requests-Cookie.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/WpOrg-Requests-Cookie.html#method___construct">__construct()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -289,7 +315,8 @@
 </dt>
 <dd>Parse an individual cookie attribute</dd>
 
-        </dl>
+    </dl>
+
 
 
 
@@ -300,6 +327,7 @@
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
             <a href="classes/WpOrg-Requests-Cookie.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="
@@ -311,6 +339,7 @@
     <h4 class="phpdocumentor-element__name" id="property_attributes">
         $attributes
         <a href="classes/WpOrg-Requests-Cookie.html#property_attributes" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -349,6 +378,7 @@
     <h4 class="phpdocumentor-element__name" id="property_flags">
         $flags
         <a href="classes/WpOrg-Requests-Cookie.html#property_flags" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -384,6 +414,7 @@
     <h4 class="phpdocumentor-element__name" id="property_name">
         $name
         <a href="classes/WpOrg-Requests-Cookie.html#property_name" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -417,6 +448,7 @@
     <h4 class="phpdocumentor-element__name" id="property_reference_time">
         $reference_time
         <a href="classes/WpOrg-Requests-Cookie.html#property_reference_time" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -453,6 +485,7 @@ checking time validity.</p>
     <h4 class="phpdocumentor-element__name" id="property_value">
         $value
         <a href="classes/WpOrg-Requests-Cookie.html#property_value" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -482,6 +515,7 @@ checking time validity.</p>
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
             <a href="classes/WpOrg-Requests-Cookie.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="phpdocumentor-element
@@ -492,6 +526,7 @@ checking time validity.</p>
     <h4 class="phpdocumentor-element__name" id="method___construct">
         __construct()
         <a href="classes/WpOrg-Requests-Cookie.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
@@ -506,6 +541,8 @@ checking time validity.</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;|<a href="classes/WpOrg-Requests-Utility-CaseInsensitiveDictionary.html"><abbr title="\WpOrg\Requests\Utility\CaseInsensitiveDictionary">CaseInsensitiveDictionary</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$attributes</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$flags</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">int|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$reference_time</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -561,7 +598,8 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Cookie.html#method___construct#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h5>
     <dl class="phpdocumentor-tag-list">
                                     <dt class="phpdocumentor-tag-list__entry">
@@ -614,12 +652,8 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
 </section>
 
                                     </dd>
-                        </dl>
+                                            </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -631,6 +665,7 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     <h4 class="phpdocumentor-element__name" id="method___toString">
         __toString()
         <a href="classes/WpOrg-Requests-Cookie.html#method___toString" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
@@ -645,16 +680,14 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">__toString</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
         <section class="phpdocumentor-description"><p>Attributes and other data can be accessed via methods.</p>
 </section>
 
     
     
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -666,6 +699,7 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     <h4 class="phpdocumentor-element__name" id="method_domain_matches">
         domain_matches()
         <a href="classes/WpOrg-Requests-Cookie.html#method_domain_matches" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
@@ -680,6 +714,8 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">domain_matches</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$domain</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -696,13 +732,15 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
 
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Whether the cookie is valid for the given domain</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Whether the cookie is valid for the given domain</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -713,11 +751,12 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     <h4 class="phpdocumentor-element__name" id="method_format_for_header">
         format_for_header()
         <a href="classes/WpOrg-Requests-Cookie.html#method_format_for_header" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">370</span>
+    <span class="phpdocumentor-element-found-in__line">389</span>
 
     </aside>
 
@@ -727,19 +766,23 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">format_for_header</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
         <section class="phpdocumentor-description"><p>This is used when sending cookies to a server.</p>
 </section>
 
     
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Cookie formatted for Cookie header</p>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Cookie formatted for Cookie header</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -750,11 +793,12 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     <h4 class="phpdocumentor-element__name" id="method_format_for_set_cookie">
         format_for_set_cookie()
         <a href="classes/WpOrg-Requests-Cookie.html#method_format_for_set_cookie" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">382</span>
+    <span class="phpdocumentor-element-found-in__line">401</span>
 
     </aside>
 
@@ -764,6 +808,8 @@ Valid keys are <code class="prettyprint">'creation'</code>, <code class="prettyp
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">format_for_set_cookie</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
         <section class="phpdocumentor-description"><p>This is used when sending cookies to clients. This isn't really
 applicable to client-side usage, but might be handy for debugging.</p>
 </section>
@@ -771,13 +817,15 @@ applicable to client-side usage, but might be handy for debugging.</p>
     
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Cookie formatted for Set-Cookie header</p>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Cookie formatted for Set-Cookie header</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -788,6 +836,7 @@ applicable to client-side usage, but might be handy for debugging.</p>
     <h4 class="phpdocumentor-element__name" id="method_is_expired">
         is_expired()
         <a href="classes/WpOrg-Requests-Cookie.html#method_is_expired" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
@@ -802,6 +851,8 @@ applicable to client-side usage, but might be handy for debugging.</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">is_expired</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
         <section class="phpdocumentor-description"><p>Checks the age against $this-&gt;reference_time to determine if the cookie
 is expired.</p>
 </section>
@@ -809,13 +860,15 @@ is expired.</p>
     
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>True if expired, false if time is valid.</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>True if expired, false if time is valid.</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -826,11 +879,12 @@ is expired.</p>
     <h4 class="phpdocumentor-element__name" id="method_normalize">
         normalize()
         <a href="classes/WpOrg-Requests-Cookie.html#method_normalize" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">280</span>
+    <span class="phpdocumentor-element-found-in__line">287</span>
 
     </aside>
 
@@ -840,17 +894,21 @@ is expired.</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">normalize</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Whether the cookie was successfully normalized</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Whether the cookie was successfully normalized</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -861,11 +919,12 @@ is expired.</p>
     <h4 class="phpdocumentor-element__name" id="method_parse">
         parse()
         <a href="classes/WpOrg-Requests-Cookie.html#method_parse" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">416</span>
+    <span class="phpdocumentor-element-found-in__line">435</span>
 
     </aside>
 
@@ -875,6 +934,8 @@ is expired.</p>
     <span class="phpdocumentor-signature__visibility">public</span>
             <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">parse</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$cookie_header</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">int|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$reference_time</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/WpOrg-Requests-Cookie.html"><abbr title="\WpOrg\Requests\Cookie">Cookie</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
         <section class="phpdocumentor-description"><p>Based on Mozilla's parsing code in Firefox and related projects, which
 is an intentional deviation from RFC 2109 and RFC 2616. RFC 6265
 specifies some of this handling, but not in a thorough manner.</p>
@@ -910,7 +971,8 @@ specifies some of this handling, but not in a thorough manner.</p>
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Cookie.html#method_parse#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h5>
     <dl class="phpdocumentor-tag-list">
                                     <dt class="phpdocumentor-tag-list__entry">
@@ -933,15 +995,17 @@ specifies some of this handling, but not in a thorough manner.</p>
 </section>
 
                                     </dd>
-                        </dl>
+                                            </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/WpOrg-Requests-Cookie.html"><abbr title="\WpOrg\Requests\Cookie">Cookie</abbr></a></span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Parsed cookie object</p>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/WpOrg-Requests-Cookie.html"><abbr title="\WpOrg\Requests\Cookie">Cookie</abbr></a></span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Parsed cookie object</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -952,11 +1016,12 @@ specifies some of this handling, but not in a thorough manner.</p>
     <h4 class="phpdocumentor-element__name" id="method_parse_from_headers">
         parse_from_headers()
         <a href="classes/WpOrg-Requests-Cookie.html#method_parse_from_headers" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">474</span>
+    <span class="phpdocumentor-element-found-in__line">493</span>
 
     </aside>
 
@@ -966,6 +1031,8 @@ specifies some of this handling, but not in a thorough manner.</p>
     <span class="phpdocumentor-signature__visibility">public</span>
             <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">parse_from_headers</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/WpOrg-Requests-Response-Headers.html"><abbr title="\WpOrg\Requests\Response\Headers">Headers</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$headers</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/WpOrg-Requests-Iri.html"><abbr title="\WpOrg\Requests\Iri">Iri</abbr></a>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$origin</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">int|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$time</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1000,11 +1067,11 @@ specifies some of this handling, but not in a thorough manner.</p>
 
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1015,11 +1082,12 @@ specifies some of this handling, but not in a thorough manner.</p>
     <h4 class="phpdocumentor-element__name" id="method_path_matches">
         path_matches()
         <a href="classes/WpOrg-Requests-Cookie.html#method_path_matches" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">234</span>
+    <span class="phpdocumentor-element-found-in__line">235</span>
 
     </aside>
 
@@ -1029,6 +1097,8 @@ specifies some of this handling, but not in a thorough manner.</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">path_matches</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$request_path</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
         <section class="phpdocumentor-description"><p>From the path-match check in RFC 6265 section 5.1.4</p>
 </section>
 
@@ -1047,13 +1117,15 @@ specifies some of this handling, but not in a thorough manner.</p>
 
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Whether the cookie is valid for the given path</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Whether the cookie is valid for the given path</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1064,6 +1136,7 @@ specifies some of this handling, but not in a thorough manner.</p>
     <h4 class="phpdocumentor-element__name" id="method_uri_matches">
         uri_matches()
         <a href="classes/WpOrg-Requests-Cookie.html#method_uri_matches" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
@@ -1078,6 +1151,8 @@ specifies some of this handling, but not in a thorough manner.</p>
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">uri_matches</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/WpOrg-Requests-Iri.html"><abbr title="\WpOrg\Requests\Iri">Iri</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$uri</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1094,13 +1169,15 @@ specifies some of this handling, but not in a thorough manner.</p>
 
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Whether the cookie is valid for the given URI</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Whether the cookie is valid for the given URI</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1111,11 +1188,12 @@ specifies some of this handling, but not in a thorough manner.</p>
     <h4 class="phpdocumentor-element__name" id="method_normalize_attribute">
         normalize_attribute()
         <a href="classes/WpOrg-Requests-Cookie.html#method_normalize_attribute" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Cookie.php"><a href="files/src-cookie.html"><abbr title="src/Cookie.php">Cookie.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">310</span>
+    <span class="phpdocumentor-element-found-in__line">317</span>
 
     </aside>
 
@@ -1125,6 +1203,8 @@ specifies some of this handling, but not in a thorough manner.</p>
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">normalize_attribute</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|int|bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
         <section class="phpdocumentor-description"><p>Handles parsing individual attributes from the cookie values.</p>
 </section>
 
@@ -1152,80 +1232,160 @@ specifies some of this handling, but not in a thorough manner.</p>
 
     
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Value if available, or null if the attribute value is invalid (and should be skipped)</p>
+        <span class="phpdocumentor-signature__response_type">mixed</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Value if available, or null if the attribute value is invalid (and should be skipped)</p>
 </section>
 
-    
+            </section>
+
 </article>
             </section>
 
-        
+        <div class="phpdocumentor-modal" id="source-view">
+    <div class="phpdocumentor-modal-bg" data-exit-button></div>
+    <div class="phpdocumentor-modal-container">
+        <div class="phpdocumentor-modal-content">
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/Cookie.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+        </div>
+        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
+    </div>
+</div>
+
     <script type="text/javascript">
-        function loadExternalCodeSnippets(line) {
-            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach((pre) => {
-                var src = pre.getAttribute('data-src').replace( /\\/g, '/');
-                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-                var language = 'php';
+        (function () {
+            function loadExternalCodeSnippet(el, url, line) {
+                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
+                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
+                    const language = 'php';
 
-                var code = document.createElement('code');
-                code.className = 'language-' + language;
+                    const code = document.createElement('code');
+                    code.className = 'language-' + language;
+                    pre.textContent = '';
+                    pre.setAttribute('data-line', line)
+                    code.textContent = 'Loading…';
+                    pre.appendChild(code);
 
-                pre.textContent = '';
+                    var xhr = new XMLHttpRequest();
 
-                pre.setAttribute('data-line', line)
-                code.textContent = 'Loading…';
+                    xhr.open('GET', src, true);
 
-                pre.appendChild(code);
-
-                var xhr = new XMLHttpRequest();
-
-                xhr.open('GET', src, true);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState !== 4) {
+                            return;
+                        }
 
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
-
                             Prism.highlightElement(code);
+                            return;
                         }
-                        else if (xhr.status >= 400) {
+
+                        if (xhr.status === 404) {
+                            code.textContent = '✖ Error: File could not be found';
+                            return;
+                        }
+
+                        if (xhr.status >= 400) {
                             code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                            return;
                         }
-                        else {
-                            code.textContent = '✖ Error: File does not exist, is empty or trying to view from localhost';
-                        }
+
+                        code.textContent = '✖ Error: An unknown error occurred';
+                    };
+
+                    xhr.send(null);
+                });
+            }
+
+            const modalButtons = document.querySelectorAll("[data-modal]");
+            const openedAsLocalFile = window.location.protocol === 'file:';
+            if (modalButtons.length > 0 && openedAsLocalFile) {
+                console.warn(
+                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
+                    'browsers block XHR requests when a page is opened this way'
+                );
+            }
+
+            modalButtons.forEach(function (trigger) {
+                if (openedAsLocalFile) {
+                    trigger.setAttribute("hidden", "hidden");
+                }
+
+                trigger.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const modal = document.getElementById(trigger.dataset.modal);
+                    if (!modal) {
+                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
+                        return;
                     }
-                };
+                    modal.classList.add("phpdocumentor-modal__open");
 
-                xhr.send(null);
-            });
-        }
-
-        var modals = document.querySelectorAll("[data-modal]");
-
-        modals.forEach(function (trigger) {
-            trigger.addEventListener("click", function (event) {
-                //event.preventDefault();
-                const modal = document.getElementById(trigger.dataset.modal);
-                modal.classList.add("phpdocumentor-modal__open");
-                loadExternalCodeSnippets(trigger.dataset.line)
-                const exits = modal.querySelectorAll("[data-exit-button]");
-                exits.forEach(function (exit) {
-                    exit.addEventListener("click", function (event) {
-                        event.preventDefault();
-                        modal.classList.remove("phpdocumentor-modal__open");
+                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
+                    const exits = modal.querySelectorAll("[data-exit-button]");
+                    exits.forEach(function (exit) {
+                        exit.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            modal.classList.remove("phpdocumentor-modal__open");
+                        });
                     });
                 });
             });
-        });
+        })();
     </script>
 
     </article>
-                <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+                                </section>
+                <section class="phpdocumentor-on-this-page__sidebar">
+                                
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                                            <li><a href="classes/WpOrg-Requests-Cookie.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/WpOrg-Requests-Cookie.html#toc-methods">Methods</a></li>
+                                    </ul>
+            </li>
+            
+                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/WpOrg-Requests-Cookie.html#property_attributes">$attributes<a href="classes/WpOrg-Requests-Cookie.html"></li>
+                                                    <li><a href="classes/WpOrg-Requests-Cookie.html#property_flags">$flags<a href="classes/WpOrg-Requests-Cookie.html"></li>
+                                                    <li><a href="classes/WpOrg-Requests-Cookie.html#property_name">$name<a href="classes/WpOrg-Requests-Cookie.html"></li>
+                                                    <li><a href="classes/WpOrg-Requests-Cookie.html#property_reference_time">$reference_time<a href="classes/WpOrg-Requests-Cookie.html"></li>
+                                                    <li><a href="classes/WpOrg-Requests-Cookie.html#property_value">$value<a href="classes/WpOrg-Requests-Cookie.html"></li>
+                                            </ul>
+                </li>
+            
+                        <li class="phpdocumentor-on-this-page-section__title">Methods</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method___construct">__construct()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method___toString">__toString()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_domain_matches">domain_matches()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_format_for_header">format_for_header()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_format_for_set_cookie">format_for_set_cookie()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_is_expired">is_expired()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_normalize">normalize()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_parse">parse()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_parse_from_headers">parse_from_headers()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_path_matches">path_matches()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_uri_matches">uri_matches()</a></li>
+                                            <li><a href="classes/WpOrg-Requests-Cookie.html#method_normalize_attribute">normalize_attribute()</a></li>
+                                    </ul>
+            </li>
+                    </ul>
+    </section>
+
+                </section>
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
             <h2 class="phpdocumentor-search-results__title">Search results</h2>
@@ -1236,7 +1396,6 @@ specifies some of this handling, but not in a thorough manner.</p>
         </section>
     </section>
 </section>
-            </div>
         </div>
         <a href="classes/WpOrg-Requests-Cookie.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
