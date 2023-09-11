@@ -40,7 +40,7 @@ final class CurlTest extends BaseTestCase {
 
 		// On PHP < 7.2, we lack the capability to store weak references.
 		// In this case, we just skip the memory leak testing.
-		if (version_compare(PHP_VERSION, '7.2.0') < 0) {
+		if (version_compare(PHP_VERSION, '7.4.0') < 0) {
 			return $options;
 		}
 
@@ -64,7 +64,7 @@ final class CurlTest extends BaseTestCase {
 	 * This is used for asserting that cURL handles are not leaking memory.
 	 */
 	protected function assert_post_conditions() {
-		if (version_compare(PHP_VERSION, '7.2.0') < 0 || !$this->curl_handle instanceof WeakReference) {
+		if (version_compare(PHP_VERSION, '7.4.0') < 0 || !$this->curl_handle instanceof WeakReference) {
 			// No cURL handle was used during this particular test scenario.
 			return;
 		}
