@@ -3,6 +3,7 @@
 namespace WpOrg\Requests\Tests\Transport\Curl;
 
 use CurlHandle;
+use WeakReference;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
@@ -15,7 +16,10 @@ final class CurlTest extends BaseTestCase {
 	/**
 	 * Temporary storage of the cURL handle to assert against.
 	 *
-	 * @var null|resource|\CurlHandle
+	 * The handle is stored as a weak reference in order to avoid the test itself
+	 * becoming the source of the memory leak due to locking the resource.
+	 *
+	 * @var null|WeakReference
 	 */
 	protected $curl_handle;
 
@@ -34,6 +38,12 @@ final class CurlTest extends BaseTestCase {
 
 		$this->curl_handle = null;
 
+		// On PHP < 7.2, we lack the capability to store weak references.
+		// In this case, we just skip the memory leak testing.
+		if (version_compare(PHP_VERSION, '7.2.0') < 0) {
+			return $options;
+		}
+
 		if (!array_key_exists('hooks', $options)) {
 			$options['hooks'] = new Hooks();
 		}
@@ -41,7 +51,7 @@ final class CurlTest extends BaseTestCase {
 		$options['hooks']->register(
 			'curl.before_request',
 			function ($handle) {
-				$this->curl_handle = $handle;
+				$this->curl_handle = WeakReference::create($handle);
 			}
 		);
 
@@ -54,19 +64,19 @@ final class CurlTest extends BaseTestCase {
 	 * This is used for asserting that cURL handles are not leaking memory.
 	 */
 	protected function assert_post_conditions() {
-		if ($this->curl_handle === null) {
+		if (version_compare(PHP_VERSION, '7.2.0') < 0 || !$this->curl_handle instanceof WeakReference) {
 			// No cURL handle was used during this particular test scenario.
 			return;
 		}
 
-		if ($this->curl_handle instanceof CurlHandle) {
+		if ($this->curl_handle->get() instanceof CurlHandle) {
 			// CURL handles have been changed from resources into CurlHandle
 			// objects starting with PHP 8.0, which don;t need to be closed.
 			return;
 		}
 
-		if ($this->shouldClosedResourceAssertionBeSkipped($this->curl_handle) === false) {
-			$this->assertIsClosedResource($this->curl_handle);
+		if ($this->shouldClosedResourceAssertionBeSkipped($this->curl_handle->get()) === false) {
+			$this->assertIsClosedResource($this->curl_handle->get());
 		}
 	}
 
