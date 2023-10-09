@@ -61,10 +61,16 @@ jobs:
       - name: Setup proxy server
         run: pip3 install mitmproxy
 
+      - name: Check mitmproxy version
+        run: mitmdump --version
+
       - name: Start test server
         run: |
           PORT=8080 vendor/bin/start.sh
           echo "REQUESTS_TEST_HOST_HTTP=localhost:8080" >> $GITHUB_ENV
+
+      - name: Ping localhost domain
+        run: ping -c1 localhost
 
       - name: Start proxy server
         run: |
@@ -77,12 +83,6 @@ jobs:
 
       - name: Ensure the HTTPS test instance on Render is spun up
         run: curl -s -I https://requests-test-server.onrender.com/ > /dev/null
-
-      - name: Check mitmproxy version
-        run: mitmdump --version
-
-      - name: Ping localhost domain
-        run: ping -c1 localhost
 
       - name: Access localhost on port 8080
         run: curl -i http://localhost:8080
