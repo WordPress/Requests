@@ -120,48 +120,48 @@ class DispatchTest extends TestCase {
 		// Register multiple callbacks for the same hook with a variation of priorities.
 		$this->hooks->register(
 			'hook_a',
-			static function(&$text) {
+			static function (&$text) {
 				$text .= "no prio 0\n";
 			}
 		);
 		$this->hooks->register(
 			'hook_a',
-			static function(&$text) {
+			static function (&$text) {
 				$text .= "prio 10-1\n";
 			},
 			10
 		);
 		$this->hooks->register(
 			'hook_a',
-			static function(&$text) {
+			static function (&$text) {
 				$text .= "prio -3\n";
 			},
 			-3
 		);
 		$this->hooks->register(
 			'hook_a',
-			static function(&$text) {
+			static function (&$text) {
 				$text .= "prio 5\n";
 			},
 			5
 		);
 		$this->hooks->register(
 			'hook_a',
-			static function(&$text) {
+			static function (&$text) {
 				$text .= "prio 2-1\n";
 			},
 			2
 		);
 		$this->hooks->register(
 			'hook_a',
-			static function(&$text) {
+			static function (&$text) {
 				$text .= "prio 2-2\n";
 			},
 			2
 		);
 		$this->hooks->register(
 			'hook_a',
-			static function(&$text) {
+			static function (&$text) {
 				$text .= "prio 10-2\n";
 			},
 			10

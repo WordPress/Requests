@@ -183,7 +183,7 @@ class RegisterTest extends TestCase {
 	public function testRegisterClosureCallback() {
 		$this->hooks->register(
 			'hookname',
-			static function($param) {
+			static function () {
 				return true;
 			}
 		);
