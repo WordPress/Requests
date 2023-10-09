@@ -1,10 +1,10 @@
 <?php
 /**
- * Exception for 511 Network Authentication Required responses
+ * Requests for PHP, an HTTP library.
  *
- * @link https://tools.ietf.org/html/rfc6585
- *
- * @package Requests\Exceptions
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
  */
 
 namespace WpOrg\Requests\Exception\Http;
