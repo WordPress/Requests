@@ -1,6 +1,14 @@
 <?php
-
 /**
+ * Requests for PHP, an HTTP library.
+ *
+ * @package   Requests\Examples
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
+ */
+
+/*
  * If you need to run the Requests v2.x library with another framework/CMS that still ships v1.x,
  * use the following to preload the class aliases before the actual implementations of Requests v1.x. get loaded.
  *
