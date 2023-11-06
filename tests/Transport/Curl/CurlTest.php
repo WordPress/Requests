@@ -2,8 +2,10 @@
 
 namespace WpOrg\Requests\Tests\Transport\Curl;
 
+use WeakReference;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Tests\Fixtures\TransportCloseDouble;
 use WpOrg\Requests\Tests\Transport\BaseTestCase;
 use WpOrg\Requests\Transport\Curl;
 
@@ -135,5 +137,47 @@ final class CurlTest extends BaseTestCase {
 		$result = json_decode($request->body, true);
 
 		$this->assertFalse(isset($result['headers']['Expect']));
+	}
+
+	/**
+	 * @requires PHP 7.4
+	 */
+	public function testCurlHandlerGetsClosedWhenThereAreNoErrors() {
+		$transport = new Curl();
+		$weakref   = WeakReference::create($transport);
+
+		$options   = [
+			'transport' => $transport,
+			'blocking'  => true,
+		];
+
+		try {
+			$response = Requests::post('https://humanmade.com/', [], [], $options);
+		} catch(Exception $e) {}
+
+		$this->assertSame(200, $response->status_code);
+
+		unset($transport, $options);
+		$this->assertNull($weakref->get());
+	}
+
+	/**
+	 * @requires PHP 7.4
+	 */
+	public function testCurlHandlerGetsClosedEvenWhenThereAreErrors() {
+		$transport = new Curl();
+		$weakref   = WeakReference::create($transport);
+
+		$options   = [
+			'transport' => $transport,
+			'blocking'  => true,
+		];
+
+		try {
+			$response = Requests::post('http://localhost:43992', [], [], $options);
+		} catch(Exception $e) {}
+
+		unset($transport, $options);
+		$this->assertNull($weakref->get());
 	}
 }
