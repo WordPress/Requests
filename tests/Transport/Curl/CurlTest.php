@@ -157,7 +157,10 @@ final class CurlTest extends BaseTestCase {
 
 		$this->assertSame(200, $response->status_code);
 
+		var_dump(xdebug_debug_zval('transport'),
+		xdebug_debug_zval('options'));
 		unset($transport, $options);
+
 		$this->assertNull($weakref->get());
 	}
 
@@ -177,7 +180,10 @@ final class CurlTest extends BaseTestCase {
 			$response = Requests::post('http://localhost:43992', [], [], $options);
 		} catch(Exception $e) {}
 
+		var_dump(xdebug_debug_zval('transport'),
+		xdebug_debug_zval('options'));
 		unset($transport, $options);
+
 		$this->assertNull($weakref->get());
 	}
 }

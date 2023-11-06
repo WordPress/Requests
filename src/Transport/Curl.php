@@ -243,6 +243,7 @@ final class Curl implements Transport {
 				curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, null);
 				curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, null);
 			}
+			curl_close($this->handle);
 		}
 
 		return $this->headers;
