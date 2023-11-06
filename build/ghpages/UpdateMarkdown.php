@@ -1,5 +1,17 @@
 <?php
 /**
+ * Requests for PHP, an HTTP library.
+ *
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
+ */
+
+namespace WpOrg\Requests\GHPages;
+
+use RuntimeException;
+
+/**
  * Update the markdown based documentation files.
  *
  * {@internal This functionality has a minimum PHP requirement of PHP 7.2.}
@@ -14,11 +26,6 @@
  * @phpcs:disable PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.voidFound
  * @phpcs:disable PHPCompatibility.FunctionUse.NewFunctionParameters.dirname_levelsFound
  */
-
-namespace WpOrg\Requests\GHPages;
-
-use RuntimeException;
-
 class UpdateMarkdown {
 
 	/**

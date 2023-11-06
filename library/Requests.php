@@ -1,14 +1,10 @@
 <?php
 /**
- * Requests for PHP
+ * Requests for PHP, an HTTP library.
  *
- * Inspired by Requests for Python.
- *
- * Based on concepts from SimplePie_File, RequestCore and WP_Http.
- *
- * @package Requests
- *
- * @deprecated 2.0.0
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
  */
 
 /*
@@ -26,6 +22,12 @@ if (!defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS') || REQUESTS_SILENCE_PSR0_DEPR
 
 	// Prevent the deprecation notice from being thrown twice.
 	if (!defined('REQUESTS_SILENCE_PSR0_DEPRECATIONS')) {
+
+		/**
+		 * Constant to silence deprecation notices about use of the old PSR-0 based class names.
+		 *
+		 * @var bool
+		 */
 		define('REQUESTS_SILENCE_PSR0_DEPRECATIONS', true);
 	}
 }

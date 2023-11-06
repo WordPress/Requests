@@ -1,9 +1,10 @@
 <?php
 /**
- * Port utilities for Requests
+ * Requests for PHP, an HTTP library.
  *
- * @package Requests\Utilities
- * @since   2.0.0
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
  */
 
 namespace WpOrg\Requests;
@@ -12,6 +13,8 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 
 /**
+ * Port utilities for Requests
+ *
  * Find the correct port depending on the Request type.
  *
  * @package Requests\Utilities

@@ -1,16 +1,11 @@
 #!/usr/bin/env php
 <?php
 /**
- * Update the phpDocumentor configuration file.
+ * Requests for PHP, an HTTP library.
  *
- * {@internal This functionality has a minimum PHP requirement of PHP 7.2.}
- *
- * @internal
- *
- * @package Requests
- * @subpackage GHPages
- *
- * @phpcs:disable PHPCompatibility.FunctionUse.NewFunctionParameters.dirname_levelsFound
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
  */
 
 namespace WpOrg\Requests\GHPages;
@@ -19,6 +14,17 @@ use WpOrg\Requests\Autoload;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
 
+/**
+ * Update the phpDocumentor configuration file.
+ *
+ * {@internal This functionality has a minimum PHP requirement of PHP 7.2.}
+ *
+ * @internal
+ *
+ * @package Requests\GHPages
+ *
+ * @phpcs:disable PHPCompatibility.FunctionUse.NewFunctionParameters.dirname_levelsFound
+ */
 $requests_phpdoc_version_updater = static function () {
 	// Include Requests.
 	$project_root = dirname(__DIR__, 2);

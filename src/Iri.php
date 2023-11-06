@@ -1,8 +1,10 @@
 <?php
 /**
- * IRI parser/serialiser/normaliser
+ * IRI, part of Requests for PHP, an HTTP library.
  *
- * @package Requests\Utilities
+ * @copyright 2007-2009 Geoffrey Sneddon and Steve Minutillo
+ * @license   https://opensource.org/licenses/bsd-license.php
+ * @link      http://hg.gsnedders.com/iri/
  */
 
 namespace WpOrg\Requests;

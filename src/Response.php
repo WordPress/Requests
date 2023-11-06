@@ -1,10 +1,10 @@
 <?php
 /**
- * HTTP response class
+ * Requests for PHP, an HTTP library.
  *
- * Contains a response from \WpOrg\Requests\Requests::request()
- *
- * @package Requests
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
  */
 
 namespace WpOrg\Requests;

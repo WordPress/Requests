@@ -1,10 +1,10 @@
 <?php
 /**
- * Exception for 429 Too Many Requests responses
+ * Requests for PHP, an HTTP library.
  *
- * @link https://tools.ietf.org/html/draft-nottingham-http-new-status-04
- *
- * @package Requests\Exceptions
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
  */
 
 namespace WpOrg\Requests\Exception\Http;

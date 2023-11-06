@@ -1,11 +1,14 @@
 <?php
 /**
+ * Requests for PHP, an HTTP library.
+ *
  * Autoloader for Requests for PHP.
  *
  * Include this file if you'd like to avoid having to create your own autoloader.
  *
- * @package Requests
- * @since   2.0.0
+ * @copyright 2012-2023 Requests Contributors
+ * @license   https://github.com/WordPress/Requests/blob/stable/LICENSE ISC
+ * @link      https://github.com/WordPress/Requests
  */
 
 namespace WpOrg\Requests;
@@ -27,6 +30,7 @@ if (class_exists('WpOrg\Requests\Autoload') === false) {
 	 * For the PSR-0 Requests 1.x BC-layer, requested classes will be treated case-insensitively.
 	 *
 	 * @package Requests
+	 * @since   2.0.0
 	 */
 	final class Autoload {
 
