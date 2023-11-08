@@ -1,6 +1,18 @@
 Changelog
 =========
 
+2.0.9
+-----
+
+### Overview of changes
+- Hotfix: Rollback changes from PR [#657]. [#839] Props [@tomsommer][gh-tomsommer] & [@laszlof][gh-laszlof]
+- Docs: improve file docblocks [#834]
+- GH Actions: fix failing test workflows [#836]
+
+[#839]: https://github.com/WordPress/Requests/pull/839
+[#834]: https://github.com/WordPress/Requests/pull/834
+[#836]: https://github.com/WordPress/Requests/pull/836
+
 2.0.8
 -----
 
@@ -1015,6 +1027,7 @@ Initial release!
 [gh-jrfnl]: https://github.com/jrfnl
 [gh-KasperFranz]: https://github.com/KasperFranz
 [gh-kwuerl]: https://github.com/kwuerl
+[gh-laszlof]: https://github.com/laszlof
 [gh-laurentmartelli]: https://github.com/laurentmartelli
 [gh-mbabker]: https://github.com/mbabker
 [gh-mircobabini]: https://github.com/mircobabini
@@ -1039,6 +1052,7 @@ Initial release!
 [gh-TimothyBJacobs]: https://github.com/TimothyBJacobs
 [gh-tnorthcutt]: https://github.com/tnorthcutt
 [gh-todeveni]: https://github.com/todeveni
+[gh-tomsommer]: https://github.com/tomsommer
 [gh-tonebender]: https://github.com/tonebender
 [gh-twdnhfr]: https://github.com/twdnhfr
 [gh-TysonAndre]: https://github.com/TysonAndre
