@@ -1761,11 +1761,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/WpOrg-Requests-Transport-Curl.html#constant_CURL_7_16_2"
         },                {
-            "fqsen": "\\WpOrg\\Requests\\Transport\\Curl\u003A\u003ACURL_7_22_0",
-            "name": "CURL_7_22_0",
-            "summary": "",
-            "url": "classes/WpOrg-Requests-Transport-Curl.html#constant_CURL_7_22_0"
-        },                {
             "fqsen": "\\WpOrg\\Requests\\Transport\\Curl\u003A\u003A\u0024headers",
             "name": "headers",
             "summary": "Raw\u0020HTTP\u0020data",
