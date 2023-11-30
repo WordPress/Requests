@@ -82,8 +82,8 @@ class Cookie {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $reference_time argument is not an integer or null.
 	 */
 	public function __construct($name, $value, $attributes = [], $flags = [], $reference_time = null) {
-		if (is_string($name) === false) {
-			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		if (is_string($name) === false && is_int($name) === false) {
+			throw InvalidArgument::create(1, '$name', 'string|int', gettype($name));
 		}
 
 		if (is_string($value) === false) {
