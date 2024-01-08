@@ -85,7 +85,7 @@ final class IsValidRfc2616TokenTest extends TestCase {
 
 		return [
 			'string containing all valid token characters' => [
-				'input' => implode(self::getValidTokenCharacters()),
+				'input' => implode('', self::getValidTokenCharacters()),
 			],
 			'string with a typical cookie name' => [
 				'input' => 'requests-testcookie',
@@ -132,7 +132,7 @@ final class IsValidRfc2616TokenTest extends TestCase {
 				'input' => '',
 			],
 			'string containing all invalid ASCII characters' => [
-				'input' => implode($invalid_ascii_characters),
+				'input' => implode('', $invalid_ascii_characters),
 			],
 			'string containing control character at start' => [
 				'input' => chr(6) . 'some text',
