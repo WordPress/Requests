@@ -83,6 +83,11 @@ final class IsValidRfc2616TokenTest extends TestCase {
 	 * @return array
 	 */
 	public static function dataInvalidValues() {
+		$all_control = chr(127); // DEL.
+		for ($char = 0; $char <= 31; $char++) {
+			$all_control .= chr($char);
+		}
+
 		$invalid_ascii_characters = array_diff(
 			array_map('chr', range(0, 127)),
 			self::getValidTokenCharacters()
@@ -91,6 +96,9 @@ final class IsValidRfc2616TokenTest extends TestCase {
 		return [
 			'empty string' => [
 				'input' => '',
+			],
+			'string containing only control characters / all control characters' => [
+				'input' => $all_control,
 			],
 			'string containing all invalid ASCII characters' => [
 				'input' => implode('', $invalid_ascii_characters),
@@ -124,6 +132,9 @@ final class IsValidRfc2616TokenTest extends TestCase {
 			],
 			'string containing non-ascii characters - ௫' => [
 				'input' => '௫', // Tamil digit five.
+			],
+			'string containing all invalid ASCII characters' => [
+				'input' => implode('', $invalid_ascii_characters),
 			],
 		];
 	}
