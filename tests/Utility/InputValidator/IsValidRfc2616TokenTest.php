@@ -35,45 +35,6 @@ final class IsValidRfc2616TokenTest extends TestCase {
 	}
 
 	/**
-	 * Get an array of valid RFC 2616 token characters.
-	 *
-	 * Valid token as per RFC 2616 section 2.2:
-	 * token = 1*<any CHAR except CTLs or separators>
-	 *
-	 * Disabling PHPCS checks for consistency with RFC 2616:
-	 * @phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
-	 *
-	 * @return array<string>
-	 */
-	private static function getValidTokenCharacters() {
-		// CHAR = <any US-ASCII character (octets 0 - 127)>
-		$rfc_char = array_map('chr', range(0, 127));
-
-		// CTL = <any US-ASCII control character (octets 0 - 31) and DEL (127)>
-		$rfc_ctl = array_map('chr', array_merge(range(0, 31), [127]));
-
-		// SP = <US-ASCII SP, space (32)>
-		$rfc_sp = chr(32);
-
-		// HT = <US-ASCII HT, horizontal-tab (9)>
-		$rfc_ht = chr(9);
-
-		// Separators = "(" | ")" | "<" | ">" | "@"
-		//            | "," | ";" | ":" | "\" | <">
-		//            | "/" | "[" | "]" | "?" | "="
-		//            | "{" | "}" | SP | HT
-		$rfc_separators = [
-			'(', ')', '<', '>', '@',
-			',', ';', ':', '\\', '"',
-			'/', '[', ']', '?', '=',
-			'{', '}', $rfc_sp, $rfc_ht,
-		];
-
-		// Token characters = <any CHAR except CTLs or separators>
-		return array_diff($rfc_char, $rfc_ctl, $rfc_separators);
-	}
-
-	/**
 	 * Data Provider.
 	 *
 	 * Valid strings are valid tokens as per RFC 2616 section 2.2:
@@ -165,5 +126,44 @@ final class IsValidRfc2616TokenTest extends TestCase {
 				'input' => '௫', // Tamil digit five.
 			],
 		];
+	}
+
+	/**
+	 * Get an array of valid RFC 2616 token characters.
+	 *
+	 * Valid token as per RFC 2616 section 2.2:
+	 * token = 1*<any CHAR except CTLs or separators>
+	 *
+	 * Disabling PHPCS checks for consistency with RFC 2616:
+	 * @phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
+	 *
+	 * @return array<string>
+	 */
+	private static function getValidTokenCharacters() {
+		// CHAR = <any US-ASCII character (octets 0 - 127)>
+		$rfc_char = array_map('chr', range(0, 127));
+
+		// CTL = <any US-ASCII control character (octets 0 - 31) and DEL (127)>
+		$rfc_ctl = array_map('chr', array_merge(range(0, 31), [127]));
+
+		// SP = <US-ASCII SP, space (32)>
+		$rfc_sp = chr(32);
+
+		// HT = <US-ASCII HT, horizontal-tab (9)>
+		$rfc_ht = chr(9);
+
+		// Separators = "(" | ")" | "<" | ">" | "@"
+		//            | "," | ";" | ":" | "\" | <">
+		//            | "/" | "[" | "]" | "?" | "="
+		//            | "{" | "}" | SP | HT
+		$rfc_separators = [
+			'(', ')', '<', '>', '@',
+			',', ';', ':', '\\', '"',
+			'/', '[', ']', '?', '=',
+			'{', '}', $rfc_sp, $rfc_ht,
+		];
+
+		// Token characters = <any CHAR except CTLs or separators>
+		return array_diff($rfc_char, $rfc_ctl, $rfc_separators);
 	}
 }
