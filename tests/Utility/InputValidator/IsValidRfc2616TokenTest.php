@@ -58,7 +58,7 @@ final class IsValidRfc2616TokenTest extends TestCase {
 		// HT = <US-ASCII HT, horizontal-tab (9)>
 		$rfc_ht = chr(9);
 
-		// separators = "(" | ")" | "<" | ">" | "@"
+		// Separators = "(" | ")" | "<" | ">" | "@"
 		//            | "," | ";" | ":" | "\" | <">
 		//            | "/" | "[" | "]" | "?" | "="
 		//            | "{" | "}" | SP | HT
@@ -69,7 +69,7 @@ final class IsValidRfc2616TokenTest extends TestCase {
 			'{', '}', $rfc_sp, $rfc_ht,
 		];
 
-		// token characters = <any CHAR except CTLs or separators>
+		// Token characters = <any CHAR except CTLs or separators>
 		return array_diff($rfc_char, $rfc_ctl, $rfc_separators);
 	}
 
