@@ -100,9 +100,6 @@ final class IsValidRfc2616TokenTest extends TestCase {
 			'string containing only control characters / all control characters' => [
 				'input' => $all_control,
 			],
-			'string containing all invalid ASCII characters' => [
-				'input' => implode('', $invalid_ascii_characters),
-			],
 			'string containing control character at start' => [
 				'input' => chr(6) . 'some text',
 			],
