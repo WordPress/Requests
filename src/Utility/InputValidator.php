@@ -114,7 +114,7 @@ final class InputValidator {
 	 * Verify that a received input parameter is a valid "token name" according to the
 	 * specification in RFC 2616 (HTTP/1.1).
 	 *
-	 * The short version is: 1 or more ascii characters, CTRL chars and separators not allowed.
+	 * The short version is: 1 or more ASCII characters, CTRL chars and separators not allowed.
 	 * For the long version, see the specs in the RFC.
 	 *
 	 * @link https://datatracker.ietf.org/doc/html/rfc2616#section-2.2
