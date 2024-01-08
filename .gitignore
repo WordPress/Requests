@@ -11,8 +11,10 @@ build/ghpages/vendor
 .phpcs.xml
 phpcs.xml
 
-# Ignore PHPUnit results cache file.
+# Ignore PHPUnit results cache file and local config overrides.
 .phpunit.result.cache
+phpunit.xml
+phpunit10.xml
 
 # Ignore temporary files for ghpages builds.
 phpdoc.xml
