@@ -35,34 +35,58 @@ final class IsValidRfc2616TokenTest extends TestCase {
 	}
 
 	/**
+	 * Get an array of valid RFC 2616 token characters.
+	 *
+	 * Valid token as per RFC 2616 section 2.2:
+	 * token = 1*<any CHAR except CTLs or separators>
+	 *
+	 * Disabling PHPCS checks for consistency with RFC 2616:
+	 * phpcs:disable Squiz.PHP.CommentedOutCode.Found
+	 * phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
+	 *
+	 * @return array<string>
+	 */
+	private static function getValidTokenCharacters() {
+		// CHAR = <any US-ASCII character (octets 0 - 127)>
+		$rfc_char = array_map('chr', range(0, 127));
+
+		// CTL = <any US-ASCII control character (octets 0 - 31) and DEL (127)>
+		$rfc_ctl = array_map('chr', array_merge(range(0, 31), [127]));
+
+		// SP = <US-ASCII SP, space (32)>
+		$rfc_sp = chr(32);
+
+		// HT = <US-ASCII HT, horizontal-tab (9)>
+		$rfc_ht = chr(9);
+
+		// separators = "(" | ")" | "<" | ">" | "@"
+		//            | "," | ";" | ":" | "\" | <">
+		//            | "/" | "[" | "]" | "?" | "="
+		//            | "{" | "}" | SP | HT
+		$rfc_separators = [
+			'(', ')', '<', '>', '@',
+			',', ';', ':', '\\', '"',
+			'/', '[', ']', '?', '=',
+			'{', '}', $rfc_sp, $rfc_ht,
+		];
+
+		// token characters = <any CHAR except CTLs or separators>
+		return array_diff($rfc_char, $rfc_ctl, $rfc_separators);
+	}
+
+	/**
 	 * Data Provider.
+	 *
+	 * Valid strings are valid tokens as per RFC 2616 section 2.2:
+	 * token = 1*<any CHAR except CTLs or separators>
 	 *
 	 * @return array
 	 */
 	public static function dataValidStrings() {
-		$all_valid_ascii = '!#$%&\'*+-.'; // Valid chars in ASCII 33-47 range.
-		// No valid chars in ASCII 58-64 range.
-		$all_valid_ascii .= '^_`'; // Valid chars in ASCII 91-96 range.
-		$all_valid_ascii .= '|~'; // Valid chars in ASCII 123-126 range.
-
-		for ($char = 48; $char <= 57; $char++) {
-			// Chars 0-9.
-			$all_valid_ascii .= chr($char);
-		}
-
-		for ($char = 65; $char <= 90; $char++) {
-			// Chars A-Z.
-			$all_valid_ascii .= chr($char);
-		}
-
-		for ($char = 97; $char <= 122; $char++) {
-			// Chars a-z.
-			$all_valid_ascii .= chr($char);
-		}
 
 		return [
-			'string containing only valid ascii characters / all valid ascii characters' => [
-				'input' => $all_valid_ascii,
+			'string containing all valid token characters' => [
+				'input' => implode(self::getValidTokenCharacters()),
 			],
 			'string with a typical cookie name' => [
 				'input' => 'requests-testcookie',
@@ -99,17 +123,17 @@ final class IsValidRfc2616TokenTest extends TestCase {
 	 * @return array
 	 */
 	public static function dataInvalidValues() {
-		$all_control = chr(127); // DEL.
-		for ($char = 0; $char <= 31; $char++) {
-			$all_control .= chr($char);
-		}
+		$invalid_ascii_characters = array_diff(
+			array_map('chr', range(0, 127)),
+			self::getValidTokenCharacters()
+		);
 
 		return [
 			'empty string' => [
 				'input' => '',
 			],
-			'string containing only control characters / all control characters' => [
-				'input' => $all_control,
+			'string containing all invalid ASCII characters' => [
+				'input' => implode($invalid_ascii_characters),
 			],
 			'string containing control character at start' => [
 				'input' => chr(6) . 'some text',
