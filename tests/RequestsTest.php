@@ -337,11 +337,11 @@ final class RequestsTest extends TestCase {
 	public function testHasCapabilitiesFailsForUnsupportedCapabilities() {
 		$transports = new ReflectionProperty(Requests::class, 'transports');
 		$transports->setAccessible(true);
-		$transports->setValue([TestTransportMock::class]);
+		$transports->setValue(null, [TestTransportMock::class]);
 
 		$result = Requests::has_capabilities(['time-travel' => true]);
 
-		$transports->setValue([]);
+		$transports->setValue(null, []);
 		$transports->setAccessible(false);
 
 		$this->assertFalse($result);
