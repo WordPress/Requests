@@ -41,8 +41,7 @@ final class IsValidRfc2616TokenTest extends TestCase {
 	 * token = 1*<any CHAR except CTLs or separators>
 	 *
 	 * Disabling PHPCS checks for consistency with RFC 2616:
-	 * phpcs:disable Squiz.PHP.CommentedOutCode.Found
-	 * phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
+	 * @phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
 	 *
 	 * @return array<string>
 	 */
