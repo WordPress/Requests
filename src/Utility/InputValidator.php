@@ -130,6 +130,6 @@ final class InputValidator {
 			return false;
 		}
 
-		return (preg_match('@^[0-9A-Za-z!#$%&\'*+.^_`|~-]+$@', $input) === 1);
+		return preg_match('@^[0-9A-Za-z!#$%&\'*+.^_`|~-]+$@', $input) === 1;
 	}
 }
