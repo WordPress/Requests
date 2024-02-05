@@ -163,7 +163,7 @@ jobs:
         run: git status -vv --untracked=all
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v6
         with:
           base: gh-pages
           branch: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
