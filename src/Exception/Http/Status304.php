@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 304 Not Modified responses
@@ -29,5 +30,5 @@ final class Status304 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Not Modified';
+	protected $reason = HttpStatus::TEXT_304;
 }

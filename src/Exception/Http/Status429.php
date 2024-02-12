@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 429 Too Many Requests responses
@@ -31,5 +32,5 @@ final class Status429 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Too Many Requests';
+	protected $reason = HttpStatus::TEXT_429;
 }

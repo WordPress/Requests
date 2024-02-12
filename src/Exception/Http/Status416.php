@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 416 Requested Range Not Satisfiable responses
@@ -29,5 +30,5 @@ final class Status416 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Requested Range Not Satisfiable';
+	protected $reason = HttpStatus::TEXT_416;
 }

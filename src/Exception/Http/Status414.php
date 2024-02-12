@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 414 Request-URI Too Large responses
@@ -29,5 +30,5 @@ final class Status414 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Request-URI Too Large';
+	protected $reason = HttpStatus::TEXT_414;
 }

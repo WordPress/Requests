@@ -96,8 +96,8 @@ final class HttpTest extends TestCase {
 				'code'     => '404',
 				'expected' => '\\' . Status404::class,
 			],
-			'integer 422: class does not exist' => [
-				'code'     => 422,
+			'integer 460: class does not exist' => [
+				'code'     => 460,
 				'expected' => $default,
 			],
 		];

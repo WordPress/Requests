@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 511 Network Authentication Required responses
@@ -31,5 +32,5 @@ final class Status511 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Network Authentication Required';
+	protected $reason = HttpStatus::TEXT_511;
 }

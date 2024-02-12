@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 418 I'm A Teapot responses
@@ -31,5 +32,5 @@ final class Status418 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = "I'm A Teapot";
+	protected $reason = HttpStatus::TEXT_418;
 }

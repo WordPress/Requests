@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 405 Method Not Allowed responses
@@ -29,5 +30,5 @@ final class Status405 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Method Not Allowed';
+	protected $reason = HttpStatus::TEXT_405;
 }

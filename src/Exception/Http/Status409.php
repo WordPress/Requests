@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 409 Conflict responses
@@ -29,5 +30,5 @@ final class Status409 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Conflict';
+	protected $reason = HttpStatus::TEXT_409;
 }

@@ -13,22 +13,22 @@ use WpOrg\Requests\Exception\Http;
 use WpOrg\Requests\Utility\HttpStatus;
 
 /**
- * Exception for 413 Request Entity Too Large responses
+ * Exception for 451 Unavailable For Legal Reasons responses
  *
  * @package Requests\Exceptions
  */
-final class Status413 extends Http {
+final class Status451 extends Http {
 	/**
 	 * HTTP status code
 	 *
 	 * @var int
 	 */
-	protected $code = 413;
+	protected $code = 451;
 
 	/**
 	 * Reason phrase
 	 *
 	 * @var string
 	 */
-	protected $reason = HttpStatus::TEXT_413;
+	protected $reason = HttpStatus::TEXT_451;
 }

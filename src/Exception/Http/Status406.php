@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 406 Not Acceptable responses
@@ -29,5 +30,5 @@ final class Status406 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Not Acceptable';
+	protected $reason = HttpStatus::TEXT_406;
 }

@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 504 Gateway Timeout responses
@@ -29,5 +30,5 @@ final class Status504 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Gateway Timeout';
+	protected $reason = HttpStatus::TEXT_504;
 }
