@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Restore etags cache for certificate files
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: certificates/etag-*.txt
           key: curl-etag-${{ hashFiles('certificates/cacert.pem') }}-${{ hashFiles('certificates/cacert.pem.sha256') }}
