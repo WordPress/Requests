@@ -206,6 +206,13 @@
 		</properties>
 	</rule>
 
+	<!-- In contrast to WPCS (40%), we allow a slightly higher percentage. -->
+	<rule ref="Squiz.PHP.CommentedOutCode">
+		<properties>
+			<property name="maxPercentage" value="50"/>
+		</properties>
+	</rule>
+
 
 	<!--
 	#############################################################################
