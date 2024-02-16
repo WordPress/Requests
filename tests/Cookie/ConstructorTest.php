@@ -24,7 +24,7 @@ final class ConstructorTest extends TestCase {
 	 */
 	public function testInvalidName($input) {
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($name) must be of type integer|string');
+		$this->expectExceptionMessage('Argument #1 ($name) must be of type integer|string and conform to RFC 2616');
 
 		new Cookie($input, 'value');
 	}
@@ -35,7 +35,7 @@ final class ConstructorTest extends TestCase {
 	 * @return array
 	 */
 	public static function dataInvalidName() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT,TypeProviderHelper::GROUP_STRING);
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, TypeProviderHelper::GROUP_STRING);
 	}
 
 	/**

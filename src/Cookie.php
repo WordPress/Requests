@@ -75,15 +75,15 @@ class Cookie {
 	 *                                                                                `'persistent'` and `'host-only'`.
 	 * @param int|null                                                $reference_time Reference time for relative calculations.
 	 *
-	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $name argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $name argument is not an integer or string that conforms to RFC 2616.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $value argument is not a string.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $attributes argument is not an array or iterable object with array access.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $flags argument is not an array.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $reference_time argument is not an integer or null.
 	 */
 	public function __construct($name, $value, $attributes = [], $flags = [], $reference_time = null) {
-		if (is_int($name) === false && is_string($name) === false) {
-			throw InvalidArgument::create(1, '$name', 'integer|string', gettype($name));
+		if (InputValidator::is_valid_rfc2616_token($name) === false) {
+			throw InvalidArgument::create(1, '$name', 'integer|string and conform to RFC 2616', gettype($name));
 		}
 
 		if (is_string($value) === false) {
@@ -439,8 +439,8 @@ class Cookie {
 			throw InvalidArgument::create(1, '$cookie_header', 'string', gettype($cookie_header));
 		}
 
-		if (is_int($name) === false && is_string($name) === false) {
-			throw InvalidArgument::create(2, '$name', 'integer|string', gettype($name));
+		if (InputValidator::is_valid_rfc2616_token($name) === false) {
+			throw InvalidArgument::create(2, '$name', 'integer|string and conform to RFC 2616', gettype($name));
 		}
 
 		$parts   = explode(';', $cookie_header);
