@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 431 Request Header Fields Too Large responses
@@ -31,5 +32,5 @@ final class Status431 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Request Header Fields Too Large';
+	protected $reason = HttpStatus::TEXT_431;
 }

@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 408 Request Timeout responses
@@ -29,5 +30,5 @@ final class Status408 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Request Timeout';
+	protected $reason = HttpStatus::TEXT_408;
 }

@@ -109,4 +109,27 @@ final class InputValidator {
 
 		return false;
 	}
+
+	/**
+	 * Verify that a received input parameter is a valid "token name" according to the
+	 * specification in RFC 2616 (HTTP/1.1).
+	 *
+	 * The short version is: 1 or more ASCII characters, CTRL chars and separators not allowed.
+	 * For the long version, see the specs in the RFC.
+	 *
+	 * @link https://datatracker.ietf.org/doc/html/rfc2616#section-2.2
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param mixed $input Input parameter to verify.
+	 *
+	 * @return bool
+	 */
+	public static function is_valid_rfc2616_token($input) {
+		if (!is_int($input) && !is_string($input)) {
+			return false;
+		}
+
+		return preg_match('@^[0-9A-Za-z!#$%&\'*+.^_`|~-]+$@', $input) === 1;
+	}
 }

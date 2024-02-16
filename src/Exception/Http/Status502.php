@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 502 Bad Gateway responses
@@ -29,5 +30,5 @@ final class Status502 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Bad Gateway';
+	protected $reason = HttpStatus::TEXT_502;
 }

@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 305 Use Proxy responses
@@ -29,5 +30,5 @@ final class Status305 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Use Proxy';
+	protected $reason = HttpStatus::TEXT_305;
 }

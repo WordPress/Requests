@@ -46,7 +46,7 @@ jobs:
         run: locale -a
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies - normal
         uses: "ramsey/composer-install@v2"
         with:
@@ -54,7 +54,7 @@ jobs:
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 

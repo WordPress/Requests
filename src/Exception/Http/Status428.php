@@ -10,6 +10,7 @@
 namespace WpOrg\Requests\Exception\Http;
 
 use WpOrg\Requests\Exception\Http;
+use WpOrg\Requests\Utility\HttpStatus;
 
 /**
  * Exception for 428 Precondition Required responses
@@ -31,5 +32,5 @@ final class Status428 extends Http {
 	 *
 	 * @var string
 	 */
-	protected $reason = 'Precondition Required';
+	protected $reason = HttpStatus::TEXT_428;
 }
