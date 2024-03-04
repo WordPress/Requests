@@ -61,7 +61,7 @@ jobs:
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies - normal
         if: ${{ matrix.php != '8.4' }}
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
@@ -69,7 +69,7 @@ jobs:
       # For PHP "nightly", we need to install with ignore platform reqs.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ matrix.php == '8.4' }}
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           composer-options: --ignore-platform-req=php
           custom-cache-suffix: $(date -u "+%Y-%m")
