@@ -288,6 +288,10 @@ final class Curl implements Transport {
 		do {
 			$active = 0;
 
+			if ($active) {
+				curl_multi_select($multihandle);
+			}
+
 			do {
 				$status = curl_multi_exec($multihandle, $active);
 			} while ($status === CURLM_CALL_MULTI_PERFORM);
