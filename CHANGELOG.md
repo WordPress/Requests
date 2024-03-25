@@ -1,6 +1,22 @@
 Changelog
 =========
 
+2.0.11
+------
+
+### Overview of changes
+- Update bundled certificates as of 2024-03-11. [#864]
+- Fixed: PHP 8.4 deprecation of the two parameter signature of `stream_context_set_option()`. [#822] Props [@jrfnl][gh-jrfnl]
+- Fixed: PHP 8.4 deprecation of implicitly nullable parameter. [#865] Props [@Ayesh][gh-ayesh], [@jrfnl][gh-jrfnl]
+    Note: this fix constitutes an, albeit small, breaking change to the signature of the `Cookie::parse_from_headers()` method.
+    Classes which extend the `Cookie` class and overload the `parse_from_headers()` method should be updated for the new method signature.
+    Additionally, if code calling the `Cookie::parse_from_headers()` method would be wrapped in a `try - catch` to catch a potential PHP `TypeError` (PHP 7.0+) or `Exception` (PHP < 7.0) for when invalid data was passed as the `$origin` parameter, this code will need to be updated to now also catch a potential `WpOrg\Requests\Exception\InvalidArgumentException`.
+    As due diligence could not find any classes which would be affected by this BC-break, we have deemed it acceptable to include this fix in the 2.0.11 release.
+
+[#822]: https://github.com/WordPress/Requests/pull/822
+[#864]: https://github.com/WordPress/Requests/pull/864
+[#865]: https://github.com/WordPress/Requests/pull/865
+
 2.0.10
 ------
 
@@ -96,7 +112,7 @@ Changelog
 - Docs: the Hook documentation has been updated to reflect the current available hooks. [#646]
 - General housekeeping. [#635], [#649], [#650], [#653], [#655], [#658], [#660], [#661], [#662], [#669], [#671], [#672], [#674]
 
-Props [@alpipego][gh-alpipego], [@costdev][gh-costdev], [@jegrandet][gh-jegrandet] [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera]
+Props [@alpipego][gh-alpipego], [@costdev][gh-costdev], [@jegrandet][gh-jegrandet], [@jrfnl][gh-jrfnl], [@schlessera][gh-schlessera]
 
 [#674]: https://github.com/WordPress/Requests/pull/674
 [#672]: https://github.com/WordPress/Requests/pull/672
@@ -1014,6 +1030,7 @@ Initial release!
 [gh-adri]: https://github.com/adri
 [gh-alpipego]: https://github.com/alpipego/
 [gh-amandato]: https://github.com/amandato
+[gh-ayesh]: https://github.com/Ayesh
 [gh-beutnagel]: https://github.com/beutnagel
 [gh-carlalexander]: https://github.com/carlalexander
 [gh-catharsisjelly]: https://github.com/catharsisjelly
