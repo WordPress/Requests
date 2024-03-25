@@ -211,7 +211,7 @@ final class Curl implements Transport {
 		curl_exec($this->handle);
 		$response = $this->response_data;
 
-		$options['hooks']->dispatch('curl.after_send', []);
+		$options['hooks']->dispatch('curl.after_send', [&$this->handle]);
 
 		$curl_errno = curl_errno($this->handle);
 
