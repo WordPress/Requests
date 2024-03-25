@@ -491,26 +491,17 @@ class Cookie {
 	 * @param \WpOrg\Requests\Iri|null         $origin  URI for comparing cookie origins
 	 * @param int|null                         $time    Reference time for expiration calculation
 	 * @return array
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $origin argument is not null or an instance of the Iri class.
 	 */
-	public static function parse_from_headers(Headers $headers, $origin, $time = null) {
-		// Mimic a \WpOrg\Requests\Iri|null type-check for $origin.
-		// Change to a type declaration when PHP >= 7.1 is the base requirement.
-		if ($origin !== null && !$origin instanceof \WpOrg\Requests\Iri) {
-			if (\PHP_VERSION_ID >= 70000) {
-				throw new \TypeError(
-					'WpOrg\Requests\Cookie::parse_from_headers(): Argument #2 ($origin) must be of type WpOrg\Requests\Iri, ' . gettype($origin) . ' given'
-				);
-			}
-			trigger_error(
-				'Argument 2 passed to WpOrg\Requests\Cookie::parse_from_headers() must be an instance of WpOrg\Requests\Iri, ' . gettype($origin) . ' given',
-				E_USER_ERROR
-			);
-			exit();
-		}
-
+	public static function parse_from_headers(Headers $headers, $origin = null, $time = null) {
 		$cookie_headers = $headers->getValues('Set-Cookie');
 		if (empty($cookie_headers)) {
 			return [];
+		}
+
+		if ($origin !== null && !($origin instanceof Iri)) {
+			throw InvalidArgument::create(2, '$origin', Iri::class . ' or null', gettype($origin));
 		}
 
 		$cookies = [];
