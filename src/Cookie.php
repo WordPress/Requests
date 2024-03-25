@@ -67,7 +67,7 @@ class Cookie {
 	/**
 	 * Create a new cookie object
 	 *
-	 * @param string                                                  $name           The name of the cookie.
+	 * @param int|string                                              $name           The name of the cookie.
 	 * @param string                                                  $value          The value for the cookie.
 	 * @param array|\WpOrg\Requests\Utility\CaseInsensitiveDictionary $attributes     Associative array of attribute data
 	 * @param array                                                   $flags          The flags for the cookie.
@@ -75,15 +75,15 @@ class Cookie {
 	 *                                                                                `'persistent'` and `'host-only'`.
 	 * @param int|null                                                $reference_time Reference time for relative calculations.
 	 *
-	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $name argument is not a string.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $name argument is not an integer or string that conforms to RFC 2616.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $value argument is not a string.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $attributes argument is not an array or iterable object with array access.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $flags argument is not an array.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $reference_time argument is not an integer or null.
 	 */
 	public function __construct($name, $value, $attributes = [], $flags = [], $reference_time = null) {
-		if (is_string($name) === false) {
-			throw InvalidArgument::create(1, '$name', 'string', gettype($name));
+		if (InputValidator::is_valid_rfc2616_token($name) === false) {
+			throw InvalidArgument::create(1, '$name', 'integer|string and conform to RFC 2616', gettype($name));
 		}
 
 		if (is_string($value) === false) {
@@ -102,7 +102,7 @@ class Cookie {
 			throw InvalidArgument::create(5, '$reference_time', 'integer|null', gettype($reference_time));
 		}
 
-		$this->name       = $name;
+		$this->name       = (string) $name;
 		$this->value      = $value;
 		$this->attributes = $attributes;
 		$default_flags    = [
@@ -426,9 +426,9 @@ class Cookie {
 	 * is an intentional deviation from RFC 2109 and RFC 2616. RFC 6265
 	 * specifies some of this handling, but not in a thorough manner.
 	 *
-	 * @param string   $cookie_header  Cookie header value (from a Set-Cookie header)
-	 * @param string   $name
-	 * @param int|null $reference_time
+	 * @param int|string $cookie_header  Cookie header value (from a Set-Cookie header)
+	 * @param string     $name
+	 * @param int|null   $reference_time
 	 * @return \WpOrg\Requests\Cookie Parsed cookie object
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $cookie_header argument is not a string.
@@ -439,8 +439,8 @@ class Cookie {
 			throw InvalidArgument::create(1, '$cookie_header', 'string', gettype($cookie_header));
 		}
 
-		if (is_string($name) === false) {
-			throw InvalidArgument::create(2, '$name', 'string', gettype($name));
+		if (InputValidator::is_valid_rfc2616_token($name) === false) {
+			throw InvalidArgument::create(2, '$name', 'integer|string and conform to RFC 2616', gettype($name));
 		}
 
 		$parts   = explode(';', $cookie_header);

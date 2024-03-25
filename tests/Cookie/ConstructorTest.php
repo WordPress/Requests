@@ -16,7 +16,7 @@ final class ConstructorTest extends TestCase {
 	/**
 	 * Tests receiving an exception when the constructor received an invalid input type as `$name`.
 	 *
-	 * @dataProvider dataInvalidStringInput
+	 * @dataProvider dataInvalidName
 	 *
 	 * @param mixed $input Invalid parameter input.
 	 *
@@ -24,9 +24,18 @@ final class ConstructorTest extends TestCase {
 	 */
 	public function testInvalidName($input) {
 		$this->expectException(InvalidArgument::class);
-		$this->expectExceptionMessage('Argument #1 ($name) must be of type string');
+		$this->expectExceptionMessage('Argument #1 ($name) must be of type integer|string and conform to RFC 2616');
 
 		new Cookie($input, 'value');
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public static function dataInvalidName() {
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, TypeProviderHelper::GROUP_STRING);
 	}
 
 	/**
