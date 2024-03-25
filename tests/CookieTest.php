@@ -4,6 +4,7 @@ namespace WpOrg\Requests\Tests;
 
 use DateTime;
 use EmptyIterator;
+use stdClass;
 use WpOrg\Requests\Cookie;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
@@ -806,5 +807,40 @@ final class CookieTest extends TestCase {
 		$headers['Set-Cookie'] = 'name=value;';
 
 		Cookie::parse_from_headers($headers, $origin, 'now');
+	}
+
+	/**
+	 * Verify parsing of cookies fails with an exception if the $origin parameter is passed anything but `null`
+	 * or an instance of Iri.
+	 *
+	 * @dataProvider dataParseFromHeadersInvalidOrigin
+	 *
+	 * @covers ::parse_from_headers
+	 *
+	 * @param mixed $input Invalid parameter input.
+	 *
+	 * @return void
+	 */
+	public function testParseFromHeadersInvalidOrigin($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #2 ($origin) must be of type WpOrg\Requests\Iri or null');
+
+		$headers               = new Headers();
+		$headers['Set-Cookie'] = 'name=value';
+
+		Cookie::parse_from_headers($headers, $input);
+	}
+
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public static function dataParseFromHeadersInvalidOrigin() {
+		return [
+			'falseg'   => [false],
+			'string'   => ['something'],
+			'stdClass' => [new stdClass()],
+		];
 	}
 }
