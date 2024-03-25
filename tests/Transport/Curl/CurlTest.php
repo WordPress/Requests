@@ -2,13 +2,83 @@
 
 namespace WpOrg\Requests\Tests\Transport\Curl;
 
+use CurlHandle;
+use WeakReference;
 use WpOrg\Requests\Exception;
+use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Tests\Transport\BaseTestCase;
 use WpOrg\Requests\Transport\Curl;
 
 final class CurlTest extends BaseTestCase {
 	protected $transport = Curl::class;
+
+	/**
+	 * Temporary storage of the cURL handle to assert against.
+	 *
+	 * The handle is stored as a weak reference in order to avoid the test itself
+	 * becoming the source of the memory leak due to locking the resource.
+	 *
+	 * @var null|WeakReference
+	 */
+	protected $curl_handle;
+
+	/**
+	 * Get the options to use for the cURL tests.
+	 *
+	 * This adds a hook on curl.before_request to store the cURL handle. This is
+	 * needed for asserting after the test scenarios that the cURL handle was
+	 * correctly closed.
+	 *
+	 * @param array $other
+	 * @return array
+	 */
+	protected function getOptions($other = []) {
+		$options = parent::getOptions($other);
+
+		$this->curl_handle = null;
+
+		// On PHP < 7.2, we lack the capability to store weak references.
+		// In this case, we just skip the memory leak testing.
+		if (version_compare(PHP_VERSION, '7.4.0') < 0) {
+			return $options;
+		}
+
+		if (!array_key_exists('hooks', $options)) {
+			$options['hooks'] = new Hooks();
+		}
+
+		$options['hooks']->register(
+			'curl.before_request',
+			function ($handle) {
+				$this->curl_handle = WeakReference::create($handle);
+			}
+		);
+
+		return $options;
+	}
+
+	/**
+	 * Post condition asserts to run after each scenario.
+	 *
+	 * This is used for asserting that cURL handles are not leaking memory.
+	 */
+	protected function assert_post_conditions() {
+		if (version_compare(PHP_VERSION, '7.4.0') < 0 || !$this->curl_handle instanceof WeakReference) {
+			// No cURL handle was used during this particular test scenario.
+			return;
+		}
+
+		if ($this->curl_handle->get() instanceof CurlHandle) {
+			// CURL handles have been changed from resources into CurlHandle
+			// objects starting with PHP 8.0, which don;t need to be closed.
+			return;
+		}
+
+		if ($this->shouldClosedResourceAssertionBeSkipped($this->curl_handle->get()) === false) {
+			$this->assertIsClosedResource($this->curl_handle->get());
+		}
+	}
 
 	public function testBadIP() {
 		$this->expectException(Exception::class);
