@@ -10,7 +10,7 @@ default parameters for these.
 Let's simulate communicating with GitHub.
 
 ```php
-$session = new WpOrg\Requests\Session('https://api.github.com/');
+$session = new \WpOrg\Requests\Session('https://api.github.com/');
 $session->headers['X-ContactAuthor'] = 'rmccue';
 $session->useragent = 'My-Awesome-App';
 
@@ -42,7 +42,7 @@ verification using the certificate authority list provided by the server environ
 ```php
 // Use server-provided certificate authority list.
 $options  = array('verify' => true);
-$response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
+$response = \WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
 ```
 
 The actual behavior depends on the transport being used, but in general should be based on the [`openssl` PHP ini settings].
@@ -56,7 +56,7 @@ You can do so by using the `'verify'` option with a filepath string:
 $options = array(
     'verify' => '/path/to/cacert.pem'
 );
-$response = WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
+$response = \WpOrg\Requests\Requests::get('https://httpbin.org/', array(), $options);
 ```
 
 As a fallback, Requests bundles certificates from the [Mozilla certificate authority list],
@@ -65,7 +65,7 @@ This fallback is used when the `'verify'` option is not provided at all:
 
 ```php
 // Use fallback certificate authority list.
-$response = WpOrg\Requests\Requests::get('https://httpbin.org/');
+$response = \WpOrg\Requests\Requests::get('https://httpbin.org/');
 ```
 
 :warning: **_Note however that this fallback should only be used for servers that are not properly
@@ -81,8 +81,9 @@ access to a transport with SSL capabilities with the following call:
 
 ```php
 use WpOrg\Requests\Capability;
+use WpOrg\Requests\Requests;
 
-$ssl_available = WpOrg\Requests\Requests::test(array(Capability::SSL => true));
+$ssl_available = Requests::test(array(Capability::SSL => true));
 ```
 
 ### Security Note

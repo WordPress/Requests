@@ -16,11 +16,11 @@ no changes are needed.
 ```php
 // OLD: Using the custom autoloader in Requests 1.x.
 require_once 'path/to/Requests/library/Requests.php';
-Requests::register_autoloader();
+\Requests::register_autoloader();
 
 // NEW: Using the custom autoloader in Requests 2.x.
 require_once 'path/to/Requests/src/Autoload.php';
-WpOrg\Requests\Autoload::register();
+\WpOrg\Requests\Autoload::register();
 ```
 
 For backward compatibility reasons, the Requests 1.x manner to call the autoloader
