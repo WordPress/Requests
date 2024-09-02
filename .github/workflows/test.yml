@@ -104,10 +104,13 @@ jobs:
         run: curl -s -I https://requests-test-server.onrender.com/ > /dev/null
 
       - name: Access localhost on port 8080
-        run: curl -i http://localhost:8080
+        run: curl -i -f http://localhost:8080
 
       - name: Access localhost on port 9002
-        run: curl -i http://localhost:9002
+        run: curl -i -f http://localhost:9002
+
+      - name: Access localhost on port 9003
+        run: curl -i -f http://localhost:9003 -u test:pass
 
       - name: Grab PHPUnit version
         id: phpunit_version
