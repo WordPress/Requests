@@ -13,13 +13,13 @@ use WpOrg\Requests\Tests\TestCase;
 
 final class SessionTest extends TestCase {
 	public function testURLResolution() {
-		$session = new Session($this->httpbin('/'));
+		$session = new Session($this->httpbin('/', true));
 
 		// Set the cookies up
 		$response = $session->get('/get');
 		$this->assertTrue($response->success, 'Session property "success" is not equal to true');
 		$this->assertSame(
-			$this->httpbin('/get'),
+			$this->httpbin('/get', true),
 			$response->url,
 			'Session property "url" is not equal to the expected get URL'
 		);
@@ -28,7 +28,7 @@ final class SessionTest extends TestCase {
 		$this->assertNotNull($data, 'Decoded response body is null');
 		$this->assertArrayHasKey('url', $data, 'Response data array does not have key "url"');
 		$this->assertSame(
-			$this->httpbin('/get'),
+			$this->httpbin('/get', true),
 			$data['url'],
 			'The value of the "url" key in the response data array is not equal to the expected get URL'
 		);
