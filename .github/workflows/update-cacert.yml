@@ -91,6 +91,7 @@ jobs:
           base: ${{ steps.branches.outputs.BASE }}
           branch: ${{ steps.branches.outputs.PR_BRANCH }}
           delete-branch: true
+          sign-commits: true
           commit-message: ":lock_with_ink_pen: Update certificate bundle"
           title: ":lock_with_ink_pen: Update certificate bundle"
           body: |

@@ -102,7 +102,7 @@ jobs:
             echo "REF=$REF_NAME" >> $GITHUB_OUTPUT
             echo 'PR_TITLE_PREFIX=[TEST | DO NOT MERGE] ' >> $GITHUB_OUTPUT
             echo 'PR_BODY=Test run for the website update after changes to the automated scripts.' >> $GITHUB_OUTPUT
-            echo 'DRAFT=true' >> $GITHUB_OUTPUT
+            echo 'DRAFT=always-true' >> $GITHUB_OUTPUT
           else
             echo "REF=$TAG_NAME" >> $GITHUB_OUTPUT
             echo 'PR_TITLE_PREFIX=' >> $GITHUB_OUTPUT
@@ -168,6 +168,7 @@ jobs:
           base: gh-pages
           branch: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
           delete-branch: true
+          sign-commits: true
           commit-message: "GH Pages: update other docs for Requests ${{ steps.get_pr_info.outputs.REF }}"
           title: "${{ steps.get_pr_info.outputs.PR_TITLE_PREFIX }}:books: Update GHPages website"
           body: |
