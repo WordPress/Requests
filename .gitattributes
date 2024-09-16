@@ -1,11 +1,25 @@
-.github/ export-ignore
-build/ export-ignore
-docs/ export-ignore
-examples/ export-ignore
-tests/ export-ignore
-.codecov.yml export-ignore
-.gitattributes export-ignore
-.gitignore export-ignore
-.phpcs.xml.dist export-ignore
-phpdoc.dist.xml export-ignore
-phpunit.xml.dist export-ignore
+#
+# Exclude these files from release archives.
+# This will also make them unavailable when using Composer with `--prefer-dist`.
+# If you develop for this repo using Composer, use `--prefer-source`.
+# https://www.reddit.com/r/PHP/comments/2jzp6k/i_dont_need_your_tests_in_my_production/
+# https://blog.madewithlove.be/post/gitattributes/
+#
+.github/           export-ignore
+build/             export-ignore
+docs/              export-ignore
+examples/          export-ignore
+tests/             export-ignore
+.codecov.yml       export-ignore
+.editorconfig      export-ignore
+.gitattributes     export-ignore
+.gitignore         export-ignore
+.phpcs.xml.dist    export-ignore
+phpdoc.dist.xml    export-ignore
+phpunit.xml.dist   export-ignore
+
+#
+# Auto detect text files and perform LF normalization
+# https://pablorsk.medium.com/be-a-git-ninja-the-gitattributes-file-e58c07c9e915
+#
+* text=auto
