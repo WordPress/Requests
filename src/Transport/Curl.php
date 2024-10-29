@@ -17,6 +17,8 @@ use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Exception\Transport\Curl as CurlException;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Transport;
+use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
+use WpOrg\Requests\Utility\HostBindings;
 use WpOrg\Requests\Utility\InputValidator;
 
 /**
@@ -385,8 +387,10 @@ final class Curl implements Transport {
 	private function setup_handle($url, $headers, $data, $options) {
 		$options['hooks']->dispatch('curl.before_request', [&$this->handle]);
 
+		$case_insensitive_headers = new CaseInsensitiveDictionary($headers);
+
 		// Force closing the connection for old versions of cURL (<7.22).
-		if (!isset($headers['Connection'])) {
+		if (!isset($case_insensitive_headers['Connection'])) {
 			$headers['Connection'] = 'close';
 		}
 
@@ -417,6 +421,76 @@ final class Curl implements Transport {
 				$data = http_build_query($data, '', '&');
 			}
 		}
+
+		$exec_url = $url;
+		$parsed = parse_url($url);
+		$host = $parsed['host'];
+		$host_bindings = new HostBindings(isset($options[Capability::HOST_BINDINGS]) ? $options[Capability::HOST_BINDINGS] : []);
+		if ($host_bindings->has_host($host)) {
+			if (isset($parsed['port'])) {
+				$normalized_port = $port = $parsed['port'];
+			} else {
+				$port =            '';
+				$normalized_port = 'http' === $parsed['scheme'] ? 80 : 443;
+			}
+
+			$exec_ip = $host_bindings->get_first_ip($host);
+
+			// @TODO: Extract connect_to/resolve handling into separate method.
+			if (defined('CURLOPT_CONNECT_TO')) {
+				$exec_host = strpos($exec_ip, ':') !== false ? "[${exec_ip}]": $exec_ip;
+				$connect_to_string = "${host}:${normalized_port}:${exec_host}:${normlaized_port}";
+				// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttoFound
+				curl_setopt($this->handle, CURLOPT_CONNECT_TO, $connect_to_string);
+			} elseif (defined('CURLOPT_RESOLVE')) {
+				if (defined('CURLOPT_DNS_USE_GLOBAL_CACHE')) {
+					// Set to true in PHP's source for most installations.
+					// Deprecated as of cURL 7.68.0, which removes our need to set this.
+					curl_setopt($this->handle, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
+				}
+				curl_setopt($this->handle, CURLOPT_RESOLVE, [ "${host}:${normalized_port}:${exec_ip}" ]);
+			} elseif ('http' === $parsed['scheme']) {
+				// @TODO: Use utility class to handle URL assembly.
+				$exec_host = false === strpos(
+						$exec_ip,
+						':'
+					) ? $exec_ip : "[$exec_ip]";
+				$exec_url  = $parsed['scheme'] . '://';
+				if (isset($parsed['user'])) {
+					$exec_url .= $parsed['user'];
+					if (isset($parsed['pass'])) {
+						$exec_url .= ':' . $parsed['pass'];
+					}
+
+					$exec_url .= '@';
+				}
+
+				$exec_url .= $exec_host;
+				if ($port) {
+					$exec_url .= ':' . $port;
+				}
+
+				if (isset($parsed['path'])) {
+					$exec_url .= $parsed['path'];
+				}
+
+				if (isset($parsed['query'])) {
+					$exec_url .= '?' . $parsed['query'];
+				}
+
+				if (isset($parsed['fragment'])) {
+					$exec_url .= '#' . $parsed['fragment'];
+				}
+
+				if (!isset($case_insensitive_headers['Host'])) {
+					$headers['Host'] = $host;
+				}
+			}
+
+			// Otherwise, there's nothing we can do.
+		}
+
+		$headers = Requests::flatten($headers);
 
 		switch ($options['type']) {
 			case Requests::POST:
@@ -463,7 +537,7 @@ final class Curl implements Transport {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
 		}
 
-		curl_setopt($this->handle, CURLOPT_URL, $url);
+		curl_setopt($this->handle, CURLOPT_URL, $exec_url);
 		curl_setopt($this->handle, CURLOPT_USERAGENT, $options['useragent']);
 		if (!empty($headers)) {
 			curl_setopt($this->handle, CURLOPT_HTTPHEADER, $headers);
@@ -630,6 +704,19 @@ final class Curl implements Transport {
 	public static function test($capabilities = []) {
 		if (!function_exists('curl_init') || !function_exists('curl_exec')) {
 			return false;
+		}
+
+		// If needed, check that our installed curl version supports host bindings
+		if (isset($capabilities[Capability::HOST_BINDINGS]) && $capabilities[Capability::HOST_BINDINGS]) {
+			/*
+			 * CURLOPT_RESOLVE     - Added in 7.21.3.
+			 *                     - Removal support added in 7.42.0.
+			 *                     - Support for providing multiple IP addresses per entry was added in 7.59.0.
+			 * CURLOPT_CONNECT_TO - Added in 7.49.0.
+			 */
+			if (defined('CURLOPT_RESOLVE') === false && defined('CURLOPT_CONNECT_TO') === false) {
+				return false;
+			}
 		}
 
 		// If needed, check that our installed curl version supports SSL

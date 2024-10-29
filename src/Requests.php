@@ -417,6 +417,9 @@ class Requests {
 	 * - `data_format`: How should we send the `$data` parameter?
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
+	 * - `host_bindings`: Bind host names to specific IP addresses to be used.
+	 *    Keys are domain names, values are arrays of IPv4 and/or IPv6 addresses.
+	 *    (array, default: [])
 	 *
 	 * @param string|\Stringable $url     URL to request
 	 * @param array              $headers Extra headers to send with the request
@@ -460,8 +463,16 @@ class Requests {
 				$transport = new $transport();
 			}
 		} else {
-			$need_ssl     = (stripos($url, 'https://') === 0);
-			$capabilities = [Capability::SSL => $need_ssl];
+			$need_ssl = (stripos($url, 'https://') === 0);
+
+			$need_host_bindings = array_key_exists(Capability::HOST_BINDINGS, $options)
+				&& is_array($options[Capability::HOST_BINDINGS]);
+
+			$capabilities = [
+				Capability::HOST_BINDINGS => $need_host_bindings,
+				Capability::SSL           => $need_ssl,
+			];
+
 			$transport    = self::get_transport($capabilities);
 		}
 

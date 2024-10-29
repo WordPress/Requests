@@ -17,6 +17,7 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Transport;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
+use WpOrg\Requests\Utility\HostBindings;
 use WpOrg\Requests\Utility\InputValidator;
 
 /**
@@ -105,13 +106,19 @@ final class Fsockopen implements Transport {
 		}
 
 		$host                     = $url_parts['host'];
+		$exec_host                = $host;
 		$context                  = stream_context_create();
 		$verifyname               = false;
 		$case_insensitive_headers = new CaseInsensitiveDictionary($headers);
 
+		$host_bindings = new HostBindings(isset($options[Capability::HOST_BINDINGS]) ? $options[Capability::HOST_BINDINGS] : []);
+		if ($host_bindings->has_host($host)) {
+			$exec_host = $host_bindings->get_first_ip_for_host($host);
+		}
+
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
-			$remote_socket = 'ssl://' . $host;
+			$remote_socket = 'ssl://' . $exec_host;
 			if (!isset($url_parts['port'])) {
 				$url_parts['port'] = Port::HTTPS;
 			}
@@ -155,7 +162,7 @@ final class Fsockopen implements Transport {
 				stream_context_set_option($context, ['ssl' => $context_options]);
 			}
 		} else {
-			$remote_socket = 'tcp://' . $host;
+			$remote_socket = 'tcp://' . $exec_host;
 		}
 
 		$this->max_bytes = $options['max_bytes'];
@@ -175,7 +182,7 @@ final class Fsockopen implements Transport {
 
 		restore_error_handler();
 
-		if ($verifyname && !$this->verify_certificate_from_context($host, $context)) {
+		if ($verifyname && !$this->verify_certificate_from_context($exec_host, $context)) {
 			throw new Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
 		}
 
@@ -223,7 +230,7 @@ final class Fsockopen implements Transport {
 		}
 
 		if (!isset($case_insensitive_headers['Host'])) {
-			$out         .= sprintf('Host: %s', $url_parts['host']);
+			$out         .= sprintf('Host: %s', $exec_host);
 			$scheme_lower = strtolower($url_parts['scheme']);
 
 			if (($scheme_lower === 'http' && $url_parts['port'] !== Port::HTTP) || ($scheme_lower === 'https' && $url_parts['port'] !== Port::HTTPS)) {
