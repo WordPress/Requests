@@ -473,7 +473,7 @@ class Requests {
 				Capability::SSL           => $need_ssl,
 			];
 
-			$transport    = self::get_transport($capabilities);
+			$transport = self::get_transport($capabilities);
 		}
 
 		$response = $transport->request($url, $headers, $data, $options);

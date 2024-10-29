@@ -19,16 +19,16 @@ use InvalidArgumentException;
  */
 final class UnknownHost extends InvalidArgumentException {
 
-    /**
-     * Instantiate an UnknownHost exception for an unknown host that was
-     * requested via HostBindings.
-     *
-     * @param string $host Unknown host that was requested.
-     * @return self
-     */
-    public static function for_host($host) {
-        $message = "Unknown host was requested from the host bindings collection: {$host}";
+	/**
+	 * Instantiate an UnknownHost exception for an unknown host that was
+	 * requested via HostBindings.
+	 *
+	 * @param string $host Unknown host that was requested.
+	 * @return self
+	 */
+	public static function for_host($host) {
+		$message = "Unknown host was requested from the host bindings collection: {$host}";
 
-        return new self($message);
-    }
+		return new self($message);
+	}
 }

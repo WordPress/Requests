@@ -19,15 +19,15 @@ use RangeException;
  */
 final class MissingIpAddress extends RangeException {
 
-    /**
-     * Instantiate a MissingIpAddress exception for a missing IP address in the host bindings.
-     *
-     * @param string $host Host that was requested.
-     * @return self
-     */
-    public static function for_host($host) {
-        $message = "No IP address was found for host: {$host}";
+	/**
+	 * Instantiate a MissingIpAddress exception for a missing IP address in the host bindings.
+	 *
+	 * @param string $host Host that was requested.
+	 * @return self
+	 */
+	public static function for_host($host) {
+		$message = "No IP address was found for host: {$host}";
 
-        return new self($message);
-    }
+		return new self($message);
+	}
 }

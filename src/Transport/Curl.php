@@ -422,39 +422,41 @@ final class Curl implements Transport {
 			}
 		}
 
-		$exec_url = $url;
-		$parsed = parse_url($url);
-		$host = $parsed['host'];
+		$exec_url      = $url;
+		$parsed        = parse_url($url);
+		$host          = $parsed['host'];
 		$host_bindings = new HostBindings(isset($options[Capability::HOST_BINDINGS]) ? $options[Capability::HOST_BINDINGS] : []);
 		if ($host_bindings->has_host($host)) {
 			if (isset($parsed['port'])) {
-				$normalized_port = $port = $parsed['port'];
+				$port            = $parsed['port'];
+				$normalized_port = $port;
 			} else {
-				$port =            '';
-				$normalized_port = 'http' === $parsed['scheme'] ? 80 : 443;
+				$port            = '';
+				$normalized_port = ($parsed['scheme'] === 'http' ? 80 : 443);
 			}
 
 			$exec_ip = $host_bindings->get_first_ip($host);
 
 			// @TODO: Extract connect_to/resolve handling into separate method.
 			if (defined('CURLOPT_CONNECT_TO')) {
-				$exec_host = strpos($exec_ip, ':') !== false ? "[${exec_ip}]": $exec_ip;
-				$connect_to_string = "${host}:${normalized_port}:${exec_host}:${normlaized_port}";
+				$exec_host         = strpos($exec_ip, ':') !== false ? "[${exec_ip}]" : $exec_ip;
+				$connect_to_string = "${host}:${normalized_port}:${exec_host}:${normalized_port}";
 				// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttoFound
-				curl_setopt($this->handle, CURLOPT_CONNECT_TO, $connect_to_string);
+				curl_setopt($this->handle, CURLOPT_CONNECT_TO, $connect_to_string); // phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connect_toFound
 			} elseif (defined('CURLOPT_RESOLVE')) {
 				if (defined('CURLOPT_DNS_USE_GLOBAL_CACHE')) {
 					// Set to true in PHP's source for most installations.
 					// Deprecated as of cURL 7.68.0, which removes our need to set this.
 					curl_setopt($this->handle, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
 				}
-				curl_setopt($this->handle, CURLOPT_RESOLVE, [ "${host}:${normalized_port}:${exec_ip}" ]);
-			} elseif ('http' === $parsed['scheme']) {
+
+				curl_setopt($this->handle, CURLOPT_RESOLVE, ["${host}:${normalized_port}:${exec_ip}"]);
+			} elseif ($parsed['scheme'] === 'http') {
 				// @TODO: Use utility class to handle URL assembly.
-				$exec_host = false === strpos(
-						$exec_ip,
-						':'
-					) ? $exec_ip : "[$exec_ip]";
+				$exec_host = strpos(
+					$exec_ip,
+					':'
+				) === false ? $exec_ip : "[$exec_ip]";
 				$exec_url  = $parsed['scheme'] . '://';
 				if (isset($parsed['user'])) {
 					$exec_url .= $parsed['user'];
