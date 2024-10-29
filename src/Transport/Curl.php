@@ -435,12 +435,13 @@ final class Curl implements Transport {
 				$normalized_port = ($parsed['scheme'] === 'http' ? 80 : 443);
 			}
 
-			$exec_ip = $host_bindings->get_first_ip($host);
+			$exec_ip = $host_bindings->get_first_ip_for_host($host);
+			// Use square brackets for IPv6 addresses.
+			$exec_ip = strpos($exec_ip, ':') === false ? $exec_ip : "[${exec_ip}]";
 
 			// @TODO: Extract connect_to/resolve handling into separate method.
 			if (defined('CURLOPT_CONNECT_TO')) {
-				$exec_host         = strpos($exec_ip, ':') !== false ? "[${exec_ip}]" : $exec_ip;
-				$connect_to_string = "${host}:${normalized_port}:${exec_host}:${normalized_port}";
+				$connect_to_string = "${host}:${normalized_port}:${exec_ip}:${normalized_port}";
 				// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttoFound
 				curl_setopt($this->handle, CURLOPT_CONNECT_TO, $connect_to_string); // phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connect_toFound
 			} elseif (defined('CURLOPT_RESOLVE')) {
@@ -453,11 +454,7 @@ final class Curl implements Transport {
 				curl_setopt($this->handle, CURLOPT_RESOLVE, ["${host}:${normalized_port}:${exec_ip}"]);
 			} elseif ($parsed['scheme'] === 'http') {
 				// @TODO: Use utility class to handle URL assembly.
-				$exec_host = strpos(
-					$exec_ip,
-					':'
-				) === false ? $exec_ip : "[$exec_ip]";
-				$exec_url  = $parsed['scheme'] . '://';
+				$exec_url = $parsed['scheme'] . '://';
 				if (isset($parsed['user'])) {
 					$exec_url .= $parsed['user'];
 					if (isset($parsed['pass'])) {
@@ -467,7 +464,7 @@ final class Curl implements Transport {
 					$exec_url .= '@';
 				}
 
-				$exec_url .= $exec_host;
+				$exec_url .= $exec_ip;
 				if ($port) {
 					$exec_url .= ':' . $port;
 				}
