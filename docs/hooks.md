@@ -173,10 +173,10 @@ In order to register your own hooks, you need to instantiate `WpOrg\Requests\Hoo
 and pass the object in via the `'hooks'` option.
 
 ```php
-$hooks = new WpOrg\Requests\Hooks();
+$hooks = new \WpOrg\Requests\Hooks();
 $hooks->register('requests.after_request', 'mycallback');
 
-$request = WpOrg\Requests\Requests::get('https://httpbin.org/get', array(), array('hooks' => $hooks));
+$request = \WpOrg\Requests\Requests::get('https://httpbin.org/get', array(), array('hooks' => $hooks));
 ```
 
 ***
