@@ -20,7 +20,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           # Use the version as per https://pages.github.com/versions/.
-          ruby-version: 2.7.4
+          ruby-version: 3.3.4
           bundler-cache: true
 
       - name: Test building the GH Pages site
