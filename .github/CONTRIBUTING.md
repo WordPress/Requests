@@ -109,28 +109,65 @@ Code coverage is monitored for every PR and for the code base as a whole using [
 
 ### Running the Tests
 
+There are several ways to run the tests locally:
+
+#### 1. Using Composer Scripts (Recommended)
+
+The simplest way to run tests is using the Composer scripts:
+
 ```bash
-# Start the test server
-PORT=8080 vendor/bin/start.sh
-export "REQUESTS_TEST_HOST_HTTP=localhost:8080"
-
-# Start the proxy server
-PORT=9002 tests/utils/proxy/start.sh
-PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
-export "REQUESTS_HTTP_PROXY=localhost:9002"
-export "REQUESTS_HTTP_PROXY_AUTH=localhost:9003"
-export "REQUESTS_HTTP_PROXY_AUTH_USER=test"
-export "REQUESTS_HTTP_PROXY_AUTH_PASS=pass"
-
-# Run the tests
+# Run tests without coverage
 composer test
 
-# Stop the proxy server
-PORT=9002 tests/utils/proxy/stop.sh
-PORT=9003 tests/utils/proxy/stop.sh
+# Run tests with coverage
+composer coverage
 
-# Stop the test server
-vendor/bin/stop.sh
+# Run tests with automatic test server management
+composer test:withserver
+```
+
+#### 2. Manual Test Environment Management
+
+If you need more control over the test environment, you can manage it manually:
+
+```bash
+# Start all test servers and set environment variables
+# We need to source the script to properly set environment variables in our shell
+source scripts/start-test-environment.sh
+
+# Now run your tests
+composer test
+
+# When done, stop all servers
+./scripts/stop-test-environment.sh
+```
+
+Note: The environment scripts must be sourced (using `source` or `.`) to properly set environment variables in your shell.
+
+#### 3. Individual Component Control
+
+For debugging or development, you might want to manage individual components:
+
+```bash
+# Just the test server
+PORT=8080 vendor/bin/start.sh
+export REQUESTS_TEST_HOST_HTTP=localhost:8080
+
+# Just the proxy servers
+PORT=9002 tests/utils/proxy/start.sh
+PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
+export REQUESTS_HTTP_PROXY=localhost:9002
+export REQUESTS_HTTP_PROXY_AUTH=localhost:9003
+export REQUESTS_HTTP_PROXY_AUTH_USER=test
+export REQUESTS_HTTP_PROXY_AUTH_PASS=pass
+```
+
+Remember to stop any servers you start:
+
+```bash
+vendor/bin/stop.sh                   # Stop test server
+PORT=9002 tests/utils/proxy/stop.sh  # Stop proxy servers
+PORT=9003 tests/utils/proxy/stop.sh
 ```
 
 To run the test with code coverage, use `composer coverage` instead.
