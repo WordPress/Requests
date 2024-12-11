@@ -11,7 +11,7 @@ else
     SCRIPT_DIR="$PROJECT_ROOT/scripts"
 fi
 
-PID_DIR="${PROJECT_ROOT}/.test-pids"
+PID_DIR="${PROJECT_ROOT}/tests/utils/pids"
 
 # Function to safely kill a process
 kill_process() {

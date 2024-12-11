@@ -45,7 +45,7 @@ if [ $sourced -eq 0 ]; then
     fi
 fi
 
-PID_DIR="${PROJECT_ROOT}/.test-pids"
+PID_DIR="${PROJECT_ROOT}/tests/utils/pids"
 
 # Check if mitmproxy is installed
 if ! command -v mitmdump >/dev/null 2>&1; then
