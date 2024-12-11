@@ -1,13 +1,21 @@
-#!/bin/bash
+#!/bin/sh
 
-# Store script dir for relative paths
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+# Try to determine script location
+if [ -n "${BASH_SOURCE:-}" ]; then
+    # Bash-specific path resolution
+    SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+else
+    # POSIX fallback - assume we're in the repository root
+    PROJECT_ROOT="$(pwd)"
+    SCRIPT_DIR="$PROJECT_ROOT/scripts"
+fi
+
 PID_DIR="${PROJECT_ROOT}/.test-pids"
 
 # Function to safely kill a process
 kill_process() {
-    local pid_file="$1"
+    pid_file="$1"
     if [ -f "$pid_file" ]; then
         pid=$(cat "$pid_file")
         if kill -0 "$pid" 2>/dev/null; then
@@ -38,4 +46,6 @@ kill_process "${PID_DIR}/proxy-auth-server.pid"
 # Clean up PID directory if empty
 rmdir "${PID_DIR}" 2>/dev/null || true
 
-echo "Test environment stopped" 
+echo "Test environment stopped"
+
+return 0 2>/dev/null || exit 0
