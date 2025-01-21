@@ -16,6 +16,7 @@
 
 	<logging>
 		<log type="coverage-html" target="tests/coverage" lowUpperBound="35" highLowerBound="90"/>
+		<log type="coverage-clover" target="tests/coverage/clover.xml"/>
 	</logging>
 
 	<filter>

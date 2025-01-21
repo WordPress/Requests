@@ -118,7 +118,7 @@ jobs:
 
       - name: Run the unit tests with code coverage
         if: ${{ matrix.coverage == true }}
-        run: vendor/bin/phpunit --coverage-clover clover.xml
+        run: vendor/bin/phpunit
 
       - name: Stop proxy server
         continue-on-error: true
@@ -135,6 +135,6 @@ jobs:
         uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
         with:
           token: "${{ secrets.CODECOV_TOKEN }}"
-          files: ./clover.xml
+          files: ./tests/coverage/clover.xml
           fail_ci_if_error: true
           verbose: true
