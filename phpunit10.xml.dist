@@ -31,6 +31,7 @@
 	<coverage includeUncoveredFiles="true" ignoreDeprecatedCodeUnits="true">
 		<report>
 			<html outputDirectory="tests/coverage" lowUpperBound="35" highLowerBound="90"/>
+			<clover outputFile="tests/coverage/clover.xml"/>
 		</report>
 	</coverage>
 </phpunit>
