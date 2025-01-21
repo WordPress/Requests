@@ -94,13 +94,8 @@ jobs:
         id: phpunit_version
         run: echo "VERSION=$(vendor/bin/phpunit --version | grep --only-matching --max-count=1 --extended-regexp '\b[0-9]+\.[0-9]+')" >> "$GITHUB_OUTPUT"
 
-      - name: Run the unit tests (PHPUnit < 10)
-        if: ${{ ! startsWith( steps.phpunit_version.outputs.VERSION, '10.' ) }}
+      - name: Run the unit tests
         run: composer test
-
-      - name: Run the unit tests (PHPUnit 10+)
-        if: ${{ startsWith( steps.phpunit_version.outputs.VERSION, '10.' ) }}
-        run: composer test10
 
       - name: Stop proxy server
         continue-on-error: true
