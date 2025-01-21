@@ -16,7 +16,7 @@ PHPUNIT_VERSION=$("${PROJECT_ROOT}/vendor/bin/phpunit" --version | grep -oE '[0-
 
 # Run the tests with the appropriate config
 if printf '%s\n%s\n' "10.0" "$PHPUNIT_VERSION" | sort -V -C 2>/dev/null; then
-    "${PROJECT_ROOT}/vendor/bin/phpunit" -c phpunit10.xml.dist "$1"
+    "${PROJECT_ROOT}/vendor/bin/phpunit" -c phpunit10.xml.dist "$@"
 else
-    "${PROJECT_ROOT}/vendor/bin/phpunit" "$1"
+    "${PROJECT_ROOT}/vendor/bin/phpunit" -c phpunit.xml.dist "$@"
 fi
