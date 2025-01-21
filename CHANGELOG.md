@@ -1,6 +1,15 @@
 Changelog
 =========
 
+2.0.15
+------
+
+### Overview of changes
+- Update bundled certificates as of 2024-12-31. [#919]
+- General housekeeping.
+
+[#919]: https://github.com/WordPress/Requests/pull/919
+
 2.0.14
 ------
 
