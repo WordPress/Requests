@@ -14,6 +14,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  actionlint: #----------------------------------------------------------------------
+    name: 'Check GHA workflows'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Add problem matcher
+        if: ${{ github.event_name == 'pull_request' }}
+        shell: bash
+        run: |
+          curl -o actionlint-matcher.json https://raw.githubusercontent.com/rhysd/actionlint/main/.github/actionlint-matcher.json
+          echo "::add-matcher::actionlint-matcher.json"
+
+      - name: Check workflow files
+        env:
+          SHELLCHECK_OPTS: --exclude=SC2129
+        uses: docker://rhysd/actionlint:latest
+        with:
+          args: -color
+
   phpcs: #----------------------------------------------------------------------
     name: 'PHPCS'
     runs-on: ubuntu-latest
