@@ -18,12 +18,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\WpOrg\\Requests\\Auth\\Basic\u003A\u003Acurl_before_send\u0028\u0029",
             "name": "curl_before_send",
-            "summary": "Set\u0020cURL\u0020parameters\u0020before\u0020the\u0020data\u0020is\u0020sent",
+            "summary": "Set\u0020cURL\u0020parameters\u0020before\u0020the\u0020data\u0020is\u0020sent.",
             "url": "classes/WpOrg-Requests-Auth-Basic.html#method_curl_before_send"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Auth\\Basic\u003A\u003Afsockopen_header\u0028\u0029",
             "name": "fsockopen_header",
-            "summary": "Add\u0020extra\u0020headers\u0020to\u0020the\u0020request\u0020before\u0020sending",
+            "summary": "Add\u0020extra\u0020headers\u0020to\u0020the\u0020request\u0020before\u0020sending.",
             "url": "classes/WpOrg-Requests-Auth-Basic.html#method_fsockopen_header"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Auth\\Basic\u003A\u003AgetAuthString\u0028\u0029",
@@ -70,6 +70,11 @@ Search.appendIndex(
             "name": "load",
             "summary": "Autoloader.",
             "url": "classes/WpOrg-Requests-Autoload.html#method_load"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Autoload\u003A\u003Aget_deprecated_classes\u0028\u0029",
+            "name": "get_deprecated_classes",
+            "summary": "Get\u0020the\u0020array\u0020of\u0020deprecated\u0020Requests\u00201.x\u0020classes\u0020mapped\u0020to\u0020their\u0020equivalent\u0020Requests\u00202.x\u0020implementation.",
+            "url": "classes/WpOrg-Requests-Autoload.html#method_get_deprecated_classes"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Capability",
             "name": "Capability",
@@ -576,6 +581,96 @@ Search.appendIndex(
             "summary": "Reason\u0020phrase",
             "url": "classes/WpOrg-Requests-Exception-Http-Status418.html#property_reason"
         },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status421",
+            "name": "Status421",
+            "summary": "Exception\u0020for\u0020421\u0020Misdirected\u0020Request\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status421.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status421\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status421.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status421\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status421.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status422",
+            "name": "Status422",
+            "summary": "Exception\u0020for\u0020422\u0020Unprocessable\u0020Content\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status422.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status422\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status422.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status422\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status422.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status423",
+            "name": "Status423",
+            "summary": "Exception\u0020for\u0020423\u0020Locked\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status423.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status423\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status423.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status423\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status423.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status424",
+            "name": "Status424",
+            "summary": "Exception\u0020for\u0020424\u0020Failed\u0020Dependency\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status424.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status424\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status424.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status424\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status424.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status425",
+            "name": "Status425",
+            "summary": "Exception\u0020for\u0020425\u0020Too\u0020Early\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status425.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status425\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status425.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status425\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status425.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status426",
+            "name": "Status426",
+            "summary": "Exception\u0020for\u0020426\u0020Upgrade\u0020Required\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status426.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status426\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status426.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status426\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status426.html#property_reason"
+        },                {
             "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status428",
             "name": "Status428",
             "summary": "Exception\u0020for\u0020428\u0020Precondition\u0020Required\u0020responses",
@@ -620,6 +715,21 @@ Search.appendIndex(
             "name": "reason",
             "summary": "Reason\u0020phrase",
             "url": "classes/WpOrg-Requests-Exception-Http-Status431.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status451",
+            "name": "Status451",
+            "summary": "Exception\u0020for\u0020451\u0020Unavailable\u0020For\u0020Legal\u0020Reasons\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status451.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status451\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status451.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status451\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status451.html#property_reason"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status500",
             "name": "Status500",
@@ -710,6 +820,66 @@ Search.appendIndex(
             "name": "reason",
             "summary": "Reason\u0020phrase",
             "url": "classes/WpOrg-Requests-Exception-Http-Status505.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status506",
+            "name": "Status506",
+            "summary": "Exception\u0020for\u0020506\u0020Variant\u0020Also\u0020Negotiates\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status506.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status506\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status506.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status506\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status506.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status507",
+            "name": "Status507",
+            "summary": "Exception\u0020for\u0020507\u0020Insufficient\u0020Storage\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status507.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status507\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status507.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status507\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status507.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status508",
+            "name": "Status508",
+            "summary": "Exception\u0020for\u0020508\u0020Loop\u0020Detected\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status508.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status508\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status508.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status508\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status508.html#property_reason"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status510",
+            "name": "Status510",
+            "summary": "Exception\u0020for\u0020510\u0020Not\u0020Extended\u0020responses",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status510.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status510\u003A\u003A\u0024code",
+            "name": "code",
+            "summary": "HTTP\u0020status\u0020code",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status510.html#property_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status510\u003A\u003A\u0024reason",
+            "name": "reason",
+            "summary": "Reason\u0020phrase",
+            "url": "classes/WpOrg-Requests-Exception-Http-Status510.html#property_reason"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Exception\\Http\\Status511",
             "name": "Status511",
@@ -1183,7 +1353,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\WpOrg\\Requests\\Port",
             "name": "Port",
-            "summary": "Find\u0020the\u0020correct\u0020port\u0020depending\u0020on\u0020the\u0020Request\u0020type.",
+            "summary": "Port\u0020utilities\u0020for\u0020Requests",
             "url": "classes/WpOrg-Requests-Port.html"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Port\u003A\u003Aget\u0028\u0029",
@@ -1703,7 +1873,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\WpOrg\\Requests\\Transport\\Curl",
             "name": "Curl",
-            "summary": "cURL\u0020HTTP\u0020transport",
+            "summary": "HTTP\u0020transport\u0020using\u0020libcurl.",
             "url": "classes/WpOrg-Requests-Transport-Curl.html"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Transport\\Curl\u003A\u003A__construct\u0028\u0029",
@@ -1906,20 +2076,350 @@ Search.appendIndex(
             "summary": "Prevent\u0020unserialization\u0020of\u0020the\u0020object\u0020for\u0020security\u0020reasons.",
             "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method___unserialize"
         },                {
-            "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003A__wakeup\u0028\u0029",
-            "name": "__wakeup",
-            "summary": "Perform\u0020reinitialization\u0020tasks.",
-            "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method___wakeup"
+            "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003Aunserialize\u0028\u0029",
+            "name": "unserialize",
+            "summary": "Prevent\u0020creating\u0020a\u0020PHP\u0020value\u0020from\u0020a\u0020stored\u0020representation\u0020of\u0020the\u0020object\u0020for\u0020security\u0020reasons.",
+            "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method_unserialize"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003Acurrent\u0028\u0029",
             "name": "current",
             "summary": "Get\u0020the\u0020current\u0020item\u0027s\u0020value\u0020after\u0020filtering",
             "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method_current"
         },                {
-            "fqsen": "\\WpOrg\\Requests\\Utility\\FilteredIterator\u003A\u003Aunserialize\u0028\u0029",
-            "name": "unserialize",
-            "summary": "Prevent\u0020creating\u0020a\u0020PHP\u0020value\u0020from\u0020a\u0020stored\u0020representation\u0020of\u0020the\u0020object\u0020for\u0020security\u0020reasons.",
-            "url": "classes/WpOrg-Requests-Utility-FilteredIterator.html#method_unserialize"
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus",
+            "name": "HttpStatus",
+            "summary": "Helper\u0020class\u0020for\u0020dealing\u0020with\u0020HTTP\u0020status\u0020codes.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003Aget_text\u0028\u0029",
+            "name": "get_text",
+            "summary": "Get\u0020the\u0020status\u0020message\u0020from\u0020a\u0020status\u0020code.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#method_get_text"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003Ais_valid_code\u0028\u0029",
+            "name": "is_valid_code",
+            "summary": "Verify\u0020whether\u0020a\u0020status\u0020code\u0020is\u0020valid.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#method_is_valid_code"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_100",
+            "name": "TEXT_100",
+            "summary": "HTTP\u0020response\u0020code\u0020100\u0020\u002D\u0020Continue.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_100"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_101",
+            "name": "TEXT_101",
+            "summary": "HTTP\u0020response\u0020code\u0020101\u0020\u002D\u0020Switching\u0020Protocols.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_101"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_102",
+            "name": "TEXT_102",
+            "summary": "HTTP\u0020response\u0020code\u0020102\u0020\u002D\u0020Processing\u0020\u0028WebDAV\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_102"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_103",
+            "name": "TEXT_103",
+            "summary": "HTTP\u0020response\u0020code\u0020103\u0020\u002D\u0020Early\u0020Hints.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_103"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_200",
+            "name": "TEXT_200",
+            "summary": "HTTP\u0020response\u0020code\u0020200\u0020\u002D\u0020OK.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_200"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_201",
+            "name": "TEXT_201",
+            "summary": "HTTP\u0020response\u0020code\u0020201\u0020\u002D\u0020Created.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_201"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_202",
+            "name": "TEXT_202",
+            "summary": "HTTP\u0020response\u0020code\u0020202\u0020\u002D\u0020Accepted.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_202"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_203",
+            "name": "TEXT_203",
+            "summary": "HTTP\u0020response\u0020code\u0020203\u0020\u002D\u0020Non\u002DAuthoritative\u0020Information.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_203"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_204",
+            "name": "TEXT_204",
+            "summary": "HTTP\u0020response\u0020code\u0020204\u0020\u002D\u0020No\u0020Content.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_204"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_205",
+            "name": "TEXT_205",
+            "summary": "HTTP\u0020response\u0020code\u0020205\u0020\u002D\u0020Reset\u0020Content.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_205"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_206",
+            "name": "TEXT_206",
+            "summary": "HTTP\u0020response\u0020code\u0020206\u0020\u002D\u0020Partial\u0020Content.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_206"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_207",
+            "name": "TEXT_207",
+            "summary": "HTTP\u0020response\u0020code\u0020207\u0020\u002D\u0020Multi\u002DStatus\u0020\u0028WebDAV\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_207"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_208",
+            "name": "TEXT_208",
+            "summary": "HTTP\u0020response\u0020code\u0020208\u0020\u002D\u0020Already\u0020Reported\u0020\u0028WebDAV\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_208"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_226",
+            "name": "TEXT_226",
+            "summary": "HTTP\u0020response\u0020code\u0020226\u0020\u002D\u0020IM\u0020Used\u0020\u0028HTTP\u0020Delta\u0020encoding\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_226"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_300",
+            "name": "TEXT_300",
+            "summary": "HTTP\u0020response\u0020code\u0020300\u0020\u002D\u0020Multiple\u0020Choices.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_300"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_301",
+            "name": "TEXT_301",
+            "summary": "HTTP\u0020response\u0020code\u0020301\u0020\u002D\u0020Moved\u0020Permanently.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_301"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_302",
+            "name": "TEXT_302",
+            "summary": "HTTP\u0020response\u0020code\u0020302\u0020\u002D\u0020Found.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_302"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_303",
+            "name": "TEXT_303",
+            "summary": "HTTP\u0020response\u0020code\u0020303\u0020\u002D\u0020See\u0020Other.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_303"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_304",
+            "name": "TEXT_304",
+            "summary": "HTTP\u0020response\u0020code\u0020304\u0020\u002D\u0020Not\u0020Modified.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_304"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_305",
+            "name": "TEXT_305",
+            "summary": "HTTP\u0020response\u0020code\u0020305\u0020\u002D\u0020Use\u0020Proxy\u0020\u0028DEPRECATED\u0021\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_305"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_306",
+            "name": "TEXT_306",
+            "summary": "HTTP\u0020response\u0020code\u0020306\u0020\u002D\u0020Switch\u0020Proxy\u0020\u0028DEPRECATED\u0021\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_306"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_307",
+            "name": "TEXT_307",
+            "summary": "HTTP\u0020response\u0020code\u0020307\u0020\u002D\u0020Temporary\u0020Redirect.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_307"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_308",
+            "name": "TEXT_308",
+            "summary": "HTTP\u0020response\u0020code\u0020308\u0020\u002D\u0020Permanent\u0020Redirect.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_308"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_400",
+            "name": "TEXT_400",
+            "summary": "HTTP\u0020response\u0020code\u0020400\u0020\u002D\u0020Bad\u0020Request.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_400"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_401",
+            "name": "TEXT_401",
+            "summary": "HTTP\u0020response\u0020code\u0020401\u0020\u002D\u0020Unauthorized.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_401"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_402",
+            "name": "TEXT_402",
+            "summary": "HTTP\u0020response\u0020code\u0020402\u0020\u002D\u0020Payment\u0020Required\u0020\u0028Experimental\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_402"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_403",
+            "name": "TEXT_403",
+            "summary": "HTTP\u0020response\u0020code\u0020403\u0020\u002D\u0020Forbidden.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_403"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_404",
+            "name": "TEXT_404",
+            "summary": "HTTP\u0020response\u0020code\u0020404\u0020\u002D\u0020Not\u0020Found.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_404"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_405",
+            "name": "TEXT_405",
+            "summary": "HTTP\u0020response\u0020code\u0020405\u0020\u002D\u0020Method\u0020Not\u0020Allowed.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_405"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_406",
+            "name": "TEXT_406",
+            "summary": "HTTP\u0020response\u0020code\u0020406\u0020\u002D\u0020Not\u0020Acceptable.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_406"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_407",
+            "name": "TEXT_407",
+            "summary": "HTTP\u0020response\u0020code\u0020407\u0020\u002D\u0020Proxy\u0020Authentication\u0020Required.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_407"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_408",
+            "name": "TEXT_408",
+            "summary": "HTTP\u0020response\u0020code\u0020408\u0020\u002D\u0020Request\u0020Timeout.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_408"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_409",
+            "name": "TEXT_409",
+            "summary": "HTTP\u0020response\u0020code\u0020409\u0020\u002D\u0020Conflict.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_409"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_410",
+            "name": "TEXT_410",
+            "summary": "HTTP\u0020response\u0020code\u0020410\u0020\u002D\u0020Gone.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_410"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_411",
+            "name": "TEXT_411",
+            "summary": "HTTP\u0020response\u0020code\u0020411\u0020\u002D\u0020Length\u0020Required.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_411"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_412",
+            "name": "TEXT_412",
+            "summary": "HTTP\u0020response\u0020code\u0020412\u0020\u002D\u0020Precondition\u0020Failed.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_412"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_413",
+            "name": "TEXT_413",
+            "summary": "HTTP\u0020response\u0020code\u0020413\u0020\u002D\u0020Payload\u0020Too\u0020Large.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_413"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_414",
+            "name": "TEXT_414",
+            "summary": "HTTP\u0020response\u0020code\u0020414\u0020\u002D\u0020URI\u0020Too\u0020Long.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_414"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_415",
+            "name": "TEXT_415",
+            "summary": "HTTP\u0020response\u0020code\u0020415\u0020\u002D\u0020Unsupported\u0020Media\u0020Type.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_415"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_416",
+            "name": "TEXT_416",
+            "summary": "HTTP\u0020response\u0020code\u0020416\u0020\u002D\u0020Range\u0020Not\u0020Satisfiable.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_416"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_417",
+            "name": "TEXT_417",
+            "summary": "HTTP\u0020response\u0020code\u0020417\u0020\u002D\u0020Expectation\u0020Failed.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_417"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_418",
+            "name": "TEXT_418",
+            "summary": "HTTP\u0020response\u0020code\u0020418\u0020\u002D\u0020I\u0027m\u0020a\u0020teapot.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_418"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_421",
+            "name": "TEXT_421",
+            "summary": "HTTP\u0020response\u0020code\u0020421\u0020\u002D\u0020Misdirected\u0020Request.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_421"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_422",
+            "name": "TEXT_422",
+            "summary": "HTTP\u0020response\u0020code\u0020422\u0020\u002D\u0020Unprocessable\u0020Entity\u0020\u0028WebDAV\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_422"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_423",
+            "name": "TEXT_423",
+            "summary": "HTTP\u0020response\u0020code\u0020423\u0020\u002D\u0020Locked\u0020\u0028WebDAV\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_423"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_424",
+            "name": "TEXT_424",
+            "summary": "HTTP\u0020response\u0020code\u0020424\u0020\u002D\u0020Failed\u0020Dependency\u0020\u0028WebDAV\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_424"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_425",
+            "name": "TEXT_425",
+            "summary": "HTTP\u0020response\u0020code\u0020425\u0020\u002D\u0020Too\u0020Early\u0020\u0028Experimental\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_425"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_426",
+            "name": "TEXT_426",
+            "summary": "HTTP\u0020response\u0020code\u0020426\u0020\u002D\u0020Upgrade\u0020Required.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_426"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_428",
+            "name": "TEXT_428",
+            "summary": "HTTP\u0020response\u0020code\u0020428\u0020\u002D\u0020Precondition\u0020Required.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_428"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_429",
+            "name": "TEXT_429",
+            "summary": "HTTP\u0020response\u0020code\u0020429\u0020\u002D\u0020Too\u0020Many\u0020Requests.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_429"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_431",
+            "name": "TEXT_431",
+            "summary": "HTTP\u0020response\u0020code\u0020431\u0020\u002D\u0020Request\u0020Header\u0020Fields\u0020Too\u0020Large.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_431"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_451",
+            "name": "TEXT_451",
+            "summary": "HTTP\u0020response\u0020code\u0020451\u0020\u002D\u0020Unavailable\u0020For\u0020Legal\u0020Reasons.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_451"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_500",
+            "name": "TEXT_500",
+            "summary": "HTTP\u0020response\u0020code\u0020500\u0020\u002D\u0020Internal\u0020Server\u0020Error.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_500"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_501",
+            "name": "TEXT_501",
+            "summary": "HTTP\u0020response\u0020code\u0020501\u0020\u002D\u0020Not\u0020Implemented.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_501"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_502",
+            "name": "TEXT_502",
+            "summary": "HTTP\u0020response\u0020code\u0020502\u0020\u002D\u0020Bad\u0020Gateway.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_502"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_503",
+            "name": "TEXT_503",
+            "summary": "HTTP\u0020response\u0020code\u0020503\u0020\u002D\u0020Service\u0020Unavailable.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_503"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_504",
+            "name": "TEXT_504",
+            "summary": "HTTP\u0020response\u0020code\u0020504\u0020\u002D\u0020Gateway\u0020Timeout.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_504"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_505",
+            "name": "TEXT_505",
+            "summary": "HTTP\u0020response\u0020code\u0020505\u0020\u002D\u0020HTTP\u0020Version\u0020Not\u0020Supported.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_505"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_506",
+            "name": "TEXT_506",
+            "summary": "HTTP\u0020response\u0020code\u0020506\u0020\u002D\u0020Variant\u0020Also\u0020Negotiates.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_506"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_507",
+            "name": "TEXT_507",
+            "summary": "HTTP\u0020response\u0020code\u0020507\u0020\u002D\u0020Insufficient\u0020Storage\u0020\u0028WebDAV\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_507"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_508",
+            "name": "TEXT_508",
+            "summary": "HTTP\u0020response\u0020code\u0020508\u0020\u002D\u0020Loop\u0020Detected\u0020\u0028WebDAV\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_508"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_510",
+            "name": "TEXT_510",
+            "summary": "HTTP\u0020response\u0020code\u0020510\u0020\u002D\u0020Not\u0020Extended.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_510"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003ATEXT_511",
+            "name": "TEXT_511",
+            "summary": "HTTP\u0020response\u0020code\u0020511\u0020\u002D\u0020Network\u0020Authentication\u0020Required.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_TEXT_511"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\HttpStatus\u003A\u003AMAP",
+            "name": "MAP",
+            "summary": "Map\u0020of\u0020status\u0020codes\u0020to\u0020their\u0020text.",
+            "url": "classes/WpOrg-Requests-Utility-HttpStatus.html#constant_MAP"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Utility\\InputValidator",
             "name": "InputValidator",
@@ -1950,6 +2450,11 @@ Search.appendIndex(
             "name": "is_curl_handle",
             "summary": "Verify\u0020whether\u0020a\u0020received\u0020input\u0020parameter\u0020is\u0020a\u0020Curl\u0020handle.",
             "url": "classes/WpOrg-Requests-Utility-InputValidator.html#method_is_curl_handle"
+        },                {
+            "fqsen": "\\WpOrg\\Requests\\Utility\\InputValidator\u003A\u003Ais_valid_rfc2616_token\u0028\u0029",
+            "name": "is_valid_rfc2616_token",
+            "summary": "Verify\u0020that\u0020a\u0020received\u0020input\u0020parameter\u0020is\u0020a\u0020valid\u0020\u0022token\u0020name\u0022\u0020according\u0020to\u0020the\nspecification\u0020in\u0020RFC\u00202616\u0020\u0028HTTP\/1.1\u0029.",
+            "url": "classes/WpOrg-Requests-Utility-InputValidator.html#method_is_valid_rfc2616_token"
         },                {
             "fqsen": "\\",
             "name": "\\",
