@@ -149,11 +149,11 @@ Note: The environment scripts must be sourced (using `source` or `.`) to properl
 For debugging or development, you might want to manage individual components:
 
 ```bash
-# Just the test server
+# Start only the test server
 PORT=8080 vendor/bin/start.sh
 export REQUESTS_TEST_HOST_HTTP=localhost:8080
 
-# Just the proxy servers
+# Start only the proxy servers
 PORT=9002 tests/utils/proxy/start.sh
 PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
 export REQUESTS_HTTP_PROXY=localhost:9002
