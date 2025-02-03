@@ -99,7 +99,22 @@
       "./scripts/stop-test-environment.sh"
     ],
     "test:withserver": [
-      "./scripts/run-tests-with-server.sh"
+      "@putenv REQUESTS_HTTP_PROXY=localhost:9002",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH=localhost:9003",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH_USER=test",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH_PASS=pass",
+      "@testserver:start",
+      "@test",
+      "@testserver:stop"
+    ],
+    "coverage:withserver": [
+      "@putenv REQUESTS_HTTP_PROXY=localhost:9002",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH=localhost:9003",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH_USER=test",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH_PASS=pass",
+      "@testserver:start",
+      "@coverage",
+      "@testserver:stop"
     ]
   },
   "scripts-descriptions": {
@@ -110,6 +125,7 @@
     "coverage": "Run the unit tests with code coverage (auto-detects PHPUnit version)",
     "testserver:start": "Start the test environment including test server and proxy servers (Note: environment variables will only be available in a sourced shell)",
     "testserver:stop": "Stop all running test environment servers",
-    "test:withserver": "Start test servers, run PHPUnit tests with appropriate config, then stop servers"
+    "test:withserver": "Start test servers, run PHPUnit tests with appropriate config, then stop servers",
+    "coverage:withserver": "Start test servers, run PHPUnit tests with code coverage, then stop servers"
   }
 }
