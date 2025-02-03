@@ -4,15 +4,16 @@ PROXYDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PORT=${PORT:-9000}
 
 PROXYBIN=${PROXYBIN:-"$(which mitmdump)"}
-ARGS="-s '$PROXYDIR/proxy.py' -p $PORT"
+
+ARGS=(-s "$PROXYDIR/proxy.py" -p "$PORT")
 if [[ -n "$AUTH" ]]; then
-	ARGS="$ARGS --proxyauth $AUTH"
+	ARGS+=("--proxyauth" "$AUTH")
 fi
 PIDFILE="$PROXYDIR/proxy-$PORT.pid"
 
 set -x
 
-start-stop-daemon --verbose --start --background --pidfile "$PIDFILE" --make-pidfile --exec "$PROXYBIN" -- $ARGS
+start-stop-daemon --verbose --start --background --pidfile "$PIDFILE" --make-pidfile --exec "$PROXYBIN" -- "${ARGS[@]}"
 
 ps -p "$(cat "$PIDFILE")" u
 sleep 2
