@@ -99,8 +99,8 @@ Code coverage is monitored for every PR and for the code base as a whole using [
 
 - [PHP][] >= 5.6
 - [Composer][]
-- [Python 3][]
-- [mitmproxy][] (`pip3 install mitmproxy`)
+- [Python 3][] >= 3.12
+- [mitmproxy][] >= 11.0.2 (`pip3 install mitmproxy`)
 
 [PHP]: https://www.php.net/
 [Composer]: http://getcomposer.org/
