@@ -3,6 +3,9 @@
 # Try to determine script location
 if [ -n "${BASH_SOURCE:-}" ]; then
     # Bash-specific path resolution
+    # Shellcheck complains about POSIX arrays being unreferenced, but this bit
+    # conditionally run on Bash only.
+    # shellcheck disable=SC3054
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 else
@@ -16,7 +19,7 @@ sourced=0
 if [ -n "$ZSH_EVAL_CONTEXT" ]; then 
     case $ZSH_EVAL_CONTEXT in *:file:*) sourced=1;; esac
 elif [ -n "$KSH_VERSION" ]; then
-    [ "$(cd $(dirname -- $0) && pwd -P)/$(basename -- $0)" != "$(cd $(dirname -- ${.sh.file}) && pwd -P)/$(basename -- ${.sh.file})" ] && sourced=1
+    [ "$(cd $(dirname -- "$0") && pwd -P)/$(basename -- "$0")" != "$(cd $(dirname -- "${.sh.file}") && pwd -P)/$(basename -- "${.sh.file}")" ] && sourced=1
 elif [ -n "$BASH_VERSION" ]; then
     (return 0 2>/dev/null) && sourced=1
 else
@@ -73,7 +76,7 @@ mkdir -p "$PID_DIR"
 echo "Starting test server..."
 PORT=8080 "${PROJECT_ROOT}/vendor/bin/start.sh"
 echo $! > "${PID_DIR}/test-server.pid"
-REQUESTS_TEST_HOST_HTTP=localhost:8080
+REQUESTS_TEST_HOST_HTTP="localhost:8080"
 export REQUESTS_TEST_HOST_HTTP
 
 # Start proxy servers
@@ -85,10 +88,10 @@ PORT=9003 AUTH="test:pass" "${PROJECT_ROOT}/tests/utils/proxy/start.sh"
 echo $! > "${PID_DIR}/proxy-auth-server.pid"
 
 # Set environment variables
-REQUESTS_HTTP_PROXY=localhost:9002
-REQUESTS_HTTP_PROXY_AUTH=localhost:9003
-REQUESTS_HTTP_PROXY_AUTH_USER=test
-REQUESTS_HTTP_PROXY_AUTH_PASS=pass
+REQUESTS_HTTP_PROXY="localhost:9002"
+REQUESTS_HTTP_PROXY_AUTH="localhost:9003"
+REQUESTS_HTTP_PROXY_AUTH_USER="test"
+REQUESTS_HTTP_PROXY_AUTH_PASS="pass"
 
 export REQUESTS_HTTP_PROXY
 export REQUESTS_HTTP_PROXY_AUTH
@@ -116,5 +119,7 @@ echo "Environment variables set:"
 echo "REQUESTS_TEST_HOST_HTTP=localhost:8080"
 echo "REQUESTS_HTTP_PROXY=localhost:9002"
 echo "REQUESTS_HTTP_PROXY_AUTH=localhost:9003"
+echo "REQUESTS_HTTP_PROXY_AUTH_USER=test"
+echo "REQUESTS_HTTP_PROXY_AUTH_PASS=pass"
 
 return 0 2>/dev/null || exit 0

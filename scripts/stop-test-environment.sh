@@ -3,6 +3,9 @@
 # Try to determine script location
 if [ -n "${BASH_SOURCE:-}" ]; then
     # Bash-specific path resolution
+    # Shellcheck complains about POSIX arrays being unreferenced, but this bit
+    # conditionally run on Bash only.
+    # shellcheck disable=SC3054
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 else
