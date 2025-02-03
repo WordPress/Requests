@@ -1,22 +1,20 @@
 #!/bin/sh
 
-# Try to determine script location
-if [ -n "${BASH_SOURCE:-}" ]; then
-    # Bash-specific path resolution
-    SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-else
-    # POSIX fallback - assume we're in the repository root
-    PROJECT_ROOT="$(pwd)"
-    SCRIPT_DIR="$PROJECT_ROOT/scripts"
-fi
+
+# Set up PHPUnit command
+# We're using composer exec to ensure we use the version of PHP that Composer
+# is locked into, instead of the version of PHP that the system provides.
+PHPUNIT="composer exec phpunit --"
 
 # Detect PHPUnit version
-PHPUNIT_VERSION=$("${PROJECT_ROOT}/vendor/bin/phpunit" --version | grep -oE '[0-9]+\.[0-9]+' | head -n1)
+PHPUNIT_VERSION=$($PHPUNIT --version | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
 
-# Run the tests with the appropriate config
+# Determine config file based on version
 if printf '%s\n%s\n' "10.0" "$PHPUNIT_VERSION" | sort -V -C 2>/dev/null; then
-    "${PROJECT_ROOT}/vendor/bin/phpunit" -c phpunit10.xml.dist "$@"
+    CONFIG_FILE="phpunit10.xml.dist"
 else
-    "${PROJECT_ROOT}/vendor/bin/phpunit" -c phpunit.xml.dist "$@"
+    CONFIG_FILE="phpunit.xml.dist"
 fi
+
+# Run the tests
+$PHPUNIT -c "$CONFIG_FILE" "$@"
