@@ -9,6 +9,7 @@
 build/             export-ignore
 docs/              export-ignore
 examples/          export-ignore
+scripts/           export-ignore
 tests/             export-ignore
 .codecov.yml       export-ignore
 .editorconfig      export-ignore

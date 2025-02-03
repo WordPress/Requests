@@ -87,25 +87,45 @@
       "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
     ],
     "test": [
-      "@php ./vendor/phpunit/phpunit/phpunit --no-coverage"
-    ],
-    "test10": [
-      "@php ./vendor/phpunit/phpunit/phpunit -c phpunit10.xml.dist --no-coverage"
+      "./scripts/run-phpunit.sh --no-coverage"
     ],
     "coverage": [
-      "@php ./vendor/phpunit/phpunit/phpunit"
+      "./scripts/run-phpunit.sh"
     ],
-    "coverage10": [
-      "@php ./vendor/phpunit/phpunit/phpunit -c phpunit10.xml.dist"
+    "testserver:start": [
+      "./scripts/start-test-environment.sh"
+    ],
+    "testserver:stop": [
+      "./scripts/stop-test-environment.sh"
+    ],
+    "test:withserver": [
+      "@putenv REQUESTS_HTTP_PROXY=localhost:9002",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH=localhost:9003",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH_USER=test",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH_PASS=pass",
+      "@testserver:start",
+      "@test",
+      "@testserver:stop"
+    ],
+    "coverage:withserver": [
+      "@putenv REQUESTS_HTTP_PROXY=localhost:9002",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH=localhost:9003",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH_USER=test",
+      "@putenv REQUESTS_HTTP_PROXY_AUTH_PASS=pass",
+      "@testserver:start",
+      "@coverage",
+      "@testserver:stop"
     ]
   },
   "scripts-descriptions": {
     "lint": "Lint PHP files to find parse errors.",
     "checkcs": "Check the entire codebase for code-style issues.",
     "fixcs": "Fix all auto-fixable code-style issues in the entire codebase.",
-    "test": "Run the unit tests on PHPUnit 5.x - 9.x without code coverage.",
-    "test10": "Run the unit tests on PHPUnit 10.x without code coverage.",
-    "coverage": "Run the unit tests on PHPUnit 5.x - 9.x with code coverage.",
-    "coverage10": "Run the unit tests on PHPUnit 10.x with code coverage."
+    "test": "Run the unit tests without code coverage (auto-detects PHPUnit version)",
+    "coverage": "Run the unit tests with code coverage (auto-detects PHPUnit version)",
+    "testserver:start": "Start the test environment including test server and proxy servers (Note: environment variables will only be available in a sourced shell)",
+    "testserver:stop": "Stop all running test environment servers",
+    "test:withserver": "Start test servers, run PHPUnit tests with appropriate config, then stop servers",
+    "coverage:withserver": "Start test servers, run PHPUnit tests with code coverage, then stop servers"
   }
 }
