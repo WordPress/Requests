@@ -71,8 +71,8 @@ jobs:
 
       - name: Start proxy server
         run: |
-          PORT=9002 tests/utils/proxy/start.sh
-          PORT=9003 AUTH="test:pass" tests/utils/proxy/start.sh
+          PORT=9002 scripts/proxy/start.sh
+          PORT=9003 AUTH="test:pass" scripts/proxy/start.sh
           echo "REQUESTS_HTTP_PROXY=localhost:9002" >> "$GITHUB_ENV"
           echo "REQUESTS_HTTP_PROXY_AUTH=localhost:9003" >> "$GITHUB_ENV"
           echo "REQUESTS_HTTP_PROXY_AUTH_USER=test" >> "$GITHUB_ENV"
@@ -96,8 +96,8 @@ jobs:
       - name: Stop proxy server
         continue-on-error: true
         run: |
-          PORT=9002 tests/utils/proxy/stop.sh
-          PORT=9003 tests/utils/proxy/stop.sh
+          PORT=9002 scripts/stop.sh
+          PORT=9003 scripts/stop.sh
 
       - name: Stop test server
         continue-on-error: true
