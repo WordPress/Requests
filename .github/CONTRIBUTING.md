@@ -62,7 +62,7 @@ The linter can be run locally using `composer lint`.
 
 [PHP Parallel Lint]: https://github.com/php-parallel-lint/PHP-Parallel-Lint
 
-## Coding Style
+## PHP Coding Style
 
 Please follow the existing coding style and best practices.
 This project uses [PHP_CodeSniffer][] to detect coding standard violations and apply automated fixes (whenever possible).
@@ -71,6 +71,19 @@ This project uses [PHP_CodeSniffer][] to detect coding standard violations and a
 * Any automatically applicable fixes can be applied by running `composer fixcs`.
 
 [PHP_CodeSniffer]: https://github.com/squizlabs/PHP_CodeSniffer
+
+## Shell script QA & Coding Style
+
+All shell scripts used in this project are, and should be, located in the `/scripts` directory.
+
+Please follow the existing coding style and best practices.
+This project uses [ShellCheck][] to detect violations.
+
+* Shellcheck can be [installed on all platforms][shellcheck-install]
+* All files can be checked for coding standard violations by running `shellcheck`.
+
+[ShellCheck]:         https://github.com/koalaman/shellcheck
+[shellcheck-install]: https://github.com/koalaman/shellcheck#user-content-installing
 
 ## Unit Tests
 
