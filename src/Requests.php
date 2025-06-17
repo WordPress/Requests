@@ -739,9 +739,7 @@ class Requests {
 			$headers = substr($return->raw, 0, $pos);
 			// Headers will always be separated from the body by two new lines - `\n\r\n\r`.
 			$body = substr($return->raw, $pos + 4);
-			if (!empty($body)) {
-				$return->body = $body;
-			}
+			$return->body = $body;
 		}
 
 		// Pretend CRLF = LF for compatibility (RFC 2616, section 19.3)
