@@ -516,10 +516,13 @@ abstract class BaseTestCase extends TestCase {
 	public function testFormPost() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'POST request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'POST request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testPOSTWithArray() {
@@ -528,10 +531,13 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'POST request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'POST request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testPOSTWithNestedData() {
@@ -543,28 +549,37 @@ abstract class BaseTestCase extends TestCase {
 			],
 		];
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'POST request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'POST request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'], $result['form'], 'Form data should contain flattened nested data');
 	}
 
 	public function testRawPUT() {
 		$data    = 'test';
 		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PUT request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PUT request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame('test', $result['data']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('data', $result, 'Response should contain data key');
+		$this->assertSame('test', $result['data'], 'Data should match sent value');
 	}
 
 	public function testFormPUT() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PUT request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PUT request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testPUTWithArray() {
@@ -573,28 +588,37 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PUT request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PUT request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testRawPATCH() {
 		$data    = 'test';
 		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PATCH request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PATCH request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame('test', $result['data']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('data', $result, 'Response should contain data key');
+		$this->assertSame('test', $result['data'], 'Data should match sent value');
 	}
 
 	public function testFormPATCH() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code, $request->body);
+		$this->assertInstanceOf(Response::class, $request, 'PATCH request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PATCH request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testPATCHWithArray() {
@@ -603,24 +627,32 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PATCH request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PATCH request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testOPTIONS() {
 		$request = Requests::options($this->httpbin('/options'), [], [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'OPTIONS request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'OPTIONS request should return status code 200');
 	}
 
 	public function testDELETE() {
 		$request = Requests::delete($this->httpbin('/delete'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'DELETE request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'DELETE request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/delete'), $result['url']);
-		$this->assertEmpty($result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/delete'), $result['url'], 'Response URL should match request URL');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertEmpty($result['args'], 'Args should be empty for DELETE request');
 	}
 
 	public function testDELETEWithData() {
@@ -629,16 +661,21 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::request($this->httpbin('/delete'), [], $data, Requests::DELETE, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'DELETE request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'DELETE request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/delete?test=true&test2=test'), $result['url']);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/delete?test=true&test2=test'), $result['url'], 'Response URL should match expected URL with data');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args'], 'Args should contain expected data');
 	}
 
 	public function testLOCK() {
 		$request = Requests::request($this->httpbin('/lock'), [], [], 'LOCK', $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'LOCK request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'LOCK request should return status code 200');
 	}
 
 	public function testLOCKWithData() {
@@ -647,24 +684,29 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::request($this->httpbin('/lock'), [], $data, 'LOCK', $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'LOCK request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'LOCK request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testRedirects() {
 		$request = Requests::get($this->httpbin('/redirect/6'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'Final redirect should return status code 200');
 
-		$this->assertSame(6, $request->redirects);
+		$this->assertSame(6, $request->redirects, 'Should have followed exactly 6 redirects');
 	}
 
 	public function testRelativeRedirects() {
 		$request = Requests::get($this->httpbin('/relative-redirect/6'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'Final relative redirect should return status code 200');
 
-		$this->assertSame(6, $request->redirects);
+		$this->assertSame(6, $request->redirects, 'Should have followed exactly 6 relative redirects');
 	}
 
 	public function testTooManyRedirects() {
@@ -739,8 +781,9 @@ abstract class BaseTestCase extends TestCase {
 			'transport'        => $transport,
 		];
 		$request = Requests::get($url, [], $options);
-		$this->assertSame($code, $request->status_code);
-		$this->assertSame($success, $request->success);
+		$this->assertInstanceOf(Response::class, $request, 'Request should return a Response object');
+		$this->assertSame($code, $request->status_code, sprintf('Status code should be %d', $code));
+		$this->assertSame($success, $request->success, sprintf('Success property should be %s for status code %d', $success ? 'true' : 'false', $code));
 	}
 
 	/**
@@ -808,8 +851,9 @@ abstract class BaseTestCase extends TestCase {
 		];
 
 		$request = Requests::get($this->httpbin('/status/599'), [], $options);
-		$this->assertSame(599, $request->status_code);
-		$this->assertFalse($request->success);
+		$this->assertInstanceOf(Response::class, $request, 'Request should return a Response object');
+		$this->assertSame(599, $request->status_code, 'Status code should be 599');
+		$this->assertFalse($request->success, 'Success property should be false for unknown status code');
 	}
 
 	public function testStatusCodeThrowUnknown() {
@@ -828,10 +872,13 @@ abstract class BaseTestCase extends TestCase {
 
 	public function testGzipped() {
 		$request = Requests::get($this->httpbin('/gzip'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'Gzipped request should return status code 200');
 
 		$result = json_decode($request->body);
-		$this->assertTrue($result->gzipped);
+		$this->assertIsObject($result, 'Response body should be valid JSON object');
+		$this->assertObjectHasProperty('gzipped', $result, 'Response should contain gzipped property');
+		$this->assertTrue($result->gzipped, 'Response should indicate content was gzipped');
 	}
 
 	public function testStreamToFile() {
