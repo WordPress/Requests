@@ -29,7 +29,7 @@ jobs:
   certificate-check:
     name: "Check for updated certificate bundle"
     # Don't run the cron job on forks.
-    if: ${{ github.event_name != 'schedule' || github.repository == 'WordPress/Requests' }}
+    if: ${{ github.event_name != 'schedule' || github.event.repository.fork == false }}
 
     runs-on: ubuntu-latest
     steps:
