@@ -30,7 +30,7 @@ final class SerializationTest extends TestCase {
 			$new_value  = unserialize($serialized);
 			$reflection = new ReflectionClass(FilteredIterator::class);
 			$property   = $reflection->getProperty('callback');
-			$property->setAccessible(true);
+			(\PHP_VERSION_ID < 80100) && $property->setAccessible(true);
 			$callback_value = $property->getValue($new_value);
 			$this->assertNull($callback_value, 'Callback is not null');
 		} else {

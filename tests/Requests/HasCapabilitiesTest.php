@@ -23,13 +23,13 @@ final class HasCapabilitiesTest extends TestCase {
 
 	public function testFailsForUnsupportedCapabilities() {
 		$transports = new ReflectionProperty(Requests::class, 'transports');
-		$transports->setAccessible(true);
+		(\PHP_VERSION_ID < 80100) && $transports->setAccessible(true);
 		$transports->setValue(null, [TestTransportMock::class]);
 
 		$result = Requests::has_capabilities(['time-travel' => true]);
 
 		$transports->setValue(null, []);
-		$transports->setAccessible(false);
+		(\PHP_VERSION_ID < 80100) && $transports->setAccessible(false);
 
 		$this->assertFalse($result);
 	}

@@ -52,9 +52,9 @@ final class ConstructorTest extends TestCase {
 
 		$reflection = new ReflectionObject($obj);
 		$property   = $reflection->getProperty('cookies');
-		$property->setAccessible(true);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(true);
 		$property_value = $property->getValue($obj);
-		$property->setAccessible(false);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(false);
 
 		$this->assertSame($input, $property_value, 'Cookies property has not been set to expected value');
 	}

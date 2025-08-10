@@ -75,9 +75,9 @@ final class ConstructorTest extends TestCase {
 
 		$reflection = new ReflectionObject($obj);
 		$property   = $reflection->getProperty('callback');
-		$property->setAccessible(true);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(true);
 		$callback_value = $property->getValue($obj);
-		$property->setAccessible(false);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(false);
 
 		$this->assertSame($input, $callback_value, 'Callback property has not been set');
 	}
@@ -108,9 +108,9 @@ final class ConstructorTest extends TestCase {
 
 		$reflection = new ReflectionObject($obj);
 		$property   = $reflection->getProperty('callback');
-		$property->setAccessible(true);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(true);
 		$callback_value = $property->getValue($obj);
-		$property->setAccessible(false);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(false);
 
 		$this->assertNull($callback_value, 'Callback property has been set to invalid callback');
 	}
