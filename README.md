@@ -8,7 +8,7 @@ Requests for PHP
 
 Requests is a HTTP library written in PHP, for human beings. It is roughly
 based on the API from the excellent [Requests Python
-library](http://python-requests.org/). Requests is [ISC
+library](https://requests.readthedocs.io/en/latest/). Requests is [ISC
 Licensed](https://github.com/WordPress/Requests/blob/stable/LICENSE) (similar to
 the new BSD license) and has no dependencies, except for PHP 5.6.20+.
 
