@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Restore etags cache for certificate files
         uses: actions/cache@v4
