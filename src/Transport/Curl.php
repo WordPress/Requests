@@ -306,7 +306,9 @@ final class Curl implements Transport {
 				}
 
 				curl_multi_remove_handle($multihandle, $done['handle']);
-				curl_close($done['handle']);
+				if (is_resource($done['handle'])) {
+					curl_close($done['handle']);
+				}
 
 				if (!is_string($responses[$key])) {
 					$options['hooks']->dispatch('multiple.request.complete', [&$responses[$key], $key]);
