@@ -47,7 +47,7 @@
     "requests/test-server": "dev-main",
     "roave/security-advisories": "dev-latest",
     "wp-coding-standards/wpcs": "^3.1",
-    "yoast/phpunit-polyfills": "^2.0.1"
+    "yoast/phpunit-polyfills": "^2.0.5"
   },
   "suggest": {
     "ext-curl": "For improved performance",
