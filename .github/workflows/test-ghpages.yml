@@ -5,6 +5,8 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   #### TEST THAT THE GH PAGES SITE GETS BUILT WITHOUT ERRORS ####
   test:
