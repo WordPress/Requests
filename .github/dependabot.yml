@@ -14,3 +14,9 @@ updates:
       prefix: "GH Actions:"
     labels:
       - "Type: testing/chores/QA"
+    groups:
+      action-runners:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
