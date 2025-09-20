@@ -46,7 +46,7 @@
     "phpcompatibility/php-compatibility": "^9.3.5",
     "requests/test-server": "dev-main",
     "wp-coding-standards/wpcs": "^3.1",
-    "yoast/phpunit-polyfills": "^2.0.1"
+    "yoast/phpunit-polyfills": "^2.0.5"
   },
   "suggest": {
     "ext-curl": "For improved performance",
