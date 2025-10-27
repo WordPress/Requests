@@ -118,7 +118,7 @@ jobs:
           ref: gh-pages
 
       - name: Download the prepared artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: website-updates
           path: artifacts
