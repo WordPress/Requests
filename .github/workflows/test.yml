@@ -136,7 +136,7 @@ jobs:
         run: vendor/bin/stop.sh
 
       - name: Send coverage report to Codecov
-        if: ${{ success() && matrix.coverage == true }}
+        if: ${{ success() && matrix.coverage == true && github.event.repository.fork == false }}
         uses: codecov/codecov-action@v5
         with:
           token: "${{ secrets.CODECOV_TOKEN }}"
