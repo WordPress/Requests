@@ -845,17 +845,19 @@ abstract class BaseTestCase extends TestCase {
 		}
 
 		$this->expectException(Exception::class);
-		Requests::get('https://testssl-expire.disig.sk/index.en.html', [], $this->getOptions());
+		Requests::get('https://expired.badssl.com/', [], $this->getOptions());
 	}
 
 	public function testRevokedHTTPS() {
+		$this->markTestSkipped('Certificate revocation checking is not enabled by default in PHP. See issue #966.');
+
 		if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
 		}
 
 		$this->expectException(Exception::class);
-		Requests::get('https://testssl-revoked.disig.sk/index.en.html', [], $this->getOptions());
+		Requests::get('https://revoked.badssl.com/', [], $this->getOptions());
 	}
 
 	/**
