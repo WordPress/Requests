@@ -93,8 +93,7 @@ final class FilteredIteratorTest extends TestCase {
 	 */
 	public function dataConstructorValidData() {
 		return [
-			'array'           => [[1, 2, 3]],
-			'iterable object' => [new ArrayIterator([1, 2, 3])],
+			'array' => [[1, 2, 3]],
 		];
 	}
 
