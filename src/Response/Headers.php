@@ -37,7 +37,7 @@ class Headers extends CaseInsensitiveDictionary {
 			$offset = strtolower($offset);
 		}
 
-		if (!isset($this->data[$offset])) {
+		if (!isset($offset, $this->data[$offset])) {
 			return null;
 		}
 
