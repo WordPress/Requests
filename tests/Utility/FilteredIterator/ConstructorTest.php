@@ -33,7 +33,7 @@ final class ConstructorTest extends TestCase {
 	 * @return array
 	 */
 	public static function dataValidData() {
-		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_ITERABLE);
+		return TypeProviderHelper::getSelection(TypeProviderHelper::GROUP_ARRAY);
 	}
 
 	/**
@@ -58,7 +58,7 @@ final class ConstructorTest extends TestCase {
 	 * @return array
 	 */
 	public static function dataInvalidData() {
-		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ITERABLE);
+		return TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_ARRAY);
 	}
 
 	/**
