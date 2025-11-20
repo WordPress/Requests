@@ -31,10 +31,10 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
 
       - name: Restore etags cache for certificate files
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: certificates/etag-*.txt
           key: curl-etag-${{ hashFiles('certificates/cacert.pem') }}-${{ hashFiles('certificates/cacert.pem.sha256') }}
@@ -62,7 +62,7 @@ jobs:
         run: echo "DATE=$(/bin/date -u "+%F")" >> "$GITHUB_OUTPUT"
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
           base: ${{ steps.branches.outputs.BASE }}
           branch: ${{ steps.branches.outputs.PR_BRANCH }}
