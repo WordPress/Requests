@@ -5,6 +5,8 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   #### TEST THAT THE GH PAGES SITE GETS BUILT WITHOUT ERRORS ####
   test:
@@ -15,6 +17,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
