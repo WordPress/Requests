@@ -45,7 +45,6 @@
     "php-parallel-lint/php-parallel-lint": "^1.4.0",
     "phpcompatibility/php-compatibility": "^9.3.5",
     "requests/test-server": "dev-main",
-    "roave/security-advisories": "dev-latest",
     "wp-coding-standards/wpcs": "^3.1",
     "yoast/phpunit-polyfills": "^2.0.1"
   },
