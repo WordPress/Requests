@@ -2,8 +2,6 @@ name: Test
 
 on:
   push:
-    branches:
-      - stable
   pull_request:
   # Allow manually triggering the workflow.
   workflow_dispatch:
@@ -22,6 +20,7 @@ jobs:
     strategy:
       # Keys:
       # - coverage: Whether to run the tests with code coverage.
+      fail-fast: false
       matrix:
         php: ['7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.6']
         coverage: [false]
