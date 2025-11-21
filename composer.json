@@ -43,7 +43,8 @@
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
-    }
+    },
+    "lock": false
   },
   "require-dev": {
     "requests/test-server": "dev-main",
