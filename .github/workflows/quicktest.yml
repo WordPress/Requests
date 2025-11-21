@@ -107,8 +107,8 @@ jobs:
       - name: Stop proxy server
         continue-on-error: true
         run: |
-          PORT=9002 scripts/stop.sh
-          PORT=9003 scripts/stop.sh
+          PORT=9002 scripts/proxy/stop.sh
+          PORT=9003 scripts/proxy/stop.sh
 
       - name: Stop test server
         continue-on-error: true
