@@ -39,6 +39,7 @@ final class CurlTest extends BaseTestCase {
 
 	/**
 	 * @small
+	 * @requires PHP 7.0.0
 	 */
 	public function testDoesntOverwriteExpectHeaderIfManuallySet() {
 		$headers = [
