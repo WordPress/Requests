@@ -409,8 +409,6 @@ final class Curl implements Transport {
 			$headers['Expect'] = $this->get_expect_header($data);
 		}
 
-		$headers = Requests::flatten($headers);
-
 		if (!empty($data)) {
 			$data_format = $options['data_format'];
 
