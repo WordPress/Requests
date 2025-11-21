@@ -97,10 +97,6 @@ class CaseInsensitiveDictionary implements ArrayAccess, IteratorAggregate {
 			$offset = strtolower($offset);
 		}
 
-		if ($offset === null) {
-			$offset = '';
-		}
-
 		$this->data[$offset] = $value;
 	}
 
