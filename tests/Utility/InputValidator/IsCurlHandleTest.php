@@ -23,6 +23,7 @@ final class IsCurlHandleTest extends TestCase {
 	 */
 	public static function tear_down_after_test() {
 		if (isset(self::$curl_handle) && is_resource(self::$curl_handle)) {
+			// phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.curl_closeDeprecated,Generic.PHP.DeprecatedFunctions.Deprecated
 			curl_close(self::$curl_handle);
 		}
 
