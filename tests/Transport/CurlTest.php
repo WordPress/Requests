@@ -18,13 +18,13 @@ final class CurlTest extends BaseTestCase {
 
 	public function testExpiredHTTPS() {
 		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('certificate subject name');
+		$this->expectExceptionMessage('certificate has expired');
 		parent::testExpiredHTTPS();
 	}
 
 	public function testRevokedHTTPS() {
 		$this->expectException(Exception::class);
-		$this->expectExceptionMessage('certificate subject name');
+		$this->expectExceptionMessage('certificate has been revoked');
 		parent::testRevokedHTTPS();
 	}
 
@@ -39,6 +39,7 @@ final class CurlTest extends BaseTestCase {
 
 	/**
 	 * @small
+	 * @requires PHP 7.0.0
 	 */
 	public function testDoesntOverwriteExpectHeaderIfManuallySet() {
 		$headers = [

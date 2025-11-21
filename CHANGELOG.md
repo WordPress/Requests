@@ -1,6 +1,30 @@
 Changelog
 =========
 
+2.0.16
+------
+
+### Overview of changes
+- Update bundled certificates as of 2025-11-04. [#954]
+- Fixed: PHP 8.5 deprecation notices for `Reflection*::setAccessible()` [#940]
+- Fixed: PHP 8.5 deprecation notices for `curl_close()` [#947] Props [@TobiasBg][gh-TobiasBg]
+- Fixed: PHP 8.5 deprecation notices `Using null as an array offset` [#956]
+- Fixed: Disallow `FilteredIterator` to accept objects (PHP 8.5 deprecation). [#968]
+  Note: This is technically a breaking change as this was documented behaviour. However, `FilteredIterator` is an internal class and the only detected use of this behavior was in a test.
+- Fixed: tests for expired and revoked SSL certificates. [#967]
+- Composer: remove `roave/security-advisories` (no longer needed with Composer 2.9+). [#961]
+- README: corrected Python Requests library URL. [#944] Props [@pmbaldha][gh-pmbaldha]
+- General housekeeping.
+
+[#940]: https://github.com/WordPress/Requests/pull/940
+[#944]: https://github.com/WordPress/Requests/pull/944
+[#947]: https://github.com/WordPress/Requests/pull/947
+[#954]: https://github.com/WordPress/Requests/pull/954
+[#956]: https://github.com/WordPress/Requests/pull/956
+[#961]: https://github.com/WordPress/Requests/pull/961
+[#967]: https://github.com/WordPress/Requests/pull/967
+[#968]: https://github.com/WordPress/Requests/pull/968
+
 2.0.15
 ------
 
@@ -1096,6 +1120,7 @@ Initial release!
 [gh-ozh]: https://github.com/ozh
 [gh-patmead]: https://github.com/patmead
 [gh-peterwilsoncc]: https://github.com/peterwilsoncc
+[gh-pmbaldha]: https://github.com/pmbaldha
 [gh-qibinghua]: https://github.com/qibinghua
 [gh-remik]: https://github.com/remik
 [gh-rmccue]: https://github.com/rmccue
@@ -1109,6 +1134,7 @@ Initial release!
 [gh-szepeviktor]: https://github.com/szepeviktor
 [gh-TimothyBJacobs]: https://github.com/TimothyBJacobs
 [gh-tnorthcutt]: https://github.com/tnorthcutt
+[gh-TobiasBg]: https://github.com/TobiasBg
 [gh-todeveni]: https://github.com/todeveni
 [gh-tomsommer]: https://github.com/tomsommer
 [gh-tonebender]: https://github.com/tonebender
@@ -1119,3 +1145,4 @@ Initial release!
 [gh-xknown]: https://github.com/xknown
 [gh-Zegnat]: https://github.com/Zegnat
 [gh-ZsgsDesign]: https://github.com/ZsgsDesign
+

@@ -20,38 +20,33 @@ jobs:
     strategy:
       matrix:
         # Lint against the high/low versions of each PHP major + nightly.
-        php: ['5.6', '7.0', '7.4', '8.0', '8.4', '8.5']
+        php: ['5.6', '7.0', '7.4', '8.0', '8.5', '8.6']
 
     name: "Lint: PHP ${{ matrix.php }}"
-    continue-on-error: ${{ matrix.php == '8.5' }}
+    continue-on-error: ${{ matrix.php == '8.6' }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        with:
+          persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # 2.35.5
         with:
           php-version: ${{ matrix.php }}
-          ini-values: error_reporting=-1, display_errors=On, log_errors_max_len=0
+          ini-values: error_reporting=-1, display_errors=On, display_startup_errors=On, log_errors_max_len=0
           coverage: none
           tools: cs2pr
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
-      - name: Install Composer dependencies - normal
-        if: ${{ matrix.php != '8.5' }}
-        uses: "ramsey/composer-install@v3"
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520" # 3.1.1
         with:
+          # For PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
+          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }}
           # Bust the cache at least once a month - output format: YYYY-MM.
-          custom-cache-suffix: $(date -u "+%Y-%m")
-
-      # For PHP "nightly", we need to install with ignore platform reqs.
-      - name: Install Composer dependencies - with ignore platform
-        if: ${{ matrix.php == '8.5' }}
-        uses: "ramsey/composer-install@v3"
-        with:
-          composer-options: "--ignore-platform-req=php+"
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Lint against parse errors

@@ -37,7 +37,7 @@ final class FilteredIteratorTest extends TestCase {
 			$new_value  = unserialize($serialized);
 			$reflection = new ReflectionClass(FilteredIterator::class);
 			$property   = $reflection->getProperty('callback');
-			$property->setAccessible(true);
+			(\PHP_VERSION_ID < 80100) && $property->setAccessible(true);
 			$callback_value = $property->getValue($new_value);
 			$this->assertNull($callback_value, 'Callback is not null');
 		} else {
@@ -93,8 +93,7 @@ final class FilteredIteratorTest extends TestCase {
 	 */
 	public function dataConstructorValidData() {
 		return [
-			'array'           => [[1, 2, 3]],
-			'iterable object' => [new ArrayIterator([1, 2, 3])],
+			'array' => [[1, 2, 3]],
 		];
 	}
 
@@ -145,9 +144,9 @@ final class FilteredIteratorTest extends TestCase {
 
 		$reflection = new ReflectionObject($obj);
 		$property   = $reflection->getProperty('callback');
-		$property->setAccessible(true);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(true);
 		$callback_value = $property->getValue($obj);
-		$property->setAccessible(false);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(false);
 
 		$this->assertSame($input, $callback_value, 'Callback property has not been set');
 	}
@@ -180,9 +179,9 @@ final class FilteredIteratorTest extends TestCase {
 
 		$reflection = new ReflectionObject($obj);
 		$property   = $reflection->getProperty('callback');
-		$property->setAccessible(true);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(true);
 		$callback_value = $property->getValue($obj);
-		$property->setAccessible(false);
+		(\PHP_VERSION_ID < 80100) && $property->setAccessible(false);
 
 		$this->assertNull($callback_value, 'Callback property has been set to invalid callback');
 	}
