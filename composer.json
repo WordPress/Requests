@@ -43,7 +43,7 @@
   "require-dev": {
     "php-parallel-lint/php-console-highlighter": "^1.0.0",
     "php-parallel-lint/php-parallel-lint": "^1.4.0",
-    "phpcompatibility/php-compatibility": "^9.3.5",
+    "phpcompatibility/php-compatibility": "^10.0.0@dev",
     "requests/test-server": "dev-main",
     "wp-coding-standards/wpcs": "^3.1",
     "yoast/phpunit-polyfills": "^2.0.5"
@@ -54,6 +54,8 @@
     "ext-zlib": "For improved performance when decompressing encoded streams",
     "art4/requests-psr18-adapter": "For using Requests as a PSR-18 HTTP Client"
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "WpOrg\\Requests\\": "src/"
