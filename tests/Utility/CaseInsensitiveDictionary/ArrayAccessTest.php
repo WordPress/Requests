@@ -24,7 +24,7 @@ class ArrayAccessTest extends TestCase {
 		'UPPER CASE'  => 'Uppercase key',
 		'Proper Case' => 'First char in caps in key',
 		'lower case'  => 'Lowercase key',
-		null          => 'Null key will be converted to empty string',
+		''            => 'Null key will be converted to empty string',
 		false         => 'false key will become integer 0 key',
 		true          => 'true key will become integer 1 key',
 		5.0           => 'Float key will be converted to integer key (cut off)',
