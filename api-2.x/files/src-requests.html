@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Requests 2.0.15 API</title>
+            <title>Requests 2.0.16 API</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
@@ -25,7 +25,7 @@
     </head>
 <body id="top">
     <header class="phpdocumentor-header phpdocumentor-section">
-    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.15 API</a></h1>
+    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.16 API</a></h1>
     <input class="phpdocumentor-header__menu-button" type="checkbox" id="menu-button" name="menu-button" />
     <label class="phpdocumentor-header__menu-icon" for="menu-button">
         <i class="fas fa-bars"></i>
@@ -136,17 +136,15 @@
 
             <p class="phpdocumentor-summary">Requests for PHP</p>
 
-
-    <section class="phpdocumentor-description"><p>Inspired by Requests for Python.</p>
+        
+            <section class="phpdocumentor-description"><p>Inspired by Requests for Python.</p>
 <p>Based on concepts from SimplePie_File, RequestCore and WP_Http.</p>
 </section>
 
+        
 
 
-
-
-
-
+        
 <h3 id="toc">
     Table of Contents
     <a href="files/src-requests.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
@@ -163,7 +161,6 @@
     </h4>
     <dl class="phpdocumentor-table-of-contents">
                     <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/WpOrg-Requests-Requests.html"><abbr title="\WpOrg\Requests\Requests">Requests</abbr></a></dt><dd>Requests for PHP</dd>    </dl>
-
 
 
 
@@ -212,6 +209,8 @@
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
                             Prism.highlightElement(code);
+                            d=document.getElementsByClassName("line-numbers");
+                            d[0].scrollTop = d[0].children[1].offsetTop;
                             return;
                         }
 
