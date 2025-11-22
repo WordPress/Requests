@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Requests 2.0.15 API</title>
+            <title>Requests 2.0.16 API</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
@@ -25,7 +25,7 @@
     </head>
 <body id="top">
     <header class="phpdocumentor-header phpdocumentor-section">
-    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.15 API</a></h1>
+    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.16 API</a></h1>
     <input class="phpdocumentor-header__menu-button" type="checkbox" id="menu-button" name="menu-button" />
     <label class="phpdocumentor-header__menu-icon" for="menu-button">
         <i class="fas fa-bars"></i>
@@ -173,10 +173,8 @@
 
 
 
-
-
-
-
+    
+    
 <h3 id="toc">
     Table of Contents
     <a href="classes/WpOrg-Requests-Utility-FilteredIterator.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
@@ -282,7 +280,7 @@
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The array or object to be iterated on.</p>
+                    <section class="phpdocumentor-description"><p>The array to be iterated on.</p>
 </section>
 
             </dd>
@@ -316,8 +314,8 @@
                                     </dd>
                                             </dl>
 
+        
     
-
     
 </article>
                     <article
@@ -379,19 +377,19 @@
                                     </dd>
                                             </dl>
 
-    
-    <section class="phpdocumentor-attributes">
-        <h5 class="phpdocumentor-elements__header" id="attributes">
-            Attributes <a href="classes/WpOrg-Requests-Utility-FilteredIterator.html#method___unserialize#attributes" class="headerlink"><i class="fas fa-link"></i></a>
+        
+            <section class="phpdocumentor-attributes">
+            <h5 class="phpdocumentor-elements__header" id="attributes">
+                Attributes <a href="classes/WpOrg-Requests-Utility-FilteredIterator.html#method___unserialize#attributes" class="headerlink"><i class="fas fa-link"></i></a>
 
-        </h5>
-                    <dl class="phpdocumentor-argument-list">
+            </h5>
+                            <dl class="phpdocumentor-argument-list">
     <dt class="phpdocumentor-argument-list__entry">
         #[<abbr title="\ReturnTypeWillChange">ReturnTypeWillChange</abbr>]
     </dt>
     </dl>
-            </section>
-
+                    </section>
+    
     
 </article>
                     <article
@@ -427,8 +425,8 @@
     
     
 
+        
     
-
     
 </article>
                     <article
@@ -462,19 +460,19 @@
     
     
 
-    
-    <section class="phpdocumentor-attributes">
-        <h5 class="phpdocumentor-elements__header" id="attributes">
-            Attributes <a href="classes/WpOrg-Requests-Utility-FilteredIterator.html#method_current#attributes" class="headerlink"><i class="fas fa-link"></i></a>
+        
+            <section class="phpdocumentor-attributes">
+            <h5 class="phpdocumentor-elements__header" id="attributes">
+                Attributes <a href="classes/WpOrg-Requests-Utility-FilteredIterator.html#method_current#attributes" class="headerlink"><i class="fas fa-link"></i></a>
 
-        </h5>
-                    <dl class="phpdocumentor-argument-list">
+            </h5>
+                            <dl class="phpdocumentor-argument-list">
     <dt class="phpdocumentor-argument-list__entry">
         #[<abbr title="\ReturnTypeWillChange">ReturnTypeWillChange</abbr>]
     </dt>
     </dl>
-            </section>
-
+                    </section>
+    
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">string</span>
@@ -524,19 +522,19 @@
 
     
 
-    
-    <section class="phpdocumentor-attributes">
-        <h5 class="phpdocumentor-elements__header" id="attributes">
-            Attributes <a href="classes/WpOrg-Requests-Utility-FilteredIterator.html#method_unserialize#attributes" class="headerlink"><i class="fas fa-link"></i></a>
+        
+            <section class="phpdocumentor-attributes">
+            <h5 class="phpdocumentor-elements__header" id="attributes">
+                Attributes <a href="classes/WpOrg-Requests-Utility-FilteredIterator.html#method_unserialize#attributes" class="headerlink"><i class="fas fa-link"></i></a>
 
-        </h5>
-                    <dl class="phpdocumentor-argument-list">
+            </h5>
+                            <dl class="phpdocumentor-argument-list">
     <dt class="phpdocumentor-argument-list__entry">
         #[<abbr title="\ReturnTypeWillChange">ReturnTypeWillChange</abbr>]
     </dt>
     </dl>
-            </section>
-
+                    </section>
+    
     
 </article>
             </section>
@@ -577,6 +575,8 @@
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
                             Prism.highlightElement(code);
+                            d=document.getElementsByClassName("line-numbers");
+                            d[0].scrollTop = d[0].children[1].offsetTop;
                             return;
                         }
 
