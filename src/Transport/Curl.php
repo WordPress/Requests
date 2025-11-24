@@ -441,7 +441,7 @@ final class Curl implements Transport {
 			if (defined('CURLOPT_CONNECT_TO')) {
 				$connect_to_string = "${host}:${normalized_port}:${exec_ip}:${normalized_port}";
 				// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttoFound
-				curl_setopt($this->handle, CURLOPT_CONNECT_TO, $connect_to_string); // phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connect_toFound
+				curl_setopt($this->handle, CURLOPT_CONNECT_TO, [$connect_to_string]); // phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connect_toFound
 			} elseif (defined('CURLOPT_RESOLVE')) {
 				if (defined('CURLOPT_DNS_USE_GLOBAL_CACHE')) {
 					// Set to true in PHP's source for most installations.

@@ -182,7 +182,7 @@ final class Fsockopen implements Transport {
 
 		restore_error_handler();
 
-		if ($verifyname && !$this->verify_certificate_from_context($exec_host, $context)) {
+		if ($verifyname && !$this->verify_certificate_from_context($host, $context)) {
 			throw new Exception('SSL certificate did not match the requested domain name', 'ssl.no_match');
 		}
 
@@ -230,7 +230,7 @@ final class Fsockopen implements Transport {
 		}
 
 		if (!isset($case_insensitive_headers['Host'])) {
-			$out         .= sprintf('Host: %s', $exec_host);
+			$out         .= sprintf('Host: %s', $host);
 			$scheme_lower = strtolower($url_parts['scheme']);
 
 			if (($scheme_lower === 'http' && $url_parts['port'] !== Port::HTTP) || ($scheme_lower === 'https' && $url_parts['port'] !== Port::HTTPS)) {

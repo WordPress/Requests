@@ -1227,4 +1227,30 @@ abstract class BaseTestCase extends TestCase {
 
 		return $hooks;
 	}
+
+	/**
+	 * Test that Host header contains the original hostname when using HostBindings, not the IP address.
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostHeaderWithHostBindings() {
+		$options = $this->getOptions([
+			Capability::HOST_BINDINGS => [
+				'localhost' => ['127.0.0.1'],
+			],
+		]);
+
+		$response = Requests::get($this->httpbin('/get'), [], $options);
+		$this->assertSame(200, $response->status_code);
+
+		$result = json_decode($response->body, true);
+
+		// The server should receive the original hostname in the Host header,
+		// not the IP address from HostBindings
+		$this->assertArrayHasKey('headers', $result);
+		$this->assertArrayHasKey('Host', $result['headers']);
+		$this->assertSame('localhost:8080', $result['headers']['Host'],
+			'Host header should contain the original hostname, not the IP from HostBindings');
+	}
 }
