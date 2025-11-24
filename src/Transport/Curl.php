@@ -420,10 +420,29 @@ final class Curl implements Transport {
 			}
 		}
 
-		$exec_url      = $url;
-		$parsed        = parse_url($url);
-		$host          = $parsed['host'];
-		$host_bindings = new HostBindings(isset($options[Capability::HOST_BINDINGS]) ? $options[Capability::HOST_BINDINGS] : []);
+		$exec_url = $url;
+		$parsed   = parse_url($url);
+		$host     = $parsed['host'];
+
+		$host_bindings_input = isset($options[Capability::HOST_BINDINGS]) ? $options[Capability::HOST_BINDINGS] : [];
+
+		// We allow the application to pass in a pre-constructed HostBindings object
+		// in case they need to skip IP address validation.
+		if ($host_bindings_input instanceof HostBindings) {
+			$host_bindings = $host_bindings_input;
+		} elseif (is_array($host_bindings_input)) {
+			$host_bindings = new HostBindings($host_bindings_input);
+		} elseif (empty($host_bindings_input) === false) {
+			throw InvalidArgument::create(
+				4,
+				'options[host_bindings]',
+				'array or HostBindings object',
+				gettype($host_bindings_input)
+			);
+		} else {
+			$host_bindings = new HostBindings([]);
+		}
+
 		if ($host_bindings->has_host($host)) {
 			if (isset($parsed['port'])) {
 				$port            = $parsed['port'];

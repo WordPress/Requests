@@ -21,6 +21,7 @@ use WpOrg\Requests\Proxy\Http;
 use WpOrg\Requests\Response;
 use WpOrg\Requests\Transport\Curl;
 use WpOrg\Requests\Transport\Fsockopen;
+use WpOrg\Requests\Utility\HostBindings;
 use WpOrg\Requests\Utility\InputValidator;
 
 /**
@@ -417,9 +418,12 @@ class Requests {
 	 * - `data_format`: How should we send the `$data` parameter?
 	 *    (string, one of 'query' or 'body', default: 'query' for
 	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
-	 * - `host_bindings`: Bind host names to specific IP addresses to be used.
-	 *    Keys are domain names, values are arrays of IPv4 and/or IPv6 addresses.
-	 *    (array, default: [])
+	 * - `host_bindings`: Bind host names to specific IP addresses.
+	 *    Accepts either:
+	 *    - Array: Keys are domain names, values are arrays of IPv4/IPv6 addresses.
+	 *             IP addresses are validated by default.
+	 *    - HostBindings object: Pre-constructed for advanced control (e.g., skip validation).
+	 *    (array|HostBindings, default: [])
 	 *
 	 * @param string|\Stringable $url     URL to request
 	 * @param array              $headers Extra headers to send with the request
@@ -465,8 +469,14 @@ class Requests {
 		} else {
 			$need_ssl = (stripos($url, 'https://') === 0);
 
-			$need_host_bindings = array_key_exists(Capability::HOST_BINDINGS, $options)
-				&& is_array($options[Capability::HOST_BINDINGS]);
+			$need_host_bindings =
+				array_key_exists(Capability::HOST_BINDINGS, $options)
+				&&
+				(
+					is_array($options[Capability::HOST_BINDINGS])
+					||
+					$options[Capability::HOST_BINDINGS] instanceof HostBindings
+				);
 
 			$capabilities = [
 				Capability::HOST_BINDINGS => $need_host_bindings,
