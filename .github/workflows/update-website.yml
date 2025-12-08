@@ -49,7 +49,7 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: ${{ steps.base_branch.outputs.BRANCH }}
           persist-credentials: false
@@ -112,7 +112,7 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: gh-pages
           persist-credentials: false
@@ -186,7 +186,7 @@ jobs:
 
       # Test that the site builds correctly.
       - name: Checkout the newly created branch
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
           persist-credentials: false
