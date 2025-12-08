@@ -167,7 +167,7 @@ jobs:
         run: git status -vv --untracked=all
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7.0.9
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7.0.11
         with:
           base: gh-pages
           branch: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
@@ -194,7 +194,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@8aeb6ff8030dd539317f8e1769a044873b56ea71 # v1.268.0
+        uses: ruby/setup-ruby@d697be2f83c6234b20877c3b5eac7a7f342f0d0c # v1.269.0
         with:
           # Use the version as per https://pages.github.com/versions/.
           ruby-version: 3.3.4
