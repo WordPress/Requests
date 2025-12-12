@@ -97,7 +97,7 @@ jobs:
         id: get_pr_info
         env:
           REF_NAME: ${{ github.ref_name }}
-          TAG_NAME: ${{ github.event.release.tag_name }}
+          TAG_NAME: ${{ github.event.push.ref }}
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             echo "REF=$REF_NAME" >> "$GITHUB_OUTPUT"
@@ -124,6 +124,7 @@ jobs:
           path: artifacts
 
       - name: Create the new branch
+        if: github.event_name == 'pull_request'
         env:
           REF_NAME: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
         run: git checkout -b "$REF_NAME"
