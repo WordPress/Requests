@@ -49,13 +49,13 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: ${{ steps.base_branch.outputs.BRANCH }}
           persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # 2.35.5
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
         with:
           php-version: '8.1'
           ini-values: display_errors=On, display_startup_errors=On
@@ -112,7 +112,7 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           ref: gh-pages
           persist-credentials: false
@@ -122,6 +122,11 @@ jobs:
         with:
           name: website-updates
           path: artifacts
+
+      - name: Create the new branch
+        env:
+          REF_NAME: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
+        run: git checkout -b "$REF_NAME"
 
       # Different version of phpDocumentor may add/remove files for CSS/JS etc.
       # Similarly, a new Requests major may remove classes.
@@ -165,7 +170,8 @@ jobs:
         run: git status -vv --untracked=all
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        if: github.event_name != 'pull_request'
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7.0.11
         with:
           base: gh-pages
           branch: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
@@ -185,14 +191,8 @@ jobs:
           draft: ${{ steps.get_pr_info.outputs.DRAFT }}
 
       # Test that the site builds correctly.
-      - name: Checkout the newly created branch
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
-        with:
-          ref: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
-          persist-credentials: false
-
       - name: Set up Ruby
-        uses: ruby/setup-ruby@8aeb6ff8030dd539317f8e1769a044873b56ea71 # v1.268.0
+        uses: ruby/setup-ruby@d697be2f83c6234b20877c3b5eac7a7f342f0d0c # v1.269.0
         with:
           # Use the version as per https://pages.github.com/versions/.
           ruby-version: 3.3.4
