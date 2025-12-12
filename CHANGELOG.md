@@ -1,6 +1,15 @@
 Changelog
 =========
 
+2.0.17
+------
+
+### Overview of changes
+- Update bundled certificates as of 2025-12-02. [#1000]
+- General housekeeping.
+
+[#1000]: https://github.com/WordPress/Requests/pull/1000
+
 2.0.16
 ------
 
