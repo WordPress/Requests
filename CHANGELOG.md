@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.18
+2.0.17
 ------
 
 ### Overview of changes
