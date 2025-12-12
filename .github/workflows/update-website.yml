@@ -125,6 +125,11 @@ jobs:
           name: website-updates
           path: artifacts
 
+      - name: Create the new branch
+        env:
+          REF_NAME: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
+        run: git checkout -b "$REF_NAME"
+
       # Different version of phpDocumentor may add/remove files for CSS/JS etc.
       # Similarly, a new Requests major may remove classes.
       # So we always need to make sure that the old version of the API docs are
@@ -167,6 +172,7 @@ jobs:
         run: git status -vv --untracked=all
 
       - name: Create pull request
+        if: github.event_name != 'pull_request'
         uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7.0.9
         with:
           base: gh-pages
@@ -187,12 +193,6 @@ jobs:
           draft: ${{ steps.get_pr_info.outputs.DRAFT }}
 
       # Test that the site builds correctly.
-      - name: Checkout the newly created branch
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-        with:
-          ref: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
-          persist-credentials: false
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@d697be2f83c6234b20877c3b5eac7a7f342f0d0c # v1.269.0
         with:
