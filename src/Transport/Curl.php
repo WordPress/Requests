@@ -454,11 +454,11 @@ final class Curl implements Transport {
 
 			$exec_ip = $host_bindings->get_first_ip_for_host($host);
 			// Use square brackets for IPv6 addresses.
-			$exec_ip = strpos($exec_ip, ':') === false ? $exec_ip : "[${exec_ip}]";
+			$exec_ip = strpos($exec_ip, ':') === false ? $exec_ip : "[{$exec_ip}]";
 
 			// @TODO: Extract connect_to/resolve handling into separate method.
 			if (defined('CURLOPT_CONNECT_TO')) {
-				$connect_to_string = "${host}:${normalized_port}:${exec_ip}:${normalized_port}";
+				$connect_to_string = "{$host}:{$normalized_port}:{$exec_ip}:{$normalized_port}";
 				// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttoFound
 				curl_setopt($this->handle, CURLOPT_CONNECT_TO, [$connect_to_string]); // phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connect_toFound
 			} elseif (defined('CURLOPT_RESOLVE')) {
@@ -468,7 +468,7 @@ final class Curl implements Transport {
 					curl_setopt($this->handle, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
 				}
 
-				curl_setopt($this->handle, CURLOPT_RESOLVE, ["${host}:${normalized_port}:${exec_ip}"]);
+				curl_setopt($this->handle, CURLOPT_RESOLVE, ["{$host}:{$normalized_port}:{$exec_ip}"]);
 			} elseif ($parsed['scheme'] === 'http') {
 				// @TODO: Use utility class to handle URL assembly.
 				$exec_url = $parsed['scheme'] . '://';
