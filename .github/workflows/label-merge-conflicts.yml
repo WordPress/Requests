@@ -1,0 +1,28 @@
+name: Check PRs for merge conflicts
+
+on:
+  # Check for new conflicts due to merges.
+  push:
+    branches:
+      - develop
+      - stable
+  # Check conflicts in new PRs and for resolved conflicts due to an open PR being updated.
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  check-prs:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'WordPress'
+
+    name: Check PRs for merge conflicts
+
+    steps:
+      - name: Check PRs for merge conflicts
+        uses: eps1lon/actions-label-merge-conflict@1df065ebe6e3310545d4f4c4e862e43bdca146f0 # v3.0.3
+        with:
+          dirtyLabel: "Status: has merge conflict"
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
