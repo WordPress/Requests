@@ -461,6 +461,9 @@ final class Curl implements Transport {
 				$connect_to_string = "{$host}:{$normalized_port}:{$exec_ip}:{$normalized_port}";
 				// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttoFound
 				curl_setopt($this->handle, CURLOPT_CONNECT_TO, [$connect_to_string]); // phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connect_toFound
+				// Fallback branches for cURL < 7.49.0 which lacks CURLOPT_CONNECT_TO.
+				// Cannot be reached in tests as CURLOPT_CONNECT_TO is always defined.
+				// @codeCoverageIgnoreStart -- The else is never reached in CI because CURLOPT_CONNECT_TO is always defined.
 			} elseif (defined('CURLOPT_RESOLVE')) {
 				if (defined('CURLOPT_DNS_USE_GLOBAL_CACHE')) {
 					// Set to true in PHP's source for most installations.
@@ -501,6 +504,8 @@ final class Curl implements Transport {
 				if (!isset($case_insensitive_headers['Host'])) {
 					$headers['Host'] = $host;
 				}
+
+				// @codeCoverageIgnoreEnd
 			}
 
 			// Otherwise, there's nothing we can do.

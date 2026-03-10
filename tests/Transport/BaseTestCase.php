@@ -1286,6 +1286,42 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	/**
+	 * Test that invalid option type for host_bindings throws an exception.
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostBindingsRejectsInvalidType() {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('array or HostBindings object');
+
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => 'not-valid',
+			]
+		);
+
+		Requests::get($this->httpbin('/get'), [], $options);
+	}
+
+	/**
+	 * Test that a falsy non-array value for host_bindings is treated as empty.
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostBindingsFalsyValueTreatedAsEmpty() {
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => false,
+			]
+		);
+
+		$response = Requests::get($this->httpbin('/get'), [], $options);
+		$this->assertSame(200, $response->status_code);
+	}
+
+	/**
 	 * Test that invalid IP formats in HostBindings throw exceptions.
 	 *
 	 * @covers \WpOrg\Requests\Utility\HostBindings::__construct
