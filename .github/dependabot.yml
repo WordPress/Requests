@@ -9,7 +9,8 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "cron"
+      cronjob: "10 22 5,20 * *" # At 22:10, every 5th and 20th day of the month.
     target-branch: "develop"
     open-pull-requests-limit: 5
     commit-message:
@@ -27,7 +28,8 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "cron"
+      cronjob: "10 22 5,20 * *" # At 22:10, every 5th and 20th day of the month.
     target-branch: "gh-pages"
     open-pull-requests-limit: 5
     commit-message:
