@@ -9,6 +9,7 @@ use WpOrg\Requests\Utility\HostBindings;
 
 /**
  * @covers \WpOrg\Requests\Utility\HostBindings::__construct
+ * @covers \WpOrg\Requests\Utility\HostBindings::validate
  */
 final class ConstructorTest extends TestCase {
 

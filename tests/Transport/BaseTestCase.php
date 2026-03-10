@@ -1232,6 +1232,7 @@ abstract class BaseTestCase extends TestCase {
 	/**
 	 * Test that Host header contains the original hostname when using HostBindings, not the IP address.
 	 *
+	 * @covers \WpOrg\Requests\Requests::request
 	 * @covers \WpOrg\Requests\Transport\Curl::request
 	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
 	 */
@@ -1263,6 +1264,7 @@ abstract class BaseTestCase extends TestCase {
 	/**
 	 * Test that HostBindings object can be passed in options.
 	 *
+	 * @covers \WpOrg\Requests\Requests::request
 	 * @covers \WpOrg\Requests\Transport\Curl::request
 	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
 	 */

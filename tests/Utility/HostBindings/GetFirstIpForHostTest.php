@@ -11,6 +11,7 @@ use WpOrg\Requests\Utility\HostBindings;
 
 /**
  * @covers \WpOrg\Requests\Utility\HostBindings::get_first_ip_for_host
+ * @covers \WpOrg\Requests\Utility\HostBindings::has_host
  */
 final class GetFirstIpForHostTest extends TestCase {
 

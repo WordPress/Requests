@@ -10,6 +10,7 @@ use WpOrg\Requests\Utility\HostBindings;
 
 /**
  * @covers \WpOrg\Requests\Utility\HostBindings::get_all_ips_for_host
+ * @covers \WpOrg\Requests\Utility\HostBindings::has_host
  */
 final class GetAllIpsForHostTest extends TestCase {
 
