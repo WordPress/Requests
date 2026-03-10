@@ -7,10 +7,10 @@ PR for tracking changes for the x.x.x release.
 
 Target release date: **DOW MONTH DAY YEAR**.
 
-Actions marked with ** only need to be executre for "cherrypick" releases (`develop` is the next minor/major and not ready for release).
+Actions marked with ** only need to be executed for "cherrypick" releases (`develop` is the next minor/major and not ready for release).
 
 - [ ] Check if any dependencies need updating.
-- [ ] ** Create a `release-x.x.x` branch.
+- [ ] ** Create a `release/vx.x.x` branch.
 - [ ] ** Cherrypick any relevant commits from `develop` to the release branch, including commits related to CI updates.
 - [ ] Update the version constant in `src/Requests.php` - PR #xxx.
 - [ ] Add changelog for the release - PR #xxx
@@ -28,6 +28,7 @@ Actions marked with ** only need to be executre for "cherrypick" releases (`deve
 - [ ] Close the milestone.
 - [ ] Open a new milestone for the next release.
 - [ ] If any open PRs/issues which were milestoned for the release did not make it into the release, update their milestone.
+- [ ] ** Cherrypick the changelog commit from `stable` into the `develop` branch.
 - [ ] Tweet about the release.
 - [ ] Post about it in the WP #core Slack channel.
 - [ ] Open a Trac ticket for WordPress Core to update their copy.
