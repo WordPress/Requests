@@ -34,6 +34,13 @@ use WpOrg\Requests\Utility\InputValidator;
  */
 class Requests {
 	/**
+	 * Current version of Requests
+	 *
+	 * @var string
+	 */
+	const VERSION = '2.0.17';
+
+	/**
 	 * POST method
 	 *
 	 * @var string
@@ -140,13 +147,6 @@ class Requests {
 		Curl::class      => Curl::class,
 		Fsockopen::class => Fsockopen::class,
 	];
-
-	/**
-	 * Current version of Requests
-	 *
-	 * @var string
-	 */
-	const VERSION = '2.0.17';
 
 	/**
 	 * Selected transport name
