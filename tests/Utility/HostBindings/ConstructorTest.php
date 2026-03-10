@@ -79,7 +79,8 @@ final class ConstructorTest extends TestCase {
 			TypeProviderHelper::GROUP_ARRAY,
 			TypeProviderHelper::GROUP_OBJECT,
 			TypeProviderHelper::GROUP_RESOURCE,
-			TypeProviderHelper::GROUP_FLOAT
+			TypeProviderHelper::GROUP_FLOAT,
+			TypeProviderHelper::GROUP_NULL
 		);
 	}
 
