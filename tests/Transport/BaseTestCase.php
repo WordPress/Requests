@@ -1326,6 +1326,33 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	/**
+	 * Test that a portless HTTP URL with host bindings resolves to port 80.
+	 *
+	 * This uses a URL without an explicit port, so the transport must default
+	 * to port 80 for HTTP. Since the test server listens on port 8080, the
+	 * connection to port 80 will fail — proving the default port was used.
+	 * If the port were incorrectly resolved to 8080, the request would succeed
+	 * and this test would fail.
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostBindingsWithDefaultPort() {
+		$this->expectException(Exception::class);
+
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => [
+					'example.com' => ['127.0.0.1'],
+				],
+			]
+		);
+
+		Requests::get('http://example.com/get', [], $options);
+	}
+
+	/**
 	 * Test that invalid IP formats in HostBindings throw exceptions.
 	 *
 	 * @covers \WpOrg\Requests\Utility\HostBindings::__construct

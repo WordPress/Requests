@@ -461,9 +461,9 @@ final class Curl implements Transport {
 				$connect_to_string = "{$host}:{$normalized_port}:{$exec_ip}:{$normalized_port}";
 				// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttoFound
 				curl_setopt($this->handle, CURLOPT_CONNECT_TO, [$connect_to_string]); // phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connect_toFound
-				// Fallback branches for cURL < 7.49.0 which lacks CURLOPT_CONNECT_TO.
-				// Cannot be reached in tests as CURLOPT_CONNECT_TO is always defined.
-				// @codeCoverageIgnoreStart -- The else is never reached in CI because CURLOPT_CONNECT_TO is always defined.
+				// CURLOPT_CONNECT_TO (cURL 7.49.0 / PHP 7.0.7) is always defined, so this
+				// older fallback using CURLOPT_RESOLVE is never reached.
+				// @codeCoverageIgnoreStart
 			} elseif (defined('CURLOPT_RESOLVE')) {
 				if (defined('CURLOPT_DNS_USE_GLOBAL_CACHE')) {
 					// Set to true in PHP's source for most installations.
@@ -472,8 +472,12 @@ final class Curl implements Transport {
 				}
 
 				curl_setopt($this->handle, CURLOPT_RESOLVE, ["{$host}:{$normalized_port}:{$exec_ip}"]);
+				// @codeCoverageIgnoreEnd
+				// Both CURLOPT_CONNECT_TO and CURLOPT_RESOLVE are always defined, so this
+				// last-resort HTTP URL rewriting fallback is never reached.
+				// @TODO: Extract into a utility class to make this testable independently.
+				// @codeCoverageIgnoreStart
 			} elseif ($parsed['scheme'] === 'http') {
-				// @TODO: Use utility class to handle URL assembly.
 				$exec_url = $parsed['scheme'] . '://';
 				if (isset($parsed['user'])) {
 					$exec_url .= $parsed['user'];
