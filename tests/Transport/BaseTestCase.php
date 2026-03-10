@@ -1234,6 +1234,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @covers \WpOrg\Requests\Requests::request
 	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
 	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
 	 */
 	public function testHostHeaderWithHostBindings() {
@@ -1266,6 +1267,7 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * @covers \WpOrg\Requests\Requests::request
 	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
 	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
 	 */
 	public function testHostBindingsObjectInOptions() {
@@ -1289,6 +1291,7 @@ abstract class BaseTestCase extends TestCase {
 	 * Test that invalid option type for host_bindings throws an exception.
 	 *
 	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
 	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
 	 */
 	public function testHostBindingsRejectsInvalidType() {
@@ -1308,6 +1311,7 @@ abstract class BaseTestCase extends TestCase {
 	 * Test that a falsy non-array value for host_bindings is treated as empty.
 	 *
 	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
 	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
 	 */
 	public function testHostBindingsFalsyValueTreatedAsEmpty() {
