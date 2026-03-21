@@ -40,7 +40,7 @@ class Requests {
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.17';
+	const VERSION = '2.0.18';
 
 	/**
 	 * POST method
