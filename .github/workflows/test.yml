@@ -43,7 +43,7 @@ jobs:
           persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
         with:
           php-version: ${{ matrix.php }}
           ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On, log_errors_max_len=0
@@ -141,7 +141,7 @@ jobs:
 
       - name: Send coverage report to Codecov
         if: ${{ success() && matrix.coverage == true && github.event.repository.fork == false }}
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
         with:
           token: "${{ secrets.CODECOV_TOKEN }}"
           files: ./tests/coverage/clover.xml
