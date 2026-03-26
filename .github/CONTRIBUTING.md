@@ -70,7 +70,7 @@ This project uses [PHP_CodeSniffer][] to detect coding standard violations and a
 * All files can be checked for coding standard violations by running `composer checkcs`.
 * Any automatically applicable fixes can be applied by running `composer fixcs`.
 
-[PHP_CodeSniffer]: https://github.com/squizlabs/PHP_CodeSniffer
+[PHP_CodeSniffer]: https://github.com/PHPCSStandards/PHP_CodeSniffer
 
 ## Unit Tests
 
