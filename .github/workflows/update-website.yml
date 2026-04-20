@@ -74,7 +74,7 @@ jobs:
       # Retention is normally 90 days, but this artifact is only for review
       # and use in the next step, so no need to keep it for more than a day.
       - name: Upload the artifacts folder
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ success() }}
         with:
           name: website-updates
@@ -172,7 +172,7 @@ jobs:
 
       - name: Create pull request
         if: github.event_name != 'pull_request'
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           base: gh-pages
           branch: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
@@ -193,7 +193,7 @@ jobs:
 
       # Test that the site builds correctly.
       - name: Set up Ruby
-        uses: ruby/setup-ruby@3ff19f5e2baf30647122352b96108b1fbe250c64 # v1.299.0
+        uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
         with:
           # Use the version as per https://pages.github.com/versions/.
           ruby-version: 3.3.4
