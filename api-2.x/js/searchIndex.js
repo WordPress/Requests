@@ -1406,6 +1406,11 @@ Search.appendIndex(
             "summary": "Decompression\u0020of\u0020deflated\u0020string\u0020while\u0020staying\u0020compatible\u0020with\u0020the\u0020majority\u0020of\u0020servers.",
             "url": "classes/WpOrg-Requests-Requests.html#method_compatible_gzinflate"
         },                {
+            "fqsen": "\\WpOrg\\Requests\\Requests\u003A\u003AVERSION",
+            "name": "VERSION",
+            "summary": "Current\u0020version\u0020of\u0020Requests",
+            "url": "classes/WpOrg-Requests-Requests.html#constant_VERSION"
+        },                {
             "fqsen": "\\WpOrg\\Requests\\Requests\u003A\u003APOST",
             "name": "POST",
             "summary": "POST\u0020method",
@@ -1460,11 +1465,6 @@ Search.appendIndex(
             "name": "DEFAULT_TRANSPORTS",
             "summary": "Default\u0020supported\u0020Transport\u0020classes.",
             "url": "classes/WpOrg-Requests-Requests.html#constant_DEFAULT_TRANSPORTS"
-        },                {
-            "fqsen": "\\WpOrg\\Requests\\Requests\u003A\u003AVERSION",
-            "name": "VERSION",
-            "summary": "Current\u0020version\u0020of\u0020Requests",
-            "url": "classes/WpOrg-Requests-Requests.html#constant_VERSION"
         },                {
             "fqsen": "\\WpOrg\\Requests\\Requests\u003A\u003A\u0024transport",
             "name": "transport",
