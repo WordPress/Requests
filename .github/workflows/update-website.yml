@@ -49,15 +49,15 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ steps.base_branch.outputs.BRANCH }}
           persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
         with:
-          php-version: '8.1'
+          php-version: '8.4'
           ini-values: display_errors=On, display_startup_errors=On
           coverage: none
           tools: phpdoc
@@ -74,7 +74,7 @@ jobs:
       # Retention is normally 90 days, but this artifact is only for review
       # and use in the next step, so no need to keep it for more than a day.
       - name: Upload the artifacts folder
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ success() }}
         with:
           name: website-updates
@@ -112,13 +112,13 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: gh-pages
           persist-credentials: false
 
       - name: Download the prepared artifacts
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: website-updates
           path: artifacts
@@ -172,7 +172,7 @@ jobs:
 
       - name: Create pull request
         if: github.event_name != 'pull_request'
-        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7.0.11
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           base: gh-pages
           branch: feature/auto-ghpages-update-${{ steps.get_pr_info.outputs.REF }}
@@ -193,7 +193,7 @@ jobs:
 
       # Test that the site builds correctly.
       - name: Set up Ruby
-        uses: ruby/setup-ruby@d697be2f83c6234b20877c3b5eac7a7f342f0d0c # v1.269.0
+        uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
         with:
           # Use the version as per https://pages.github.com/versions/.
           ruby-version: 3.3.4
