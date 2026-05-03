@@ -11,9 +11,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   certificate-check:
     # Don't run the cron job on forks.
     if: ${{ github.event.repository.fork == false }}
+    permissions:
+      contents: write
+      pull-requests: write
 
     uses: ./.github/workflows/reusable-update-cacert.yml

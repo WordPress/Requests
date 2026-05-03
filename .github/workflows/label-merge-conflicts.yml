@@ -13,10 +13,14 @@ on:
       - synchronize
       - reopened
 
+permissions: {}
+
 jobs:
   check-prs:
     runs-on: ubuntu-latest
     if: github.repository_owner == 'WordPress'
+    permissions:
+      pull-requests: write
 
     name: Check PRs for merge conflicts
 

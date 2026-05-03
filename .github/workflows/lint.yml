@@ -13,9 +13,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   lint: #----------------------------------------------------------------------
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     strategy:
       matrix:

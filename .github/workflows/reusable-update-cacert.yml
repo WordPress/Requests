@@ -3,11 +3,17 @@ name: Certificates
 on:
   workflow_call:
 
+permissions: {}
+
 jobs:
   certificate-check:
     name: "Check for updated certificate bundle"
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Determine branches to use
         id: branches

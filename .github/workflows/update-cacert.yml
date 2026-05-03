@@ -24,6 +24,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   certificate-check:
+    permissions:
+      contents: write
+      pull-requests: write
+
     uses: ./.github/workflows/reusable-update-cacert.yml

@@ -13,10 +13,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   actionlint: #----------------------------------------------------------------------
     name: 'Check GHA workflows'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -41,6 +45,8 @@ jobs:
   phpcs: #----------------------------------------------------------------------
     name: 'PHPCS'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
