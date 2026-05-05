@@ -13,6 +13,8 @@ on:
       - synchronize
       - reopened
 
+# Disable permissions for all available scopes by default.
+# Any needed permissions should be configured at the job level.
 permissions: {}
 
 jobs:
@@ -20,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository_owner == 'WordPress'
     permissions:
-      pull-requests: write
+      pull-requests: write # Needed to add and remove labels on the PR.
 
     name: Check PRs for merge conflicts
 
