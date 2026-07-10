@@ -180,7 +180,9 @@ final class Curl extends Stream {
 			if (curl_multi_select($this->multi, min(self::SELECT_TIMEOUT, $remaining)) === -1) {
 				// Some platforms return -1 with nothing to wait on; back off
 				// briefly to avoid a busy-wait.
+				// @codeCoverageIgnoreStart
 				usleep(1000);
+				// @codeCoverageIgnoreEnd
 			}
 		}
 

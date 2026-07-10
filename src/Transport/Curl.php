@@ -365,7 +365,9 @@ final class Curl implements Transport {
 
 			if (curl_multi_select($multi, min(1.0, $remaining)) === -1) {
 				// Some platforms return -1 when no file descriptors are ready. Sleep to avoid busy-waiting.
+				// @codeCoverageIgnoreStart
 				usleep(1000);
+				// @codeCoverageIgnoreEnd
 			}
 		} while (true);
 
