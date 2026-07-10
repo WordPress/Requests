@@ -1417,6 +1417,21 @@ abstract class BaseTestCase extends TestCase {
 		$this->assertNotEmpty($second->body);
 	}
 
+	public function testStreamTimesOutWhenServerStalls() {
+		// A listener which accepts the connection but never responds.
+		$server = stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+		$url    = 'http://' . stream_socket_get_name($server, false) . '/';
+
+		try {
+			$this->expectException(Exception::class);
+			$this->expectExceptionMessage('timed out');
+
+			Requests::get($url, [], $this->getOptions(['stream' => true, 'timeout' => 1]));
+		} finally {
+			fclose($server);
+		}
+	}
+
 	/**
 	 * Get a Hooks instance that asserts correct enforcement for max_bytes.
 	 *
