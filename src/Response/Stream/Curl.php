@@ -205,8 +205,11 @@ final class Curl extends Stream {
 				curl_multi_remove_handle($this->multi, $this->handle);
 			}
 
-			// phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.curl_closeDeprecated,Generic.PHP.DeprecatedFunctions.Deprecated
-			curl_close($this->handle);
+			if (is_resource($this->handle)) {
+				// phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.curl_closeDeprecated,Generic.PHP.DeprecatedFunctions.Deprecated
+				curl_close($this->handle);
+			}
+
 			$this->handle = null;
 		}
 
