@@ -14,6 +14,7 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Port;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response\Stream\Socket as SocketStream;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Transport;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
@@ -45,6 +46,13 @@ final class Fsockopen implements Transport {
 	 * @var array Associative array of properties, see {@link https://www.php.net/stream_get_meta_data}
 	 */
 	public $info;
+
+	/**
+	 * The stream object for a streamed response.
+	 *
+	 * @var \WpOrg\Requests\Response\Stream|null
+	 */
+	public $response_stream = null;
 
 	/**
 	 * What's the maximum number of bytes we should keep?
@@ -158,7 +166,8 @@ final class Fsockopen implements Transport {
 			$remote_socket = 'tcp://' . $host;
 		}
 
-		$this->max_bytes = $options['max_bytes'];
+		$this->max_bytes       = $options['max_bytes'];
+		$this->response_stream = null;
 
 		if (!isset($url_parts['port'])) {
 			$url_parts['port'] = Port::HTTP;
@@ -237,9 +246,16 @@ final class Fsockopen implements Transport {
 			$out .= sprintf("User-Agent: %s\r\n", $options['useragent']);
 		}
 
-		$accept_encoding = $this->accept_encoding();
-		if (!isset($case_insensitive_headers['Accept-Encoding']) && !empty($accept_encoding)) {
-			$out .= sprintf("Accept-Encoding: %s\r\n", $accept_encoding);
+		if (!isset($case_insensitive_headers['Accept-Encoding'])) {
+			if (!empty($options['stream'])) {
+				// Streamed bytes are handed over as they arrive and never decompressed, so ask for an uncompressed response.
+				$out .= "Accept-Encoding: identity\r\n";
+			} else {
+				$accept_encoding = $this->accept_encoding();
+				if (!empty($accept_encoding)) {
+					$out .= sprintf("Accept-Encoding: %s\r\n", $accept_encoding);
+				}
+			}
 		}
 
 		$headers = Requests::flatten($headers);
@@ -281,6 +297,10 @@ final class Fsockopen implements Transport {
 		}
 
 		stream_set_timeout($socket, $timeout_sec, $timeout_msec);
+
+		if (!empty($options['stream'])) {
+			return $this->stream_response($socket, $options);
+		}
 
 		$response   = '';
 		$body       = '';
@@ -356,6 +376,54 @@ final class Fsockopen implements Transport {
 		fclose($socket);
 
 		$options['hooks']->dispatch('fsockopen.after_request', [&$this->headers, &$this->info]);
+		return $this->headers;
+	}
+
+	/**
+	 * Stream a response.
+	 *
+	 * @param resource $socket  Connected socket, positioned after the request has been sent.
+	 * @param array    $options Request options.
+	 * @return string Raw response headers.
+	 *
+	 * @throws \WpOrg\Requests\Exception On socket timeout.
+	 */
+	private function stream_response($socket, $options) {
+		$headers = '';
+
+		while (true) {
+			$line       = fgets($socket);
+			$this->info = stream_get_meta_data($socket);
+			if ($this->info['timed_out']) {
+				throw new Exception('fsocket timed out', 'timeout');
+			}
+
+			if ($line === false) {
+				// The connection closed before the response headers were complete.
+				break;
+			}
+
+			$headers .= $line;
+
+			if ($line === "\r\n" || $line === "\n") {
+				// Ignore interim 1xx responses since another header block will follow.
+				if (preg_match('#^HTTP/\d(\.\d)?[ \t]+1\d\d#i', $headers)) {
+					$headers = '';
+					continue;
+				}
+
+				break;
+			}
+		}
+
+		$this->headers = $headers;
+
+		// SocketStream removes chunked transfer encoding itself. RFC 7230 defines chunked as the final transfer encoding, so only match it at the end of the header value.
+		$chunked               = (bool) preg_match('#^transfer-encoding:\s*(?:[^\r\n]*,\s*)?chunked\s*$#im', $headers);
+		$this->response_stream = new SocketStream($socket, $chunked, $options['max_bytes'], $options['hooks']);
+
+		$options['hooks']->dispatch('fsockopen.after_request', [&$this->headers, &$this->info]);
+
 		return $this->headers;
 	}
 
