@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Requests 2.0.18 API</title>
+            <title>Requests 2.0.19 API</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png"/>
     <link rel="icon" href="images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -25,7 +28,7 @@
     </head>
 <body id="top">
     <header class="phpdocumentor-header phpdocumentor-section">
-    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.18 API</a></h1>
+    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.19 API</a></h1>
     <input class="phpdocumentor-header__menu-button" type="checkbox" id="menu-button" name="menu-button" />
     <label class="phpdocumentor-header__menu-icon" for="menu-button">
         <i class="fas fa-bars"></i>
@@ -174,23 +177,18 @@
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">link</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://tools.ietf.org/html/rfc3490"> <p>IDNA specification</p>
  </a>
-                    
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://tools.ietf.org/html/rfc3492"> <p>Punycode/Bootstrap specification</p>
  </a>
-                    
                                     </dd>
-                                            </dl>
+                        </dl>
 
     
     
@@ -215,56 +213,56 @@
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_ACE_PREFIX">ACE_PREFIX</a>
     <span>
-        &nbsp;= &#039;xn--&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;xn--&#039;                            </span>
 </dt>
 <dd>ACE prefix used for IDNA</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_BOOTSTRAP_BASE">BOOTSTRAP_BASE</a>
     <span>
-        &nbsp;= 36                            </span>
+        &nbsp;: mixed&nbsp;= 36                            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_BOOTSTRAP_DAMP">BOOTSTRAP_DAMP</a>
     <span>
-        &nbsp;= 700                            </span>
+        &nbsp;: mixed&nbsp;= 700                            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_BOOTSTRAP_INITIAL_BIAS">BOOTSTRAP_INITIAL_BIAS</a>
     <span>
-        &nbsp;= 72                            </span>
+        &nbsp;: mixed&nbsp;= 72                            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_BOOTSTRAP_INITIAL_N">BOOTSTRAP_INITIAL_N</a>
     <span>
-        &nbsp;= 128                            </span>
+        &nbsp;: mixed&nbsp;= 128                            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_BOOTSTRAP_SKEW">BOOTSTRAP_SKEW</a>
     <span>
-        &nbsp;= 38                            </span>
+        &nbsp;: mixed&nbsp;= 38                            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_BOOTSTRAP_TMAX">BOOTSTRAP_TMAX</a>
     <span>
-        &nbsp;= 26                            </span>
+        &nbsp;: mixed&nbsp;= 26                            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_BOOTSTRAP_TMIN">BOOTSTRAP_TMIN</a>
     <span>
-        &nbsp;= 1                            </span>
+        &nbsp;: mixed&nbsp;= 1                            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-IdnaEncoder.html#constant_MAX_LENGTH">MAX_LENGTH</a>
     <span>
-        &nbsp;= 64                            </span>
+        &nbsp;: int&nbsp;= 64                            </span>
 </dt>
 <dd>Maximum length of a IDNA URL in ASCII.</dd>
 
@@ -359,20 +357,19 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="constant_ACE_PREFIX_tags">
         Tags
-        <a href="classes/WpOrg-Requests-IdnaEncoder.html#constant_ACE_PREFIX#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-IdnaEncoder.html#constant_ACE_PREFIX_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">link</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://tools.ietf.org/html/rfc3490#section-5"> https://tools.ietf.org/html/rfc3490#section-5 </a>
-                    
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     </article>
@@ -614,29 +611,27 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="constant_MAX_LENGTH_tags">
         Tags
-        <a href="classes/WpOrg-Requests-IdnaEncoder.html#constant_MAX_LENGTH#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-IdnaEncoder.html#constant_MAX_LENGTH_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">see</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">see</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                     <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-IdnaEncoder.html#method_to_ascii"><abbr title="\WpOrg\Requests\IdnaEncoder::to_ascii()">IdnaEncoder::to_ascii()</abbr></a></span>
-                                        
-                                             
+                                                                
                                     </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">since</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                                <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">since</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                             <span class="phpdocumentor-tag-link">2.0.0</span>
-                                                                                
-                                             
+                                                                                                        
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     </article>
@@ -692,23 +687,22 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_encode_tags">
         Tags
-        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_encode#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_encode_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed argument is not a string or a stringable object.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed argument is not a string or a stringable object.</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -764,53 +758,40 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_to_ascii_tags">
         Tags
-        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_to_ascii#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_to_ascii_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>Provided string longer than 64 ASCII characters (<code class="prettyprint">idna.provided_too_long</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>Provided string longer than 64 ASCII characters (<code class="prettyprint">idna.provided_too_long</code>)</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>Prepared string longer than 64 ASCII characters (<code class="prettyprint">idna.prepared_too_long</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>Prepared string longer than 64 ASCII characters (<code class="prettyprint">idna.prepared_too_long</code>)</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>Provided string already begins with xn-- (<code class="prettyprint">idna.provided_is_prefixed</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>Provided string already begins with xn-- (<code class="prettyprint">idna.provided_is_prefixed</code>)</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>Encoded string longer than 64 ASCII characters (<code class="prettyprint">idna.encoded_too_long</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>Encoded string longer than 64 ASCII characters (<code class="prettyprint">idna.encoded_too_long</code>)</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -878,20 +859,19 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_adapt_tags">
         Tags
-        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_adapt#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_adapt_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">link</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://tools.ietf.org/html/rfc3492#section-6.1"> https://tools.ietf.org/html/rfc3492#section-6.1 </a>
-                    
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -948,30 +928,28 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_digit_to_char_tags">
         Tags
-        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_digit_to_char#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_digit_to_char_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">link</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://tools.ietf.org/html/rfc3492#section-5"> https://tools.ietf.org/html/rfc3492#section-5 </a>
-                    
                                     </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                                <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>On invalid digit (<code class="prettyprint">idna.invalid_digit</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>On invalid digit (<code class="prettyprint">idna.invalid_digit</code>)</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -1084,23 +1062,22 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_utf8_to_codepoints_tags">
         Tags
-        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_utf8_to_codepoints#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-IdnaEncoder.html#method_utf8_to_codepoints_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>Invalid UTF-8 codepoint (<code class="prettyprint">idna.invalidcodepoint</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>Invalid UTF-8 codepoint (<code class="prettyprint">idna.invalidcodepoint</code>)</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -1116,100 +1093,7 @@
 </article>
             </section>
 
-        <div class="phpdocumentor-modal" id="source-view">
-    <div class="phpdocumentor-modal-bg" data-exit-button></div>
-    <div class="phpdocumentor-modal-container">
-        <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/IdnaEncoder.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
-        </div>
-        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
-    </div>
-</div>
-
-    <script type="text/javascript">
-        (function () {
-            function loadExternalCodeSnippet(el, url, line) {
-                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
-                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
-                    const language = 'php';
-
-                    const code = document.createElement('code');
-                    code.className = 'language-' + language;
-                    pre.textContent = '';
-                    pre.setAttribute('data-line', line)
-                    code.textContent = 'Loading…';
-                    pre.appendChild(code);
-
-                    var xhr = new XMLHttpRequest();
-
-                    xhr.open('GET', src, true);
-
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState !== 4) {
-                            return;
-                        }
-
-                        if (xhr.status < 400 && xhr.responseText) {
-                            code.textContent = xhr.responseText;
-                            Prism.highlightElement(code);
-                            d=document.getElementsByClassName("line-numbers");
-                            d[0].scrollTop = d[0].children[1].offsetTop;
-                            return;
-                        }
-
-                        if (xhr.status === 404) {
-                            code.textContent = '✖ Error: File could not be found';
-                            return;
-                        }
-
-                        if (xhr.status >= 400) {
-                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-                            return;
-                        }
-
-                        code.textContent = '✖ Error: An unknown error occurred';
-                    };
-
-                    xhr.send(null);
-                });
-            }
-
-            const modalButtons = document.querySelectorAll("[data-modal]");
-            const openedAsLocalFile = window.location.protocol === 'file:';
-            if (modalButtons.length > 0 && openedAsLocalFile) {
-                console.warn(
-                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
-                    'browsers block XHR requests when a page is opened this way'
-                );
-            }
-
-            modalButtons.forEach(function (trigger) {
-                if (openedAsLocalFile) {
-                    trigger.setAttribute("hidden", "hidden");
-                }
-
-                trigger.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    const modal = document.getElementById(trigger.dataset.modal);
-                    if (!modal) {
-                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
-                        return;
-                    }
-                    modal.classList.add("phpdocumentor-modal__open");
-
-                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
-                    const exits = modal.querySelectorAll("[data-exit-button]");
-                    exits.forEach(function (exit) {
-                        exit.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            modal.classList.remove("phpdocumentor-modal__open");
-                        });
-                    });
-                });
-            });
-        })();
-    </script>
-
+        
     </article>
                                 </section>
                 <section class="phpdocumentor-on-this-page__sidebar">

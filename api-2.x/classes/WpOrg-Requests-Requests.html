@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Requests 2.0.18 API</title>
+            <title>Requests 2.0.19 API</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png"/>
     <link rel="icon" href="images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -25,7 +28,7 @@
     </head>
 <body id="top">
     <header class="phpdocumentor-header phpdocumentor-section">
-    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.18 API</a></h1>
+    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">Requests 2.0.19 API</a></h1>
     <input class="phpdocumentor-header__menu-button" type="checkbox" id="menu-button" name="menu-button" />
     <label class="phpdocumentor-header__menu-icon" for="menu-button">
         <i class="fas fa-bars"></i>
@@ -192,84 +195,84 @@
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_BUFFER_SIZE">BUFFER_SIZE</a>
     <span>
-        &nbsp;= 1160                            </span>
+        &nbsp;: int&nbsp;= 1160                            </span>
 </dt>
 <dd>Default size of buffer size to read streams</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_DEFAULT_TRANSPORTS">DEFAULT_TRANSPORTS</a>
     <span>
-        &nbsp;= [\WpOrg\Requests\Transport\Curl::class =&gt; \WpOrg\Requests\Transport\Curl::class, \WpOrg\Requests\Transport\Fsockopen::class =&gt; \WpOrg\Requests\Transport\Fsockopen::class]                            </span>
+        &nbsp;: array&lt;string|int, mixed&gt;&nbsp;= [\WpOrg\Requests\Transport\Curl::class =&gt; \WpOr...                            </span>
 </dt>
 <dd>Default supported Transport classes.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_DELETE">DELETE</a>
     <span>
-        &nbsp;= &#039;DELETE&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;DELETE&#039;                            </span>
 </dt>
 <dd>DELETE method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_GET">GET</a>
     <span>
-        &nbsp;= &#039;GET&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;GET&#039;                            </span>
 </dt>
 <dd>GET method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_HEAD">HEAD</a>
     <span>
-        &nbsp;= &#039;HEAD&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;HEAD&#039;                            </span>
 </dt>
 <dd>HEAD method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_OPTION_DEFAULTS">OPTION_DEFAULTS</a>
     <span>
-        &nbsp;= [&#039;timeout&#039; =&gt; 10, &#039;connect_timeout&#039; =&gt; 10, &#039;useragent&#039; =&gt; &#039;php-requests/&#039; . self::VERSION, &#039;protocol_version&#039; =&gt; 1.1, &#039;redirected&#039; =&gt; 0, &#039;redirects&#039; =&gt; 10, &#039;follow_redirects&#039; =&gt; true, &#039;blocking&#039; =&gt; true, &#039;type&#039; =&gt; self::GET, &#039;filename&#039; =&gt; false, &#039;auth&#039; =&gt; false, &#039;proxy&#039; =&gt; false, &#039;cookies&#039; =&gt; false, &#039;max_bytes&#039; =&gt; false, &#039;idn&#039; =&gt; true, &#039;hooks&#039; =&gt; null, &#039;transport&#039; =&gt; null, &#039;verify&#039; =&gt; null, &#039;verifyname&#039; =&gt; true]                            </span>
+        &nbsp;: array&lt;string|int, mixed&gt;&nbsp;= [&#039;timeout&#039; =&gt; 10, &#039;connect_timeout&#039; =&gt; 10, &#039;use...                            </span>
 </dt>
 <dd>Option defaults.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_OPTIONS">OPTIONS</a>
     <span>
-        &nbsp;= &#039;OPTIONS&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;OPTIONS&#039;                            </span>
 </dt>
 <dd>OPTIONS method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_PATCH">PATCH</a>
     <span>
-        &nbsp;= &#039;PATCH&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;PATCH&#039;                            </span>
 </dt>
 <dd>PATCH method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_POST">POST</a>
     <span>
-        &nbsp;= &#039;POST&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;POST&#039;                            </span>
 </dt>
 <dd>POST method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_PUT">PUT</a>
     <span>
-        &nbsp;= &#039;PUT&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;PUT&#039;                            </span>
 </dt>
 <dd>PUT method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_TRACE">TRACE</a>
     <span>
-        &nbsp;= &#039;TRACE&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;TRACE&#039;                            </span>
 </dt>
 <dd>TRACE method</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a class="" href="classes/WpOrg-Requests-Requests.html#constant_VERSION">VERSION</a>
     <span>
-        &nbsp;= &#039;2.0.18&#039;                            </span>
+        &nbsp;: string&nbsp;= &#039;2.0.19&#039;                            </span>
 </dt>
 <dd>Current version of Requests</dd>
 
@@ -549,21 +552,20 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="constant_DEFAULT_TRANSPORTS_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#constant_DEFAULT_TRANSPORTS#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#constant_DEFAULT_TRANSPORTS_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">since</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">since</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                             <span class="phpdocumentor-tag-link">2.0.0</span>
-                                                                                
-                                             
+                                                                                                        
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     </article>
@@ -688,39 +690,33 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="constant_OPTION_DEFAULTS_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#constant_OPTION_DEFAULTS#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#constant_OPTION_DEFAULTS_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">see</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">see</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                     <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Requests.html#method_get_default_options"><abbr title="\WpOrg\Requests\Requests::get_default_options()">Requests::get_default_options()</abbr></a></span>
-                                        
-                                             
+                                                                
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">see</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                     <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Requests.html#method_request"><abbr title="\WpOrg\Requests\Requests::request()">Requests::request()</abbr></a></span>
-                                        
-                                                 <section class="phpdocumentor-description"><p>for values returned by this method</p>
+                                                                    <section class="phpdocumentor-description"><p>for values returned by this method</p>
 </section>
 
                                     </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">since</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                                <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">since</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                             <span class="phpdocumentor-tag-link">2.0.0</span>
-                                                                                
-                                             
+                                                                                                        
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     </article>
@@ -783,20 +779,19 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="constant_PATCH_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#constant_PATCH#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#constant_PATCH_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">link</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://tools.ietf.org/html/rfc5789"> https://tools.ietf.org/html/rfc5789 </a>
-                    
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     </article>
@@ -914,7 +909,7 @@
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">VERSION</span>
-    = <span class="phpdocumentor-signature__default-value">&#039;2.0.18&#039;</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;2.0.19&#039;</span>
 </code>
 
 
@@ -1006,29 +1001,24 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="property_certificate_path_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#property_certificate_path#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#property_certificate_path_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">see</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">see</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                     <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Requests.html#method_get_certificate_path"><abbr title="\WpOrg\Requests\Requests::get_certificate_path()">Requests::get_certificate_path()</abbr></a></span>
-                                        
-                                             
+                                                                
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">see</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                     <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Requests.html#method_set_certificate_path"><abbr title="\WpOrg\Requests\Requests::set_certificate_path()">Requests::set_certificate_path()</abbr></a></span>
-                                        
-                                             
+                                                                
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
         
@@ -1177,52 +1167,41 @@ https://core.trac.wordpress.org/ticket/18273</p>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_compatible_gzinflate_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_compatible_gzinflate#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_compatible_gzinflate_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">since</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">since</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                             <span class="phpdocumentor-tag-link">1.6.0</span>
-                                                                                
-                                             
+                                                                                                        
                                     </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                                <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">link</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://core.trac.wordpress.org/ticket/18273"> https://core.trac.wordpress.org/ticket/18273 </a>
-                    
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://www.php.net/gzinflate#70875"> https://www.php.net/gzinflate#70875 </a>
-                    
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://www.php.net/gzinflate#77336"> https://www.php.net/gzinflate#77336 </a>
-                    
                                     </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                                <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed argument is not a string.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed argument is not a string.</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -1281,23 +1260,22 @@ to decode.</p>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_decompress_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_decompress#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_decompress_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed argument is not a string.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed argument is not a string.</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -1412,23 +1390,22 @@ to decode.</p>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_flatten_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_flatten#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_flatten_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed argument is not iterable.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed argument is not iterable.</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -1853,20 +1830,19 @@ while still executing a multiple request.</p>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_patch_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_patch#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_patch_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">link</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://tools.ietf.org/html/rfc5789"> https://tools.ietf.org/html/rfc5789 </a>
-                    
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2130,53 +2106,40 @@ HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)</li>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_request_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_request#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_request_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed $url argument is not a string or Stringable.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed $url argument is not a string or Stringable.</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed $type argument is not a string.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed $type argument is not a string.</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed $options argument is not an array.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed $options argument is not an array.</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>On invalid URLs (<code class="prettyprint">nonhttp</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>On invalid URLs (<code class="prettyprint">nonhttp</code>)</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2270,33 +2233,28 @@ per-request basis, although that's a little silly)
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_request_multiple_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_request_multiple#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_request_multiple_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed $requests argument is not an array or iterable object with array access.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed $requests argument is not an array or iterable object with array access.</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed $options argument is not an array.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed $options argument is not an array.</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2352,23 +2310,22 @@ per-request basis, although that's a little silly)
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_set_certificate_path_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_set_certificate_path#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_set_certificate_path_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception-InvalidArgument.html"><abbr title="\WpOrg\Requests\Exception\InvalidArgument">InvalidArgument</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the passed $url argument is not a string, Stringable or boolean.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the passed $url argument is not a string, Stringable or boolean.</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2475,20 +2432,19 @@ per-request basis, although that's a little silly)
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_decode_chunked_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_decode_chunked#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_decode_chunked_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">link</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">link</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                         <a class="phpdocumentor-tag-link" href="https://tools.ietf.org/html/rfc2616#section-3.6.1"> https://tools.ietf.org/html/rfc2616#section-3.6.1 </a>
-                    
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2544,23 +2500,22 @@ per-request basis, although that's a little silly)
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_get_default_options_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_get_default_options#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_get_default_options_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">see</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">see</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                                     <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Requests.html#method_request"><abbr title="\WpOrg\Requests\Requests::request()">Requests::request()</abbr></a></span>
-                                        
-                                                 <section class="phpdocumentor-description"><p>for values returned by this method</p>
+                                                                    <section class="phpdocumentor-description"><p>for values returned by this method</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2616,23 +2571,22 @@ per-request basis, although that's a little silly)
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_get_transport_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_get_transport#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_get_transport_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>If no valid transport is found (<code class="prettyprint">notransport</code>).</p>
+                                                                                        <section class="phpdocumentor-description"><p>If no valid transport is found (<code class="prettyprint">notransport</code>).</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2776,43 +2730,34 @@ found which provided the requested capabilities.</p>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_parse_response_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_parse_response#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_parse_response_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>On missing head/body separator (<code class="prettyprint">requests.no_crlf_separator</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>On missing head/body separator (<code class="prettyprint">requests.no_crlf_separator</code>)</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>On missing head/body separator (<code class="prettyprint">noversion</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>On missing head/body separator (<code class="prettyprint">noversion</code>)</p>
 </section>
 
                                     </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>On missing head/body separator (<code class="prettyprint">toomanyredirects</code>)</p>
+                                                                                        <section class="phpdocumentor-description"><p>On missing head/body separator (<code class="prettyprint">toomanyredirects</code>)</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2902,23 +2847,22 @@ found which provided the requested capabilities.</p>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="method_set_defaults_tags">
         Tags
-        <a href="classes/WpOrg-Requests-Requests.html#method_set_defaults#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/WpOrg-Requests-Requests.html#method_set_defaults_tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
+                    <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">throws</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
                                                                 <span class="phpdocumentor-tag-link"><a href="classes/WpOrg-Requests-Exception.html"><abbr title="\WpOrg\Requests\Exception">Exception</abbr></a></span>
-                                                            
-                                                 <section class="phpdocumentor-description"><p>When the $url is not an http(s) URL.</p>
+                                                                                        <section class="phpdocumentor-description"><p>When the $url is not an http(s) URL.</p>
 </section>
 
                                     </dd>
-                                            </dl>
+                        </dl>
 
         
     
@@ -2926,100 +2870,7 @@ found which provided the requested capabilities.</p>
 </article>
             </section>
 
-        <div class="phpdocumentor-modal" id="source-view">
-    <div class="phpdocumentor-modal-bg" data-exit-button></div>
-    <div class="phpdocumentor-modal-container">
-        <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/Requests.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
-        </div>
-        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
-    </div>
-</div>
-
-    <script type="text/javascript">
-        (function () {
-            function loadExternalCodeSnippet(el, url, line) {
-                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
-                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
-                    const language = 'php';
-
-                    const code = document.createElement('code');
-                    code.className = 'language-' + language;
-                    pre.textContent = '';
-                    pre.setAttribute('data-line', line)
-                    code.textContent = 'Loading…';
-                    pre.appendChild(code);
-
-                    var xhr = new XMLHttpRequest();
-
-                    xhr.open('GET', src, true);
-
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState !== 4) {
-                            return;
-                        }
-
-                        if (xhr.status < 400 && xhr.responseText) {
-                            code.textContent = xhr.responseText;
-                            Prism.highlightElement(code);
-                            d=document.getElementsByClassName("line-numbers");
-                            d[0].scrollTop = d[0].children[1].offsetTop;
-                            return;
-                        }
-
-                        if (xhr.status === 404) {
-                            code.textContent = '✖ Error: File could not be found';
-                            return;
-                        }
-
-                        if (xhr.status >= 400) {
-                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-                            return;
-                        }
-
-                        code.textContent = '✖ Error: An unknown error occurred';
-                    };
-
-                    xhr.send(null);
-                });
-            }
-
-            const modalButtons = document.querySelectorAll("[data-modal]");
-            const openedAsLocalFile = window.location.protocol === 'file:';
-            if (modalButtons.length > 0 && openedAsLocalFile) {
-                console.warn(
-                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
-                    'browsers block XHR requests when a page is opened this way'
-                );
-            }
-
-            modalButtons.forEach(function (trigger) {
-                if (openedAsLocalFile) {
-                    trigger.setAttribute("hidden", "hidden");
-                }
-
-                trigger.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    const modal = document.getElementById(trigger.dataset.modal);
-                    if (!modal) {
-                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
-                        return;
-                    }
-                    modal.classList.add("phpdocumentor-modal__open");
-
-                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
-                    const exits = modal.querySelectorAll("[data-exit-button]");
-                    exits.forEach(function (exit) {
-                        exit.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            modal.classList.remove("phpdocumentor-modal__open");
-                        });
-                    });
-                });
-            });
-        })();
-    </script>
-
+        
     </article>
                                 </section>
                 <section class="phpdocumentor-on-this-page__sidebar">
