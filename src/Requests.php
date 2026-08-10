@@ -98,6 +98,14 @@ class Requests {
 	const PATCH = 'PATCH';
 
 	/**
+	 * QUERY method
+	 *
+	 * @link https://www.rfc-editor.org/rfc/rfc10008
+	 * @var string
+	 */
+	const QUERY = 'QUERY';
+
+	/**
 	 * Default size of buffer size to read streams
 	 *
 	 * @var int
@@ -365,6 +373,18 @@ class Requests {
 	public static function patch($url, $headers, $data = [], $options = []) {
 		return self::request($url, $headers, $data, self::PATCH, $options);
 	}
+
+	/**
+	 * Send a QUERY request
+	 *
+	 * Note: Unlike {@see \WpOrg\Requests\Requests::get()}, the `$data` is sent in the
+	 * request body (like POST), not appended to the URL as a query string.
+	 *
+	 * @link https://www.rfc-editor.org/rfc/rfc10008 RFC 10008
+	 */
+	public static function query($url, $headers = [], $data = [], $options = []) {
+		return self::request($url, $headers, $data, self::QUERY, $options);
+	}
 	/**#@-*/
 
 	/**
@@ -416,7 +436,7 @@ class Requests {
 	 *    (bool, default: true)
 	 * - `data_format`: How should we send the `$data` parameter?
 	 *    (string, one of 'query' or 'body', default: 'query' for
-	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH)
+	 *    HEAD/GET/DELETE, 'body' for POST/PUT/OPTIONS/PATCH/QUERY)
 	 *
 	 * @param string|\Stringable $url     URL to request
 	 * @param array              $headers Extra headers to send with the request

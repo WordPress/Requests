@@ -102,6 +102,23 @@ on the internal execution path, so it's recommended to set this explicitly if
 you need to.
 
 
+Make a QUERY Request
+--------------------
+The [`QUERY`][rfc10008] method (RFC 10008) is like `GET`, but sends its data in
+the request body instead of the URL query string. This lets you send large or
+complex queries while keeping the safe and idempotent semantics of `GET`:
+
+```php
+$data = array('key1' => 'value1', 'key2' => 'value2');
+$response = \WpOrg\Requests\Requests::query('https://httpbin.org/anything', array(), $data);
+```
+
+As with `POST`, you can pass a string instead of an array to send raw data, and
+you'll probably want to set the `Content-Type` header to match.
+
+[rfc10008]: https://www.rfc-editor.org/rfc/rfc10008
+
+
 Status Codes
 ------------
 The Response object also gives you access to the status code:

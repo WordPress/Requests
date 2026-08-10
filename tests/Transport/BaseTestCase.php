@@ -570,6 +570,23 @@ abstract class BaseTestCase extends TestCase {
 		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
 	}
 
+	public function testQUERY() {
+		$request = Requests::query($this->httpbin('/query'), [], [], $this->getOptions());
+		$this->assertSame(200, $request->status_code);
+	}
+
+	public function testQUERYWithData() {
+		$data    = [
+			'test'  => 'true',
+			'test2' => 'test',
+		];
+		$request = Requests::query($this->httpbin('/query'), [], $data, $this->getOptions());
+		$this->assertSame(200, $request->status_code);
+
+		$result = json_decode($request->body, true);
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+	}
+
 	public function testRedirects() {
 		$request = Requests::get($this->httpbin('/redirect/6'), [], $this->getOptions());
 		$this->assertSame(200, $request->status_code);
