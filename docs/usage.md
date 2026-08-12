@@ -116,7 +116,7 @@ $response = \WpOrg\Requests\Requests::query('https://httpbin.org/anything', arra
 As with `POST`, you can pass a string instead of an array to send raw data, and
 you'll probably want to set the `Content-Type` header to match.
 
-[rfc10008]: https://www.rfc-editor.org/rfc/rfc10008
+[rfc10008]: https://tools.ietf.org/html/rfc10008
 
 
 Status Codes

@@ -100,7 +100,7 @@ class Requests {
 	/**
 	 * QUERY method
 	 *
-	 * @link https://www.rfc-editor.org/rfc/rfc10008
+	 * @link https://tools.ietf.org/html/rfc10008
 	 * @var string
 	 */
 	const QUERY = 'QUERY';
@@ -380,7 +380,7 @@ class Requests {
 	 * Note: Unlike {@see \WpOrg\Requests\Requests::get()}, the `$data` is sent in the
 	 * request body (like POST), not appended to the URL as a query string.
 	 *
-	 * @link https://www.rfc-editor.org/rfc/rfc10008 RFC 10008
+	 * @link https://tools.ietf.org/html/rfc10008
 	 */
 	public static function query($url, $headers = [], $data = [], $options = []) {
 		return self::request($url, $headers, $data, self::QUERY, $options);
