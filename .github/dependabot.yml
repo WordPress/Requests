@@ -23,6 +23,8 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    cooldown:
+      default-days: 10
 
   # Handle updates for the orphan gh-pages branch.
   - package-ecosystem: "github-actions"
@@ -42,3 +44,5 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    cooldown:
+      default-days: 10
