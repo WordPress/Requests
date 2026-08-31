@@ -234,12 +234,16 @@ final class Curl implements Transport {
 			$response = $this->response_data;
 		}
 
-		$this->process_response($response, $options);
-
-		// Need to remove the $this reference from the curl handle.
-		// Otherwise \WpOrg\Requests\Transport\Curl won't be garbage collected and the curl_close() will never be called.
-		curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, null);
-		curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, null);
+		try {
+			$this->process_response($response, $options);
+		} finally {
+			if (isset($options['blocking']) && $options['blocking'] === true) {
+				// Need to remove the $this reference from the curl handle.
+				// Otherwise \WpOrg\Requests\Transport\Curl won't be garbage collected and the curl_close() will never be called.
+				curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, null);
+				curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, null);
+			}
+		}
 
 		return $this->headers;
 	}
