@@ -12,6 +12,7 @@ kramdown:
 
 plugins:
   - jekyll-github-metadata
+  - jekyll-redirect-from
   - jekyll-sitemap
   - jemoji
 
