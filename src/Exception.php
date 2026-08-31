@@ -32,6 +32,13 @@ class Exception extends PHPException {
 	protected $data;
 
 	/**
+	 * Whether the exception was already passed to the requests.failed hook or not
+	 *
+	 * @var boolean
+	 */
+	public $failed_hook_handled = false;
+
+	/**
 	 * Create a new exception
 	 *
 	 * @param string $message Exception message
