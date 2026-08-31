@@ -397,11 +397,11 @@ final class Curl implements Transport {
 		 * add as much as a second to the time it takes for cURL to perform a request. To
 		 * prevent this, we need to set an empty "Expect" header. To match the behaviour of
 		 * Guzzle, we'll add the empty header to requests that are smaller than 1 MB and use
-		 * HTTP/1.1.
+		 * a protocol version newer than HTTP/1.0.
 		 *
 		 * https://curl.se/mail/lib-2017-07/0013.html
 		 */
-		if (!isset($headers['Expect']) && $options['protocol_version'] === 1.1) {
+		if (!isset($headers['Expect']) && $options['protocol_version'] > 1.0) {
 			$headers['Expect'] = $this->get_expect_header($data);
 		}
 
@@ -469,10 +469,19 @@ final class Curl implements Transport {
 			curl_setopt($this->handle, CURLOPT_HTTPHEADER, $headers);
 		}
 
-		if ($options['protocol_version'] === 1.1) {
-			curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		} else {
-			curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+		switch ($options['protocol_version']) {
+			case 3.0:
+				// The CURL_HTTP_VERSION_3 constant is only available from PHP 8.4
+				curl_setopt($this->handle, CURLOPT_HTTP_VERSION, 30);
+				break;
+			case 2.0:
+				curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+				break;
+			case 1.1:
+				curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+				break;
+			default:
+				curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 		}
 
 		if ($options['blocking'] === true) {
