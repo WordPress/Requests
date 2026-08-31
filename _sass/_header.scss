@@ -28,6 +28,13 @@
 				background: darken($color-brand, 10%);
 				text-decoration: none;
 			}
+
+			&.gh-link > svg {
+				width: 1em;
+				height: 1em;
+				vertical-align: -0.125em;
+				filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25));
+			}
 		}
 	}
 
