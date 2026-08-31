@@ -14,6 +14,14 @@ use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
+/**
+ * Base test case for HTTP transport testing.
+ *
+ * This abstract class provides common functionality for testing different
+ * HTTP transport implementations like cURL and fsockopen.
+ *
+ * @package WpOrg\Requests\Tests\Transport
+ */
 abstract class BaseTestCase extends TestCase {
 
 	protected $skip_https = false;
@@ -66,7 +74,8 @@ abstract class BaseTestCase extends TestCase {
 			'hooks'     => $this->getMaxBytesAssertionHooks(),
 		];
 		$response = Requests::get($this->httpbin('/bytes/1000000'), [], $this->getOptions($options));
-		$this->assertSame($limit, strlen($response->body));
+		$this->assertInstanceOf(Response::class, $response, 'Byte limit request should return a Response object');
+		$this->assertSame($limit, strlen($response->body), 'Response body length should match the max_bytes limit');
 	}
 
 	public function testResponseByteLimitWithFile() {
@@ -77,42 +86,75 @@ abstract class BaseTestCase extends TestCase {
 			'filename'  => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 		];
 		$response = Requests::get($this->httpbin('/bytes/1000000'), [], $this->getOptions($options));
-		$this->assertEmpty($response->body);
-		$this->assertSame($limit, filesize($options['filename']));
+		$this->assertInstanceOf(Response::class, $response, 'Byte limit with file request should return a Response object');
+		$this->assertEmpty($response->body, 'Response body should be empty when writing to file');
+		$this->assertSame($limit, filesize($options['filename']), 'File size should match the max_bytes limit');
 		unlink($options['filename']);
 	}
 
+	/**
+	 * Tests a simple GET request.
+	 *
+	 * @covers \WpOrg\Requests\Requests::get
+	 */
 	public function testSimpleGET() {
 		$request = Requests::get(new Iri($this->httpbin('/get')), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'GET request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/get'), $result['url']);
-		$this->assertEmpty($result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/get'), $result['url'], 'Response URL should match request URL');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertEmpty($result['args'], 'Args should be empty for simple GET request');
 	}
 
+	/**
+	 * Tests a GET request with query parameters.
+	 *
+	 * @covers \WpOrg\Requests\Requests::get
+	 */
 	public function testGETWithArgs() {
 		$request = Requests::get($this->httpbin('/get?test=true&test2=test'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'GET request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url']);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url'], 'Response URL should match request URL with args');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args'], 'Args should contain expected parameters');
 	}
 
+	/**
+	 * Tests a GET request with data parameter.
+	 *
+	 * @covers \WpOrg\Requests\Requests::request
+	 */
 	public function testGETWithData() {
 		$data    = [
 			'test'  => 'true',
 			'test2' => 'test',
 		];
 		$request = Requests::request($this->httpbin('/get'), [], $data, Requests::GET, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'GET request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url']);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url'], 'Response URL should match request URL with data');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args'], 'Args should contain expected data');
 	}
 
+	/**
+	 * Tests a GET request with nested data parameters.
+	 *
+	 * @covers \WpOrg\Requests\Requests::request
+	 */
 	public function testGETWithNestedData() {
 		$data    = [
 			'test'  => 'true',
@@ -122,63 +164,100 @@ abstract class BaseTestCase extends TestCase {
 			],
 		];
 		$request = Requests::request($this->httpbin('/get'), [], $data, Requests::GET, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'GET request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url']);
-		$this->assertSame(['test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'], $result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/get?test=true&test2%5Btest3%5D=test&test2%5Btest4%5D=test-too'), $result['url'], 'Response URL should match expected with nested data');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertSame(['test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'], $result['args'], 'Args should contain flattened nested data');
 	}
 
+	/**
+	 * Tests a GET request with data and query parameters.
+	 *
+	 * @covers \WpOrg\Requests\Requests::request
+	 */
 	public function testGETWithDataAndQuery() {
 		$data    = [
 			'test2' => 'test',
 		];
 		$request = Requests::request($this->httpbin('/get?test=true'), [], $data, Requests::GET, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'GET request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url']);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/get?test=true&test2=test'), $result['url'], 'Response URL should match expected URL with combined query and data');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args'], 'Args should contain combined query parameters and data');
 	}
 
+	/**
+	 * Tests a GET request with headers.
+	 *
+	 * @covers \WpOrg\Requests\Requests::get
+	 */
 	public function testGETWithHeaders() {
 		$headers = [
 			'Requested-At' => (string) time(),
 		];
 		$request = Requests::get($this->httpbin('/get'), $headers, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'GET request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($headers['Requested-At'], $result['headers']['Requested-At']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('headers', $result, 'Response should contain headers key');
+		$this->assertIsArray($result['headers'], 'Headers should be an array');
+		$this->assertArrayHasKey('Requested-At', $result['headers'], 'Headers should contain Requested-At key');
+		$this->assertSame($headers['Requested-At'], $result['headers']['Requested-At'], 'Requested-At header should match sent value');
 	}
 
+	/**
+	 * Tests chunked transfer encoding.
+	 *
+	 * @covers \WpOrg\Requests\Requests::get
+	 */
 	public function testChunked() {
 		$request = Requests::get($this->httpbin('/stream/1'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'GET request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/stream/1'), $result['url']);
-		$this->assertEmpty($result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/stream/1'), $result['url'], 'Response URL should match request URL');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertEmpty($result['args'], 'Args should be empty for chunked request');
 	}
 
 	public function testHEAD() {
 		$request = Requests::head($this->httpbin('/get'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
-		$this->assertSame('', $request->body);
+		$this->assertInstanceOf(Response::class, $request, 'HEAD request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'HEAD request should return status code 200');
+		$this->assertSame('', $request->body, 'HEAD request should have empty body');
 	}
 
 	public function testTRACE() {
 		$request = Requests::trace($this->httpbin('/trace'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'TRACE request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'TRACE request should return status code 200');
 	}
 
 	public function testRawPOST() {
 		$data    = 'test';
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'POST request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'POST request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame('test', $result['data']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('data', $result, 'Response should contain data key');
+		$this->assertSame('test', $result['data'], 'Data should match sent value');
 	}
 
 	/**
@@ -186,20 +265,24 @@ abstract class BaseTestCase extends TestCase {
 	 */
 	public function testEmptyPOST() {
 		$request = Requests::post($this->httpbin('/post'), [], null, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'POST request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'POST request should return status code 200');
 
 		$result = json_decode($request->body, true);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('headers', $result, 'Response should contain headers key');
+		$this->assertIsArray($result['headers'], 'Headers should be an array');
 
 		/*
 		 * Heroku appears to add this on incoming requests even if we don't send it.
 		 * If Heroku added it, the key will be lowercase, otherwise, uppercase.
 		 */
 		if (isset($result['headers']['Content-Length'])) {
-			$this->assertArrayHasKey('Content-Length', $result['headers']);
-			$this->assertSame('0', $result['headers']['Content-Length']);
+			$this->assertArrayHasKey('Content-Length', $result['headers'], 'Headers should contain Content-Length key (uppercase)');
+			$this->assertSame('0', $result['headers']['Content-Length'], 'Content-Length header should be 0 (uppercase)');
 		} else {
-			$this->assertArrayHasKey('content-length', $result['headers']);
-			$this->assertSame('0', $result['headers']['content-length']);
+			$this->assertArrayHasKey('content-length', $result['headers'], 'Headers should contain content-length key (lowercase)');
+			$this->assertSame('0', $result['headers']['content-length'], 'Content-Length header should be 0 (lowercase)');
 		}
 	}
 
@@ -433,10 +516,13 @@ abstract class BaseTestCase extends TestCase {
 	public function testFormPost() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'POST request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'POST request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testPOSTWithArray() {
@@ -445,10 +531,13 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'POST request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'POST request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testPOSTWithNestedData() {
@@ -460,28 +549,37 @@ abstract class BaseTestCase extends TestCase {
 			],
 		];
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'POST request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'POST request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2[test3]' => 'test', 'test2[test4]' => 'test-too'], $result['form'], 'Form data should contain flattened nested data');
 	}
 
 	public function testRawPUT() {
 		$data    = 'test';
 		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PUT request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PUT request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame('test', $result['data']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('data', $result, 'Response should contain data key');
+		$this->assertSame('test', $result['data'], 'Data should match sent value');
 	}
 
 	public function testFormPUT() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PUT request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PUT request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testPUTWithArray() {
@@ -490,28 +588,37 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::put($this->httpbin('/put'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PUT request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PUT request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testRawPATCH() {
 		$data    = 'test';
 		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PATCH request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PATCH request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame('test', $result['data']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('data', $result, 'Response should contain data key');
+		$this->assertSame('test', $result['data'], 'Data should match sent value');
 	}
 
 	public function testFormPATCH() {
 		$data    = 'test=true&test2=test';
 		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code, $request->body);
+		$this->assertInstanceOf(Response::class, $request, 'PATCH request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PATCH request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testPATCHWithArray() {
@@ -520,24 +627,32 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::patch($this->httpbin('/patch'), [], $data, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'PATCH request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'PATCH request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testOPTIONS() {
 		$request = Requests::options($this->httpbin('/options'), [], [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'OPTIONS request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'OPTIONS request should return status code 200');
 	}
 
 	public function testDELETE() {
 		$request = Requests::delete($this->httpbin('/delete'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'DELETE request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'DELETE request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/delete'), $result['url']);
-		$this->assertEmpty($result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/delete'), $result['url'], 'Response URL should match request URL');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertEmpty($result['args'], 'Args should be empty for DELETE request');
 	}
 
 	public function testDELETEWithData() {
@@ -546,16 +661,21 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::request($this->httpbin('/delete'), [], $data, Requests::DELETE, $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'DELETE request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'DELETE request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/delete?test=true&test2=test'), $result['url']);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/delete?test=true&test2=test'), $result['url'], 'Response URL should match expected URL with data');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args'], 'Args should contain expected data');
 	}
 
 	public function testLOCK() {
 		$request = Requests::request($this->httpbin('/lock'), [], [], 'LOCK', $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'LOCK request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'LOCK request should return status code 200');
 	}
 
 	public function testLOCKWithData() {
@@ -564,24 +684,29 @@ abstract class BaseTestCase extends TestCase {
 			'test2' => 'test',
 		];
 		$request = Requests::request($this->httpbin('/lock'), [], $data, 'LOCK', $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'LOCK request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'LOCK request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function testRedirects() {
 		$request = Requests::get($this->httpbin('/redirect/6'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'Final redirect should return status code 200');
 
-		$this->assertSame(6, $request->redirects);
+		$this->assertSame(6, $request->redirects, 'Should have followed exactly 6 redirects');
 	}
 
 	public function testRelativeRedirects() {
 		$request = Requests::get($this->httpbin('/relative-redirect/6'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'Final relative redirect should return status code 200');
 
-		$this->assertSame(6, $request->redirects);
+		$this->assertSame(6, $request->redirects, 'Should have followed exactly 6 relative redirects');
 	}
 
 	public function testTooManyRedirects() {
@@ -656,8 +781,9 @@ abstract class BaseTestCase extends TestCase {
 			'transport'        => $transport,
 		];
 		$request = Requests::get($url, [], $options);
-		$this->assertSame($code, $request->status_code);
-		$this->assertSame($success, $request->success);
+		$this->assertInstanceOf(Response::class, $request, 'Request should return a Response object');
+		$this->assertSame($code, $request->status_code, sprintf('Status code should be %d', $code));
+		$this->assertSame($success, $request->success, sprintf('Success property should be %s for status code %d', $success ? 'true' : 'false', $code));
 	}
 
 	/**
@@ -725,8 +851,9 @@ abstract class BaseTestCase extends TestCase {
 		];
 
 		$request = Requests::get($this->httpbin('/status/599'), [], $options);
-		$this->assertSame(599, $request->status_code);
-		$this->assertFalse($request->success);
+		$this->assertInstanceOf(Response::class, $request, 'Request should return a Response object');
+		$this->assertSame(599, $request->status_code, 'Status code should be 599');
+		$this->assertFalse($request->success, 'Success property should be false for unknown status code');
 	}
 
 	public function testStatusCodeThrowUnknown() {
@@ -745,10 +872,13 @@ abstract class BaseTestCase extends TestCase {
 
 	public function testGzipped() {
 		$request = Requests::get($this->httpbin('/gzip'), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'Gzipped request should return status code 200');
 
 		$result = json_decode($request->body);
-		$this->assertTrue($result->gzipped);
+		$this->assertIsObject($result, 'Response body should be valid JSON object');
+		$this->assertObjectHasProperty('gzipped', $result, 'Response should contain gzipped property');
+		$this->assertTrue($result->gzipped, 'Response should indicate content was gzipped');
 	}
 
 	public function testStreamToFile() {
@@ -756,13 +886,18 @@ abstract class BaseTestCase extends TestCase {
 			'filename' => tempnam(sys_get_temp_dir(), 'RLT'), // RequestsLibraryTest
 		];
 		$request = Requests::get($this->httpbin('/get'), [], $this->getOptions($options));
-		$this->assertSame(200, $request->status_code);
-		$this->assertEmpty($request->body);
+		$this->assertInstanceOf(Response::class, $request, 'GET request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'GET request should return status code 200');
+		$this->assertEmpty($request->body, 'Response body should be empty when streaming to file');
 
 		$contents = file_get_contents($options['filename']);
-		$result   = json_decode($contents, true);
-		$this->assertSame($this->httpbin('/get'), $result['url']);
-		$this->assertEmpty($result['args']);
+		$this->assertNotEmpty($contents, 'File should contain response data');
+		$result = json_decode($contents, true);
+		$this->assertIsArray($result, 'File contents should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/get'), $result['url'], 'Response URL should match request URL');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertEmpty($result['args'], 'Args should be empty for simple GET request');
 
 		unlink($options['filename']);
 	}
@@ -790,7 +925,7 @@ abstract class BaseTestCase extends TestCase {
 		}
 
 		$contents = file_get_contents($options['filename']);
-		$this->assertSame('foo', $contents);
+		$this->assertSame('foo', $contents, 'File contents should remain unchanged when write fails');
 
 		chmod($filename, 0755);
 		unlink($filename);
@@ -817,7 +952,7 @@ abstract class BaseTestCase extends TestCase {
 		];
 		$request = Requests::get($this->httpbin('/get'), [], $this->getOptions($options));
 		$empty   = new Response();
-		$this->assertEquals($empty, $request);
+		$this->assertEquals($empty, $request, 'Non-blocking request should return empty Response object');
 	}
 
 	public function testBadIP() {
@@ -832,10 +967,13 @@ abstract class BaseTestCase extends TestCase {
 		}
 
 		$request = Requests::get($this->httpbin('/get', true), [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertInstanceOf(Response::class, $request, 'HTTPS request should return a Response object');
+		$this->assertSame(200, $request->status_code, 'HTTPS request should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertEmpty($result['args']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('args', $result, 'Response should contain args key');
+		$this->assertEmpty($result['args'], 'Args should be empty for simple HTTPS request');
 	}
 
 	public function testExpiredHTTPS() {
@@ -880,7 +1018,7 @@ abstract class BaseTestCase extends TestCase {
 		}
 
 		$response = Requests::head('https://wrong.host.badssl.com/', [], $this->getOptions(['verify' => false]));
-		$this->assertTrue($response->success);
+		$this->assertTrue($response->success, 'Request should succeed when SSL verification is disabled');
 	}
 
 	/**
@@ -897,7 +1035,7 @@ abstract class BaseTestCase extends TestCase {
 		}
 
 		$request = Requests::head('https://badssl.com/', [], $this->getOptions());
-		$this->assertSame(200, $request->status_code);
+		$this->assertSame(200, $request->status_code, 'Request should succeed with alternate name support');
 	}
 
 	/**
@@ -929,7 +1067,7 @@ abstract class BaseTestCase extends TestCase {
 		}
 
 		$request = Requests::head('https://humanmade.com/', [], $this->getOptions($options));
-		$this->assertSame(200, $request->status_code);
+		$this->assertSame(200, $request->status_code, 'Request should succeed with SNI support');
 	}
 
 	/**
@@ -976,22 +1114,28 @@ abstract class BaseTestCase extends TestCase {
 		$responses = Requests::request_multiple($requests, $this->getOptions());
 
 		// test1
-		$this->assertNotEmpty($responses['test1']);
-		$this->assertInstanceOf(Response::class, $responses['test1']);
-		$this->assertSame(200, $responses['test1']->status_code);
+		$this->assertNotEmpty($responses['test1'], 'Response for test1 should not be empty');
+		$this->assertInstanceOf(Response::class, $responses['test1'], 'Response for test1 should be a Response object');
+		$this->assertSame(200, $responses['test1']->status_code, 'Status code for test1 should be 200');
 
 		$result = json_decode($responses['test1']->body, true);
-		$this->assertSame($this->httpbin('/get'), $result['url']);
-		$this->assertEmpty($result['args']);
+		$this->assertIsArray($result, 'Response body for test1 should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response for test1 should contain url key');
+		$this->assertSame($this->httpbin('/get'), $result['url'], 'URL for test1 should match expected');
+		$this->assertArrayHasKey('args', $result, 'Response for test1 should contain args key');
+		$this->assertEmpty($result['args'], 'Args for test1 should be empty');
 
 		// test2
-		$this->assertNotEmpty($responses['test2']);
-		$this->assertInstanceOf(Response::class, $responses['test2']);
-		$this->assertSame(200, $responses['test2']->status_code);
+		$this->assertNotEmpty($responses['test2'], 'Response for test2 should not be empty');
+		$this->assertInstanceOf(Response::class, $responses['test2'], 'Response for test2 should be a Response object');
+		$this->assertSame(200, $responses['test2']->status_code, 'Status code for test2 should be 200');
 
 		$result = json_decode($responses['test2']->body, true);
-		$this->assertSame($this->httpbin('/get'), $result['url']);
-		$this->assertEmpty($result['args']);
+		$this->assertIsArray($result, 'Response body for test2 should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response for test2 should contain url key');
+		$this->assertSame($this->httpbin('/get'), $result['url'], 'URL for test2 should match expected');
+		$this->assertArrayHasKey('args', $result, 'Response for test2 should contain args key');
+		$this->assertEmpty($result['args'], 'Args for test2 should be empty');
 	}
 
 	public function testMultipleWithDifferingMethods() {
@@ -1008,12 +1152,14 @@ abstract class BaseTestCase extends TestCase {
 		$responses = Requests::request_multiple($requests, $this->getOptions());
 
 		// get
-		$this->assertSame(200, $responses['get']->status_code);
+		$this->assertSame(200, $responses['get']->status_code, 'GET request status code should be 200');
 
 		// post
-		$this->assertSame(200, $responses['post']->status_code);
+		$this->assertSame(200, $responses['post']->status_code, 'POST request status code should be 200');
 		$result = json_decode($responses['post']->body, true);
-		$this->assertSame('test', $result['data']);
+		$this->assertIsArray($result, 'POST response body should be valid JSON array');
+		$this->assertArrayHasKey('data', $result, 'POST response should contain data key');
+		$this->assertSame('test', $result['data'], 'POST data should match sent value');
 	}
 
 	/**
@@ -1032,8 +1178,8 @@ abstract class BaseTestCase extends TestCase {
 			],
 		];
 		$responses = Requests::request_multiple($requests, $this->getOptions());
-		$this->assertSame(200, $responses['success']->status_code);
-		$this->assertInstanceOf(Exception::class, $responses['timeout']);
+		$this->assertSame(200, $responses['success']->status_code, 'Success request should return status code 200');
+		$this->assertInstanceOf(Exception::class, $responses['timeout'], 'Timeout request should return an Exception');
 	}
 
 	public function testMultipleUsingCallback() {
@@ -1053,7 +1199,7 @@ abstract class BaseTestCase extends TestCase {
 		];
 		$responses       = Requests::request_multiple($requests, $this->getOptions($options));
 
-		$this->assertSame($this->completed, $responses);
+		$this->assertSame($this->completed, $responses, 'Completed array should match responses when using callback');
 	}
 
 	public function testMultipleUsingCallbackAndFailure() {
@@ -1103,15 +1249,21 @@ abstract class BaseTestCase extends TestCase {
 		// GET request
 		$contents = file_get_contents($requests['get']['options']['filename']);
 		$result   = json_decode($contents, true);
-		$this->assertSame($this->httpbin('/get'), $result['url']);
-		$this->assertEmpty($result['args']);
+		$this->assertIsArray($result, 'GET response should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'GET response should contain url key');
+		$this->assertSame($this->httpbin('/get'), $result['url'], 'GET URL should match expected');
+		$this->assertArrayHasKey('args', $result, 'GET response should contain args key');
+		$this->assertEmpty($result['args'], 'GET args should be empty');
 		unlink($requests['get']['options']['filename']);
 
 		// POST request
 		$contents = file_get_contents($requests['post']['options']['filename']);
 		$result   = json_decode($contents, true);
-		$this->assertSame($this->httpbin('/post'), $result['url']);
-		$this->assertSame('test', $result['data']);
+		$this->assertIsArray($result, 'POST response should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'POST response should contain url key');
+		$this->assertSame($this->httpbin('/post'), $result['url'], 'POST URL should match expected');
+		$this->assertArrayHasKey('data', $result, 'POST response should contain data key');
+		$this->assertSame('test', $result['data'], 'POST data should match sent value');
 		unlink($requests['post']['options']['filename']);
 	}
 
@@ -1130,10 +1282,10 @@ abstract class BaseTestCase extends TestCase {
 			}
 		}
 
-		$this->assertSame(200, $request->status_code);
+		$this->assertSame(200, $request->status_code, 'Alternate port request should return status code 200');
 		$num = preg_match('#You have reached this page on port <b>(\d+)</b>#i', $request->body, $matches);
 		$this->assertSame(1, $num, 'Response should contain the port number');
-		$this->assertSame('8080', $matches[1]);
+		$this->assertSame('8080', $matches[1], 'Port number should be 8080');
 	}
 
 	public function testProgressCallback() {
@@ -1175,45 +1327,51 @@ abstract class BaseTestCase extends TestCase {
 		$request1 = Requests::get($this->httpbin('/get'), [], $options);
 		$request2 = Requests::get($this->httpbin('/get'), [], $options);
 
-		$this->assertSame(200, $request1->status_code);
-		$this->assertSame(200, $request2->status_code);
+		$this->assertSame(200, $request1->status_code, 'First request should return status code 200');
+		$this->assertSame(200, $request2->status_code, 'Second request should return status code 200');
 
 		$result1 = json_decode($request1->body, true);
 		$result2 = json_decode($request2->body, true);
 
-		$this->assertSame($this->httpbin('/get'), $result1['url']);
-		$this->assertSame($this->httpbin('/get'), $result2['url']);
+		$this->assertSame($this->httpbin('/get'), $result1['url'], 'First request URL should match expected');
+		$this->assertSame($this->httpbin('/get'), $result2['url'], 'Second request URL should match expected');
 
-		$this->assertEmpty($result1['args']);
-		$this->assertEmpty($result2['args']);
+		$this->assertEmpty($result1['args'], 'First request args should be empty');
+		$this->assertEmpty($result2['args'], 'Second request args should be empty');
 	}
 
 	public function testQueryDataFormat() {
 		$data    = ['test' => 'true', 'test2' => 'test'];
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions(['data_format' => 'query']));
-		$this->assertSame(200, $request->status_code);
+		$this->assertSame(200, $request->status_code, 'Request with query data format should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/post') . '?test=true&test2=test', $result['url']);
-		$this->assertSame('', $result['data']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/post') . '?test=true&test2=test', $result['url'], 'URL should contain query parameters');
+		$this->assertArrayHasKey('data', $result, 'Response should contain data key');
+		$this->assertSame('', $result['data'], 'Data should be empty when using query format');
 	}
 
 	public function testBodyDataFormat() {
 		$data    = ['test' => 'true', 'test2' => 'test'];
 		$request = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions(['data_format' => 'body']));
-		$this->assertSame(200, $request->status_code);
+		$this->assertSame(200, $request->status_code, 'Request with body data format should return status code 200');
 
 		$result = json_decode($request->body, true);
-		$this->assertSame($this->httpbin('/post'), $result['url']);
-		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form']);
+		$this->assertIsArray($result, 'Response body should be valid JSON array');
+		$this->assertArrayHasKey('url', $result, 'Response should contain url key');
+		$this->assertSame($this->httpbin('/post'), $result['url'], 'URL should match expected without query parameters');
+		$this->assertArrayHasKey('form', $result, 'Response should contain form key');
+		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['form'], 'Form data should match expected values');
 	}
 
 	public function test303GETmethod() {
 		$data    = ['test' => 'true', 'test2' => 'test'];
 		$request = Requests::post($this->httpbin('/status/303', true), [], $data, $this->getOptions(['follow_redirects' => true]));
 
-		$this->assertSame(200, $request->status_code);
-		$this->assertSame('/get', substr($request->url, -4));
+		$this->assertSame(200, $request->status_code, '303 redirect should result in status code 200');
+		$this->assertSame('/get', substr($request->url, -4), 'Final URL should end with /get');
 	}
 
 	/**
