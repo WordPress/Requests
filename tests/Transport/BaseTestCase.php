@@ -911,8 +911,18 @@ abstract class BaseTestCase extends TestCase {
 	 *
 	 * humanmade.com (owned by Human Made and used with permission) points to
 	 * CloudFront, and will fail if SNI isn't sent.
+	 * {@internal Skipped for the time being. The above no longer holds: the host serves the
+	 * same certificate whether SNI is sent or not, so a transport which stopped sending it
+	 * would still pass, and the host has meanwhile started refusing requests outright.
+	 * See https://github.com/WordPress/Requests/issues/1077.}
+	 *
 	 */
 	public function testSNISupport() {
+		$this->markTestSkipped(
+			'This test does not verify SNI support anymore.'
+			. ' See https://github.com/WordPress/Requests/issues/1077'
+		);
+
 		if ($this->skip_https) {
 			$this->markTestSkipped('SSL support is not available.');
 			return;
