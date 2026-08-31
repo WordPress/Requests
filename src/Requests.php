@@ -125,6 +125,7 @@ class Requests {
 		'blocking'         => true,
 		'type'             => self::GET,
 		'filename'         => false,
+		'stream'           => false,
 		'auth'             => false,
 		'proxy'            => false,
 		'cookies'          => false,
@@ -392,6 +393,14 @@ class Requests {
 	 *    (bool, default: true)
 	 * - `filename`: File to stream the body to instead.
 	 *    (string|bool, default: false)
+	 * - `stream`: Return once the response headers have been received and read
+	 *    the body incrementally via {@see \WpOrg\Requests\Response::read()}
+	 *    instead of buffering it into {@see \WpOrg\Requests\Response::$body}.
+	 *    Cannot be combined with `filename`, requires `blocking` and is not
+	 *    supported for multiple requests. In streaming mode, the `timeout`
+	 *    option acts as an idle timeout (the maximum wait for the next chunk of
+	 *    data) rather than as a total-transfer limit.
+	 *    (bool, default: false)
 	 * - `auth`: Authentication handler or array of user/password details to use
 	 *    for Basic authentication
 	 *    (\WpOrg\Requests\Auth|array|bool, default: false)
@@ -467,9 +476,14 @@ class Requests {
 
 		$response = $transport->request($url, $headers, $data, $options);
 
+		$stream = null;
+		if (!empty($options['stream']) && isset($transport->response_stream)) {
+			$stream = $transport->response_stream;
+		}
+
 		$options['hooks']->dispatch('requests.before_parse', [&$response, $url, $headers, $data, $type, $options]);
 
-		return self::parse_response($response, $url, $headers, $data, $options);
+		return self::parse_response($response, $url, $headers, $data, $options, $stream);
 	}
 
 	/**
@@ -515,6 +529,7 @@ class Requests {
 	 *
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $requests argument is not an array or iterable object with array access.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $options argument is not an array.
+	 * @throws \WpOrg\Requests\Exception When the `stream` option is enabled for any of the requests.
 	 */
 	public static function request_multiple($requests, $options = []) {
 		if (InputValidator::has_array_access($requests) === false || InputValidator::is_iterable($requests) === false) {
@@ -556,6 +571,10 @@ class Requests {
 				}
 
 				$request['options'] = array_merge($options, $request['options']);
+			}
+
+			if (!empty($request['options']['stream'])) {
+				throw new Exception('The stream option is not supported for multiple requests', 'requests.stream.unsupported_multiple');
 			}
 
 			self::set_defaults($request['url'], $request['headers'], $request['data'], $request['type'], $request['options']);
@@ -651,10 +670,22 @@ class Requests {
 	 * @return void
 	 *
 	 * @throws \WpOrg\Requests\Exception When the $url is not an http(s) URL.
+	 * @throws \WpOrg\Requests\Exception When the `stream` option is enabled for a non-blocking request.
+	 * @throws \WpOrg\Requests\Exception When the `stream` option is combined with the `filename` option.
 	 */
 	protected static function set_defaults(&$url, &$headers, &$data, &$type, &$options) {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
 			throw new Exception('Only HTTP(S) requests are handled.', 'nonhttp', $url);
+		}
+
+		if (!empty($options['stream'])) {
+			if (empty($options['blocking'])) {
+				throw new Exception('The stream option requires a blocking request', 'requests.stream.requires_blocking');
+			}
+
+			if ($options['filename'] !== false) {
+				throw new Exception('The stream and filename options cannot both be enabled for the same request', 'requests.stream.filename_conflict');
+			}
 		}
 
 		if (empty($options['hooks'])) {
@@ -713,13 +744,14 @@ class Requests {
 	 * @param array  $req_headers Original $headers array passed to {@link request()}, in case we need to follow redirects
 	 * @param array  $req_data    Original $data array passed to {@link request()}, in case we need to follow redirects
 	 * @param array  $options     Original $options array passed to {@link request()}, in case we need to follow redirects
+	 * @param \WpOrg\Requests\Response\Stream|null $stream Live response body stream when the `stream` option is enabled, null otherwise
 	 * @return \WpOrg\Requests\Response
 	 *
 	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`requests.no_crlf_separator`)
 	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`noversion`)
 	 * @throws \WpOrg\Requests\Exception On missing head/body separator (`toomanyredirects`)
 	 */
-	protected static function parse_response($headers, $url, $req_headers, $req_data, $options) {
+	protected static function parse_response($headers, $url, $req_headers, $req_data, $options, $stream = null) {
 		$return = new Response();
 		if (!$options['blocking']) {
 			return $return;
@@ -789,6 +821,12 @@ class Requests {
 					$options['type'] = self::GET;
 				}
 
+				// Close the stream if it was opened, as we are about to redirect and will not be using it anymore.
+				if ($stream !== null) {
+					$stream->close();
+					$stream = null;
+				}
+
 				++$options['redirected'];
 				$location = $return->headers['location'];
 				if (strpos($location, 'http://') !== 0 && strpos($location, 'https://') !== 0) {
@@ -814,6 +852,10 @@ class Requests {
 		}
 
 		$return->redirects = $options['redirected'];
+
+		if ($stream !== null) {
+			$return->set_stream($stream);
+		}
 
 		$options['hooks']->dispatch('requests.after_request', [&$return, $req_headers, $req_data, $options]);
 		return $return;

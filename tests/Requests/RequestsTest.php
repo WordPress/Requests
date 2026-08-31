@@ -147,6 +147,89 @@ final class RequestsTest extends TestCase {
 		Requests::request('ftp://128.0.0.1/');
 	}
 
+	/**
+	 * Tests receiving an exception when the `stream` option is combined with the `filename` option.
+	 *
+	 * @covers \WpOrg\Requests\Requests::set_defaults
+	 *
+	 * @return void
+	 */
+	public function testStreamCombinedWithFilenameRejected() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('The stream and filename options cannot both be enabled for the same request');
+
+		Requests::get(
+			'http://example.com/',
+			[],
+			[
+				'stream'   => true,
+				'filename' => 'stream-conflict.tmp',
+			]
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the `stream` option is enabled for a non-blocking request.
+	 *
+	 * @covers \WpOrg\Requests\Requests::set_defaults
+	 *
+	 * @return void
+	 */
+	public function testStreamCombinedWithNonBlockingRejected() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('The stream option requires a blocking request');
+
+		Requests::get(
+			'http://example.com/',
+			[],
+			[
+				'stream'   => true,
+				'blocking' => false,
+			]
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the `stream` option is enabled globally for multiple requests.
+	 *
+	 * @covers \WpOrg\Requests\Requests::request_multiple
+	 *
+	 * @return void
+	 */
+	public function testStreamNotSupportedForMultipleRequests() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('The stream option is not supported for multiple requests');
+
+		Requests::request_multiple(
+			[
+				['url' => 'http://example.com/'],
+			],
+			['stream' => true]
+		);
+	}
+
+	/**
+	 * Tests receiving an exception when the `stream` option is enabled for an individual request
+	 * within a multiple requests call.
+	 *
+	 * @covers \WpOrg\Requests\Requests::request_multiple
+	 *
+	 * @return void
+	 */
+	public function testStreamNotSupportedForMultipleRequestsPerRequest() {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('The stream option is not supported for multiple requests');
+
+		Requests::request_multiple(
+			[
+				[
+					'url'     => 'http://example.com/',
+					'options' => ['stream' => true],
+				],
+			]
+		);
+	}
+
 	public function testDefaultTransport() {
 		$request = Requests::get(new Iri($this->httpbin('/get')));
 		$this->assertSame(200, $request->status_code);

@@ -16,6 +16,7 @@ use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Exception\Transport\Curl as CurlException;
 use WpOrg\Requests\Requests;
+use WpOrg\Requests\Response\Stream\Curl as CurlStream;
 use WpOrg\Requests\Transport;
 use WpOrg\Requests\Utility\InputValidator;
 
@@ -99,9 +100,41 @@ final class Curl implements Transport {
 	private $response_byte_limit;
 
 	/**
+	 * The stream object for a streamed response.
+	 *
+	 * @var \WpOrg\Requests\Response\Stream|null
+	 */
+	public $response_stream = null;
+
+	/**
+	 * Are we currently streaming a response?
+	 *
+	 * @var bool
+	 */
+	private $streaming = false;
+
+	/**
+	 * Buffer for body data received while waiting for the final response headers.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var string
+	 */
+	private $stream_buffer = '';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->init_handle();
+	}
+
+	/**
+	 * Initialise a new cURL handle with the default options.
+	 *
+	 * @return void
+	 */
+	private function init_handle() {
 		$curl          = curl_version();
 		$this->version = $curl['version_number'];
 		$this->handle  = curl_init();
@@ -131,6 +164,8 @@ final class Curl implements Transport {
 			// phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.curl_closeDeprecated,Generic.PHP.DeprecatedFunctions.Deprecated
 			curl_close($this->handle);
 		}
+
+		$this->handle = null;
 	}
 
 	/**
@@ -192,6 +227,9 @@ final class Curl implements Transport {
 		$this->response_data       = '';
 		$this->response_bytes      = 0;
 		$this->response_byte_limit = false;
+		$this->response_stream     = null;
+		$this->streaming           = false;
+		$this->stream_buffer       = '';
 		if ($options['max_bytes'] !== false) {
 			$this->response_byte_limit = $options['max_bytes'];
 		}
@@ -207,6 +245,10 @@ final class Curl implements Transport {
 
 		if (isset($options['verifyname']) && $options['verifyname'] === false) {
 			curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
+		}
+
+		if (!empty($options['stream'])) {
+			return $this->stream_response($options);
 		}
 
 		curl_exec($this->handle);
@@ -240,6 +282,108 @@ final class Curl implements Transport {
 		// Otherwise \WpOrg\Requests\Transport\Curl won't be garbage collected and the curl_close() will never be called.
 		curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, null);
 		curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, null);
+
+		return $this->headers;
+	}
+
+	/**
+	 * Stream a response.
+	 *
+	 * @param array $options Request options.
+	 * @return string Raw response headers.
+	 *
+	 * @throws \WpOrg\Requests\Exception On a cURL error.
+	 * @throws \WpOrg\Requests\Exception When no data arrives within the timeout.
+	 */
+	private function stream_response($options) {
+		$this->streaming = true;
+
+		// Clear header state from a previous request so we don't mistake stale headers for this response.
+		$this->headers      = '';
+		$this->done_headers = false;
+
+		// A streamed response has no meaningful total-transfer timeout, so disable CURLOPT_TIMEOUT.
+		// The configured timeout becomes an idle timeout instead and is enforced below (matching fsockopen's stream_set_timeout() behavior).
+		curl_setopt($this->handle, CURLOPT_TIMEOUT, 0);
+		$timeout = max($options['timeout'], 1);
+
+		// Request an uncompressed response since streamed data is passed through as received and never decompressed.
+		curl_setopt($this->handle, CURLOPT_ENCODING, 'identity');
+
+		// If the server still sends compressed data, prevent libcurl from decoding it so both transports deliver identical bytes.
+		if ($this->version >= self::CURL_7_16_2) {
+			curl_setopt($this->handle, CURLOPT_HTTP_CONTENT_DECODING, false);
+		}
+
+		$multi = curl_multi_init();
+		curl_multi_add_handle($multi, $this->handle);
+
+		// Continue until the final response headers arrive. Ignore interim 1xx responses since another header block will follow.
+		$seen     = 0;
+		$deadline = microtime(true) + $timeout;
+		do {
+			$running = 0;
+			do {
+				$status = curl_multi_exec($multi, $running);
+			} while ($status === CURLM_CALL_MULTI_PERFORM);
+
+			while ($done = curl_multi_info_read($multi)) {
+				if ($done['handle'] === $this->handle && $done['result'] !== CURLE_OK) {
+					$error = sprintf(
+						'cURL error %s: %s',
+						$done['result'],
+						curl_error($this->handle)
+					);
+					curl_multi_remove_handle($multi, $this->handle);
+					curl_multi_close($multi);
+					throw new Exception($error, 'curlerror', $this->handle);
+				}
+			}
+
+			if ($this->done_headers === true
+			&& !preg_match('#^HTTP/\d(\.\d)?[ \t]+1\d\d#i', $this->headers)
+			) {
+				break;
+			}
+
+			if ($running === 0) {
+				break;
+			}
+
+			// Reset the idle timeout whenever more header data arrives.
+			if (strlen($this->headers) !== $seen) {
+				$seen     = strlen($this->headers);
+				$deadline = microtime(true) + $timeout;
+			}
+
+			$remaining = $deadline - microtime(true);
+			if ($remaining <= 0) {
+				curl_multi_remove_handle($multi, $this->handle);
+				curl_multi_close($multi);
+				throw new Exception('Stream timed out while waiting for the response headers', 'timeout', $this->handle);
+			}
+
+			if (curl_multi_select($multi, min(1.0, $remaining)) === -1) {
+				// Some platforms return -1 when no file descriptors are ready. Sleep to avoid busy-waiting.
+				// @codeCoverageIgnoreStart
+				usleep(1000);
+				// @codeCoverageIgnoreEnd
+			}
+		} while (true);
+
+		$options['hooks']->dispatch('curl.after_send', []);
+
+		$handle = $this->handle;
+
+		$this->info            = curl_getinfo($handle);
+		$this->response_stream = new CurlStream($multi, $handle, $this->stream_buffer, $timeout, $options['max_bytes'], $this->hooks);
+		$this->stream_buffer   = '';
+
+		// The stream now owns the cURL handle and callbacks.
+		// setup_handle() will create a fresh handle for the next request.
+		$this->handle = null;
+
+		$options['hooks']->dispatch('curl.after_request', [&$this->headers, &$this->info]);
 
 		return $this->headers;
 	}
@@ -383,6 +527,12 @@ final class Curl implements Transport {
 	 * @param array        $options Request options, see {@see \WpOrg\Requests\Requests::response()} for documentation
 	 */
 	private function setup_handle($url, $headers, $data, $options) {
+		if ($this->handle === null) {
+			// The previous request on this instance streamed its response and
+			// handed the cURL handle off to the stream; start a fresh one.
+			$this->init_handle();
+		}
+
 		$options['hooks']->dispatch('curl.before_request', [&$this->handle]);
 
 		// Force closing the connection for old versions of cURL (<7.22).
@@ -537,6 +687,15 @@ final class Curl implements Transport {
 	 * @return int Length of provided header
 	 */
 	public function stream_headers($handle, $headers) {
+		// cURL delivers trailer headers for chunked responses through this callback as well.
+		// Ignore them since the final response headers have already been captured.
+		if ($this->streaming === true
+			&& $this->done_headers === true
+			&& !preg_match('#^HTTP/\d(\.\d)?[ \t]+1\d\d#i', $this->headers)
+		) {
+			return strlen($headers);
+		}
+
 		// Why do we do this? cURL will send both the final response and any
 		// interim responses, such as a 100 Continue. We don't need that.
 		// (We may want to keep this somewhere just in case)
@@ -564,6 +723,13 @@ final class Curl implements Transport {
 	 * @return int Length of provided data
 	 */
 	public function stream_body($handle, $data) {
+		if ($this->streaming === true) {
+			// Buffer body bytes until the response headers arrive.
+			// Response\Stream takes over this write callback once the handle is handed off.
+			$this->stream_buffer .= $data;
+			return strlen($data);
+		}
+
 		$this->hooks->dispatch('request.progress', [$data, $this->response_bytes, $this->response_byte_limit]);
 		$data_length = strlen($data);
 

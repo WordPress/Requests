@@ -13,6 +13,7 @@ use WpOrg\Requests\Cookie\Jar;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\Http;
 use WpOrg\Requests\Response\Headers;
+use WpOrg\Requests\Response\Stream;
 
 /**
  * HTTP response class
@@ -94,6 +95,15 @@ class Response {
 	public $cookies = [];
 
 	/**
+	 * Response body stream.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var \WpOrg\Requests\Response\Stream|null
+	 */
+	protected $stream = null;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -163,5 +173,74 @@ class Response {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Set the response body stream.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param \WpOrg\Requests\Response\Stream $stream Response body stream.
+	 * @return void
+	 */
+	public function set_stream($stream) {
+		$this->stream = $stream;
+	}
+
+	/**
+	 * Check if the response body is being streamed.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @return bool True when the request was made with the `stream` option.
+	 */
+	public function is_streaming() {
+		return $this->stream instanceof Stream;
+	}
+
+	/**
+	 * Read from the streamed response body.
+	 *
+	 * @param int $length Optional. Maximum number of bytes to read.
+	 * @return string Body bytes, already de-chunked. An empty string indicates
+	 *                the end of the body.
+	 *
+	 * @throws \WpOrg\Requests\Exception When the response is not being streamed (`response.not_streaming`).
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $length argument is not a positive integer.
+	 */
+	public function read($length = Stream::DEFAULT_CHUNK_SIZE) {
+		if ($this->is_streaming() === false) {
+			throw new Exception('Response is not being streamed', 'response.not_streaming', $this);
+		}
+
+		return $this->stream->read($length);
+	}
+
+	/**
+	 * Check if the end of the streamed response body has been reached.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @return bool
+	 *
+	 * @throws \WpOrg\Requests\Exception When the response is not being streamed.
+	 */
+	public function eof() {
+		if ($this->is_streaming() === false) {
+			throw new Exception('Response is not being streamed', 'response.not_streaming', $this);
+		}
+
+		return $this->stream->eof();
+	}
+
+	/**
+	 * Close the streamed response body.
+	 *
+	 * @return void
+	 */
+	public function close() {
+		if ($this->stream instanceof Stream) {
+			$this->stream->close();
+		}
 	}
 }
