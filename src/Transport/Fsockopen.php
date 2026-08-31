@@ -17,6 +17,7 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Ssl;
 use WpOrg\Requests\Transport;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
+use WpOrg\Requests\Utility\HostBindings;
 use WpOrg\Requests\Utility\InputValidator;
 
 /**
@@ -105,13 +106,37 @@ final class Fsockopen implements Transport {
 		}
 
 		$host                     = $url_parts['host'];
+		$exec_host                = $host;
 		$context                  = stream_context_create();
 		$verifyname               = false;
 		$case_insensitive_headers = new CaseInsensitiveDictionary($headers);
 
+		$host_bindings_input = isset($options[Capability::HOST_BINDINGS]) ? $options[Capability::HOST_BINDINGS] : [];
+
+		// We allow the application to pass in a pre-constructed HostBindings object
+		// in case they need to skip IP address validation.
+		if ($host_bindings_input instanceof HostBindings) {
+			$host_bindings = $host_bindings_input;
+		} elseif (is_array($host_bindings_input)) {
+			$host_bindings = new HostBindings($host_bindings_input);
+		} elseif (empty($host_bindings_input) === false) {
+			throw InvalidArgument::create(
+				4,
+				'options[host_bindings]',
+				'array or HostBindings object',
+				gettype($host_bindings_input)
+			);
+		} else {
+			$host_bindings = new HostBindings([]);
+		}
+
+		if ($host_bindings->has_host($host)) {
+			$exec_host = $host_bindings->get_first_ip_for_host($host);
+		}
+
 		// HTTPS support
 		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
-			$remote_socket = 'ssl://' . $host;
+			$remote_socket = 'ssl://' . $exec_host;
 			if (!isset($url_parts['port'])) {
 				$url_parts['port'] = Port::HTTPS;
 			}
@@ -155,7 +180,7 @@ final class Fsockopen implements Transport {
 				stream_context_set_option($context, ['ssl' => $context_options]);
 			}
 		} else {
-			$remote_socket = 'tcp://' . $host;
+			$remote_socket = 'tcp://' . $exec_host;
 		}
 
 		$this->max_bytes = $options['max_bytes'];
@@ -223,7 +248,7 @@ final class Fsockopen implements Transport {
 		}
 
 		if (!isset($case_insensitive_headers['Host'])) {
-			$out         .= sprintf('Host: %s', $url_parts['host']);
+			$out         .= sprintf('Host: %s', $host);
 			$scheme_lower = strtolower($url_parts['scheme']);
 
 			if (($scheme_lower === 'http' && $url_parts['port'] !== Port::HTTP) || ($scheme_lower === 'https' && $url_parts['port'] !== Port::HTTPS)) {

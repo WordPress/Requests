@@ -10,6 +10,7 @@ use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
+use WpOrg\Requests\Utility\HostBindings;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
@@ -1219,7 +1220,7 @@ abstract class BaseTestCase extends TestCase {
 	/**
 	 * Get a Hooks instance that asserts correct enforcement for max_bytes.
 	 *
-	 * @return \WpOrg\Requests\Hooks
+	 * @return Hooks
 	 */
 	protected function getMaxBytesAssertionHooks() {
 		$hooks = new Hooks();
@@ -1236,5 +1237,148 @@ abstract class BaseTestCase extends TestCase {
 		);
 
 		return $hooks;
+	}
+
+	/**
+	 * Test that Host header contains the original hostname when using HostBindings, not the IP address.
+	 *
+	 * @covers \WpOrg\Requests\Requests::request
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostHeaderWithHostBindings() {
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => [
+					'localhost' => ['127.0.0.1'],
+				],
+			]
+		);
+
+		$response = Requests::get($this->httpbin('/get'), [], $options);
+		$this->assertSame(200, $response->status_code);
+
+		$result = json_decode($response->body, true);
+
+		// The server should receive the original hostname in the Host header,
+		// not the IP address from HostBindings
+		$this->assertArrayHasKey('headers', $result);
+		$this->assertArrayHasKey('Host', $result['headers']);
+		$this->assertSame(
+			'localhost:8080',
+			$result['headers']['Host'],
+			'Host header should contain the original hostname, not the IP from HostBindings'
+		);
+	}
+
+	/**
+	 * Test that HostBindings object can be passed in options.
+	 *
+	 * @covers \WpOrg\Requests\Requests::request
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostBindingsObjectInOptions() {
+		$bindings = new HostBindings(
+			[
+				'localhost' => ['127.0.0.1'],
+			]
+		);
+
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => $bindings,
+			]
+		);
+
+		$response = Requests::get($this->httpbin('/get'), [], $options);
+		$this->assertSame(200, $response->status_code);
+	}
+
+	/**
+	 * Test that invalid option type for host_bindings throws an exception.
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostBindingsRejectsInvalidType() {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('array or HostBindings object');
+
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => 'not-valid',
+			]
+		);
+
+		Requests::get($this->httpbin('/get'), [], $options);
+	}
+
+	/**
+	 * Test that a falsy non-array value for host_bindings is treated as empty.
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostBindingsFalsyValueTreatedAsEmpty() {
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => false,
+			]
+		);
+
+		$response = Requests::get($this->httpbin('/get'), [], $options);
+		$this->assertSame(200, $response->status_code);
+	}
+
+	/**
+	 * Test that a portless HTTP URL with host bindings resolves to port 80.
+	 *
+	 * This uses a URL without an explicit port, so the transport must default
+	 * to port 80 for HTTP. Since the test server listens on port 8080, the
+	 * connection to port 80 will fail — proving the default port was used.
+	 * If the port were incorrectly resolved to 8080, the request would succeed
+	 * and this test would fail.
+	 *
+	 * @covers \WpOrg\Requests\Transport\Curl::request
+	 * @covers \WpOrg\Requests\Transport\Curl::setup_handle
+	 * @covers \WpOrg\Requests\Transport\Fsockopen::request
+	 */
+	public function testHostBindingsWithDefaultPort() {
+		$this->expectException(Exception::class);
+
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => [
+					'example.com' => ['127.0.0.1'],
+				],
+			]
+		);
+
+		Requests::get('http://example.com/get', [], $options);
+	}
+
+	/**
+	 * Test that invalid IP formats in HostBindings throw exceptions.
+	 *
+	 * @covers \WpOrg\Requests\Utility\HostBindings::__construct
+	 */
+	public function testHostBindingsRejectsInvalidIp() {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('invalid IP address format');
+
+		$options = $this->getOptions(
+			[
+				Capability::HOST_BINDINGS => [
+					'example.com' => ['not-an-ip.com'],
+				],
+			]
+		);
+
+		Requests::get($this->httpbin('/get'), [], $options);
 	}
 }
