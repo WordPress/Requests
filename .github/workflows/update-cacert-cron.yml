@@ -11,9 +11,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Disable permissions for all available scopes by default.
+# Any needed permissions should be configured at the job level.
+permissions: {}
+
 jobs:
   certificate-check:
     # Don't run the cron job on forks.
     if: ${{ github.event.repository.fork == false }}
+    permissions:
+      contents: write      # Needed to push commits to a branch in the repo.
+      pull-requests: write # Needed to create a PR.
 
     uses: ./.github/workflows/reusable-update-cacert.yml

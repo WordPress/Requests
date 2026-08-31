@@ -3,11 +3,19 @@ name: Certificates
 on:
   workflow_call:
 
+# Disable permissions for all available scopes by default.
+# Any needed permissions should be configured at the job level.
+permissions: {}
+
 jobs:
   certificate-check:
     name: "Check for updated certificate bundle"
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: write      # Needed to push commits to a branch in the repo.
+      pull-requests: write # Needed to create a PR.
+
     steps:
       - name: Determine branches to use
         id: branches

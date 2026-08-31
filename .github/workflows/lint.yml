@@ -13,9 +13,15 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Disable permissions for all available scopes by default.
+# Any needed permissions should be configured at the job level.
+permissions: {}
+
 jobs:
   lint: #----------------------------------------------------------------------
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Needed to clone the repo.
 
     strategy:
       matrix:
@@ -38,6 +44,8 @@ jobs:
           ini-values: error_reporting=-1, display_errors=On, display_startup_errors=On, log_errors_max_len=0
           coverage: none
           tools: cs2pr
+        env:
+          fail-fast: true
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies

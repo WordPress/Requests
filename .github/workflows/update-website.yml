@@ -21,9 +21,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  pull-requests: write
-  contents: write
+# Disable permissions for all available scopes by default.
+# Any needed permissions should be configured at the job level.
+permissions: {}
 
 jobs:
   prepare:
@@ -32,6 +32,9 @@ jobs:
     if: github.repository == 'WordPress/Requests'
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Needed to clone the repo.
+
     steps:
       # By default use the `stable` branch as the published docs should always
       # reflect the latest release.
@@ -89,6 +92,10 @@ jobs:
     if: github.repository == 'WordPress/Requests'
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: write      # Needed to push commits to a branch in the repo.
+      pull-requests: write # Needed to create a PR.
+
     steps:
       # PRs based on the "pull request" event trigger will contain changes from the
       # current `develop` branch, so should not be published as the website should
@@ -193,7 +200,7 @@ jobs:
 
       # Test that the site builds correctly.
       - name: Set up Ruby
-        uses: ruby/setup-ruby@003a5c4d8d6321bd302e38f6f0ec593f77f06600 # v1.319.0
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           # Use the version as per https://pages.github.com/versions/.
           ruby-version: 3.3.4

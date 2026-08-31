@@ -13,11 +13,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Disable permissions for all available scopes by default.
+# Any needed permissions should be configured at the job level.
+permissions: {}
+
 jobs:
   #### QUICK TEST STAGE ####
   # Runs the tests against select PHP versions for pushes to arbitrary branches.
   quicktest:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Needed to clone the repo.
 
     strategy:
       matrix:
@@ -37,6 +43,8 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: zend.assertions=1, error_reporting=-1, display_errors=On, display_startup_errors=On, log_errors_max_len=0
           coverage: none
+        env:
+          fail-fast: true
 
       # At least one test needs a non-en_US locale to be available, so make sure it is.
       - name: Install locales

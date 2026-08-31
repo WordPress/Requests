@@ -13,10 +13,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Disable permissions for all available scopes by default.
+# Any needed permissions should be configured at the job level.
+permissions: {}
+
 jobs:
   actionlint: #----------------------------------------------------------------------
     name: 'Check GHA workflows'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Needed to clone the repo.
 
     steps:
       - name: Checkout code
@@ -41,6 +47,8 @@ jobs:
   phpcs: #----------------------------------------------------------------------
     name: 'PHPCS'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Needed to clone the repo.
 
     steps:
       - name: Checkout code
@@ -51,7 +59,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          php-version: '7.4'
+          php-version: 'latest'
           coverage: none
           tools: cs2pr
 

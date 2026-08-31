@@ -71,12 +71,6 @@
 		<!-- Replaced by the Squiz version of the sniff which doesn't enforce whitespace around array index keys. -->
 		<exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions"/>
 
-		<!-- Disabled as the preference for this repo is no spaces on the inside of parentheses.
-			 Once WPCS 3.0.0 comes out, the opposite can be enforced via the
-			 NormalizedArrays.Arrays.ArrayBraceSpacing sniff from PHPCSExtra. -->
-		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener"/>
-		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceBeforeArrayCloser"/>
-
 		<!-- Let spacing before a cast be determined by the operator/parentheses whitespace rule
 			 of the preceding character. -->
 		<exclude name="WordPress.WhiteSpace.CastStructureSpacing"/>
@@ -86,7 +80,7 @@
 			 ========================================================================== -->
 		<exclude name="WordPress.PHP.YodaConditions"/>
 		<!-- A while loop is the only valid control structure where an assignment can be justified. -->
-		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+		<exclude name="Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
 
 		<!-- ==========================================================================
 			 Miscellaneous other exclusions.
@@ -96,7 +90,7 @@
 		<exclude name="WordPress.Files.FileName"/>
 
 		<!-- WPCS demands long arrays. We'll be using short arrays from now on. -->
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
 
 		<!-- Ignore WP specific sniffs as Requests is also used outside of a WP context. -->
 		<exclude name="WordPress.WP"/>
@@ -130,6 +124,12 @@
 	<rule ref="Generic.WhiteSpace.ArbitraryParenthesesSpacing">
 		<properties>
 			<property name="spacing" value="0"/>
+		</properties>
+	</rule>
+
+	<rule ref="NormalizedArrays.Arrays.ArrayBraceSpacing">
+		<properties>
+			<property name="spacesSingleLine" value="0"/>
 		</properties>
 	</rule>
 
@@ -173,7 +173,7 @@
 	<!-- Allow error silencing only for a select group of functions. -->
 	<rule ref="WordPress.PHP.NoSilencedErrors">
 		<properties>
-			<property name="custom_whitelist" type="array">
+			<property name="customAllowedFunctionsList" type="array">
 				<element value="gzdecode"/>
 				<element value="gzinflate"/>
 				<element value="gzuncompress"/>
