@@ -14,6 +14,7 @@ use WpOrg\Requests\Iri;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 use WpOrg\Requests\Utility\InputValidator;
+use WpOrg\Requests\Utility\Trim;
 
 /**
  * Cookie storage object
@@ -440,7 +441,7 @@ class Cookie {
 		}
 
 		if (is_string($name)) {
-			$name = trim($name);
+			$name = trim($name, Trim::WHITESPACE_CHARS_NO_FF);
 		}
 
 		if ($name !== '' && InputValidator::is_valid_rfc2616_token($name) === false) {
@@ -464,8 +465,8 @@ class Cookie {
 			list($name, $value) = explode('=', $kvparts, 2);
 		}
 
-		$name  = trim($name);
-		$value = trim($value);
+		$name  = trim($name, Trim::WHITESPACE_CHARS_NO_FF);
+		$value = trim($value, Trim::WHITESPACE_CHARS_NO_FF);
 
 		if ($name !== '' && InputValidator::is_valid_rfc2616_token($name) === false) {
 			throw InvalidArgument::create(2, '$name', 'integer|string and conform to RFC 2616', gettype($name));
@@ -481,10 +482,10 @@ class Cookie {
 					$part_value = true;
 				} else {
 					list($part_key, $part_value) = explode('=', $part, 2);
-					$part_value                  = trim($part_value);
+					$part_value                  = trim($part_value, Trim::WHITESPACE_CHARS_NO_FF);
 				}
 
-				$part_key              = trim($part_key);
+				$part_key              = trim($part_key, Trim::WHITESPACE_CHARS_NO_FF);
 				$attributes[$part_key] = $part_value;
 			}
 		}
