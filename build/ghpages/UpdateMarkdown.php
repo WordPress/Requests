@@ -8,6 +8,7 @@
  *
  * @package Requests\GHPages
  *
+ * @phpcs:disable PHPCompatibility.Classes.NewConstVisibility.Found
  * @phpcs:disable PHPCompatibility.FunctionDeclarations.NewParamTypeDeclarations.stringFound
  * @phpcs:disable PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.intFound
  * @phpcs:disable PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.stringFound
@@ -20,6 +21,13 @@ namespace WpOrg\Requests\GHPages;
 use RuntimeException;
 
 class UpdateMarkdown {
+
+	/**
+	 * The ASCII whitespace characters and the null byte.
+	 *
+	 * @var string
+	 */
+	private const WHITESPACE_CHARS = " \f\n\r\t\v\x00";
 
 	/**
 	 * Target directory for the updated/transformed files.
@@ -275,7 +283,7 @@ title: %s
 		/*
 		 * Create the docs index file.
 		 */
-		$docs_index = trim($parts[0]);
+		$docs_index = trim($parts[0], self::WHITESPACE_CHARS);
 
 		// Grab the title.
 		$title = $this->get_title_from_contents($contents);
@@ -293,7 +301,7 @@ title: %s
 		/*
 		 * Create the docs navigation file.
 		 */
-		$navigation = trim($parts[1]);
+		$navigation = trim($parts[1], self::WHITESPACE_CHARS);
 
 		// Write the file.
 		$target = $this->target . '/_includes/navigation.md';
@@ -342,7 +350,7 @@ title: %s
 		} // phpcs:enable WordPress
 
 		// Make sure the file always ends on a new line.
-		$contents = rtrim($contents) . "\n";
+		$contents = rtrim($contents, self::WHITESPACE_CHARS) . "\n";
 		if (file_put_contents($target, $contents) === false) {
 			throw new RuntimeException(sprintf('Failed to write %s to target location: %s', $type, $target));
 		}
@@ -356,7 +364,7 @@ title: %s
 	 * @return string
 	 */
 	private function get_title_from_contents(string $contents): string {
-		return trim(substr($contents, 0, (strpos($contents, '===') - 1)));
+		return trim(substr($contents, 0, (strpos($contents, '===') - 1)), self::WHITESPACE_CHARS);
 	}
 
 	/**
