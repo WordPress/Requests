@@ -11,6 +11,7 @@ namespace WpOrg\Requests;
 
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Utility\InputValidator;
+use WpOrg\Requests\Utility\Trim;
 
 /**
  * SSL utilities for Requests
@@ -49,7 +50,7 @@ final class Ssl {
 		if (!empty($cert['extensions']['subjectAltName'])) {
 			$altnames = explode(',', $cert['extensions']['subjectAltName']);
 			foreach ($altnames as $altname) {
-				$altname = trim($altname);
+				$altname = trim($altname, Trim::WHITESPACE_CHARS_NO_FF);
 				if (strpos($altname, 'DNS:') !== 0) {
 					continue;
 				}
@@ -57,7 +58,7 @@ final class Ssl {
 				$has_dns_alt = true;
 
 				// Strip the 'DNS:' prefix and trim whitespace
-				$altname = trim(substr($altname, 4));
+				$altname = trim(substr($altname, 4), Trim::WHITESPACE_CHARS_NO_FF);
 
 				// Check for a match
 				if (self::match_domain($host, $altname) === true) {
