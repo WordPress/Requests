@@ -80,7 +80,7 @@ Available Hooks
 
     Run events after sending the request, but before interpreting the response.
 
-    Parameters: -
+    Parameters: `cURL resource|CurlHandle &$handle`
 
 * **`curl.after_request`**
 
