@@ -20,6 +20,13 @@ use InvalidArgumentException;
 final class InvalidArgument extends InvalidArgumentException {
 
 	/**
+	 * Whether the exception was already passed to the requests.failed hook or not
+	 *
+	 * @var boolean
+	 */
+	public $failed_hook_handled = false;
+
+	/**
 	 * Create a new invalid argument exception with a standardized text.
 	 *
 	 * @param int    $position The argument position in the function signature. 1-based.

@@ -63,6 +63,13 @@ Available Hooks
     To use this hook, pass a callback via `$options['complete']` when calling
     `WpOrg\Requests\Requests\request_multiple()`.
 
+* **`requests.failed`**
+
+    Alter/Inspect transport or response parsing exception before it is returned to the user.
+
+    Parameters: `WpOrg\Requests\Exception|WpOrg\Requests\Exception\InvalidArgument &$exception`, `string $url`, `array $headers`, `array|string $data`,
+    `string $type`, `array $options`
+
 * **`curl.before_request`**
 
     Set cURL options before the transport sets any (note that Requests may

@@ -4,11 +4,15 @@ namespace WpOrg\Requests\Tests\Requests;
 
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response\Headers;
 use WpOrg\Requests\Tests\Fixtures\RawTransportMock;
+use WpOrg\Requests\Tests\Fixtures\TransportFailedMock;
+use WpOrg\Requests\Tests\Fixtures\TransportInvalidArgumentMock;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
+use WpOrg\Requests\Tests\Fixtures\TransportRedirectMock;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
@@ -152,6 +156,42 @@ final class RequestsTest extends TestCase {
 		$this->assertSame(200, $request->status_code);
 	}
 
+	public function testTransportFailedTriggersRequestsFailedCallback() {
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
+		$mock->expects($this->once())->method('failed');
+		$hooks = new Hooks();
+		$hooks->register('requests.failed', [$mock, 'failed']);
+
+		$transport = new TransportFailedMock();
+
+		$options = [
+			'hooks'     => $hooks,
+			'transport' => $transport,
+		];
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Transport failed!');
+		Requests::get('http://example.com/', [], $options);
+	}
+
+	public function testTransportInvalidArgumentTriggersRequestsFailedCallback() {
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
+		$mock->expects($this->once())->method('failed');
+		$hooks = new Hooks();
+		$hooks->register('requests.failed', [$mock, 'failed']);
+
+		$transport = new TransportInvalidArgumentMock();
+
+		$options = [
+			'hooks'     => $hooks,
+			'transport' => $transport,
+		];
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($url) must be of type string|Stringable');
+		Requests::get('http://example.com/', [], $options);
+	}
+
 	/**
 	 * Standard response header parsing
 	 */
@@ -253,6 +293,31 @@ final class RequestsTest extends TestCase {
 	}
 
 	/**
+	 * Check that invalid protocols are not accepted
+	 *
+	 * We do not support HTTP/0.9. If this is really an issue for you, file a
+	 * new issue, and update your server/proxy to support a proper protocol.
+	 */
+	public function testInvalidProtocolVersionTriggersRequestsFailedCallback() {
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
+		$mock->expects($this->once())->method('failed');
+		$hooks = new Hooks();
+		$hooks->register('requests.failed', [$mock, 'failed']);
+
+		$transport       = new RawTransportMock();
+		$transport->data = "HTTP/0.9 200 OK\r\n\r\n<p>Test";
+
+		$options = [
+			'hooks'     => $hooks,
+			'transport' => $transport,
+		];
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Response could not be parsed');
+		Requests::get('http://example.com/', [], $options);
+	}
+
+	/**
 	 * HTTP/0.9 also appears to use a single CRLF instead of two.
 	 */
 	public function testSingleCRLFSeparator() {
@@ -260,6 +325,28 @@ final class RequestsTest extends TestCase {
 		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
 
 		$options = [
+			'transport' => $transport,
+		];
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Missing header/body separator');
+		Requests::get('http://example.com/', [], $options);
+	}
+
+	/**
+	 * HTTP/0.9 also appears to use a single CRLF instead of two.
+	 */
+	public function testSingleCRLFSeparatorTriggersRequestsFailedCallback() {
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
+		$mock->expects($this->once())->method('failed');
+		$hooks = new Hooks();
+		$hooks->register('requests.failed', [$mock, 'failed']);
+
+		$transport       = new RawTransportMock();
+		$transport->data = "HTTP/0.9 200 OK\r\n<p>Test";
+
+		$options = [
+			'hooks'     => $hooks,
 			'transport' => $transport,
 		];
 
@@ -281,6 +368,25 @@ final class RequestsTest extends TestCase {
 		Requests::get('http://example.com/', [], $options);
 	}
 
+	public function testInvalidStatusTriggersRequestsFailedCallback() {
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
+		$mock->expects($this->once())->method('failed');
+		$hooks = new Hooks();
+		$hooks->register('requests.failed', [$mock, 'failed']);
+
+		$transport       = new RawTransportMock();
+		$transport->data = "HTTP/1.1 OK\r\nTest: value\nAnother-Test: value\r\n\r\nTest";
+
+		$options = [
+			'hooks'     => $hooks,
+			'transport' => $transport,
+		];
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Response could not be parsed');
+		Requests::get('http://example.com/', [], $options);
+	}
+
 	public function test30xWithoutLocation() {
 		$transport       = new TransportMock();
 		$transport->code = 302;
@@ -291,6 +397,52 @@ final class RequestsTest extends TestCase {
 		$response = Requests::get('http://example.com/', [], $options);
 		$this->assertSame(302, $response->status_code);
 		$this->assertSame(0, $response->redirects);
+	}
+
+	public function testRedirectToExceptionTriggersRequestsFailedCallbackOnce() {
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
+		$mock->expects($this->once())->method('failed');
+		$hooks = new Hooks();
+		$hooks->register('requests.failed', [$mock, 'failed']);
+
+		$transport                       = new TransportRedirectMock();
+		$transport->redirected_transport = new TransportFailedMock();
+
+		$options = [
+			'hooks'     => $hooks,
+			'transport' => $transport,
+		];
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Transport failed!');
+
+		$response = Requests::get('http://example.com/', [], $options);
+
+		$this->assertSame(302, $response->status_code);
+		$this->assertSame(1, $response->redirects);
+	}
+
+	public function testRedirectToInvalidArgumentTriggersRequestsFailedCallbackOnce() {
+		$mock = $this->getMockedStdClassWithMethods(['failed']);
+		$mock->expects($this->once())->method('failed');
+		$hooks = new Hooks();
+		$hooks->register('requests.failed', [$mock, 'failed']);
+
+		$transport                       = new TransportRedirectMock();
+		$transport->redirected_transport = new TransportInvalidArgumentMock();
+
+		$options = [
+			'hooks'     => $hooks,
+			'transport' => $transport,
+		];
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('Argument #1 ($url) must be of type string|Stringable');
+
+		$response = Requests::get('http://example.com/', [], $options);
+
+		$this->assertSame(302, $response->status_code);
+		$this->assertSame(1, $response->redirects);
 	}
 
 	public function testTimeoutException() {
