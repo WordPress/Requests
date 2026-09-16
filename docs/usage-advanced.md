@@ -30,6 +30,67 @@ $session->useragent = 'My-Awesome-App';
 $session->options['useragent'] = 'My-Awesome-App';
 ```
 
+## Streaming Responses
+
+By default, Requests buffers the whole response body in memory before returning.
+For large downloads or long-lived responses, such as Server-Sent Events from an
+AI API, set the `stream` option to `true` instead. The request then returns as
+soon as the response headers are in, and you read the body yourself:
+
+```php
+$response = \WpOrg\Requests\Requests::get('https://example.org/events', array(), array('stream' => true));
+
+// The status code and headers are available right away.
+var_dump($response->status_code);
+
+// Pull the body off the wire in chunks.
+while (!$response->eof()) {
+  $chunk = $response->read();
+  // do something with $chunk
+}
+
+// Release the connection when done.
+$response->close();
+```
+
+The streaming API on `WpOrg\Requests\Response` is small:
+
+- `read($length = 8192)` reads up to `$length` bytes of the body, blocking until
+  data arrives. An empty string means the body has ended.
+- `eof()` tells you whether the body has been fully read.
+- `close()` releases the underlying connection. Also safe to call on responses
+  that are not streamed.
+- `is_streaming()` tells you whether the response is being streamed. Custom
+  transports without streaming support fall back to a normal buffered response,
+  which this lets you detect.
+
+For line-based protocols such as NDJSON or Server-Sent Events, buffer the chunks
+until a newline shows up. See
+[`examples/stream.php`](https://github.com/WordPress/Requests/blob/develop/examples/stream.php)
+for a runnable example.
+
+A few things change when streaming:
+
+- `$response->body` stays empty and `$response->raw` only contains the headers.
+  The body comes out of `read()` instead.
+- Bytes from `read()` are already de-chunked. Both transports ask the server for
+  an uncompressed (`identity`) body, and Requests never decompresses streamed
+  bytes, so what the server sends is what you get.
+- The `timeout` option turns into an idle timeout: the maximum wait for the next
+  chunk of data. A long-lived stream stays open as long as data keeps arriving.
+- `max_bytes` and redirects work as usual. Redirect responses along the way are
+  discarded; only the final response body is streamed.
+- The `request.progress` hook fires once per `read()` call.
+- `stream` needs a blocking request, and cannot be combined with `filename` or
+  with `WpOrg\Requests\Requests::request_multiple()`.
+
+Requests does not implement PSR-7, but `read()`, `eof()` and `close()` match the
+semantics of the corresponding PSR-7 `StreamInterface` methods, so a [PSR-18
+adapter][psr18-adapter] can wrap a streamed body as a readable PSR-7 stream
+without translation.
+
+[psr18-adapter]: https://github.com/Art4/requests-psr18-adapter
+
 
 Secure Requests with SSL
 ------------------------

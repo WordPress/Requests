@@ -25,6 +25,10 @@ Available Hooks
 
     Parameters: `string $data`, `int $response_bytes`, `int|bool $response_byte_limit`
 
+    When the [`stream`](usage-advanced.md#streaming-responses) option is enabled,
+    this hook fires once per `WpOrg\Requests\Response::read()` call as the caller
+    pulls the body, not while the transport receives the response.
+
 * **`requests.before_parse`**
 
     Alter the raw HTTP response before parsing.
@@ -94,6 +98,11 @@ Available Hooks
     When a non-blocking request was made (`$options['blocking'] = false`), both the `$headers` string as well as the `$info` array will be empty.
 
     Prior to Requests 2.1.0, the `$info` parameter was omitted for non-blocking requests.
+
+    When the [`stream`](usage-advanced.md#streaming-responses) option is enabled,
+    this hook fires once the response headers are in, so the `$info` array
+    reflects the transfer at that point (timing and size fields are not final
+    yet).
 
 * **`curl.before_multi_add`**
 
