@@ -9,6 +9,7 @@
 
 namespace WpOrg\Requests\Auth;
 
+use SensitiveParameter;
 use WpOrg\Requests\Auth;
 use WpOrg\Requests\Exception\ArgumentCount;
 use WpOrg\Requests\Exception\InvalidArgument;
@@ -48,7 +49,10 @@ class Basic implements Auth {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not an array or null.
 	 * @throws \WpOrg\Requests\Exception\ArgumentCount   On incorrect number of array elements (`authbasicbadargs`).
 	 */
-	public function __construct($args = null) {
+	public function __construct(
+		#[SensitiveParameter]
+		$args = null
+	) {
 		if (is_array($args)) {
 			if (count($args) !== 2) {
 				throw ArgumentCount::create('an array with exactly two elements', count($args), 'authbasicbadargs');
