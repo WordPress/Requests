@@ -1,0 +1,9 @@
+shell=bash
+color=always
+
+external-sources=false
+source-path=/scripts
+source-path=/scripts/proxy
+
+# Turn on all checks.
+enable=all
