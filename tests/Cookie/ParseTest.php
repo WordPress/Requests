@@ -66,7 +66,9 @@ final class ParseTest extends TestCase {
 	 */
 	public static function dataParseInvalidName() {
 		$data = TypeProviderHelper::getAllExcept(TypeProviderHelper::GROUP_INT, TypeProviderHelper::GROUP_STRING);
-		$data['Valid string, but not a valid RFC 2616 token'] = ["some\ntext\rwith\tcontrol\echaracters\fin\vit"];
+		$data['Valid string, but not a valid RFC 2616 token']                = ["some\ntext\rwith\tcontrol\echaracters\fin\vit"];
+		$data['Valid token surrounded by LF is not valid cookie whitespace'] = ["\nvalid-name\n"];
+		$data['Valid token surrounded by VT is not valid cookie whitespace'] = ["\vvalid-name\v"];
 		return $data;
 	}
 
@@ -198,6 +200,16 @@ final class ParseTest extends TestCase {
 				'header'   => '   foo   =   bar   ',
 				'name'     => '',
 				'expected' => ['name' => 'foo', 'value' => 'bar'],
+			],
+			'RFC 6265 WSP includes horizontal tab' => [
+				'header'   => "\tfoo\t=\tbar\t",
+				'name'     => '',
+				'expected' => ['name' => 'foo', 'value' => 'bar'],
+			],
+			'Non-WSP control characters are not stripped from cookie values' => [
+				'header'   => "foo=\vbar\v",
+				'name'     => '',
+				'expected' => ['name' => 'foo', 'value' => "\vbar\v"],
 			],
 		];
 	}

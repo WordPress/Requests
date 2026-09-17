@@ -41,6 +41,19 @@ final class Trim {
 	const WHITESPACE_CHARS_NO_FF = " \n\r\t\v\x00";
 
 	/**
+	 * Whitespace characters allowed around cookie name/value data by RFC 6265.
+	 *
+	 * Section 5.2 requires leading and trailing WSP to be removed, where WSP is
+	 * defined by RFC 5234 as SP / HTAB. Other control characters are not WSP.
+	 *
+	 * @link https://www.rfc-editor.org/rfc/rfc6265#section-5.2
+	 * @link https://www.rfc-editor.org/rfc/rfc5234#appendix-B.1
+	 *
+	 * @var string
+	 */
+	const WHITESPACE_CHARS_RFC6265 = " \t";
+
+	/**
 	 * The ASCII whitespace characters, including the form feed character, and the NUL byte.
 	 *
 	 * This is the PHP native default in PHP >= 8.6.
