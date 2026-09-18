@@ -33,6 +33,40 @@ final class ParseTest extends TestCase {
 	}
 
 	/**
+	 * Tests receiving an exception for Set-Cookie strings containing control characters disallowed by RFC 10025.
+	 *
+	 * @dataProvider dataInvalidCookieHeaderControlCharacters
+	 *
+	 * @covers ::parse
+	 *
+	 * @param string $input Cookie header containing a disallowed control character.
+	 *
+	 * @return void
+	 */
+	public function testParseInvalidCookieHeaderControlCharacter($input) {
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage('disallowed control character');
+
+		Cookie::parse($input);
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public static function dataInvalidCookieHeaderControlCharacters() {
+		$data       = [];
+		$codepoints = array_merge(range(0x00, 0x08), range(0x0A, 0x1F), [0x7F]);
+
+		foreach ($codepoints as $codepoint) {
+			$data[sprintf('CTL 0x%02X', $codepoint)] = [sprintf('foo=ba%sr', chr($codepoint))];
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Data Provider.
 	 *
 	 * @return array
@@ -201,15 +235,10 @@ final class ParseTest extends TestCase {
 				'name'     => '',
 				'expected' => ['name' => 'foo', 'value' => 'bar'],
 			],
-			'RFC 6265 WSP includes horizontal tab' => [
+			'RFC 10025 WSP includes horizontal tab' => [
 				'header'   => "\tfoo\t=\tbar\t",
 				'name'     => '',
 				'expected' => ['name' => 'foo', 'value' => 'bar'],
-			],
-			'Non-WSP control characters are not stripped from cookie values' => [
-				'header'   => "foo=\vbar\v",
-				'name'     => '',
-				'expected' => ['name' => 'foo', 'value' => "\vbar\v"],
 			],
 		];
 	}
@@ -575,6 +604,30 @@ final class ParseTest extends TestCase {
 				'expected_flags'      => ['host-only' => false],
 			],
 		];
+	}
+
+	/**
+	 * Verify Set-Cookie headers containing disallowed control characters are ignored.
+	 *
+	 * RFC 10025 section 5.6 requires user agents to ignore an entire Set-Cookie
+	 * string containing CTLs other than HTAB.
+	 *
+	 * @covers ::parse_from_headers
+	 *
+	 * @return void
+	 */
+	public function testParsingHeaderIgnoresDisallowedControlCharacters() {
+		$headers               = new Headers();
+		$headers['Set-Cookie'] = 'valid=first';
+		$headers['Set-Cookie'] = "invalid=va\vlue";
+		$headers['Set-Cookie'] = 'another=valid';
+
+		$parsed = Cookie::parse_from_headers($headers);
+
+		$this->assertCount(2, $parsed);
+		$this->assertArrayHasKey('valid', $parsed);
+		$this->assertArrayHasKey('another', $parsed);
+		$this->assertArrayNotHasKey('invalid', $parsed);
 	}
 
 	/**

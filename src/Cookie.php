@@ -421,11 +421,24 @@ class Cookie {
 	}
 
 	/**
+	 * Check whether a Set-Cookie string contains a control character disallowed by RFC 10025.
+	 *
+	 * HTAB (%x09) is intentionally excluded: it is valid WSP and is normalized separately.
+	 *
+	 * @param string $cookie_header Cookie header value.
+	 *
+	 * @return bool
+	 */
+	private static function contains_disallowed_cookie_control_character($cookie_header) {
+		return preg_match('/[\x00-\x08\x0A-\x1F\x7F]/', $cookie_header) === 1;
+	}
+
+	/**
 	 * Parse a cookie string into a cookie object
 	 *
 	 * Based on Mozilla's parsing code in Firefox and related projects, which
-	 * is an intentional deviation from RFC 2109 and RFC 2616. RFC 6265
-	 * specifies some of this handling, but not in a thorough manner.
+	 * is an intentional deviation from RFC 2109 and RFC 2616. RFC 10025
+	 * defines Set-Cookie parsing rules; Requests retains documented compatibility deviations where needed.
 	 *
 	 * @param int|string $cookie_header  Cookie header value (from a Set-Cookie header)
 	 * @param string     $name
@@ -440,8 +453,12 @@ class Cookie {
 			throw InvalidArgument::create(1, '$cookie_header', 'string', gettype($cookie_header));
 		}
 
+		if (self::contains_disallowed_cookie_control_character($cookie_header)) {
+			throw new InvalidArgument('Cookie header contains a disallowed control character per RFC 10025');
+		}
+
 		if (is_string($name)) {
-			$name = trim($name, Trim::WHITESPACE_CHARS_RFC6265);
+			$name = trim($name, Trim::WHITESPACE_CHARS_RFC10025);
 		}
 
 		if ($name !== '' && InputValidator::is_valid_rfc2616_token($name) === false) {
@@ -465,8 +482,8 @@ class Cookie {
 			list($name, $value) = explode('=', $kvparts, 2);
 		}
 
-		$name  = trim($name, Trim::WHITESPACE_CHARS_RFC6265);
-		$value = trim($value, Trim::WHITESPACE_CHARS_RFC6265);
+		$name  = trim($name, Trim::WHITESPACE_CHARS_RFC10025);
+		$value = trim($value, Trim::WHITESPACE_CHARS_RFC10025);
 
 		if ($name !== '' && InputValidator::is_valid_rfc2616_token($name) === false) {
 			throw InvalidArgument::create(2, '$name', 'integer|string and conform to RFC 2616', gettype($name));
@@ -482,10 +499,10 @@ class Cookie {
 					$part_value = true;
 				} else {
 					list($part_key, $part_value) = explode('=', $part, 2);
-					$part_value                  = trim($part_value, Trim::WHITESPACE_CHARS_RFC6265);
+					$part_value                  = trim($part_value, Trim::WHITESPACE_CHARS_RFC10025);
 				}
 
-				$part_key              = trim($part_key, Trim::WHITESPACE_CHARS_RFC6265);
+				$part_key              = trim($part_key, Trim::WHITESPACE_CHARS_RFC10025);
 				$attributes[$part_key] = $part_value;
 			}
 		}
@@ -515,6 +532,10 @@ class Cookie {
 
 		$cookies = [];
 		foreach ($cookie_headers as $header) {
+			if (self::contains_disallowed_cookie_control_character($header)) {
+				continue;
+			}
+
 			$parsed = self::parse($header, '', $time);
 
 			// Default domain/path attributes
