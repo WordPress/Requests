@@ -10,6 +10,7 @@ use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
+use WpOrg\Requests\Session;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
@@ -1214,6 +1215,231 @@ abstract class BaseTestCase extends TestCase {
 
 		$this->assertSame(200, $request->status_code);
 		$this->assertSame('/get', substr($request->url, -4));
+	}
+
+	public function testStreamRetrievesFullBody() {
+		$buffered = Requests::get($this->httpbin('/bytes/8192'), [], $this->getOptions());
+		$expected = $buffered->body;
+
+		$response = Requests::get($this->httpbin('/bytes/8192'), [], $this->getOptions(['stream' => true]));
+
+		$this->assertTrue($response->is_streaming(), 'Response should be in streaming mode');
+		$this->assertSame(200, $response->status_code);
+		$this->assertSame('', $response->body, 'Body should not be buffered while streaming');
+
+		$body = '';
+		while (!$response->eof()) {
+			$body .= $response->read(1024);
+		}
+
+		$response->close();
+
+		$this->assertSame($expected, $body);
+	}
+
+	public function testStreamHeadersAvailableBeforeBodyIsRead() {
+		$response = Requests::get($this->httpbin('/get'), [], $this->getOptions(['stream' => true]));
+
+		$this->assertSame(200, $response->status_code);
+		$this->assertNotEmpty($response->headers['content-type']);
+		$this->assertSame('', $response->body);
+
+		$response->close();
+	}
+
+	public function testStreamBodyMatchesContent() {
+		$response = Requests::get($this->httpbin('/get'), [], $this->getOptions(['stream' => true]));
+
+		$body = '';
+		while (!$response->eof()) {
+			$body .= $response->read();
+		}
+
+		$response->close();
+
+		$result = json_decode($body, true);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
+	}
+
+	public function testStreamDecodesChunkedResponse() {
+		$response = Requests::get($this->httpbin('/stream/3'), [], $this->getOptions(['stream' => true]));
+
+		$body = '';
+		while (!$response->eof()) {
+			$body .= $response->read(16);
+		}
+
+		$response->close();
+
+		$this->assertSame(200, $response->status_code);
+		$this->assertSame(3, substr_count($body, '"id"'), 'All three streamed objects should be received');
+		$this->assertStringNotContainsString("\r\n", $body, 'Chunked framing should not leak into the body');
+	}
+
+	public function testStreamDeliversRawBytesWhenServerCompressesAnyway() {
+		if (!function_exists('gzdecode')) {
+			$this->markTestSkipped('zlib is not available');
+		}
+
+		// The /gzip route compresses no matter what Accept-Encoding says.
+		$response = Requests::get($this->httpbin('/gzip'), [], $this->getOptions(['stream' => true]));
+
+		$body = '';
+		while (!$response->eof()) {
+			$body .= $response->read();
+		}
+
+		$response->close();
+
+		$this->assertSame('gzip', $response->headers['content-encoding']);
+
+		$decoded = gzdecode($body);
+		$this->assertNotFalse($decoded, 'Streamed bytes should be the raw gzip payload');
+
+		$result = json_decode($decoded, true);
+		$this->assertTrue($result['gzipped']);
+	}
+
+	public function testStreamRespectsMaxBytes() {
+		$limit    = 100;
+		$options  = [
+			'stream'    => true,
+			'max_bytes' => $limit,
+			'hooks'     => $this->getMaxBytesAssertionHooks(),
+		];
+		$response = Requests::get($this->httpbin('/bytes/10240'), [], $this->getOptions($options));
+
+		$body = '';
+		while (!$response->eof()) {
+			$body .= $response->read(4096);
+		}
+
+		$response->close();
+
+		$this->assertSame($limit, strlen($body));
+	}
+
+	public function testStreamFollowsRedirects() {
+		$response = Requests::get($this->httpbin('/redirect/2'), [], $this->getOptions(['stream' => true]));
+
+		$this->assertSame(200, $response->status_code);
+		$this->assertSame(2, $response->redirects);
+		$this->assertNotEmpty($response->history);
+		$this->assertTrue($response->is_streaming(), 'Final response should be in streaming mode');
+
+		$body = '';
+		while (!$response->eof()) {
+			$body .= $response->read();
+		}
+
+		$response->close();
+
+		$result = json_decode($body, true);
+		$this->assertSame($this->httpbin('/get'), $result['url'], 'Streamed body should be that of the final response');
+	}
+
+	public function testStreamFiresProgressHook() {
+		$mock = $this->getMockedStdClassWithMethods(['progress']);
+		$mock->expects($this->atLeastOnce())->method('progress');
+
+		$hooks = new Hooks();
+		$hooks->register('request.progress', [$mock, 'progress']);
+
+		$response = Requests::get($this->httpbin('/bytes/2048'), [], $this->getOptions(['stream' => true, 'hooks' => $hooks]));
+
+		while (!$response->eof()) {
+			$response->read(512);
+		}
+
+		$response->close();
+	}
+
+	public function testStreamCloseStopsReading() {
+		$response = Requests::get($this->httpbin('/bytes/10240'), [], $this->getOptions(['stream' => true]));
+
+		$this->assertNotSame('', $response->read(128), 'Pre-condition failed: first read should return data');
+
+		$response->close();
+
+		$this->assertTrue($response->eof(), 'Stream should be at EOF after close()');
+		$this->assertSame('', $response->read(128), 'Reading a closed stream should return an empty string');
+	}
+
+	public function testStreamHEADRequestReachesEofImmediately() {
+		$response = Requests::head($this->httpbin('/get'), [], $this->getOptions(['stream' => true]));
+
+		$this->assertSame(200, $response->status_code);
+		$this->assertSame('', $response->read(), 'A HEAD response has no body to read');
+		$this->assertTrue($response->eof());
+
+		$response->close();
+	}
+
+	public function testStreamWithPOSTRequest() {
+		$data     = ['test' => 'true', 'test2' => 'test'];
+		$response = Requests::post($this->httpbin('/post'), [], $data, $this->getOptions(['stream' => true]));
+
+		$body = '';
+		while (!$response->eof()) {
+			$body .= $response->read();
+		}
+
+		$response->close();
+
+		$result = json_decode($body, true);
+		$this->assertSame($data, $result['form']);
+	}
+
+	public function testStreamWorksWithSession() {
+		$session  = new Session($this->httpbin(), [], [], $this->getOptions(['stream' => true]));
+		$response = $session->get('/get');
+
+		$this->assertTrue($response->is_streaming());
+
+		$body = '';
+		while (!$response->eof()) {
+			$body .= $response->read();
+		}
+
+		$response->close();
+
+		$result = json_decode($body, true);
+		$this->assertSame($this->httpbin('/get'), $result['url']);
+	}
+
+	public function testStreamThenReuseTransport() {
+		$transport = new $this->transport();
+
+		// Stream a request to completion on a shared transport instance.
+		$first = Requests::get($this->httpbin('/get'), [], $this->getOptions(['transport' => $transport, 'stream' => true]));
+		while (!$first->eof()) {
+			$first->read();
+		}
+
+		$first->close();
+
+		// The same transport instance must remain usable afterwards for a
+		// regular buffered request (for cURL, the handle is re-initialised
+		// after having been handed off to the stream).
+		$second = Requests::get($this->httpbin('/get'), [], $this->getOptions(['transport' => $transport]));
+
+		$this->assertSame(200, $second->status_code);
+		$this->assertNotEmpty($second->body);
+	}
+
+	public function testStreamTimesOutWhenServerStalls() {
+		// A listener which accepts the connection but never responds.
+		$server = stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+		$url    = 'http://' . stream_socket_get_name($server, false) . '/';
+
+		try {
+			$this->expectException(Exception::class);
+			$this->expectExceptionMessage('timed out');
+
+			Requests::get($url, [], $this->getOptions(['stream' => true, 'timeout' => 1]));
+		} finally {
+			fclose($server);
+		}
 	}
 
 	/**

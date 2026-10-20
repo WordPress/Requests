@@ -137,4 +137,17 @@ final class CurlTest extends BaseTestCase {
 
 		$this->assertFalse(isset($result['headers']['Expect']));
 	}
+
+	public function testStreamThrowsWhenTheConnectionFails() {
+		// Grab a free port, then close the listener so connecting to it fails
+		// while the transfer is being advanced to receive the headers.
+		$server = stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+		$url    = 'http://' . stream_socket_get_name($server, false) . '/';
+		fclose($server);
+
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('cURL error');
+
+		Requests::get($url, [], $this->getOptions(['stream' => true, 'timeout' => 2]));
+	}
 }
