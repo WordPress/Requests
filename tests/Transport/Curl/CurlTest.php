@@ -55,7 +55,7 @@ final class CurlTest extends BaseTestCase {
 	/**
 	 * @small
 	 */
-	public function testDoesntSetExpectHeaderIfBodyExactly1MbButProtocolIsnt11() {
+	public function testDoesNotSetEmptyExpectHeaderIfBodyExactly1MbAndProtocolIs10() {
 		$options = [
 			'protocol_version' => 1.0,
 		];
@@ -69,7 +69,37 @@ final class CurlTest extends BaseTestCase {
 	/**
 	 * @small
 	 */
-	public function testSetsEmptyExpectHeaderWithDefaultSettings() {
+	public function testSetsEmptyExpectHeaderIfBodyExactly1MbAndProtocolIs20() {
+		$this->markTestSkipped('HTTP/2 send fails with: cURL error 55: Send failure: Broken pipe');
+		$options = [
+			'protocol_version' => 2.0,
+		];
+		$request = Requests::post($this->httpbin('/post'), [], str_repeat('x', 1048576), $this->getOptions($options));
+
+		$result = json_decode($request->body, true);
+
+		$this->assertSame($result['headers']['Expect'], '');
+	}
+
+	/**
+	 * @small
+	 */
+	public function testSetsEmptyExpectHeaderIfBodyExactly1MbAndProtocolIs30() {
+		$this->markTestSkipped('HTTP/3 connection times out');
+		$options = [
+			'protocol_version' => 3.0,
+		];
+		$request = Requests::post($this->httpbin('/post', true), [], str_repeat('x', 1048576), $this->getOptions($options));
+
+		$result = json_decode($request->body, true);
+
+		$this->assertSame($result['headers']['Expect'], '');
+	}
+
+	/**
+	 * @small
+	 */
+	public function testDoesNotSetEmptyExpectHeaderWithDefaultSettings() {
 		$request = Requests::post($this->httpbin('/post'), [], [], $this->getOptions());
 
 		$result = json_decode($request->body, true);
