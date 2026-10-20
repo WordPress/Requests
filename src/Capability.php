@@ -20,6 +20,13 @@ namespace WpOrg\Requests;
 interface Capability {
 
 	/**
+	 * Support for mapping specific hosts to specific IP addresses.
+	 *
+	 * @var string
+	 */
+	const HOST_BINDINGS = 'host_bindings';
+
+	/**
 	 * Support for SSL.
 	 *
 	 * @var string
@@ -34,6 +41,7 @@ interface Capability {
 	 * @var array<string>
 	 */
 	const ALL = [
+		self::HOST_BINDINGS,
 		self::SSL,
 	];
 }

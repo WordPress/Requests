@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests\Requests;
 
+use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Iri;
@@ -149,6 +150,22 @@ final class RequestsTest extends TestCase {
 
 	public function testDefaultTransport() {
 		$request = Requests::get(new Iri($this->httpbin('/get')));
+		$this->assertSame(200, $request->status_code);
+	}
+
+	/**
+	 * @covers \WpOrg\Requests\Requests::request
+	 */
+	public function testDefaultTransportWithHostBindings() {
+		$request = Requests::get(
+			$this->httpbin('/get'),
+			[],
+			[
+				Capability::HOST_BINDINGS => [
+					'localhost' => ['127.0.0.1'],
+				],
+			]
+		);
 		$this->assertSame(200, $request->status_code);
 	}
 
