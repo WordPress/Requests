@@ -79,3 +79,36 @@ jobs:
       - name: Show PHPCS results in PR
         if: ${{ always() && steps.phpcs.outcome == 'failure' }}
         run: cs2pr ./phpcs-report.xml
+
+  phpstan: #----------------------------------------------------------------------
+    name: 'PHPStan'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Needed to clone the repo.
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: 'latest'
+          coverage: none
+          # PHPStan needs PHP 7.4+, so it is installed as a tool rather than
+          # as a Composer dev dependency of this PHP 5.6+ package.
+          tools: phpstan
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
+
+      # Run static analysis. The github error format annotates findings inline in PRs.
+      - name: Run PHPStan
+        run: phpstan analyse --error-format=github

@@ -16,6 +16,9 @@ phpcs.xml
 phpunit.xml
 phpunit10.xml
 
+# Ignore local overrides of the PHPStan config file.
+phpstan.neon
+
 # Ignore temporary files for ghpages builds.
 phpdoc.xml
 build/ghpages/.phpdoc

@@ -20,6 +20,8 @@ use WpOrg\Requests\Utility\Trim;
  * Cookie storage object
  *
  * @package Requests\Cookies
+ *
+ * @phpstan-consistent-constructor
  */
 class Cookie {
 	/**

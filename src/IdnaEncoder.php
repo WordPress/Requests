@@ -142,7 +142,9 @@ class IdnaEncoder {
 	/**
 	 * Check whether a given text string contains only ASCII characters
 	 *
-	 * @internal (Testing found regex was the fastest implementation)
+	 * @internal
+	 *
+	 * Testing found regex was the fastest implementation.
 	 *
 	 * @param string $text Text to examine.
 	 * @return bool Is the text string ASCII-only?
