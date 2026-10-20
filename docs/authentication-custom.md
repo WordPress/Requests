@@ -16,7 +16,10 @@ services that do this; perhaps this is a market waiting to be tapped?)
 class MySoftware_Auth_Hotdog implements \WpOrg\Requests\Auth {
     protected $password;
 
-    public function __construct($password) {
+    public function __construct(
+        #[\SensitiveParameter]
+        $password
+    ) {
         $this->password = $password;
     }
 
