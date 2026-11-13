@@ -176,6 +176,41 @@ abstract class BaseTestCase extends TestCase {
 			'string data'                      => ['/get?x=1', 'a=1&b=2', '/get?x=1&a=1&b=2'],
 			'query string "0", idn disabled'   => ['/get?0', ['a' => '1'], '/get?0&a=1', ['idn' => false]],
 			'empty query string, no data'      => ['/get?', [], '/get?'],
+			'signed query, no data, idn off'   => ['/get?a[]=1&sig=%7eAbc', [], '/get?a[]=1&sig=%7eAbc', ['idn' => false]],
+			'signed query, data, idn off'      => ['/get?a[]=1&sig=%7eAbc', ['x' => '1'], '/get?a[]=1&sig=%7eAbc&x=1', ['idn' => false]],
+		];
+	}
+
+	/**
+	 * Test that a URL without a host is rejected in the same way, whether GET data is passed or not.
+	 *
+	 * @dataProvider dataInvalidUrlWithoutHost
+	 *
+	 * @param array $data Data to send.
+	 *
+	 * @return void
+	 */
+	public function testInvalidUrlWithoutHost($data) {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Invalid URL.');
+
+		try {
+			Requests::request('http:///get', [], $data, Requests::GET, $this->getOptions(['idn' => false]));
+		} catch (Exception $e) {
+			$this->assertSame('invalidurl', $e->getType(), 'Exception type does not match');
+			throw $e;
+		}
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public static function dataInvalidUrlWithoutHost() {
+		return [
+			'no data'   => [[]],
+			'with data' => [['a' => '1']],
 		];
 	}
 

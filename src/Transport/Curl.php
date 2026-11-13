@@ -409,11 +409,12 @@ final class Curl implements Transport {
 
 		$headers = Requests::flatten($headers);
 
-		if (!empty($data)) {
-			$data_format = $options['data_format'];
+		$data_format = $options['data_format'];
+		$query_data  = ($data_format === 'query' && !empty($data)) ? $data : [];
+		$url         = Url::get_request_url($url, $query_data);
 
+		if (!empty($data)) {
 			if ($data_format === 'query') {
-				$url  = Url::get_request_url($url, $data);
 				$data = '';
 			} elseif (!is_string($data)) {
 				$data = http_build_query($data, '', '&');

@@ -184,17 +184,15 @@ final class Fsockopen implements Transport {
 		}
 
 		$data_format = $options['data_format'];
+		$query_data  = ($data_format === 'query' && !empty($data)) ? $data : [];
+		$path        = Url::get_request_target($url, $query_data);
+		$request_url = Url::get_request_url($url, $query_data);
 
 		if ($data_format === 'query') {
-			$request_url = Url::get_request_url($iri, $data);
-			$data        = '';
-		} else {
-			$request_url = Url::get_request_url($iri);
+			$data = '';
 		}
 
-		$path = Url::get_request_target($request_url);
-
-		$options['hooks']->dispatch('fsockopen.remote_host_path', [&$path, $request_url]);
+		$options['hooks']->dispatch('fsockopen.remote_host_path', [&$path, $url, $request_url]);
 
 		$request_body = '';
 		$out          = sprintf("%s %s HTTP/%.1F\r\n", $options['type'], $path, $options['protocol_version']);
@@ -220,7 +218,7 @@ final class Fsockopen implements Transport {
 		}
 
 		if (!isset($case_insensitive_headers['Host'])) {
-			$out .= sprintf("Host: %s\r\n", self::format_host_header($scheme, $host, $port));
+			$out .= sprintf("Host: %s\r\n", self::get_host_and_port($iri));
 		}
 
 		if (!isset($case_insensitive_headers['User-Agent'])) {
@@ -420,45 +418,30 @@ final class Fsockopen implements Transport {
 	 * @return int The port from the URL, or the default port for the scheme.
 	 */
 	private static function get_port(Iri $iri) {
-		$port = $iri->port;
+		$authority = self::get_host_and_port($iri);
+		$separator = strrpos($authority, ':');
 
-		return ($port === null) ? Port::HTTP : $port;
-	}
-
-	/**
-	 * Format the value for the Host header.
-	 *
-	 * The port is only included when it is not the default port for the scheme.
-	 *
-	 * @param string|null $scheme The scheme of the URL being requested.
-	 * @param string      $host   The host of the URL being requested.
-	 * @param int         $port   The port being connected to.
-	 * @return string
-	 */
-	private static function format_host_header($scheme, $host, $port) {
-		if (self::is_default_port($scheme, $port)) {
-			return $host;
+		// The host of an IPv6 address contains colons as well, but always ends with "]".
+		if ($separator !== false && substr($authority, -1) !== ']') {
+			return (int) substr($authority, $separator + 1);
 		}
 
-		return $host . ':' . $port;
+		return ($iri->scheme === 'https') ? Port::HTTPS : Port::HTTP;
 	}
 
 	/**
-	 * Check whether a port is the default port for a scheme.
+	 * Get the host and, if it is not the default port for the scheme, the port of a URL.
 	 *
-	 * @param string|null $scheme The scheme.
-	 * @param int         $port   The port.
-	 * @return bool True for the default port, or when there is no known default port for the scheme.
+	 * This is the value to use for the Host header.
+	 *
+	 * @param \WpOrg\Requests\Iri $iri The URL being requested.
+	 * @return string
 	 */
-	private static function is_default_port($scheme, $port) {
-		$default_ports = [
-			'http'  => Port::HTTP,
-			'https' => Port::HTTPS,
-		];
+	private static function get_host_and_port(Iri $iri) {
+		$authority           = clone $iri;
+		$authority->userinfo = null;
 
-		$scheme = (string) $scheme;
-
-		return !isset($default_ports[$scheme]) || $default_ports[$scheme] === $port;
+		return $authority->iauthority;
 	}
 
 	/**

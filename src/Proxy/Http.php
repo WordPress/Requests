@@ -136,11 +136,15 @@ final class Http implements Proxy {
 	 * Alter remote path before getting stream data
 	 *
 	 * @since 1.6
-	 * @param string $path Path to send in HTTP request string ("GET ...")
-	 * @param string $url  Full URL we're requesting
+	 * @since 2.1.0 Added the `$request_url` parameter.
+	 *
+	 * @param string      $path        Path to send in HTTP request string ("GET ...")
+	 * @param string      $url         Full URL we're requesting
+	 * @param string|null $request_url Optional. The URL to request, including any GET data and without the fragment.
+	 *                                 When not passed, the $url is used.
 	 */
-	public function fsockopen_remote_host_path(&$path, $url) {
-		$path = $url;
+	public function fsockopen_remote_host_path(&$path, $url, $request_url = null) {
+		$path = ($request_url === null) ? $url : $request_url;
 	}
 
 	/**
