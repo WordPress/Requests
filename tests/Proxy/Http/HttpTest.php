@@ -62,6 +62,29 @@ final class HttpTest extends TestCase {
 	}
 
 	/**
+	 * Test that GET data and the existing query string are sent when using a proxy.
+	 *
+	 * @dataProvider transportProvider
+	 *
+	 * @param string $transport Transport to use.
+	 *
+	 * @return void
+	 */
+	public function testGETWithDataViaProxy($transport) {
+		$this->checkProxyAvailable();
+
+		$options  = [
+			'proxy'     => REQUESTS_HTTP_PROXY,
+			'transport' => $transport,
+		];
+		$response = Requests::request($this->httpbin('/get?x=1#frag'), [], ['a' => '1'], Requests::GET, $options);
+		$this->assertSame('http', $response->headers['x-requests-proxied'], 'Request was not proxied');
+
+		$data = json_decode($response->body, true);
+		$this->assertSame($this->httpbin('/get?x=1&a=1'), $data['url'], 'The requested URL does not match');
+	}
+
+	/**
 	 * @dataProvider transportProvider
 	 */
 	public function testConnectInvalidParameters($transport) {
