@@ -12,6 +12,7 @@ namespace WpOrg\Requests\Transport;
 use WpOrg\Requests\Capability;
 use WpOrg\Requests\Exception;
 use WpOrg\Requests\Exception\InvalidArgument;
+use WpOrg\Requests\Iri;
 use WpOrg\Requests\Port;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Ssl;
@@ -19,6 +20,7 @@ use WpOrg\Requests\Transport;
 use WpOrg\Requests\Utility\CaseInsensitiveDictionary;
 use WpOrg\Requests\Utility\InputValidator;
 use WpOrg\Requests\Utility\Trim;
+use WpOrg\Requests\Utility\Url;
 
 /**
  * fsockopen HTTP transport
@@ -100,22 +102,18 @@ final class Fsockopen implements Transport {
 
 		$options['hooks']->dispatch('fsockopen.before_request');
 
-		$url_parts = parse_url($url);
-		if (empty($url_parts)) {
-			throw new Exception('Invalid URL.', 'invalidurl', $url);
-		}
+		$iri = Url::parse($url);
 
-		$host                     = $url_parts['host'];
+		$scheme                   = $iri->scheme;
+		$host                     = $iri->host;
+		$port                     = self::get_port($iri);
 		$context                  = stream_context_create();
 		$verifyname               = false;
 		$case_insensitive_headers = new CaseInsensitiveDictionary($headers);
 
 		// HTTPS support
-		if (isset($url_parts['scheme']) && strtolower($url_parts['scheme']) === 'https') {
+		if ($scheme === 'https') {
 			$remote_socket = 'ssl://' . $host;
-			if (!isset($url_parts['port'])) {
-				$url_parts['port'] = Port::HTTPS;
-			}
 
 			$context_options = [
 				'verify_peer'       => true,
@@ -161,11 +159,7 @@ final class Fsockopen implements Transport {
 
 		$this->max_bytes = $options['max_bytes'];
 
-		if (!isset($url_parts['port'])) {
-			$url_parts['port'] = Port::HTTP;
-		}
-
-		$remote_socket .= ':' . $url_parts['port'];
+		$remote_socket .= ':' . $port;
 
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
 		set_error_handler([$this, 'connect_error_handler'], E_WARNING | E_NOTICE);
@@ -192,13 +186,15 @@ final class Fsockopen implements Transport {
 		$data_format = $options['data_format'];
 
 		if ($data_format === 'query') {
-			$path = self::format_get($url_parts, $data);
-			$data = '';
+			$request_url = Url::get_request_url($iri, $data);
+			$data        = '';
 		} else {
-			$path = self::format_get($url_parts, []);
+			$request_url = Url::get_request_url($iri);
 		}
 
-		$options['hooks']->dispatch('fsockopen.remote_host_path', [&$path, $url]);
+		$path = Url::get_request_target($request_url);
+
+		$options['hooks']->dispatch('fsockopen.remote_host_path', [&$path, $request_url]);
 
 		$request_body = '';
 		$out          = sprintf("%s %s HTTP/%.1F\r\n", $options['type'], $path, $options['protocol_version']);
@@ -224,14 +220,7 @@ final class Fsockopen implements Transport {
 		}
 
 		if (!isset($case_insensitive_headers['Host'])) {
-			$out         .= sprintf('Host: %s', $url_parts['host']);
-			$scheme_lower = strtolower($url_parts['scheme']);
-
-			if (($scheme_lower === 'http' && $url_parts['port'] !== Port::HTTP) || ($scheme_lower === 'https' && $url_parts['port'] !== Port::HTTPS)) {
-				$out .= ':' . $url_parts['port'];
-			}
-
-			$out .= "\r\n";
+			$out .= sprintf("Host: %s\r\n", self::format_host_header($scheme, $host, $port));
 		}
 
 		if (!isset($case_insensitive_headers['User-Agent'])) {
@@ -425,33 +414,51 @@ final class Fsockopen implements Transport {
 	}
 
 	/**
-	 * Format a URL given GET data
+	 * Get the port to connect to.
 	 *
-	 * @param array        $url_parts Array of URL parts as received from {@link https://www.php.net/parse_url}
-	 * @param array|object $data      Data to build query using, see {@link https://www.php.net/http_build_query}
-	 * @return string URL with data
+	 * @param \WpOrg\Requests\Iri $iri The URL being requested.
+	 * @return int The port from the URL, or the default port for the scheme.
 	 */
-	private static function format_get($url_parts, $data) {
-		if (!empty($data)) {
-			if (empty($url_parts['query'])) {
-				$url_parts['query'] = '';
-			}
+	private static function get_port(Iri $iri) {
+		$port = $iri->port;
 
-			$url_parts['query'] .= '&' . http_build_query($data, '', '&');
-			$url_parts['query']  = trim($url_parts['query'], '&');
+		return ($port === null) ? Port::HTTP : $port;
+	}
+
+	/**
+	 * Format the value for the Host header.
+	 *
+	 * The port is only included when it is not the default port for the scheme.
+	 *
+	 * @param string|null $scheme The scheme of the URL being requested.
+	 * @param string      $host   The host of the URL being requested.
+	 * @param int         $port   The port being connected to.
+	 * @return string
+	 */
+	private static function format_host_header($scheme, $host, $port) {
+		if (self::is_default_port($scheme, $port)) {
+			return $host;
 		}
 
-		if (isset($url_parts['path'])) {
-			if (isset($url_parts['query'])) {
-				$get = $url_parts['path'] . '?' . $url_parts['query'];
-			} else {
-				$get = $url_parts['path'];
-			}
-		} else {
-			$get = '/';
-		}
+		return $host . ':' . $port;
+	}
 
-		return $get;
+	/**
+	 * Check whether a port is the default port for a scheme.
+	 *
+	 * @param string|null $scheme The scheme.
+	 * @param int         $port   The port.
+	 * @return bool True for the default port, or when there is no known default port for the scheme.
+	 */
+	private static function is_default_port($scheme, $port) {
+		$default_ports = [
+			'http'  => Port::HTTP,
+			'https' => Port::HTTPS,
+		];
+
+		$scheme = (string) $scheme;
+
+		return !isset($default_ports[$scheme]) || $default_ports[$scheme] === $port;
 	}
 
 	/**

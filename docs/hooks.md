@@ -129,6 +129,9 @@ Available Hooks
 
     Parameters: `string &$path`, `string $url`
 
+    `$path` is the path and query string to send in the request line.
+    `$url` is the full URL being requested, including any GET data, but without the fragment.
+
 * **`fsockopen.after_headers`**
 
     Add extra headers before the body begins (i.e. before `\r\n\r\n`).
