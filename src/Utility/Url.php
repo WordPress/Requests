@@ -16,8 +16,13 @@ use WpOrg\Requests\Iri;
 /**
  * URL utilities for Requests.
  *
- * Splits URLs using the {@see \WpOrg\Requests\Iri} class and (re)builds them in a
- * consistent way, so all transports send the exact same URL for the same request.
+ * Validates URLs using the {@see \WpOrg\Requests\Iri} class and builds the URL and
+ * request-target to send in a consistent way, so all transports send the exact same
+ * URL for the same request.
+ *
+ * Only the query string is ever changed. The rest of the URL is sent exactly as passed,
+ * as it has already been normalized by {@see \WpOrg\Requests\Requests::request()},
+ * unless IDN handling was explicitly disabled.
  *
  * @package Requests\Utilities
  * @since   2.1.0
@@ -25,15 +30,34 @@ use WpOrg\Requests\Iri;
 final class Url {
 
 	/**
+	 * Regular expression to split a URL into its components.
+	 *
+	 * This is the regular expression from RFC 3986, appendix B, as also used by
+	 * {@see \WpOrg\Requests\Iri::parse_iri()}, which does not change any characters.
+	 *
+	 * @link https://www.rfc-editor.org/rfc/rfc3986#appendix-B
+	 *
+	 * @var string
+	 */
+	const COMPONENTS_REGEX = '`^(?P<origin>(?:[^:/?#]+:)?(?://[^/?#]*)?)(?P<path>[^?#]*)(?:\?(?P<query>[^#]*))?`';
+
+	/**
+	 * Characters which are trimmed from the URL, in the same way as {@see \WpOrg\Requests\Iri}.
+	 *
+	 * @var string
+	 */
+	const TRIM_CHARS = "\x20\x09\x0A\x0C\x0D";
+
+	/**
 	 * Parse a URL which can be requested.
 	 *
 	 * @since 2.1.0
 	 *
-	 * @param string|\Stringable|\WpOrg\Requests\Iri $url The URL to parse.
+	 * @param string|\Stringable $url The URL to parse.
 	 *
 	 * @return \WpOrg\Requests\Iri A new Iri object. A passed Iri object is never modified.
 	 *
-	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or Iri.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
 	 * @throws \WpOrg\Requests\Exception                 When the URL is not valid or has no host ('invalidurl').
 	 */
 	public static function parse($url) {
@@ -58,53 +82,91 @@ final class Url {
 	 *
 	 * @since 2.1.0
 	 *
-	 * @param string|\Stringable|\WpOrg\Requests\Iri $url  The URL.
-	 * @param array|string                           $data Optional. Data to add to the query string.
-	 *                                                     Arrays are encoded using {@link https://www.php.net/http_build_query},
-	 *                                                     strings are expected to be encoded already.
-	 *                                                     Defaults to an empty array.
+	 * @param string|\Stringable $url  The URL.
+	 * @param array|string       $data Optional. Data to add to the query string.
+	 *                                 Arrays are encoded using {@link https://www.php.net/http_build_query},
+	 *                                 strings are expected to be encoded already.
+	 *                                 Defaults to an empty array.
 	 *
-	 * @return string The URL, encoded for use in a request.
+	 * @return string The URL to request.
 	 *
-	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or Iri.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $data argument is not an array or string.
 	 * @throws \WpOrg\Requests\Exception                 When the URL is not valid or has no host ('invalidurl').
 	 */
 	public static function get_request_url($url, $data = []) {
-		if (is_array($data) === false && is_string($data) === false) {
-			throw InvalidArgument::create(2, '$data', 'array|string', gettype($data));
-		}
+		$components = self::split($url, $data);
 
-		$iri = self::parse($url);
-
-		$iri->query    = self::merge_query($iri->iquery, self::build_query($data));
-		$iri->fragment = null;
-
-		return $iri->uri;
+		return $components['origin'] . self::build_target($components);
 	}
 
 	/**
-	 * Get the request-target (path and query string) to use in the request line.
+	 * Get the request-target (path and query string) to use in the request line,
+	 * with the (optional) data added to the query string.
 	 *
 	 * This is the "origin-form" as defined in RFC 9112, section 3.2.1.
 	 *
 	 * @since 2.1.0
 	 *
-	 * @param string|\Stringable|\WpOrg\Requests\Iri $url The URL.
+	 * @param string|\Stringable $url  The URL.
+	 * @param array|string       $data Optional. Data to add to the query string.
+	 *                                 See {@see \WpOrg\Requests\Utility\Url::get_request_url()}.
+	 *                                 Defaults to an empty array.
 	 *
-	 * @return string The path, followed by the query string if the URL has one, encoded for use in a request.
+	 * @return string The path, followed by the query string if there is one.
 	 *
-	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string, Stringable or Iri.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $data argument is not an array or string.
 	 * @throws \WpOrg\Requests\Exception                 When the URL is not valid or has no host ('invalidurl').
 	 */
-	public static function get_request_target($url) {
-		$iri = self::parse($url);
+	public static function get_request_target($url, $data = []) {
+		return self::build_target(self::split($url, $data));
+	}
 
-		$target        = new Iri();
-		$target->path  = $iri->ipath;
-		$target->query = $iri->iquery;
+	/**
+	 * Validate the URL and split it into the components needed to build a request,
+	 * with the data merged into the query string.
+	 *
+	 * @param string|\Stringable $url  The URL.
+	 * @param array|string       $data Data to add to the query string.
+	 *
+	 * @return array{origin: string, path: string, query: string|null}
+	 *
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $url argument is not a string or Stringable.
+	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed $data argument is not an array or string.
+	 * @throws \WpOrg\Requests\Exception                 When the URL is not valid or has no host ('invalidurl').
+	 */
+	private static function split($url, $data) {
+		if (is_array($data) === false && is_string($data) === false) {
+			throw InvalidArgument::create(2, '$data', 'array|string', gettype($data));
+		}
 
-		return $target->uri;
+		self::parse($url);
+
+		preg_match(self::COMPONENTS_REGEX, trim((string) $url, self::TRIM_CHARS), $matches);
+
+		return [
+			'origin' => $matches['origin'],
+			'path'   => $matches['path'],
+			'query'  => self::merge_query(isset($matches['query']) ? $matches['query'] : null, self::build_query($data)),
+		];
+	}
+
+	/**
+	 * Build the request-target from the URL components.
+	 *
+	 * @param array{origin: string, path: string, query: string|null} $components The URL components.
+	 *
+	 * @return string
+	 */
+	private static function build_target(array $components) {
+		$path = ($components['path'] === '') ? '/' : $components['path'];
+
+		if ($components['query'] === null) {
+			return $path;
+		}
+
+		return $path . '?' . $components['query'];
 	}
 
 	/**

@@ -137,9 +137,15 @@ final class GetRequestUrlTest extends TestCase {
 
 			// Authority handling.
 			'non-default port'                            => ['http://example.com:8080/path', ['a' => '1'], 'http://example.com:8080/path?a=1'],
-			'default port is dropped'                     => ['http://example.com:80/path', [], 'http://example.com/path'],
+			'default port is preserved'                   => ['http://example.com:80/path', [], 'http://example.com:80/path'],
 			'userinfo'                                    => ['http://user:pass@example.com/path', ['a' => '1'], 'http://user:pass@example.com/path?a=1'],
 			'IPv6 host'                                   => ['http://[::1]:8080/path', ['a' => '1'], 'http://[::1]:8080/path?a=1'],
+
+			// The URL is not normalized, so it is sent exactly as passed (for example, a signed URL).
+			'percent-encoding is preserved'               => ['http://example.com/%7euser?sig=%7eAbc%2F', ['a' => '1'], 'http://example.com/%7euser?sig=%7eAbc%2F&a=1'],
+			'unencoded brackets in query are preserved'   => ['http://example.com/path?a[]=1', [], 'http://example.com/path?a[]=1'],
+			'dot segments are preserved'                  => ['http://example.com/a/../b', [], 'http://example.com/a/../b'],
+			'surrounding whitespace is trimmed'           => [" http://example.com/path?x=1\n", ['a' => '1'], 'http://example.com/path?x=1&a=1'],
 		];
 	}
 
