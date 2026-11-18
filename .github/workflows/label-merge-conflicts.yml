@@ -7,11 +7,10 @@ on:
       - develop
       - stable
   # Check conflicts in new PRs and for resolved conflicts due to an open PR being updated.
-  pull_request_target:
-    types:
-      - opened
-      - synchronize
-      - reopened
+  # A schedule instead of `pull_request_target`, which GitHub blocks by default in public repositories.
+  schedule:
+    - cron: '40 */6 * * *'
+  workflow_dispatch:
 
 # Disable permissions for all available scopes by default.
 # Any needed permissions should be configured at the job level.
