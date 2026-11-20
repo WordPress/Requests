@@ -127,7 +127,11 @@ Available Hooks
 
     Alter the remote host path.
 
-    Parameters: `string &$path`, `string $url`
+    Parameters: `string &$path`, `string $url`, `string $request_url`
+
+    `$path` is the path and query string to send in the request line.
+    `$url` is the URL as passed to the transport.
+    `$request_url` is the absolute URL being requested, including any GET data, but without the fragment (since 2.1.0).
 
 * **`fsockopen.after_headers`**
 

@@ -19,6 +19,7 @@ use WpOrg\Requests\Requests;
 use WpOrg\Requests\Transport;
 use WpOrg\Requests\Utility\InputValidator;
 use WpOrg\Requests\Utility\Trim;
+use WpOrg\Requests\Utility\Url;
 
 /**
  * HTTP transport using libcurl.
@@ -408,11 +409,12 @@ final class Curl implements Transport {
 
 		$headers = Requests::flatten($headers);
 
-		if (!empty($data)) {
-			$data_format = $options['data_format'];
+		$data_format = $options['data_format'];
+		$query_data  = ($data_format === 'query' && !empty($data)) ? $data : [];
+		$url         = Url::get_request_url($url, $query_data);
 
+		if (!empty($data)) {
 			if ($data_format === 'query') {
-				$url  = self::format_get($url, $data);
 				$data = '';
 			} elseif (!is_string($data)) {
 				$data = http_build_query($data, '', '&');
@@ -587,36 +589,6 @@ final class Curl implements Transport {
 
 		$this->response_bytes += $data_length;
 		return $data_length;
-	}
-
-	/**
-	 * Format a URL given GET data
-	 *
-	 * @param string       $url  Original URL.
-	 * @param array|object $data Data to build query using, see {@link https://www.php.net/http_build_query}
-	 * @return string URL with data
-	 */
-	private static function format_get($url, $data) {
-		if (!empty($data)) {
-			$query     = '';
-			$url_parts = parse_url($url);
-			if (empty($url_parts['query'])) {
-				$url_parts['query'] = '';
-			} else {
-				$query = $url_parts['query'];
-			}
-
-			$query .= '&' . http_build_query($data, '', '&');
-			$query  = trim($query, '&');
-
-			if (empty($url_parts['query'])) {
-				$url .= '?' . $query;
-			} else {
-				$url = str_replace($url_parts['query'], $query, $url);
-			}
-		}
-
-		return $url;
 	}
 
 	/**

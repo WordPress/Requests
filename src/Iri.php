@@ -811,11 +811,14 @@ class Iri {
 			$this->port = null;
 			return true;
 		}
-		if (isset($cache[$authority])) {
+		// The cached values are normalized based on the scheme (e.g. the default
+		// port is removed), so the scheme needs to be part of the cache key.
+		$cache_key = $this->scheme . '//' . $authority;
+		if (isset($cache[$cache_key])) {
 			list($this->iuserinfo,
 				 $this->ihost,
 				 $this->port,
-				 $return) = $cache[$authority];
+				 $return) = $cache[$cache_key];
 
 			return $return;
 		}
@@ -844,7 +847,7 @@ class Iri {
 				  $this->set_host($remaining) &&
 				  $this->set_port($port);
 
-		$cache[$authority] = array($this->iuserinfo,
+		$cache[$cache_key] = array($this->iuserinfo,
 								   $this->ihost,
 								   $this->port,
 								   $return);

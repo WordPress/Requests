@@ -425,4 +425,18 @@ final class IriTest extends TestCase
 
 		$this->assertNull($iri->port);
 	}
+
+	/**
+	 * The default port is removed based on the scheme, so a cached authority
+	 * parsed for one scheme must not be reused for another scheme.
+	 */
+	public function testSameAuthorityWithDifferentSchemes()
+	{
+		$http  = new Iri('http://cache-test.example:80/');
+		$https = new Iri('https://cache-test.example:80/');
+
+		$this->assertSame('http://cache-test.example/', $http->uri, 'Default port for http should be removed');
+		$this->assertSame(80, $https->port, 'Port for https does not match');
+		$this->assertSame('https://cache-test.example:80/', $https->uri, 'Non-default port for https should be kept');
+	}
 }

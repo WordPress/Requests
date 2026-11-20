@@ -141,6 +141,79 @@ abstract class BaseTestCase extends TestCase {
 		$this->assertSame(['test' => 'true', 'test2' => 'test'], $result['args']);
 	}
 
+	/**
+	 * Test that GET data is added to the query string of the URL which is actually requested.
+	 *
+	 * @dataProvider dataGETWithDataBuildsRequestUrl
+	 *
+	 * @param string       $url      URL suffix to request.
+	 * @param array|string $data     Data to send.
+	 * @param string       $expected URL suffix the server is expected to receive.
+	 * @param array        $options  Optional. Additional request options.
+	 *
+	 * @return void
+	 */
+	public function testGETWithDataBuildsRequestUrl($url, $data, $expected, $options = []) {
+		$request = Requests::request($this->httpbin($url), [], $data, Requests::GET, $this->getOptions($options));
+		$this->assertSame(200, $request->status_code, 'Unexpected status code');
+
+		$result = json_decode($request->body, true);
+		$this->assertSame($this->httpbin($expected), $result['url'], 'The requested URL does not match');
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public static function dataGETWithDataBuildsRequestUrl() {
+		return [
+			'query matching a path segment'    => ['/get?get', ['a' => '1'], '/get?get&a=1'],
+			'fragment, no query'               => ['/get#frag', ['a' => '1'], '/get?a=1'],
+			'query and fragment'               => ['/get?x=1#x=1', ['a' => '1'], '/get?x=1&a=1'],
+			'empty query string'               => ['/get?', ['a' => '1'], '/get?a=1'],
+			'query string "0"'                 => ['/get?0', ['a' => '1'], '/get?0&a=1'],
+			'string data'                      => ['/get?x=1', 'a=1&b=2', '/get?x=1&a=1&b=2'],
+			'query string "0", idn disabled'   => ['/get?0', ['a' => '1'], '/get?0&a=1', ['idn' => false]],
+			'empty query string, no data'      => ['/get?', [], '/get?'],
+			'signed query, no data, idn off'   => ['/get?a[]=1&sig=%7eAbc', [], '/get?a[]=1&sig=%7eAbc', ['idn' => false]],
+			'signed query, data, idn off'      => ['/get?a[]=1&sig=%7eAbc', ['x' => '1'], '/get?a[]=1&sig=%7eAbc&x=1', ['idn' => false]],
+		];
+	}
+
+	/**
+	 * Test that a URL without a host is rejected in the same way, whether GET data is passed or not.
+	 *
+	 * @dataProvider dataInvalidUrlWithoutHost
+	 *
+	 * @param array $data Data to send.
+	 *
+	 * @return void
+	 */
+	public function testInvalidUrlWithoutHost($data) {
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessage('Invalid URL.');
+
+		try {
+			Requests::request('http:///get', [], $data, Requests::GET, $this->getOptions(['idn' => false]));
+		} catch (Exception $e) {
+			$this->assertSame('invalidurl', $e->getType(), 'Exception type does not match');
+			throw $e;
+		}
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @return array
+	 */
+	public static function dataInvalidUrlWithoutHost() {
+		return [
+			'no data'   => [[]],
+			'with data' => [['a' => '1']],
+		];
+	}
+
 	public function testGETWithHeaders() {
 		$headers = [
 			'Requested-At' => (string) time(),
