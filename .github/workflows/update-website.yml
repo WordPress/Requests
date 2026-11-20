@@ -93,7 +93,7 @@ jobs:
     # Don't run on forks.
     if: github.repository == 'WordPress/Requests'
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write      # Needed to push commits to a branch in the repo.
       pull-requests: write # Needed to create a PR.
