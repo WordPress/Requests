@@ -9,6 +9,7 @@
 
 namespace WpOrg\Requests\Proxy;
 
+use SensitiveParameter;
 use WpOrg\Requests\Exception\ArgumentCount;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
@@ -65,7 +66,10 @@ final class Http implements Proxy {
 	 * @throws \WpOrg\Requests\Exception\InvalidArgument When the passed argument is not an array, a string or null.
 	 * @throws \WpOrg\Requests\Exception\ArgumentCount On incorrect number of arguments (`proxyhttpbadargs`)
 	 */
-	public function __construct($args = null) {
+	public function __construct(
+		#[SensitiveParameter]
+		$args = null
+	) {
 		if (is_string($args)) {
 			$this->proxy = $args;
 		} elseif (is_array($args)) {
