@@ -101,18 +101,107 @@ Code coverage is monitored for every PR and for the code base as a whole using [
 - [Composer][]
 - [Python 3][]
 - [mitmproxy][] (`pip3 install mitmproxy`)
+- The `curl` command line tool, which the test bootstrap uses to check whether the test servers are reachable.
+- `start-stop-daemon`, which the start and stop scripts for the test server and the proxy servers use.
+    It is available by default on Debian and Ubuntu based systems, but not on macOS or Windows.
+    See [Running the tests without `start-stop-daemon`](#running-the-tests-without-start-stop-daemon) for an alternative.
 
 [PHP]: https://www.php.net/
 [Composer]: http://getcomposer.org/
 [Python 3]: https://www.python.org/
 [mitmproxy]: https://mitmproxy.org/
 
+### Test servers
+
+Requests is an HTTP library, so a large part of the tests send real HTTP requests.
+To keep these tests predictable, most of them send their requests to a test server which is maintained for this purpose.
+
+| Server | Used for | Where it runs | Configured with |
+| --- | --- | --- | --- |
+| HTTP test server | All tests sending plain HTTP requests | Locally | `REQUESTS_TEST_HOST_HTTP` |
+| HTTPS test server | All tests sending HTTPS requests | Hosted on [Render][] | `REQUESTS_TEST_HOST_HTTPS` |
+| Proxy server | The proxy tests in `tests/Proxy` | Locally | `REQUESTS_HTTP_PROXY` |
+| Proxy server with authentication | The proxy authentication tests in `tests/Proxy` | Locally | `REQUESTS_HTTP_PROXY_AUTH`, `REQUESTS_HTTP_PROXY_AUTH_USER` and `REQUESTS_HTTP_PROXY_AUTH_PASS` |
+
+#### The test server
+
+The code for the test server is maintained in the [RequestsPHP/test-server][] repository.
+It is a small PHP application which responds to routes such as `/get`, `/post`, `/status/{code}` and `/redirect/{count}` with a JSON description of the request it received, similar to [httpbin.org][].
+
+The test server is installed as a Composer dev dependency (`requests/test-server`), so it is available in the `vendor` directory after running `composer install`.
+The `vendor/bin/start.sh` and `vendor/bin/stop.sh` scripts start and stop it with the PHP built-in web server.
+The `PORT` environment variable sets the port it listens on.
+
+#### The hosted HTTPS test server
+
+The PHP built-in web server cannot serve HTTPS, so the HTTPS tests use a hosted copy of the same test server at `requests-test-server.onrender.com`.
+This copy runs on [Render][] from the Docker setup in the `feature/docker-setup` branch of the [RequestsPHP/test-server][] repository.
+See [RequestsPHP/test-server#7][] for the status of that setup.
+
+The Render instance goes to sleep when it has not been used for a while, and the first request after that can take some time.
+For this reason, the GitHub Actions workflows send a request to it before running the tests, so it is awake by the time the tests need it.
+When running the tests locally, you can do the same:
+
+```bash
+curl -s -I https://requests-test-server.onrender.com/ > /dev/null
+```
+
+#### The proxy servers
+
+The proxy tests need two HTTP proxies: one without authentication and one which requires a username and password.
+Both are [mitmproxy][] instances started with the `scripts/proxy/start.sh` script.
+This script loads `scripts/proxy/proxy.py`, which adds an `x-requests-proxy` header to each request and an `x-requests-proxied` header to each response, so the tests can verify that the request went through the proxy.
+The `PORT` environment variable sets the port the proxy listens on and the `AUTH` environment variable (in `user:password` format) turns on proxy authentication.
+
+#### External services
+
+A few tests send requests to public third-party services, for instance [badssl.com][] to test the handling of invalid SSL certificates and [portquiz.net][] to test requests to a non-standard port.
+These tests need internet access and can fail when such a service is unavailable or changes its responses.
+See [#687][] for more information.
+
+#### Environment variables
+
+The test bootstrap file (`tests/bootstrap.php`) reads the following environment variables:
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `REQUESTS_TEST_HOST` | Host (and optional port) of the test server, used for both HTTP and HTTPS unless overruled by the next two variables. | `requests-test-server.onrender.com` |
+| `REQUESTS_TEST_HOST_HTTP` | Host (and optional port) of the test server used for HTTP requests. | The value of `REQUESTS_TEST_HOST` |
+| `REQUESTS_TEST_HOST_HTTPS` | Host (and optional port) of the test server used for HTTPS requests. | The value of `REQUESTS_TEST_HOST` |
+| `REQUESTS_HTTP_PROXY` | Host and port of the proxy without authentication. | Not set |
+| `REQUESTS_HTTP_PROXY_AUTH` | Host and port of the proxy with authentication. | Not set |
+| `REQUESTS_HTTP_PROXY_AUTH_USER` | Username for the proxy with authentication. | Not set |
+| `REQUESTS_HTTP_PROXY_AUTH_PASS` | Password for the proxy with authentication. | Not set |
+
+When it starts, the test bootstrap sends a request to the HTTP and HTTPS test servers and prints whether each one is available:
+
+```
+REQUESTS_TEST_SERVER_HTTP_AVAILABLE was set to: true
+REQUESTS_TEST_SERVER_HTTPS_AVAILABLE was set to: true
+```
+
+Tests which need a test server that is not available are skipped, and so are the proxy tests when the corresponding `REQUESTS_HTTP_PROXY*` variable is not set.
+This means the test suite can pass with a large number of tests skipped, so check the skipped tests count when you change code which is only covered by these tests.
+
+[Render]: https://render.com/
+[RequestsPHP/test-server]: https://github.com/RequestsPHP/test-server
+[RequestsPHP/test-server#7]: https://github.com/RequestsPHP/test-server/issues/7
+[httpbin.org]: https://httpbin.org/
+[badssl.com]: https://badssl.com/
+[portquiz.net]: http://portquiz.net/
+[#687]: https://github.com/WordPress/Requests/issues/687
+
 ### Running the Tests
+
+The following runs the complete test suite in the same way as the GitHub Actions workflows do.
 
 ```bash
 # Start the test server
 PORT=8080 vendor/bin/start.sh
 export "REQUESTS_TEST_HOST_HTTP=localhost:8080"
+
+# Wake up the hosted HTTPS test server
+curl -s -I https://requests-test-server.onrender.com/ > /dev/null
 
 # Start the proxy server
 PORT=9002 scripts/proxy/start.sh
@@ -133,7 +222,39 @@ PORT=9003 scripts/proxy/stop.sh
 vendor/bin/stop.sh
 ```
 
-To run the test with code coverage, use `composer coverage` instead.
+Which PHPUnit version Composer installs depends on your PHP version.
+When `vendor/bin/phpunit --version` reports PHPUnit 10, run the tests with `composer test10` instead of `composer test`.
+
+To run the test with code coverage, use `composer coverage` (or `composer coverage10` for PHPUnit 10) instead.
+
+### Running the tests without `start-stop-daemon`
+
+On systems without `start-stop-daemon`, such as macOS, you can start the servers directly as background processes:
+
+```bash
+# Start the test server
+php -S localhost:8080 vendor/requests/test-server/bin/serve.php > /dev/null 2>&1 &
+TEST_SERVER_PID=$!
+export "REQUESTS_TEST_HOST_HTTP=localhost:8080"
+
+# Start the proxy servers
+mitmdump -s scripts/proxy/proxy.py -p 9002 > /dev/null 2>&1 &
+PROXY_PID=$!
+mitmdump -s scripts/proxy/proxy.py -p 9003 --proxyauth test:pass > /dev/null 2>&1 &
+PROXY_AUTH_PID=$!
+export "REQUESTS_HTTP_PROXY=localhost:9002"
+export "REQUESTS_HTTP_PROXY_AUTH=localhost:9003"
+export "REQUESTS_HTTP_PROXY_AUTH_USER=test"
+export "REQUESTS_HTTP_PROXY_AUTH_PASS=pass"
+
+# Run the tests
+composer test
+
+# Stop the servers
+kill $TEST_SERVER_PID $PROXY_PID $PROXY_AUTH_PID
+```
+
+mitmproxy takes a few seconds to start, so wait until `curl -I http://localhost:9002` gets a response before running the tests.
 
 ## Website
 
