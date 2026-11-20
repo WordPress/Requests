@@ -190,10 +190,27 @@ final class RequestsTest extends TestCase {
 		}
 	}
 
-	public function testProtocolVersionParsing() {
+	/**
+	 * Data Provider.
+	 *
+	 * @return array
+	 */
+	public function dataProtocolVersion() {
+		return [
+			'HTTP/1.0' => ['1.0', 1.0],
+			'HTTP/1.1' => ['1.1', 1.1],
+			'HTTP/2'   => ['2', 2.0],
+			'HTTP/3'   => ['3', 3.0],
+		];
+	}
+
+	/**
+	 * @dataProvider dataProtocolVersion
+	 */
+	public function testProtocolVersionParsing($version, $expected) {
 		$transport       = new RawTransportMock();
 		$transport->data =
-			"HTTP/1.0 200 OK\r\n" .
+			"HTTP/$version 200 OK\r\n" .
 			"Host: localhost\r\n\r\n";
 
 		$options = [
@@ -201,7 +218,7 @@ final class RequestsTest extends TestCase {
 		];
 
 		$response = Requests::get('http://example.com/', [], $options);
-		$this->assertSame(1.0, $response->protocol_version);
+		$this->assertSame($expected, $response->protocol_version);
 	}
 
 	public function testRawAccess() {
