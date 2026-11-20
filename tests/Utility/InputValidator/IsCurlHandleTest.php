@@ -14,7 +14,7 @@ final class IsCurlHandleTest extends TestCase {
 	/**
 	 * Curl handle.
 	 *
-	 * @var resource|\CurlHandle
+	 * @var resource|\CurlHandle|null
 	 */
 	private static $curl_handle;
 

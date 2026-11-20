@@ -113,7 +113,7 @@ final class StatusCodeTest extends TestCase {
 	 *
 	 * @dataProvider dataKnownStatusCodes
 	 *
-	 * @param int    status_code               HTTP status code.
+	 * @param int    $status_code              HTTP status code.
 	 * @param string $expected_exception_class Exception class to expect.
 	 *
 	 * @return void
