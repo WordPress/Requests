@@ -72,6 +72,22 @@ This project uses [PHP_CodeSniffer][] to detect coding standard violations and a
 
 [PHP_CodeSniffer]: https://github.com/PHPCSStandards/PHP_CodeSniffer
 
+## Static Analysis
+
+This project uses [PHPStan][] for static analysis. The configuration lives in `phpstan.neon.dist`; findings which are known false positives or deliberate are listed under `ignoreErrors` in that file, each with an explanation.
+
+PHPStan requires PHP 7.4 or higher, while this library supports PHP 5.6 and higher, so it is not installed via Composer.
+To run it locally, download the PHAR file and run it from the root of the repository:
+
+```sh
+curl -sSLo phpstan.phar https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar
+php phpstan.phar analyse
+```
+
+A `phpstan.neon` file can be used for local overrides; it is ignored by Git.
+
+[PHPStan]: https://phpstan.org/
+
 ## Unit Tests
 
 PRs should include unit tests for all changes.

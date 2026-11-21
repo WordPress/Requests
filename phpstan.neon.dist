@@ -1,0 +1,164 @@
+parameters:
+	level: 5
+	bootstrapFiles:
+		- phpstan-bootstrap.php
+		- tests/bootstrap.php
+	paths:
+		- build/ghpages
+		- examples
+		- library
+		- src
+		- tests
+	excludePaths:
+		analyse:
+			- build/ghpages/vendor (?)
+			# Externally maintained file (based on the SimplePie IRI class), not held to this project's standards.
+			- src/Iri.php
+	treatPhpDocTypesAsCertain: false
+
+	ignoreErrors:
+		# The library supports PHP 5.6+, where cURL handles are resources. PHPStan analyses against the
+		# PHP 8 stubs, in which curl_close() only accepts a CurlHandle object and the resource type can
+		# never occur.
+		-
+			identifier: argument.type
+			message: '#function curl_close expects CurlHandle, resource given#'
+			path: src/Transport/Curl.php
+		-
+			identifier: argument.type
+			message: '#function curl_close expects CurlHandle, resource given#'
+			path: tests/Utility/InputValidator/IsCurlHandleTest.php
+		-
+			identifier: property.unusedType
+			message: '#is never assigned resource#'
+			path: src/Transport/Curl.php
+		-
+			identifier: property.unusedType
+			message: '#is never assigned resource#'
+			path: tests/Utility/InputValidator/IsCurlHandleTest.php
+
+		# OPENSSL_TLSEXT_SERVER_NAME is only defined when OpenSSL is compiled with SNI support; the guard
+		# is needed on older PHP builds even though it is always true on the PHP version running PHPStan.
+		-
+			identifier: booleanAnd.rightAlwaysTrue
+			path: src/Transport/Fsockopen.php
+
+		# PHPStan's stub for spl_autoload_register() declares the callback as returning void. PHP ignores
+		# the return value, and the Requests autoloaders return bool to report whether a class was loaded.
+		-
+			identifier: argument.type
+			message: '#function spl_autoload_register expects#'
+			path: src/Autoload.php
+		-
+			identifier: argument.type
+			message: '#function spl_autoload_register expects#'
+			path: tests/bootstrap.php
+
+		# REQUESTS_SILENCE_PSR0_DEPRECATIONS is defined by the integrator before the library loads. PHPStan
+		# resolves it from the define() call in library/Requests.php and treats it as always true.
+		-
+			identifier: notIdentical.alwaysFalse
+			message: '#REQUESTS_SILENCE_PSR0_DEPRECATIONS|between true and true#'
+			path: src/Autoload.php
+		-
+			identifier: notIdentical.alwaysFalse
+			message: '#between true and true#'
+			path: library/Requests.php
+
+		# The `cookies` option accepts false per the documentation, but set_defaults() replaces false with an
+		# empty Jar via the empty() check above, so the guard can never see false. Kept as-is pending a
+		# decision on whether `cookies => false` should disable cookie handling.
+		-
+			identifier: notIdentical.alwaysTrue
+			path: src/Requests.php
+
+		# The REQUESTS_TEST_SERVER_*_AVAILABLE constants are defined by tests/bootstrap.php from the environment;
+		# PHPStan sees the values the bootstrap produced on this machine and treats the checks as constant.
+		-
+			identifier: booleanAnd.alwaysFalse
+			path: tests/TestCase.php
+		-
+			identifier: identical.alwaysFalse
+			path: tests/TestCase.php
+		-
+			identifier: booleanAnd.rightAlwaysFalse
+			path: tests/Proxy/Http/HttpTest.php
+		-
+			identifier: booleanNot.alwaysTrue
+			path: tests/Proxy/Http/HttpTest.php
+
+		# PHPUnit version shim: setMethods() exists on PHPUnit < 10 and addMethods() on PHPUnit >= 8.
+		# PHPStan only sees the installed PHPUnit version.
+		-
+			identifier: function.alreadyNarrowedType
+			path: tests/TestCase.php
+		-
+			identifier: method.notFound
+			message: '#setMethods\(\)#'
+			path: tests/TestCase.php
+
+		# Tests which deliberately pass invalid input to verify the exception thrown or the resulting behaviour.
+		-
+			identifier: argument.type
+			path: tests/Cookie/ParseTest.php
+		-
+			identifier: argument.type
+			path: tests/Hooks/RegisterTest.php
+		-
+			identifier: argument.type
+			path: tests/Proxy/Http/HttpTest.php
+		-
+			identifier: argument.type
+			path: tests/Utility/FilteredIterator/SerializationTest.php
+		-
+			identifier: array.invalidKey
+			path: tests/Utility/CaseInsensitiveDictionary/*
+		-
+			identifier: offsetAssign.dimType
+			path: tests/*
+		-
+			identifier: offsetAssign.valueType
+			path: tests/Response/Headers/*
+		-
+			identifier: assign.propertyType
+			message: '#Iri::\$host#'
+			path: tests/Iri/IriTest.php
+
+		# Tests of magic property access (__get/__set/__isset) on properties which intentionally do not exist.
+		-
+			identifier: property.notFound
+			path: tests/Iri/IriTest.php
+		-
+			identifier: property.notFound
+			path: tests/Session/MagicPropertyAccessTest.php
+
+		# Session exposes request options as magic properties through __get()/__set().
+		-
+			identifier: property.notFound
+			message: '#Session::\$useragent#'
+			path: examples/session.php
+
+		# The example uses a placeholder path the reader is expected to replace.
+		-
+			identifier: requireOnce.fileNotFound
+			path: examples/preload-aliases.php
+
+		# Assertions on values PHPStan can prove at analysis time. They document the test environment
+		# (extension availability, constant definitions) rather than exercise logic.
+		-
+			identifier: method.alreadyNarrowedType
+			path: tests/*
+
+		# Tests disabled at the top with markTestSkipped() while their body is kept for reference
+		# (see issues #966 and #1077).
+		-
+			identifier: deadCode.unreachable
+			path: tests/Transport/BaseTestCase.php
+
+		# Minimal ArrayAccess fixture used only to satisfy type checks; it is never read from.
+		-
+			identifier: property.onlyWritten
+			path: tests/Fixtures/ArrayAccessibleObject.php
+		-
+			identifier: return.missing
+			path: tests/Fixtures/ArrayAccessibleObject.php

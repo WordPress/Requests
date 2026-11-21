@@ -108,7 +108,7 @@ final class Curl implements Transport {
 		$this->handle  = curl_init();
 
 		curl_setopt($this->handle, CURLOPT_HEADER, false);
-		curl_setopt($this->handle, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($this->handle, CURLOPT_RETURNTRANSFER, true);
 		if ($this->version >= self::CURL_7_10_5) {
 			curl_setopt($this->handle, CURLOPT_ENCODING, '');
 		}
@@ -200,7 +200,7 @@ final class Curl implements Transport {
 		if (isset($options['verify'])) {
 			if ($options['verify'] === false) {
 				curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
-				curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, false);
 			} elseif (is_string($options['verify'])) {
 				curl_setopt($this->handle, CURLOPT_CAINFO, $options['verify']);
 			}
@@ -451,17 +451,17 @@ final class Curl implements Transport {
 		$timeout = max($options['timeout'], 1);
 
 		if (is_int($timeout) || $this->version < self::CURL_7_16_2) {
-			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($timeout));
+			curl_setopt($this->handle, CURLOPT_TIMEOUT, (int) ceil($timeout));
 		} else {
 			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_timeout_msFound
-			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($timeout * 1000));
+			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, (int) round($timeout * 1000));
 		}
 
 		if (is_int($options['connect_timeout']) || $this->version < self::CURL_7_16_2) {
-			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
+			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT, (int) ceil($options['connect_timeout']));
 		} else {
 			// phpcs:ignore PHPCompatibility.Constants.NewConstants.curlopt_connecttimeout_msFound
-			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
+			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, (int) round($options['connect_timeout'] * 1000));
 		}
 
 		curl_setopt($this->handle, CURLOPT_URL, $url);

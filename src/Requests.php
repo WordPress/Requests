@@ -829,6 +829,7 @@ class Requests {
 	 * `$response` is either set to a \WpOrg\Requests\Response instance, or a \WpOrg\Requests\Exception object
 	 *
 	 * @param string $response Full response text including headers and body (will be overwritten with Response instance)
+	 * @param-out \WpOrg\Requests\Response|\WpOrg\Requests\Exception $response
 	 * @param array  $request  Request data as passed into {@see \WpOrg\Requests\Requests::request_multiple()}
 	 * @return void
 	 */

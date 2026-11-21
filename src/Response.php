@@ -42,7 +42,7 @@ class Response {
 	 *
 	 * @var \WpOrg\Requests\Response\Headers Array-like object representing headers
 	 */
-	public $headers = [];
+	public $headers;
 
 	/**
 	 * Status code, false if non-blocking
@@ -91,7 +91,7 @@ class Response {
 	 *
 	 * @var \WpOrg\Requests\Cookie\Jar Array-like object representing a cookie jar
 	 */
-	public $cookies = [];
+	public $cookies;
 
 	/**
 	 * Constructor

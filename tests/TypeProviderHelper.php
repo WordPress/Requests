@@ -168,14 +168,14 @@ final class TypeProviderHelper {
 	/**
 	 * File handle to local memory (open resource).
 	 *
-	 * @var resource
+	 * @var resource|null
 	 */
 	private static $memory_handle_open;
 
 	/**
 	 * File handle to local memory (closed resource).
 	 *
-	 * @var resource
+	 * @var resource|null
 	 */
 	private static $memory_handle_closed;
 
