@@ -105,11 +105,21 @@ Available Hooks
 
     Set cURL options before executing a cURL multi handle request.
 
+    Dispatched once per non-empty batch through the global `$options['hooks']`
+    passed to `Requests::request_multiple()`, after all request handles have been
+    added. Per-request hook overrides do not receive this event. If no global hook
+    manager is supplied, this event is not dispatched.
+
     Parameters: `cURL resource|CurlMultiHandle &$multihandle`
 
 * **`curl.after_multi_exec`**
 
     Run events before a cURL multi handle is closed.
+
+    Dispatched once per non-empty batch through the global `$options['hooks']`
+    passed to `Requests::request_multiple()`, after all requests have completed.
+    Per-request hook overrides do not receive this event. If no global hook
+    manager is supplied, this event is not dispatched.
 
     Parameters: `cURL resource|CurlMultiHandle &$multihandle`
 

@@ -285,7 +285,14 @@ final class Curl implements Transport {
 		$responses       = [];
 		$subrequestcount = count($subrequests);
 
-		$request['options']['hooks']->dispatch('curl.before_multi_exec', [&$multihandle]);
+		if ($subrequestcount === 0) {
+			curl_multi_close($multihandle);
+			return [];
+		}
+
+		if (!empty($options['hooks'])) {
+			$options['hooks']->dispatch('curl.before_multi_exec', [&$multihandle]);
+		}
 
 		do {
 			$active = 0;
@@ -306,7 +313,7 @@ final class Curl implements Transport {
 
 			// Parse the finished requests before we start getting the new ones
 			foreach ($to_process as $key => $done) {
-				$options = $requests[$key]['options'];
+				$request_options = $requests[$key]['options'];
 				if ($done['result'] !== CURLE_OK) {
 					//get error string for handle.
 					$reason          = curl_error($done['handle']);
@@ -317,11 +324,11 @@ final class Curl implements Transport {
 						$done['result']
 					);
 					$responses[$key] = $exception;
-					$options['hooks']->dispatch('transport.internal.parse_error', [&$responses[$key], $requests[$key]]);
+					$request_options['hooks']->dispatch('transport.internal.parse_error', [&$responses[$key], $requests[$key]]);
 				} else {
-					$responses[$key] = $subrequests[$key]->process_response($subrequests[$key]->response_data, $options);
+					$responses[$key] = $subrequests[$key]->process_response($subrequests[$key]->response_data, $request_options);
 
-					$options['hooks']->dispatch('transport.internal.parse_response', [&$responses[$key], $requests[$key]]);
+					$request_options['hooks']->dispatch('transport.internal.parse_response', [&$responses[$key], $requests[$key]]);
 				}
 
 				curl_multi_remove_handle($multihandle, $done['handle']);
@@ -331,14 +338,16 @@ final class Curl implements Transport {
 				}
 
 				if (!is_string($responses[$key])) {
-					$options['hooks']->dispatch('multiple.request.complete', [&$responses[$key], $key]);
+					$request_options['hooks']->dispatch('multiple.request.complete', [&$responses[$key], $key]);
 				}
 
 				++$completed;
 			}
 		} while ($active || $completed < $subrequestcount);
 
-		$request['options']['hooks']->dispatch('curl.after_multi_exec', [&$multihandle]);
+		if (!empty($options['hooks'])) {
+			$options['hooks']->dispatch('curl.after_multi_exec', [&$multihandle]);
+		}
 
 		curl_multi_close($multihandle);
 
