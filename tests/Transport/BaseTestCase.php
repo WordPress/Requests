@@ -1167,6 +1167,7 @@ abstract class BaseTestCase extends TestCase {
 		$this->assertNotEmpty($calls, 'After request callback was not called');
 
 		foreach ($calls as $args) {
+			$this->assertCount(2, $args, 'After request callback did not receive the expected number of arguments');
 			$this->assertIsString($args[0], 'First argument is not the response headers string');
 			$this->assertIsArray($args[1], 'Second argument is not the info array');
 			$this->assertNotEmpty($args[1], 'Info array is empty');

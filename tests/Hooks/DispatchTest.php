@@ -2,6 +2,7 @@
 
 namespace WpOrg\Requests\Tests\Hooks;
 
+use ArrayObject;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Tests\Fixtures\CallbackRecorder;
@@ -195,9 +196,10 @@ class DispatchTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchWithMultipleRegisteredHooks() {
-		$callback_a = new CallbackRecorder();
-		$callback_b = new CallbackRecorder();
-		$callback_c = new CallbackRecorder();
+		$call_order = new ArrayObject();
+		$callback_a = new CallbackRecorder('a', $call_order);
+		$callback_b = new CallbackRecorder('b', $call_order);
+		$callback_c = new CallbackRecorder('c', $call_order);
 
 		$this->hooks->register('hook_a', $callback_a);
 		$this->hooks->register('hook_b', $callback_b);
@@ -209,6 +211,7 @@ class DispatchTest extends TestCase {
 		$this->assertSame([], $callback_a->get_calls(), 'Callback registered on another hook was called');
 		$this->assertSame([[10, 'text'], [10, 'text']], $callback_b->get_calls(), 'Callback registered twice was not called twice with the expected arguments');
 		$this->assertSame([[10, 'text']], $callback_c->get_calls(), 'Callback was not called once with the expected arguments');
+		$this->assertSame(['b', 'c', 'b'], $call_order->getArrayCopy(), 'Callbacks were not called in priority order');
 	}
 
 	/**
