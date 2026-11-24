@@ -67,7 +67,7 @@ WpOrg\Requests\Autoload::register();
 Previous Versions
 -----------------
 
-{%- assign ghreleases = site.github.releases | where: "draft", false | sort_natural: 'tag_name' | reverse -%}
+{%- assign ghreleases = site.github.releases | where: "draft", false | sort: 'created_at' | reverse -%}
 {% for release in ghreleases %}
     {% if release.tag_name != site.github.latest_release.tag_name %}
 * Version {{ release.tag_name }}: [Zip]({{ release.zipball_url}}) or [Tarball]({{ release.tarball_url}})
