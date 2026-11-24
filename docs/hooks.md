@@ -182,4 +182,4 @@ $request = \WpOrg\Requests\Requests::get('https://httpbin.org/get', array(), arr
 
 Previous: [Requests through proxy](proxy.md)
 
-Next: [Upgrading to Requests 2.0](upgrading.md)
+Next: [Lifecycle of a request](request-lifecycle.md)

@@ -19,6 +19,7 @@ here are prose; you might also want to check out the [API documentation][].
 	* [Custom authentication][authentication-custom]
 	* [Requests through proxy][proxy]
 	* [Hooking system][hooks]
+	* [Lifecycle of a request][request-lifecycle]
 * Upgrading
     * [Upgrading to Requests 2.0][upgrading]
 
@@ -29,5 +30,6 @@ here are prose; you might also want to check out the [API documentation][].
 [authentication]: authentication.md
 [authentication-custom]: authentication-custom.md
 [hooks]: hooks.md
+[request-lifecycle]: request-lifecycle.md
 [proxy]: proxy.md
 [upgrading]: upgrading.md

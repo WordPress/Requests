@@ -107,4 +107,4 @@ As of Requests 4.0, the backward compatibility layer will be removed.
 
 ***
 
-Previous: [Hooks](hooks.md)
+Previous: [Lifecycle of a request](request-lifecycle.md)
