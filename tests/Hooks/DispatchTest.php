@@ -2,8 +2,10 @@
 
 namespace WpOrg\Requests\Tests\Hooks;
 
+use ArrayObject;
 use WpOrg\Requests\Exception\InvalidArgument;
 use WpOrg\Requests\Hooks;
+use WpOrg\Requests\Tests\Fixtures\CallbackRecorder;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
 
@@ -180,14 +182,12 @@ class DispatchTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchWithSingleRegisteredHook() {
-		$mock = $this->getMockedStdClassWithMethods(['callback']);
+		$callback = new CallbackRecorder();
 
-		$mock->expects($this->once())
-			->method('callback');
-
-		$this->hooks->register('hookname', [$mock, 'callback']);
+		$this->hooks->register('hookname', $callback);
 
 		$this->assertTrue($this->hooks->dispatch('hookname'));
+		$this->assertSame([[]], $callback->get_calls());
 	}
 
 	/**
@@ -196,31 +196,22 @@ class DispatchTest extends TestCase {
 	 * @return void
 	 */
 	public function testDispatchWithMultipleRegisteredHooks() {
-		$mock = $this->getMockedStdClassWithMethods(['callback_a', 'callback_b', 'callback_c']);
+		$call_order = new ArrayObject();
+		$callback_a = new CallbackRecorder('a', $call_order);
+		$callback_b = new CallbackRecorder('b', $call_order);
+		$callback_c = new CallbackRecorder('c', $call_order);
 
-		$mock->expects($this->never())
-			->method('callback_a');
-
-		$mock->expects($this->exactly(2))
-			->method('callback_b')
-			->with(
-				$this->identicalTo(10),
-				$this->identicalTo('text')
-			);
-
-		$mock->expects($this->once())
-			->method('callback_c')
-			->with(
-				$this->identicalTo(10),
-				$this->identicalTo('text')
-			);
-
-		$this->hooks->register('hook_a', [$mock, 'callback_a']);
-		$this->hooks->register('hook_b', [$mock, 'callback_b']);
-		$this->hooks->register('hook_b', [$mock, 'callback_b'], 10);
-		$this->hooks->register('hook_b', [$mock, 'callback_c']);
+		$this->hooks->register('hook_a', $callback_a);
+		$this->hooks->register('hook_b', $callback_b);
+		$this->hooks->register('hook_b', $callback_b, 10);
+		$this->hooks->register('hook_b', $callback_c);
 
 		$this->assertTrue($this->hooks->dispatch('hook_b', [10, 'text']));
+
+		$this->assertSame([], $callback_a->get_calls(), 'Callback registered on another hook was called');
+		$this->assertSame([[10, 'text'], [10, 'text']], $callback_b->get_calls(), 'Callback registered twice was not called twice with the expected arguments');
+		$this->assertSame([[10, 'text']], $callback_c->get_calls(), 'Callback was not called once with the expected arguments');
+		$this->assertSame(['b', 'c', 'b'], $call_order->getArrayCopy(), 'Callbacks were not called in priority order');
 	}
 
 	/**
