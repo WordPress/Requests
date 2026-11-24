@@ -10,6 +10,7 @@ use WpOrg\Requests\Hooks;
 use WpOrg\Requests\Iri;
 use WpOrg\Requests\Requests;
 use WpOrg\Requests\Response;
+use WpOrg\Requests\Tests\Fixtures\CallbackRecorder;
 use WpOrg\Requests\Tests\Fixtures\TransportMock;
 use WpOrg\Requests\Tests\TestCase;
 use WpOrg\Requests\Tests\TypeProviderHelper;
@@ -1137,36 +1138,39 @@ abstract class BaseTestCase extends TestCase {
 	}
 
 	public function testProgressCallback() {
-		$mock = $this->getMockedStdClassWithMethods(['progress']);
-		$mock->expects($this->atLeastOnce())->method('progress');
-		$hooks = new Hooks();
-		$hooks->register('request.progress', [$mock, 'progress']);
+		$callback = new CallbackRecorder();
+		$hooks    = new Hooks();
+		$hooks->register('request.progress', $callback);
 		$options = [
 			'hooks' => $hooks,
 		];
 		$options = $this->getOptions($options);
 
 		Requests::get($this->httpbin('/get'), [], $options);
+
+		$this->assertNotEmpty($callback->get_calls(), 'Progress callback was not called');
 	}
 
 	public function testAfterRequestCallback() {
-		$mock = $this->getMockedStdClassWithMethods(['after_request']);
-
-		$mock->expects($this->atLeastOnce())
-			->method('after_request')
-			->with(
-				$this->isType('string'),
-				$this->logicalAnd($this->isType('array'), $this->logicalNot($this->isEmpty()))
-			);
-		$hooks = new Hooks();
-		$hooks->register('curl.after_request', [$mock, 'after_request']);
-		$hooks->register('fsockopen.after_request', [$mock, 'after_request']);
+		$callback = new CallbackRecorder();
+		$hooks    = new Hooks();
+		$hooks->register('curl.after_request', $callback);
+		$hooks->register('fsockopen.after_request', $callback);
 		$options = [
 			'hooks' => $hooks,
 		];
 		$options = $this->getOptions($options);
 
 		Requests::get($this->httpbin('/get'), [], $options);
+
+		$calls = $callback->get_calls();
+		$this->assertNotEmpty($calls, 'After request callback was not called');
+
+		foreach ($calls as $args) {
+			$this->assertIsString($args[0], 'First argument is not the response headers string');
+			$this->assertIsArray($args[1], 'Second argument is not the info array');
+			$this->assertNotEmpty($args[1], 'Info array is empty');
+		}
 	}
 
 	public function testReusableTransport() {
